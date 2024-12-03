@@ -16,6 +16,9 @@ if (!requireNamespace("cmapR", quietly = TRUE)) {
 
     BiocManager::install("cmapR")
   }
+if (!requireNamespace("data.table", quietly = TRUE)) {
+    install.packages("data.table")
+}
 
 
 library(glue)
@@ -26,6 +29,7 @@ library(UpSetR)
 library(knitr)
 library(lemon)
 library(cmapR)
+library(data.table)
 
 
 calculate_background_threshold <- function(unique_region_type = `?`(character), path) {
@@ -44,8 +48,11 @@ calculate_background_threshold <- function(unique_region_type = `?`(character), 
     }
     print(randomfiles)
 
-    randomdataframes <- lapply(randomfiles, read.csv, header = FALSE,
-        sep = "\t")
+    randomdataframes <- lapply(randomfiles, 
+                               fread, 
+                               header = FALSE,
+                               sep = "\t")
+    
     for (randomframe in randomdataframes) {
 
         colnames(randomframe) <- c("chr_background", "start",
@@ -58,12 +65,26 @@ calculate_background_threshold <- function(unique_region_type = `?`(character), 
         
         result <- randomframe %>%
             mutate(len = stop - start) %>%
-            group_by(new_name) %>%
-            summarize(num_reads = ifelse(sum(nr_bp_overlap >
-                0) > 0, sum(nr_bp_overlap > 0), 0), len = first(len)) %>%
-            filter(len > 0) %>%
-            mutate(num_reads = as.numeric(num_reads), len = as.numeric(len),
-                relative_count = num_reads/len) %>%
+          filter(len > 0) %>%
+          group_by(new_name, name_ribo) %>%
+          summarize(total_bp_overlap = sum(nr_bp_overlap, na.rm = TRUE),
+                    count_combinations = n(),
+                    len = first(len),
+                    chr_background = first(chr_background),
+                    start = first(start),
+                    stop = first(stop)
+                    )%>%
+          # filter(total_bp_overlap > 9) %>%  # Filter based on total bp overlap
+          # this is incorrect, as otherwise all 0 counts are disregarded
+          group_by(new_name) %>%
+          summarize(distinct_ribo_count = n_distinct(name_ribo[total_bp_overlap > 9]),
+                    len = first(len),
+                    chr_background = first(chr_background),
+                    start = first(start),
+                    stop = first(stop)) %>%
+            mutate(num_reads = as.numeric(distinct_ribo_count), 
+                   len = as.numeric(len),
+                   relative_count = distinct_ribo_count/len) %>%
             arrange(desc(relative_count))  
 
         # View the result
@@ -151,18 +172,36 @@ count_unique_regions_above_threhsold <- function(dataframes,
             "phase", "strand", "chr_ribo", "start_ribo", "stop_ribo",
             "name_ribo", "phase_ribo", "strand_ribo", "nr_bp_overlap")
 
+        frame$new_name <-
+          paste0(str_split_fixed(frame$new_name,
+                                 '\\|', 2)[,1], '_',
+                 str_split_fixed(frame$new_name,
+                                 '\\|', 2)[,2])
+
         frame$new_name <- paste(frame$name, frame$chr_unique,
             frame$start, frame$stop, sep = "_")
 
         processed_frame <- frame %>%
             mutate(len = stop - start) %>%
-            filter(len > 0) %>%
-            group_by(new_name) %>%
-            summarize(num_reads = ifelse(sum(nr_bp_overlap >
-                0) > 0, sum(nr_bp_overlap > 0), 0), len = first(len)) %>%
-            mutate(num_reads = as.numeric(num_reads), len = as.numeric(len),
-                relative_count = num_reads/len) %>%
-            arrange(desc(relative_count))
+        filter(nr_bp_overlap > 0) %>%
+          group_by(new_name, name_ribo) %>%
+          summarize(total_bp_overlap = sum(nr_bp_overlap, na.rm = TRUE),
+                    count_combinations = n(),
+                    len = first(len),
+                    chr_unique = first(chr_unique),
+                    start = first(start),
+                    stop = first(stop))%>%
+          filter(total_bp_overlap > 9) %>%  # Filter based on total bp overlap
+          group_by(new_name) %>%  # Group by new_name to count distinct name_ribo per new_name
+          summarize(distinct_ribo_count = n_distinct(name_ribo),
+                    len = first(len),
+                    chr_unique = first(chr_unique),
+                    start = first(start),
+                    stop = first(stop)) %>%
+          mutate(num_reads = as.numeric(distinct_ribo_count), 
+                 len = as.numeric(len),
+                 relative_count = distinct_ribo_count/len) %>%
+          arrange(desc(relative_count))  
 
         frames_preprocessed[[length(frames_preprocessed) +
             1]] <- processed_frame
@@ -212,8 +251,14 @@ get_top_5_unique_regions <- function(dataframes_list, threshold) {
     j <- 1
     names <- names(dataframes_list)
     for (unique_region_frame in dataframes_list) {
-        colnames(unique_region_frame) <- c("new_name", "num_reads",
-            "len", "relative_count")
+        colnames(unique_region_frame) <-c("ID",
+                                          "distinct_ribo_count",
+                                          "len",
+                                          "chr_unique",
+                                          "start",
+                                          "stop",
+                                          "num_reads",
+                                          "relative_count")
         unique_region_frame %>%
             filter(relative_count >= threshold[[j]] & num_reads >
                 2)
@@ -221,8 +266,14 @@ get_top_5_unique_regions <- function(dataframes_list, threshold) {
         if (dim(unique_region_frame)[1] > 0) {
             unique_regions <- unique_region_frame[, 1]
             upsetlist <- c(upsetlist, list(unique_regions))
-            colnames(unique_region_frame) <- c("ID", "num_reads",
-                "len", "relative_count")
+            colnames(unique_region_frame) <- c("ID",
+                                          "distinct_ribo_count",
+                                          "len",
+                                          "chr_unique",
+                                          "start",
+                                          "stop",
+                                          "num_reads",
+                                          "relative_count")
 
             # unique_region_frame$ID <-
             # paste0(str_split_fixed(unique_region_frame$ID,
@@ -271,22 +322,35 @@ count_unique_regions_get_count <- function(dataframes, unique_names_per_sample, 
 
 Split_ORFs_validation <- function(dataframes, unique_names_per_sample) {
     # create empty dataframe to concatenate the dfs
-    df <- data.frame(matrix(ncol = 6, nrow = 0))
+    df <- data.frame(matrix(ncol = 8, nrow = 0))
     # Assign column names
-    colnames(df) <- c("new_name", "num_reads", "len",
-                      "relative_count")
+    colnames(df) <- c("ID",
+                    "distinct_ribo_count",
+                    "len",
+                    "chr_unique",
+                    "start",
+                    "stop",
+                    "num_reads",
+                    "relative_count")
 
     frame_number <- 1
     for (frame in dataframes) {
-        colnames(frame) <- c("new_name", "num_reads", "len",
-                             "relative_count")
-        frame$significant <- ifelse(frame$new_name %in% unique_names_per_sample[[frame_number]],
+        colnames(frame) <- c("ID",
+                            "distinct_ribo_count",
+                            "len",
+                            "chr_unique",
+                            "start",
+                            "stop",
+                            "num_reads",
+                            "relative_count")
+
+        frame$significant <- ifelse(frame$ID %in% unique_names_per_sample[[frame_number]],
             1, 0)
         # print(frame)
         frame <- frame %>%
             filter(significant == 1)
         
-        frame$ID <- sapply(strsplit(frame$new_name, ":"), `[`, 1)
+        frame$ID <- sapply(strsplit(frame$ID , ":"), `[`, 1)
 
         SO_2_uniques_validated <- frame %>%
             group_by(ID) %>%
@@ -294,8 +358,14 @@ Split_ORFs_validation <- function(dataframes, unique_names_per_sample) {
             ungroup() %>%
             arrange(ID)
 
-        print(SO_2_uniques_validated[, c("new_name", "num_reads", "len",
-                                         "relative_count")], max = nrow(SO_2_uniques_validated))
+        print(SO_2_uniques_validated[, c("ID",
+                                          "distinct_ribo_count",
+                                          "len",
+                                          "chr_unique",
+                                          "start",
+                                          "stop",
+                                          "num_reads",
+                                          "relative_count")], max = nrow(SO_2_uniques_validated))
         frame_number <- frame_number + 1
         df <- rbind(df, frame)
 
