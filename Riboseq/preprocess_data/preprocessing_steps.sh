@@ -42,17 +42,18 @@ done
 ################################################################################
 OUTDIR="/projects/splitorfs/work/Riboseq/data/fastp/fastp_single_samples"
 
-# for i in "${samples[@]}"
-# do
-# SAMPLE=$(basename "$i" .fastq)
-# FQ=$i
-# fastp \
-#     -i ${FQ} \
-#     -o ${OUTDIR}/${SAMPLE}_fastp.fastq \
-#     --json ${OUTDIR}/${SAMPLE}.fastp.json \
-#     --thread 32 \
-#     --length_required 20
-# done
+for i in "${samples[@]}"
+do
+SAMPLE=$(basename "$i" .fastq)
+FQ=$i
+fastp \
+    -i ${FQ} \
+    -o ${OUTDIR}/${SAMPLE}_fastp.fastq \
+    --json ${OUTDIR}/${SAMPLE}.fastp.json \
+    --thread 32 \
+    --length_required 20 \
+    --length_limit 45
+done
 
 
 
