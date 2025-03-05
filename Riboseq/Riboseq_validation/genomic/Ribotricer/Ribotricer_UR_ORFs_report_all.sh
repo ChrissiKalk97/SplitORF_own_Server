@@ -7,7 +7,7 @@ source activate Riboseq
 #The following are the main directories for the pipeline outputs and for the alignment outputs
 genomeFasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
 genomeGTF="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.gtf"
-outputRibotricer="/projects/splitorfs/work/Riboseq/Output/Ribotricer/URs_as_ORFs"
+outputRibotricer="/projects/splitorfs/work/Riboseq/Output/Ribotricer/URs_as_ORFs_report_all"
 
 
 if [ ! -d $outputRibotricer ];then
@@ -26,10 +26,8 @@ sample_name=$(basename "$i" _fastp.fastq)
 ribotricer  detect-orfs \
              --bam  $i \
              --ribotricer_index /projects/splitorfs/work/Riboseq/Output/Ribotricer/URs_as_ORFs/pred_and_UR_ORFs.tsv \
-             --prefix "$outputRibotricer"/${sample_name}_detected_translation
+             --prefix "$outputRibotricer"/${sample_name}_detected_translation \
+             --report_all
 
 echo "Predicted translation for sample ${sample_name}"
 done
-
-
-

@@ -35,17 +35,16 @@ library(data.table)
 calculate_background_threshold <- function(unique_region_type = `?`(character), path) {
     # get directory list of subdirectories of the current
     # working directory
-    print(paste("region_type", unique_region_type))
     directories <- list.dirs(path = path, full.names = TRUE, recursive = TRUE)
 
     randomfiles <- list()
     background <- list()
     for (i in directories) {
         if (!(identical(list.files(i, pattern = paste0("*", unique_region_type,
-            "_(10|[1-9])_random_intersect_counts.bed")), character(0)))) {#'|1[1-9]|20'
+            "_(10|[1-9]|1[1-9]|20)_random_intersect_counts.bed")), character(0)))) {#'|1[1-9]|20'
             # 1-20: (10|[1-9]|1[1-9]|20)
             randomfiles <- c(randomfiles, paste0(i, "/", list.files(i,
-                pattern = paste0("*", unique_region_type, "_(10|[1-9])_random_intersect_counts.bed"))))
+                pattern = paste0("*", unique_region_type, "_(10|[1-9]|1[1-9]|20)_random_intersect_counts.bed"))))
         }
     }
 
@@ -104,7 +103,6 @@ calculate_background_threshold <- function(unique_region_type = `?`(character), 
 
 print_thresholds <- function(unique_region_type = `?`(character),
     background, path) {
-    print(paste("region_type 2", unique_region_type))
     # get directory list of subdirectories of the current
     # working directory
     directories <- list.dirs(path = path, full.names = TRUE, recursive = TRUE)
@@ -113,9 +111,9 @@ print_thresholds <- function(unique_region_type = `?`(character),
     randomSetnames <- list()
     for (i in directories) {
         if (!(identical(list.files(i, pattern = paste0("*", unique_region_type,
-            "_(10|[1-9])_random_intersect_counts.bed")), character(0)))) {
+            "_(10|[1-9]|1[1-9]|20)_random_intersect_counts.bed")), character(0)))) {
             randomSetnames <- c(randomSetnames, list.files(i,
-                pattern = paste0("*", unique_region_type, "_(10|[1-9])_random_intersect_counts.bed")))
+                pattern = paste0("*", unique_region_type, "_(10|[1-9]|1[1-9]|20)_random_intersect_counts.bed")))
         }
     }
     randomnames <- stringr::str_replace(randomSetnames, pattern = "_random_intersect_counts.bed",

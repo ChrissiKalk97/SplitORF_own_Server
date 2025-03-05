@@ -68,27 +68,27 @@ fi
 
 sample=$(basename $bamfile .bam)
 # # # align Riboreads against the genome
-STAR\
- --runThreadN $numberOfThreads\
- --alignEndsType EndToEnd\
- --outSAMstrandField intronMotif\
- --alignIntronMin 20\
- --alignIntronMax 1000000\
- --genomeDir $StarIndex\
- --readFilesIn $Riboreads\
- --twopassMode Basic\
- --outSAMattributes All\
- --outSAMtype BAM SortedByCoordinate\
- --outFileNamePrefix $out_path/$sample
+# STAR\
+# --runThreadN $numberOfThreads\
+# --alignEndsType EndToEnd\
+# --outSAMstrandField intronMotif\
+# --alignIntronMin 20\
+# --alignIntronMax 1000000\
+# --genomeDir $StarIndex\
+# --readFilesIn $Riboreads\
+# --twopassMode Basic\
+# --outSAMattributes All\
+# --outSAMtype BAM SortedByCoordinate\
+# --outFileNamePrefix $out_path/$sample
 
 # samtools view -@ $numberOfThreads -bo $bamfile $out_path/$(basename $bamfile .bam)Aligned.out.sam
 bamfile=$out_path/${sample}Aligned.sortedByCoord.out.bam
 
 filteredBamFile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_filtered.bam
-samtools view -F 256 -F 2048 -b $bamfile > $filteredBamFile
+# samtools view -F 256 -F 2048 -b $bamfile > $filteredBamFile
 sortedBamFile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_sorted.bam
-samtools sort -o $sortedBamFile $filteredBamFile
-samtools index -@ 10 $sortedBamFile
+# samtools sort -o $sortedBamFile $filteredBamFile
+# samtools index -@ 10 $sortedBamFile
 bedfile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam).bed
 
 present_chromosomes=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_chromosomes.txt
@@ -107,7 +107,7 @@ fi
 
 
 # echo "converting bam to bed"
-bedtools bamtobed -i $sortedBamFile -split > $bedfile
+# bedtools bamtobed -i $sortedBamFile -split > $bedfile
 
 
 echo "intersecting with unique regions"
@@ -120,10 +120,10 @@ sortedBedfile=$out_path/$(basename $bedfile .bed)_intersect_counts_sorted.bed
 
 #############################################################
 sorted_bedfile=$out_path/$(basename $bedfile .bed)_chrom_sort.bed
-sort -k1,1 -k2,2n $bedfile > $sorted_bedfile
+# sort -k1,1 -k2,2n $bedfile > $sorted_bedfile
 
 # subset the genome bedfile to the present genomes
-grep -Fwf $present_chromosomes $out_path/genome_chrom_ordering.txt | sort -k1,1 -k2,2n > $out_path/genome_chrom_ordering_$(basename $bamfile Aligned.sortedByCoord.out.bam).txt
+# grep -Fwf $present_chromosomes $out_path/genome_chrom_ordering.txt | sort -k1,1 -k2,2n > $out_path/genome_chrom_ordering_$(basename $bamfile Aligned.sortedByCoord.out.bam).txt
 # -F: no regex, take chrs literally
 # -w: match the whole word, e.g. 1 does not match 10, 11 etc but only 1
 # -f: file input of the pattern that are searched for
@@ -135,7 +135,7 @@ bedtools intersect\
     -b $sorted_bedfile\
     -sorted\
     -g $out_path/genome_chrom_ordering_$(basename $bamfile Aligned.sortedByCoord.out.bam).txt\
-    | sort -nr -k13,13\
+    | sort -T /scratch/tmp/$USER -nr -k13,13\
     > $sortedBedfile
 
 
@@ -158,7 +158,7 @@ for i in {1..20}; do
 
   # sort the randomfile with dummy entries
   sorted_randomfile="$out_path"/$(basename $randomfile .bed)_sorted_${i}.bed
-  sort -k1,1 -k2,2n $randomfile > $sorted_randomfile
+  sort -T /scratch/tmp/$USER -k1,1 -k2,2n $randomfile > $sorted_randomfile
 
   randomintersectfile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_${i}_random_intersect_counts.bed
   bedtools intersect\
@@ -168,7 +168,7 @@ for i in {1..20}; do
     -g $out_path/genome_chrom_ordering_$(basename $bamfile Aligned.sortedByCoord.out.bam).txt\
     -a $sorted_randomfile\
     -b $sorted_bedfile\
-    | sort -nr -k13,13\
+    | sort -T /scratch/tmp/$USER -nr -k13,13\
     > $randomintersectfile 
 done
 # echo "Calculating random regions from 3 prime UTRs"
@@ -178,7 +178,3 @@ done
 
 
 
-# rm $randomfile
-# rm $randomfile_all_chrs
-# rm $bamfile
-# rm $filteredBamFile

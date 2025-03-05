@@ -68,11 +68,21 @@ if __name__ == "__main__":
 
     unique_trans_region_df['modified_regions'] = unique_trans_region_df.apply(lambda x: create_region_for_RiboTISH(x['ORF_start'],  x['start'], x['stop']), axis = 1)
 
-
-
     unique_trans_region_df['bedtool_string'] = unique_trans_region_df.apply(lambda x: create_BedTool_string(x['ID'], x['modified_regions']), axis = 1)
 
     bed_string = ''.join(unique_trans_region_df['bedtool_string'].to_list())
     mod_unique_region_bedtool = BedTool(bed_string, from_string = True)
     out_prefix = os.path.basename(unique_trans_region)
     mod_unique_region_bedtool.saveas(output_dir + '/' + out_prefix + '_RiboTISH_modified.bed')
+
+
+    # test the supplied function
+    assert create_region_for_RiboTISH(0,  4,  9) == [3, 9]
+    assert create_region_for_RiboTISH(0,  4,  10) == [3, 12]
+    assert create_region_for_RiboTISH(1,  3,  10) == [1, 10]
+
+    assert create_region_for_RiboTISH(1,  3,  10) == [1, 10]
+    assert create_region_for_RiboTISH(1,  4,  10) == [4, 10]
+    assert create_region_for_RiboTISH(1,  3,  11) == [1, 13]
+
+

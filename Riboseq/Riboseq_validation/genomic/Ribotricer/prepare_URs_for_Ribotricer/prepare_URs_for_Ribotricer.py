@@ -31,7 +31,7 @@ UR_grouped_df = UR_df.groupby('ORF_ID').agg({
     'coordinate': ','.join})
 UR_grouped_df['chrom'] = UR_df.groupby('ORF_ID').agg({'chr': 'first'})
 UR_grouped_df['strand'] = UR_df.groupby('ORF_ID').agg({'strand': 'first'})
-UR_grouped_df['ORF_type'] = 'novel'
+UR_grouped_df['ORF_type'] = 'SO'
 UR_grouped_df['transcript_type'] = 'novel'
 
 # keep the offset information
@@ -91,7 +91,7 @@ UR_grouped_df['transcript_id'] = UR_grouped_df['ORF_ID'].apply(
 UR_grouped_df['gene_id'] = UR_grouped_df['ORF_ID'].apply(
     lambda x: x.split('|')[0])
 UR_grouped_df['gene_name'] = UR_grouped_df['gene_id']
-UR_grouped_df['gene_type'] = 'novel'
+UR_grouped_df['gene_type'] = 'protein_coding'
 UR_grouped_df['start_codon'] = 'NNN'
 
 UR_grouped_df = UR_grouped_df.loc[:, ['ORF_ID', 'ORF_type', 'transcript_id', 'transcript_type',
