@@ -36,7 +36,9 @@ def get_random_bed_ids(lengthdistribution, UTR_bed_file, outname):
     with open(outname, 'w') as out:
         for i in range(len(lengthdistribution)):
             required_length = lengthdistribution[i]
-            filtered_intervals = [(name, length, chrom, start, stop, strand) for name, length, chrom, start, stop, strand in random_regions_lengths if length >= required_length + 18]
+            # Ensembl format is 1-based in the genomic coordinate calculation this was not accoutned for
+            # need to convert to bed format here
+            filtered_intervals = [(name, length, chrom, str(int(start) - 1), stop, strand) for name, length, chrom, start, stop, strand in random_regions_lengths if length >= required_length + 18]
             bed_names = list(set(filtered_intervals))
             random_seq = random.choices(filtered_intervals, k = 1)[0]
             random_key = random_seq[0]
