@@ -1,10 +1,10 @@
-#get_CDS_coords.py is given structures information from Biomart on the CDS coordiantes
-#required fields are: Gene ID, transcript ID, cDNA coding end, cDNA coding start and
-#Transcript length (including UTRs and CDS)
-#the exon wise information is combined such that the CDS start and end is extracted
-#in transcript coordinates
-#from this a bed file containing the 3' UTR regions is extracted for the random
-#intersection in the Riboseq pipeline
+# get_3prime_coords_filter_prot_cod_and_tsl.py obtains the 3'UTR
+# coordinates from an Ensembl strucutres file which needs the following
+# attributes in the correct order
+# Gene stable ID  Transcript stable ID  cDNA coding start  cDNA coding end  CDS Length   Transcript length (including UTRs and CDS)
+# Transcripts are filtered for tsl1 and being protein coding
+# the coding start is taken as the min coordinate per transcript in that field and the coding end as the max respectively
+# the 3' UTR is taken from the end coordinate (inclusive as it is 1-based and we want 0-based) to the Transcript length coordinate
 
 import sys
 import pandas as pd
