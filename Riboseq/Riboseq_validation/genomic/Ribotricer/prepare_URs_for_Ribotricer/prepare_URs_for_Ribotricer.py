@@ -11,8 +11,9 @@ outname = sys.argv[2]
 UR_df = pd.read_csv(UR_path, sep='\t', header=None, names=[
                     'chr', 'start', 'stop', 'ORF_ID', 'score', 'strand'])
 
-
+# the obtained trans coordinates will be, [ORF_start, ORF_end, UR_start, UR_end]
 UR_df['trans_coords'] = UR_df['ORF_ID'].apply(lambda x: x.split(':')[2:])
+# calculate the modified region: this will return a list [mod_UR_start, mod_UR_end]
 UR_df['trans_coords_modified'] = UR_df['trans_coords'].apply(lambda x: create_region_for_RiboTISH(int(x[0]), int(x[2]), int(x[3])))
 
 # mod start is smaller or equal to start, calculate the offset as start minus mod start

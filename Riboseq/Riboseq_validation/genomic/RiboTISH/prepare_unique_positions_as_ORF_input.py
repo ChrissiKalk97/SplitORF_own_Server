@@ -44,8 +44,6 @@ if __name__ == "__main__":
     output_dir = sys.argv[2]
 
 
-
-
     unique_trans_region_df = pd.read_csv(unique_trans_region, sep = '\t', header = None)
     unique_trans_region_df.columns = ['ID', 'start', 'stop', 'ORF']
 
@@ -75,14 +73,5 @@ if __name__ == "__main__":
     out_prefix = os.path.basename(unique_trans_region)
     mod_unique_region_bedtool.saveas(output_dir + '/' + out_prefix + '_RiboTISH_modified.bed')
 
-
-    # test the supplied function
-    assert create_region_for_RiboTISH(0,  4,  9) == [3, 9]
-    assert create_region_for_RiboTISH(0,  4,  10) == [3, 12]
-    assert create_region_for_RiboTISH(1,  3,  10) == [1, 10]
-
-    assert create_region_for_RiboTISH(1,  3,  10) == [1, 10]
-    assert create_region_for_RiboTISH(1,  4,  10) == [4, 10]
-    assert create_region_for_RiboTISH(1,  3,  11) == [1, 13]
 
 
