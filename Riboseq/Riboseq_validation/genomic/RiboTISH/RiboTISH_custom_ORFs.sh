@@ -50,6 +50,7 @@ for i in $input_data; do
 	-g $genomeGTF\
 	-f $genomeFasta\
 	--framebest \
+	--inframecount\
 	--ribopara $outputRiboTISH_old/${sample_name}_para.py\
     -i /projects/splitorfs/work/Riboseq/data/RiboTISH/Unique_DNA_Regions_for_riboseq_NMD.bed_RiboTISH_modified.bed\
     --transprofile $outputRiboTISH/${sample_name}_transprofile.py\
@@ -58,3 +59,6 @@ for i in $input_data; do
 
 	echo "Predicted translation for sample ${sample_name}"
 done
+
+
+python analyze_predicted_URs_riboTISH.py /projects/splitorfs/work/Riboseq/Output/RiboTISH_NMD_custom
