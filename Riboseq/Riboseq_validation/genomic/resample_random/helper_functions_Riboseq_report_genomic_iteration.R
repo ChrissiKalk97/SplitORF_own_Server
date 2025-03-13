@@ -41,7 +41,7 @@ calculate_background_threshold <- function(unique_region_type = `?`(character), 
     background <- list()
     for (i in directories) {
         if (!(identical(list.files(i, pattern = paste0("*", unique_region_type,
-            "_(10|[1-9]|1[1-9]|20)_random_intersect_counts.bed")), character(0)))) {#'|1[1-9]|20'
+            "_(10|[1-9]|1[1-9]|20)_random_intersect_counts.bed")), character(0)))) {#'|1[1-9]|20' #_(10|[1-9]|1[1-9]|20) #_([1-9]|[1-4][0-9]|50)_
             # 1-20: (10|[1-9]|1[1-9]|20)
             randomfiles <- c(randomfiles, paste0(i, "/", list.files(i,
                 pattern = paste0("*", unique_region_type, "_(10|[1-9]|1[1-9]|20)_random_intersect_counts.bed"))))
@@ -299,8 +299,7 @@ count_unique_regions_get_count <- function(dataframes, unique_names_per_sample, 
     relevantregionscount <- list()
     frame_number <- 1
     for (frame in dataframes) {
-        colnames(frame) <- c("name", "num_reads", "len",
-            "relative_count")
+        # colnames(frame) <- c()
         frame$significant <- ifelse(frame$name %in% unique_names_per_sample[[frame_number]],
             1, 0)
         write.csv(frame, file.path(outdir, paste(names(dataframes)[frame_number],
