@@ -191,17 +191,17 @@ count_unique_regions_above_threhsold <- function(dataframes,
                     count_combinations = n(),
                     len = first(len),
                     chr_unique = first(chr_unique),
-                    start = first(start),
-                    stop = first(stop),
+                    start = min(start),
+                    stop = max(stop),
                     new_name = paste(new_name, collapse = "_"))%>%
           filter(total_bp_overlap > 9) %>%  # Filter based on total bp overlap
           group_by(name) %>%  # Group by name to count distinct name_ribo per name
           summarize(distinct_ribo_count = n_distinct(name_ribo),
                     len = first(len),
                     chr_unique = first(chr_unique),
-                    start = first(start),
-                    stop = first(stop),
-                    new_name = first(new_name)) %>%
+                    start = min(start),
+                    stop = max(stop),
+                    new_name = paste(strsplit(first(new_name), "_")[[1]][1], start, stop, sep = "_")) %>%
           mutate(num_reads = as.numeric(distinct_ribo_count), 
                  len = as.numeric(len),
                  relative_count = distinct_ribo_count/len) %>%
