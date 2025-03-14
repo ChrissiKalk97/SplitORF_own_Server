@@ -95,8 +95,8 @@ def main():
 
     # ------------------ PLOT BEST PROBABILITIES ------------------ #
     plt.figure(figsize=(8, 6))
-    sbn.histplot(df_merged['best_start_SO'], color="blue", label="SO best start", kde=True, bins=10, alpha=0.6)
-    sbn.histplot(background_transcripts_df['best_start'], color="red", label="Non-SO best start", kde=True, bins=10, alpha=0.6)
+    sbn.histplot(df_merged['best_start_SO'], color="blue", label="SO best start", bins=10, alpha=0.6)
+    sbn.histplot(background_transcripts_df['best_start'], color="red", label="Non-SO best start", bins=10, alpha=0.6)
 
     # Labels and legend
     plt.xlabel("Probability of the best start site")
@@ -119,8 +119,8 @@ def main():
 
     # ------------------ PLOT SECOND BEST PROBABILITIES ------------------ #
     plt.figure(figsize=(8, 6))
-    sbn.histplot(df_merged['second_best_start_SO'], color="blue", label="SO second best start", kde=True, bins=10, alpha=0.6)
-    sbn.histplot(background_transcripts_df['second_best_start'], color="red", label="Non-SO second best start", kde=True, bins=10, alpha=0.6)
+    sbn.histplot(df_merged['second_best_start_SO'], color="blue", label="SO second best start", bins=10, alpha=0.6)
+    sbn.histplot(background_transcripts_df['second_best_start'], color="red", label="Non-SO second best start", bins=10, alpha=0.6)
 
     # Labels and legend
     plt.xlabel("Probability of the second best start site")
@@ -141,7 +141,41 @@ def main():
             The wilcoxon rank sum p-value is {result_one_sided[1]}')
 
 
+    #################################################################################
+    # ------------------ COMPARE WITH RIBOSEQ EMPIRICAL FINDINGS ------------------ #
+    #################################################################################
+    df_merged['OrfStarts'] = df_merged['OrfStarts'].apply(lambda x: [int(start) for start in x])
+    df_merged['OrfStarts_sorted'] = df_merged['OrfStarts'].apply(lambda x: sorted(x))
 
+    import glob
+    for empirical_Ribo_findings_file in glob.glob("/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample/NMD_genome/*_unique_regions.csv"):
+        Ribo_results_df = pd.read_csv(empirical_Ribo_findings_file, header = 0, index_col = 0)
+        Ribo_results_significant_df = Ribo_results_df[Ribo_results_df["significant"] == 1]
+        Ribo_results_significant_df['ORF'] = Ribo_results_df['name'].apply(lambda x: x.split(':')[1])
+        Ribo_results_significant_df['ORF_start'] = Ribo_results_df['name'].apply(lambda x: int(x.split(':')[2]))
+        Ribo_results_significant_df['OrfTransID'] = Ribo_results_df['name'].apply(lambda x: x.split(':')[0].split('|')[1])
+        Ribo_df_merged = pd.merge(Ribo_results_significant_df, df_merged, on='OrfTransID', how = 'left')
+        Ribo_df_merged['ORF_number'] = Ribo_df_merged.apply(lambda x: x['OrfStarts_sorted'].index(x['ORF_start']) + 1, axis = 1)
+        # ['OrfStartsTransAIProbs'] are sorted by the ORF
+        Ribo_df_merged['ORF_prob'] = Ribo_df_merged.apply(lambda x: float(x['TIS_dict'][str(x['ORF_start'])]) if str(x['ORF_start']) in x['TIS_pos_list'] else 0, axis = 1)
+
+        Ribo_df_merged_first = Ribo_df_merged[Ribo_df_merged['ORF_number'] == 1]
+        Ribo_df_merged_second = Ribo_df_merged[Ribo_df_merged['ORF_number'] > 1]
+
+        print(sum(Ribo_df_merged['ORF_number'] > 1))
+        # 57 from 300 thats a lot!!!
+
+        plt.figure(figsize=(8, 6))
+        sbn.histplot(Ribo_df_merged_first['ORF_prob'], color="blue", label="First val ORFs", bins=10, alpha=0.6)
+        sbn.histplot(Ribo_df_merged_second['ORF_prob'], color="red", label="Secodn val ORFs", bins=10, alpha=0.6)
+
+        # Labels and legend
+        plt.xlabel("Probability of first and second Riboseq val ORFs")
+        plt.ylabel("Frequency")
+        plt.title(f"Distribution of first and second Riboseq val ORF probs - {datatype}")
+        plt.legend()
+
+        plt.show()
 
 if __name__ == "__main__":
     main()
