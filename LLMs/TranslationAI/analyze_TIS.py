@@ -42,11 +42,11 @@ def main():
     print('Number of non-SO predicted transcripts', len(TIS_results_df.index) - len(TransAI_SO_preds.index))
 
     SO_2nd_start_mean_prob = TIS_results_df[TIS_results_df['OrfTransID'].isin(
-        SO_transcripts)].iloc[:,2].fillna(0).apply(
+        SO_transcripts)].iloc[:,2].fillna('0,0').apply(
             lambda x: float(x.split(',')[1])).mean()
 
     random_2nd_start_mean_prob = TIS_results_df[~TIS_results_df['OrfTransID'].isin(
-        SO_transcripts)].iloc[:,2].fillna(0).apply(
+        SO_transcripts)].iloc[:,2].fillna('0,0').apply(
             lambda x: float(x.split(',')[1])).mean()
 
     print('Mean probability of 2nd start in SO transcripts', SO_2nd_start_mean_prob)
@@ -84,8 +84,8 @@ def main():
 
     # the first column will have the best scoring starts and the second column the second best scoring start
     background_transcripts_df = TIS_results_df[~TIS_results_df['OrfTransID'].isin(SO_transcripts)]
-    background_transcripts_df['best_start'] = background_transcripts_df[1].apply(lambda x: float(x.split(',')[1]))
-    background_transcripts_df['second_best_start'] = background_transcripts_df[2].apply(lambda x: float(x.split(',')[1]))
+    background_transcripts_df['best_start'] = background_transcripts_df[1].fillna('0,0').apply(lambda x: float(x.split(',')[1]))
+    background_transcripts_df['second_best_start'] = background_transcripts_df[2].fillna('0,0').apply(lambda x: float(x.split(',')[1]))
 
     # with the following the information of which start belongs to which probability
     # will be lost, hence make a new column and keep the old one
@@ -101,7 +101,7 @@ def main():
     # Labels and legend
     plt.xlabel("Probability of the best start site")
     plt.ylabel("Frequency")
-    plt.title("Distribution of Best Start Probabilities for SO and non-SO transcripts")
+    plt.title(f"Distribution of Best Start Probabilities for SO and non-SO {datatype} transcripts")
     plt.legend()
 
     # Save plot
@@ -125,7 +125,7 @@ def main():
     # Labels and legend
     plt.xlabel("Probability of the second best start site")
     plt.ylabel("Frequency")
-    plt.title("Distribution of Second Best Start Probabilities for SO and non-SO transcripts")
+    plt.title(f"Distribution of Second Best Start Probabilities for SO and non-SO {datatype} transcripts")
     plt.legend()
 
     # Save plot
