@@ -201,13 +201,39 @@ count_unique_regions_above_threhsold <- function(dataframes,
                     chr_unique = first(chr_unique),
                     start = min(start),
                     stop = max(stop),
-                    new_name = paste(strsplit(first(new_name), "_")[[1]][1], start, stop, sep = "_")) %>%
+                    new_name = paste(strsplit(first(new_name), "_")[[1]][1], start, stop, sep = "_"),
+                    genomic_region = paste(chr_unique, start, stop, sep = "_")) %>%
           mutate(num_reads = as.numeric(distinct_ribo_count), 
                  len = as.numeric(len),
                  relative_count = distinct_ribo_count/len) %>%
-          arrange(desc(relative_count))  
-          
+        # do not count the same genomic region twice
+        # group_by genomic region and just take the first ORF information
+        group_by(genomic_region) %>%
+        summarize(distinct_ribo_count = first(distinct_ribo_count),
+                 len = first(len),
+                 chr_unique = first(chr_unique),
+                 start = first(start),
+                 stop = first(stop),
+                 new_name = first(new_name),
+                 name = first(name), 
+                 num_reads = first(num_reads),
+                 relative_count = first(relative_count)
+        ) %>%
+          arrange(desc(relative_count))
 
+               # drop the genomic region as anyway present in the new_name column
+        processed_frame  <- processed_frame  %>% select(-1)
+        colnames(processed_frame) <-c("distinct_ribo_count",
+                                          "len",
+                                          "chr_unique",
+                                          "start",
+                                          "stop",
+                                          "new_name",
+                                          "ID",
+                                          "num_reads",
+                                          "relative_count")
+          
+        # print(processed_frame$genomic_region)
         frames_preprocessed[[length(frames_preprocessed) +
             1]] <- processed_frame
 
@@ -224,7 +250,8 @@ count_unique_regions_above_threhsold <- function(dataframes,
             filter(relative_count >= threshold[[2]][j], num_reads >
                 2)
         relevantregionscount <- c(relevantregionscount, nrow(bed))
-        unique_regions <- bed[, 1]
+        unique_regions <- bed$ID
+        print(bed$genomic_region)
         upsetlist <- c(upsetlist, list(unique_regions))
 
         j <- j + 1
@@ -256,31 +283,16 @@ get_top_5_unique_regions <- function(dataframes_list, threshold) {
     j <- 1
     names <- names(dataframes_list)
     for (unique_region_frame in dataframes_list) {
-        colnames(unique_region_frame) <-c("ID",
-                                          "distinct_ribo_count",
-                                          "len",
-                                          "chr_unique",
-                                          "start",
-                                          "stop",
-                                          "new_name",
-                                          "num_reads",
-                                          "relative_count")
+ 
         unique_region_frame %>%
             filter(relative_count >= threshold[[2]][j] & num_reads >
                 2)
 
         if (dim(unique_region_frame)[1] > 0) {
-            unique_regions <- unique_region_frame[, 1]
+            unique_regions <- unique_region_frame$ID
             upsetlist <- c(upsetlist, list(unique_regions))
-            colnames(unique_region_frame) <- c("ID",
-                                          "distinct_ribo_count",
-                                          "len",
-                                          "chr_unique",
-                                          "start",
-                                          "stop",
-                                          "new_name",
-                                          "num_reads",
-                                          "relative_count")
+
+            unique_region_frame <- unique_region_frame[, c("ID", "len", "chr_unique", "start", "stop", "num_reads", "relative_count")]
 
             unique_region_frame$ID <-
             gsub('\\|', '-', unique_region_frame$ID)
@@ -300,9 +312,20 @@ count_unique_regions_get_count <- function(dataframes, unique_names_per_sample, 
     frame_number <- 1
     for (frame in dataframes) {
         # colnames(frame) <- c()
-        frame$significant <- ifelse(frame$name %in% unique_names_per_sample[[frame_number]],
+        frame$significant <- ifelse(frame$ID %in% unique_names_per_sample[[frame_number]],
             1, 0)
-        write.csv(frame, file.path(outdir, paste(names(dataframes)[frame_number],
+
+        write_frame <- frame[, c("ID",
+                            "len",
+                            "chr_unique",
+                            "start",
+                            "stop",
+                            "new_name",
+                            "num_reads",
+                            "relative_count", 
+                            "significant")]
+
+        write.csv(write_frame, file.path(outdir, paste(names(dataframes)[frame_number],
             "unique_regions.csv", sep = "_")))
         above_5_counter <- 0
         c <- 1
@@ -326,37 +349,21 @@ Split_ORFs_validation <- function(dataframes, unique_names_per_sample, path) {
     # create empty dataframe to concatenate the dfs
     df <- data.frame(matrix(ncol = 9, nrow = 0))
     # Assign column names
-    colnames(df) <- c("ID",
-                    "distinct_ribo_count",
-                    "len",
-                    "chr_unique",
-                    "start",
-                    "stop",
-                    "new_name",
-                    "num_reads",
-                    "relative_count")
 
     frame_number <- 1
-    for (frame in dataframes) {
-        colnames(frame) <- c("ID",
-                            "distinct_ribo_count",
-                            "len",
-                            "chr_unique",
-                            "start",
-                            "stop",
-                            "new_name",
-                            "num_reads",
-                            "relative_count")
+    for (unique_region_frame in dataframes) {
 
-        frame$significant <- ifelse(frame$ID %in% unique_names_per_sample[[frame_number]],
+        unique_region_frame <- unique_region_frame[, c("ID", "distinct_ribo_count", "len", "chr_unique", "start", "stop","new_name", "num_reads", "relative_count")]
+
+        unique_region_frame$significant <- ifelse(unique_region_frame$ID %in% unique_names_per_sample[[frame_number]],
             1, 0)
-        # print(frame)
-        frame <- frame %>%
+        # print(unique_region_frame)
+        unique_region_frame <- unique_region_frame %>%
             filter(significant == 1)
         
-        frame$ID <- sapply(strsplit(frame$ID , ":"), `[`, 1)
+        unique_region_frame$ID <- sapply(strsplit(unique_region_frame$ID , ":"), `[`, 1)
 
-        SO_2_uniques_validated <- frame %>%
+        SO_2_uniques_validated <- unique_region_frame %>%
             group_by(ID) %>%
             filter(n() >= 2) %>%
             ungroup() %>%
@@ -372,7 +379,7 @@ Split_ORFs_validation <- function(dataframes, unique_names_per_sample, path) {
                                           "num_reads",
                                           "relative_count")], file.path(path, paste0(names(dataframes)[frame_number], '_two_regions_validated_on_transcript.csv')))
         frame_number <- frame_number + 1
-        df <- rbind(df, frame)
+        df <- rbind(df, unique_region_frame)
 
     }
     df <- df %>%

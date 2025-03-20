@@ -16,8 +16,9 @@ source("helper_functions_Riboseq_report_genomic_iteration.R")
 # Calculate the null distribution for NMD unique SplitORF regions
 
 ```{r}
-args <- params[[1]]
+# args <- params[[1]]
 path <- args[[1]]
+SO_pipe_path <- args[[2]]
 #path <- '/Users/christina/Documents/Riboseq/Riboseq_10_iter_background'
 outdir_NMD <- file.path(path, "NMD_genome")
 outdir_RI <- file.path(path, "RI_genome")
@@ -30,7 +31,7 @@ outdir_RI <- file.path(path, "RI_genome")
 ```{r, message = FALSE}
 
 backgroundri <- calculate_background_threshold("RI", path)
-print(backgroundri)
+# print(backgroundri)
 backgroundri <- print_thresholds("RI", backgroundri, path)
 thresholdri=backgroundri
 ```
