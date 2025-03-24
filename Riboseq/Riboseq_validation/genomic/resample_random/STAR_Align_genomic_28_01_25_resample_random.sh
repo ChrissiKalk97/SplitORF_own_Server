@@ -92,11 +92,11 @@ sortedBamFile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_sorte
 bedfile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam).bed
 
 present_chromosomes=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_chromosomes.txt
-samtools view -H $sortedBamFile | grep '@SQ' | cut -f 2 | cut -d ':' -f 2  | sort | uniq > $present_chromosomes
+# samtools view -H $sortedBamFile | grep '@SQ' | cut -f 2 | cut -d ':' -f 2  | sort | uniq > $present_chromosomes
 
 # get the union of all chromosomes
-cat $present_chromosomes $out_path/chromosomes_unique_regions.txt | sort | uniq > temp_file
-mv temp_file $present_chromosomes
+# cat $present_chromosomes $out_path/chromosomes_unique_regions.txt | sort | uniq > temp_file
+# mv temp_file $present_chromosomes
 
 
 sorted_unique_regions=$(dirname $unique_regions)/$(basename $unique_regions .bed)_chrom_sorted.bed
@@ -128,15 +128,15 @@ sorted_bedfile=$out_path/$(basename $bedfile .bed)_chrom_sort.bed
 # -w: match the whole word, e.g. 1 does not match 10, 11 etc but only 1
 # -f: file input of the pattern that are searched for
 
-bedtools intersect\
-    -s\
-    -wao\
-    -a $sorted_unique_regions\
-    -b $sorted_bedfile\
-    -sorted\
-    -g $out_path/genome_chrom_ordering_$(basename $bamfile Aligned.sortedByCoord.out.bam).txt\
-    | sort -T /scratch/tmp/$USER -nr -k13,13\
-    > $sortedBedfile
+# bedtools intersect\
+#    -s\
+#    -wao\
+#    -a $sorted_unique_regions\
+#    -b $sorted_bedfile\
+#    -sorted\
+#    -g $out_path/genome_chrom_ordering_$(basename $bamfile Aligned.sortedByCoord.out.bam).txt\
+#    | sort -T /scratch/tmp/$USER -nr -k13,13\
+#    > $sortedBedfile
 
 
 
@@ -144,36 +144,41 @@ bedtools intersect\
 
 
 for i in {1..20}; do
-  randomfile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_random_background_regions_${i}.bed
-  python BackgroundRegions_bed_genomic_fix.py\
-  $sorted_unique_regions\
-  $coordinates_3_prime\
-  $randomfile\
-  $i
-
-  
-  
-
-
-
-  # sort the randomfile with dummy entries
+  randomfile=$out_path/Random_background_regions_${i}.bed
   sorted_randomfile="$out_path"/$(basename $randomfile .bed)_sorted_${i}.bed
-  sort -T /scratch/tmp/$USER -k1,1 -k2,2n $randomfile > $sorted_randomfile
+  if [ ! -e  $randomfile ]; then
+    python BackgroundRegions_bed_genomic_fix.py\
+    $sorted_unique_regions\
+    $coordinates_3_prime\
+    $randomfile\
+    $i
 
+    # sort the randomfile with dummy entries
+    echo $sorted_randomfile
+    sort -T /scratch/tmp/"$USER" -k1,1 -k2,2n $randomfile > $sorted_randomfile
+    rm $randomfile
+  fi
+
+  # echo $randomfile
+  # echo $sorted_bedfile 
+  # echo $sorted_randomfile
+
+  # debug mode on
+  # set -x 
   randomintersectfile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_${i}_random_intersect_counts.bed
   bedtools intersect\
     -s\
     -wao\
     -sorted\
-    -g $out_path/genome_chrom_ordering_$(basename $bamfile Aligned.sortedByCoord.out.bam).txt\
-    -a $sorted_randomfile\
-    -b $sorted_bedfile\
-    | sort -T /scratch/tmp/$USER -nr -k13,13\
-    > $randomintersectfile 
+    -g "$out_path/genome_chrom_ordering_$(basename $bamfile Aligned.sortedByCoord.out.bam).txt"\
+    -a "$sorted_randomfile" \
+    -b "$sorted_bedfile"\
+    | sort -T /scratch/tmp/"$USER" -nr -k13,13\
+    > $randomintersectfile
+    # set +x 
+    # debug mode off
 done
 # echo "Calculating random regions from 3 prime UTRs"
-
-
 
 
 
