@@ -24,3 +24,16 @@ def load_SO_results(SO_results):
     predicted_SO_ORFs['nr_SO_starts'] = predicted_SO_ORFs['OrfPos'].apply(
         lambda x: len(x))
     return predicted_SO_ORFs, SO_transcripts
+
+
+def load_Ensembl_canonical(Ensembl_path):
+    Ensembl_canonical_starts = pd.read_csv(Ensembl_path, sep ='\t', header = 0)
+    Ensembl_canonical_starts = Ensembl_canonical_starts.groupby('Transcript stable ID').agg({'Gene stable ID': 'first',
+                                                                  'cDNA coding start': 'min',
+                                                                  'cDNA coding end': 'max'})
+    Ensembl_canonical_starts['cDNA coding start'] = Ensembl_canonical_starts['cDNA coding start'].apply(lambda x: int(x) - 1)
+    Ensembl_canonical_starts['cDNA coding end'] = Ensembl_canonical_starts['cDNA coding end'].apply(lambda x: int(x) - 1)
+    Ensembl_canonical_starts = Ensembl_canonical_starts.reset_index()
+    Ensembl_canonical_starts.rename(columns={'Transcript stable ID': 'OrfTransID'}, inplace = True)
+    return Ensembl_canonical_starts
+    

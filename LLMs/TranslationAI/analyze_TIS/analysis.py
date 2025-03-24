@@ -121,6 +121,10 @@ def analyze_emp_background_Riboseq(empirical_Ribo_findings_file, df_merged):
         lambda x: x.split(':')[1])
     Ribo_results_significant_df['OrfTransID'] = Ribo_results_significant_df['name'].apply(
         lambda x: x.split(':')[0].split('|')[1])
+    Ribo_results_significant_df['genomic_UR'] = Ribo_results_significant_df['new_name'].apply(lambda x: x.split(':')[-1])
+    Ribo_results_significant_df = Ribo_results_significant_df.groupby('genomic_UR').agg('first')
+    Ribo_results_significant_df = Ribo_results_significant_df.reset_index()
+
 
     Ribo_df_merged, Ribo_df_merged_first, Ribo_df_merged_second = get_ORF_start_probs(
         Ribo_results_significant_df, df_merged)
@@ -129,7 +133,7 @@ def analyze_emp_background_Riboseq(empirical_Ribo_findings_file, df_merged):
     print('Nr validated ORFs not being the first',
           sum(Ribo_df_merged['ORF_number'] > 1))
 
-    return Ribo_df_merged_first, Ribo_df_merged_second, sample
+    return Ribo_df_merged, Ribo_df_merged_first, Ribo_df_merged_second, sample
 
 
 def create_RiboTISH_BedTool(RiboTISH_SO_df):
@@ -226,3 +230,15 @@ def obtain_correct_ORF_RiboTISH(UR_BedTool, RiboTISH_BedTool):
           len(URs_found_in_RiboTISH_df.index))
 
     return URs_found_in_RiboTISH_df
+
+
+def check_start_probs_Ensembl_canonical(Ribo_df_merged, Ensembl_canonical_df, verbose = False):
+    Ensembl_ribo_merged_df = pd.merge(Ribo_df_merged, Ensembl_canonical_df, on = 'OrfTransID', how = 'left')
+    Ensembl_ribo_merged_df['Ensembl_start_in_SO_starts'] = Ensembl_ribo_merged_df.apply(
+        lambda x: x['cDNA coding start'] in x['OrfStarts_sorted'], axis = 1)
+    Ens_start_not_SO = Ensembl_ribo_merged_df[Ensembl_ribo_merged_df['Ensembl_start_in_SO_starts'] == False]
+    Ens_start_not_SO['Ensmebl_start_prob'] = Ens_start_not_SO[['TIS_dict', 'TIS_pos_list', 'cDNA coding start', 'best_start_SO', 'second_best_start_SO']].apply(
+        lambda x: x['TIS_dict'][str(x['cDNA coding start'])] if str(x['cDNA coding start']) in x['TIS_pos_list'] else 0, axis = 1)
+    
+    if verbose:
+        print(Ens_start_not_SO[['cDNA coding start',  'OrfStarts', 'Ensmebl_start_prob']])
