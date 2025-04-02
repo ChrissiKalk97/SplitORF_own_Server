@@ -27,7 +27,8 @@ def load_SO_results(SO_results):
 
 
 def load_Ensembl_canonical(Ensembl_path):
-    Ensembl_canonical_starts = pd.read_csv(Ensembl_path, sep ='\t', header = 0)
+    Ensembl_canonical_starts = pd.read_csv(Ensembl_path, sep ='\t', header = 0, encoding="utf-8")
+    print(Ensembl_canonical_starts.columns)
     Ensembl_canonical_starts = Ensembl_canonical_starts.groupby('Transcript stable ID').agg({'Gene stable ID': 'first',
                                                                   'cDNA coding start': 'min',
                                                                   'cDNA coding end': 'max'})

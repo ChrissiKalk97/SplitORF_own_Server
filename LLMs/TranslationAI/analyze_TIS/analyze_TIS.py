@@ -19,39 +19,12 @@ from analysis import nr_trans_and_mean_probs, get_TransAI_SO_info, merge_df, \
 from plotting import plot_SO_background, plot_emp_background_TransAI, plot_RiboTISH_TransAI,\
                         plot_RiboTISH_inframecount_vs_probs
 
-# ------------------ CONSTANTS ------------------ #
-TIS_results = sys.argv[1]
-SO_results = sys.argv[2]
-Ribo_coverage_path = sys.argv[3]
-RiboTISH_path = sys.argv[4]
-
-if len(sys.argv) > 5: 
-    Ensembl_canonical_path = sys.argv[5]
-
-if len(sys.argv) > 6: 
-    k4neo_path = sys.argv[6]
-
-
-# TIS_results = '/projects/splitorfs/work/LLMs/TranslationAI/Output/NMD_trnascripts_110_for_TranslationAI.fa_predTIS_0.0000001.txt'
-# SO_results = '/projects/splitorfs/work/LLMs/TIS_transformer/Input/SO_pipeline_results/UniqueProteinORFPairs_NMD.txt'
-# Ribo_coverage_path = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample/NMD_genome'
-# RiboTISH_path = '/projects/splitorfs/work/Riboseq/Output/RiboTISH_NMD_custom'
-# Ensembl_canonical_path = '/projects/splitorfs/work/LLMs/TranslationAI/Input/NMD_transcripts_cDNA_coordinates.txt'
-# k4neo_path = '/projects/splitorfs/work/LLMs/TranslationAI/Input/k4neo_val_transcripts/NMD_transcripts_found_with_k4neo.txt'
-
-
-resultdir = os.path.dirname(TIS_results)
-datatype = os.path.basename(SO_results).split('_')[1].split('.')[0]
-
-os.makedirs(f'{resultdir}/plots', exist_ok=True)
-os.makedirs(f'{resultdir}/plots/{datatype}', exist_ok=True)
-outdir = f'{resultdir}/plots/{datatype}'
-os.makedirs(f'{outdir}/RiboTISH', exist_ok=True)
 
 
 
 
-def main():
+
+def main(TIS_results, SO_results, Ribo_coverage_path, RiboTISH_path, Ensembl_canonical_path='', k4neo_path=''):
     # ------------------ DATA IMPORT ------------------ #
     TIS_results_df = load_TranslationAI(TIS_results)
     predicted_SO_ORFs, SO_transcripts = load_SO_results(SO_results)
@@ -91,8 +64,9 @@ def main():
     #################################################################################
     # ------------------ COMPARE WITH RIBOSEQ EMPIRICAL FINDINGS ------------------ #
     #################################################################################
-
+    print(Ribo_coverage_path)
     for empirical_Ribo_findings_file in glob.glob(f"{Ribo_coverage_path}/*_unique_regions.csv"):
+        print(empirical_Ribo_findings_file)
         Ribo_df_merged , Ribo_df_merged_first, Ribo_df_merged_second, sample = analyze_emp_background_Riboseq(
             empirical_Ribo_findings_file, df_merged)
 
@@ -184,4 +158,38 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    print('script is running...')
+    # ------------------ CONSTANTS ------------------ #
+    TIS_results = sys.argv[1]
+    SO_results = sys.argv[2]
+    Ribo_coverage_path = sys.argv[3]
+    RiboTISH_path = sys.argv[4]
+
+    k4neo_path = ''
+    if len(sys.argv) > 5: 
+        k4neo_path = sys.argv[5]
+
+    Ensembl_canonical_path = ''
+    if len(sys.argv) > 6: 
+        Ensembl_canonical_path = sys.argv[6]
+
+
+
+
+    # TIS_results = '/projects/splitorfs/work/LLMs/TranslationAI/Output/NMD_trnascripts_110_for_TranslationAI.fa_predTIS_0.0000001.txt'
+    # SO_results = '/projects/splitorfs/work/LLMs/TIS_transformer/Input/SO_pipeline_results/UniqueProteinORFPairs_NMD.txt'
+    # Ribo_coverage_path = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample/NMD_genome'
+    # RiboTISH_path = '/projects/splitorfs/work/Riboseq/Output/RiboTISH_NMD_custom'
+    # Ensembl_canonical_path = '/projects/splitorfs/work/LLMs/TranslationAI/Input/NMD_transcripts_cDNA_coordinates.txt'
+    # k4neo_path = '/projects/splitorfs/work/LLMs/TranslationAI/Input/k4neo_val_transcripts/NMD_transcripts_found_with_k4neo.txt'
+
+
+    resultdir = os.path.dirname(TIS_results)
+    datatype = os.path.basename(SO_results).split('_')[1].split('.')[0]
+
+    os.makedirs(f'{resultdir}/plots', exist_ok=True)
+    os.makedirs(f'{resultdir}/plots/{datatype}', exist_ok=True)
+    outdir = f'{resultdir}/plots/{datatype}'
+    os.makedirs(f'{outdir}/RiboTISH', exist_ok=True)
+    print(TIS_results, SO_results, Ribo_coverage_path, RiboTISH_path, Ensembl_canonical_path, k4neo_path)
+    main(TIS_results, SO_results, Ribo_coverage_path, RiboTISH_path, Ensembl_canonical_path, k4neo_path)
