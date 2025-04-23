@@ -47,9 +47,9 @@ for file in files:
             if rev_umi[0] == 'T':
                 nr_wrong_umi_rev += 1
 
-            # create new header name with both UMis attached
-            fwd_id = fwd.id + '_' + fwd_umi + '_' + rev_umi
-            rev_id = rev.id + '_' + fwd_umi + '_' + rev_umi
+            # create new header name with only fwd UMi attached: compliability with umi-tools for deduplicaiton
+            fwd_id = fwd.id + '_' + fwd_umi  # + '_' + rev_umi
+            rev_id = rev.id + '_' + fwd_umi  # + '_' + rev_umi
 
             # subset RPFs to trim UMIs
             fwd_RPF = fwd[9:]

@@ -79,6 +79,120 @@ fastpOut="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess
 
 
 
+
+
+
+################################################################################
+# GET CONTAMINATION SEQS                                                       #
+################################################################################
+# source preprocessing/contamination_filtering/prepare_Ignolia_cont_refs.sh
+
+
+################################################################################
+# BOWTIE ALIGN AGAINST rRNA                                                    #
+################################################################################
+
+
+Bowtie_base_name="/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/rRNA/rRNA"
+Bowtie_out_dir="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/contaminant_aligned"
+
+# bowtie-build ${Bowtie_base_name}.fasta ${Bowtie_base_name}
+
+# for FQ in "${Umi_adpt_trimmed_path}"/*R1*.fastq
+# do
+#     sample=$(basename "$FQ" R1.UMI_adapter_trimmed.fastq)
+#     echo "${sample}"
+#     FQ2="${Umi_adpt_trimmed_path}"/"${sample}"R2.UMI_adapter_trimmed.fastq
+#     bowtie \
+#     --best \
+#     -a \
+#     -y \
+#     -v 3 \
+#     -p 32 \
+#     --allow-contain \
+#     -S "${Bowtie_out_dir}"/"${sample}"rRNA_aligned.sam \
+#     --un "${Bowtie_out_dir}"/"${sample}"rRNA_unaligned.fastq \
+#     -x ${Bowtie_base_name} \
+#     -1 ${FQ} \
+#     -2 ${FQ2}
+# done
+# -l 22 \
+
+# Bowtie_base_name_redownload="/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/rRNA_ref_NCBI_Ens"
+
+# bowtie-build ${Bowtie_base_name_redownload}.fasta ${Bowtie_base_name_redownload}
+
+# for FQ in "${Umi_adpt_trimmed_path}"/*R1*.fastq
+# do
+#     sample=$(basename "$FQ" R1.UMI_adapter_trimmed.fastq)
+#     FQ2="${Umi_adpt_trimmed_path}"/"${sample}"R2.UMI_adapter_trimmed.fastq
+#     bowtie \
+#     -l 22 \
+#     -v 3 \
+#     -p 8 \
+#     --allow-contain \
+#     -S "${Bowtie_out_dir}"/"${sample}"_rRNA_ref_NCBI_Ens_aligned.sam \
+#     -x ${Bowtie_base_name_redownload} \
+#     -1 ${FQ} \
+#     -2 ${FQ2}
+# done
+
+
+# Bowtie2_base_name_redownload="/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/bowtie2/rRNA_ref_NCBI_Ens"
+# bowtie2-build ${Bowtie_base_name_redownload}.fasta ${Bowtie2_base_name_redownload} --threads 32
+
+# for FQ in "${Umi_adpt_trimmed_path}"/*R1*.fastq
+# do
+#     sample=$(basename "$FQ" R1.UMI_adapter_trimmed.fastq)
+#     FQ2="${Umi_adpt_trimmed_path}"/"${sample}"R2.UMI_adapter_trimmed.fastq
+#     bowtie2 \
+#     -p 32 \
+#     -L 22 \
+#     --very-sensitive-local \
+#     -N 1 \
+#     --no-discordant \
+#     -q \
+#     -S "${Bowtie_out_dir}"/"${sample}"_bowtie2_rRNA_ref_NCBI_Ens_aligned.sam \
+#     -x ${Bowtie2_base_name_redownload} \
+#     -1 ${FQ} \
+#     -2 ${FQ2}
+# done
+
+#-N sets the number of mismatches allowed per seed, can only be 0 or 1
+# not sure whether I shoudl enable this...
+
+
+################################################################################
+# BOWTIE ALIGN AGAINST mtrRNA                                                  #
+################################################################################
+# Bowtie_base_name_mtRNA="/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/rRNA/mtrRNArRNA45S5S"
+
+# for FQ in "${Bowtie_out_dir}"/*rRNA_unaligned_1.fastq
+# do
+#     sample=$(basename "$FQ" rRNA_unaligned_1.fastq)
+#     echo "${sample}"
+#     FQ2="${Bowtie_out_dir}"/"${sample}"rRNA_unaligned_2.fastq
+#     bowtie \
+#     -a \
+#     -y \
+#     --best \
+#     -v 3 \
+#     -p 32 \
+#     --allow-contain \
+#     -S "${Bowtie_out_dir}"/"${sample}"_mtrRNA_aligned.sam \
+#     --un "${Bowtie_out_dir}"/"${sample}"rRNA_mtrRNA_unaligned.fastq \
+#     -x ${Bowtie_base_name} \
+#     -1 ${FQ} \
+#     -2 ${FQ2}
+# done
+#-l 22 \
+
+# No more alignments found here, so not necessary to align to
+
+
+
+
+
 ################################################################################
 # Bowtie2 to align to tRNA sequences as tRNAs not present in Ensembl annotation#
 ################################################################################
