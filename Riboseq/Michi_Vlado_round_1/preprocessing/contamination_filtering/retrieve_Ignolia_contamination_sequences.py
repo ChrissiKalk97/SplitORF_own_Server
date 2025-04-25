@@ -5,7 +5,7 @@ NCBI_cont_fasta = sys.argv[1]
 
 Entrez.email = "kalk@med.uni-frankfurt.de"
 
-accessions = ["NR_023379.1", "NR_146151.1", "NR_146144.1",
+accessions = ["U13369.1", "NR_023379.1", "NR_146151.1", "NR_146144.1",
               "NR_145819.1", "NR_146117.1", "NR_003285.3", "NR_003286.4", "X12811.1", "NR_003287.4"]
 
 

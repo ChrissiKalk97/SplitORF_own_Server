@@ -82,9 +82,9 @@ fastpOut="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess
 ################################################################################
 # Bowtie2 to align to tRNA sequences as tRNAs not present in Ensembl annotation#
 ################################################################################
-contamination_path="/projects/splitorfs/work/Riboseq/data/contamination"
-Bowtie_out_dir="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/tRNA_aligned_bowtie2"
-source bowtie2_align.sh ${Bowtie_out_dir}/tRNA_index ${contamination_path}/hg38-tRNAs.fa ${fastpOut} ${Bowtie_out_dir} tRNA
+# contamination_path="/projects/splitorfs/work/Riboseq/data/contamination"
+# Bowtie_out_dir="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/tRNA_aligned_bowtie2"
+# source bowtie2_align.sh ${Bowtie_out_dir}/tRNA_index ${contamination_path}/hg38-tRNAs.fa ${fastpOut} ${Bowtie_out_dir} tRNA
 
 
 
@@ -94,6 +94,10 @@ source bowtie2_align.sh ${Bowtie_out_dir}/tRNA_index ${contamination_path}/hg38-
 # Alignment against the genome using STAR                                      #
 ################################################################################
 OutputSTAR="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR"
-source genome_alignment_star.sh ${OutputSTAR} ${Bowtie_out_dir}
+source genome_alignment_star.sh ${OutputSTAR} ${fastpOut}
+
+python /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random/analyze_mappings/analyze_STAR_alignments.py \
+    /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR \
+    STAR_align_Ribo_genome.csv
 
 
