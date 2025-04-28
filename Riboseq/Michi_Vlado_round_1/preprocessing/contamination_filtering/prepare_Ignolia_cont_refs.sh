@@ -26,6 +26,7 @@ cat ${NCBI_cont_fasta} ${Ensembl_cont_DIR}/Mt_rRNA_trans_110.fasta > ${Ignolia_D
 ################################################################################
 # RUN GET ncRNA Ensembl                                                        #
 ################################################################################
+rm /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/ncRNA/redownload/Ensembl_all_nc_biotypes.fasta
 Rscript /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/preprocessing/contamination_filtering/ncRNA_Ensembl_fasta.R
 
 cat /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/ncRNA/redownload/Ensembl_all_nc_biotypes.fasta \

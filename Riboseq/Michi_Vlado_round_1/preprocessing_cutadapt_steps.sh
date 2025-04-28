@@ -94,7 +94,7 @@ fastpOut="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess
 # Alignment against the genome using STAR                                      #
 ################################################################################
 OutputSTAR="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR"
-source genome_alignment_star.sh ${OutputSTAR} ${fastpOut}
+source alignments/genome_alignment_star.sh ${OutputSTAR} ${fastpOut}
 
 python /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random/analyze_mappings/analyze_STAR_alignments.py \
     /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR \

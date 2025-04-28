@@ -1,4 +1,4 @@
-BiocManager::install("biomaRt")
+# BiocManager::install("biomaRt")
 library(biomaRt)
 listEnsemblArchives()
 
@@ -9,7 +9,7 @@ ensembl_110 <- useEnsembl(biomart = 'genes',
 
 # mart <- useMart("ensembl", dataset="hsapiens_gene_ensembl")
 
-biotypes <- c("misc_RNA", "rRNA", "ribozym", "sRNA", "scRNA", "scaRNA", "snRNA", "snoRNA", "vaultRNA")
+biotypes <- c("misc_RNA", "ribozym", "sRNA", "rRNA", "scRNA", "scaRNA", "snRNA", "snoRNA", "vaultRNA")
 
 data <- getBM(attributes=c("ensembl_transcript_id", "transcript_biotype"),
               filters = "transcript_biotype",
