@@ -1,4 +1,7 @@
 #!/bin/bash
+eval "$(conda shell.bash hook)"
+conda activate Riboseq
+
 
 Bowtie2_base_name=$1
 Bowtie_ref_fasta=$2
@@ -63,6 +66,9 @@ do
 
     samtools idxstats "${Bowtie_out_dir}"/"${sample}"bowtie2_${aligned_name}_k1_sorted_filtered.bam > \
     "${Bowtie_out_dir}"/"${sample}"bowtie2_${aligned_name}_idxstats.out
+
+    samtools stats "${Bowtie_out_dir}"/"${sample}"bowtie2_${aligned_name}_k1_sorted_filtered.bam > \
+    "${Bowtie_out_dir}"/"${sample}"bowtie2_${aligned_name}_stats.out
 
 
 

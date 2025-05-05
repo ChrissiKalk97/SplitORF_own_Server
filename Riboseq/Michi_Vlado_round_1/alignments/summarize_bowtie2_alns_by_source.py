@@ -184,13 +184,13 @@ def main():
     idx_stats = []
 
     for filename in os.listdir(idx_dir):
-        if filename.endswith(".out"):
+        if filename.endswith("idxstats.out"):
             idx_stats.append(os.path.join(idx_dir, filename))
 
     reference_dict = assign_trans_IDs_to_source(ref_fastas)
 
     summarized_map_stats_df = summarize_mapping_statistics(
-        reference_dict, idx_stats, raw=True)  #
+        reference_dict, idx_stats)  # , raw=True
 
     out_dir = os.path.dirname(idx_stats[0])
     summarized_map_stats_df.to_csv(f'{out_dir}/summarized_map_stats_df.csv')
