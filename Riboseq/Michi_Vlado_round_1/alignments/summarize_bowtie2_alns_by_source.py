@@ -98,7 +98,7 @@ def plot_summary(summary_mapping_stats_df, outdir, raw=False):
     plt.close()
 
 
-def summarize_mapping_statistics(reference_dict, idx_stats, raw=False):
+def summarize_mapping_statistics(reference_dict, idx_stats, out_dir, raw=False):
     """
     Obtain mapping percentages of references from samtools idxstats.
 
@@ -111,7 +111,19 @@ def summarize_mapping_statistics(reference_dict, idx_stats, raw=False):
                             'uf_muellermcnicoll_2025_04_02_huvec_dnor_3': 23952402,
                             'uf_muellermcnicoll_2025_04_03_huvec_dnor_4': 29872996,
                             'uf_muellermcnicoll_2025_04_04_huvec_dhypo_2': 26795853,
-                            'uf_muellermcnicoll_2025_04_06_huvec_dhypo_4': 29422604
+                            'uf_muellermcnicoll_2025_04_06_huvec_dhypo_4': 29422604,
+                            'uf_muellermcnicoll_2025_04_07_In_Puro_1': 24221259,
+                            'uf_muellermcnicoll_2025_04_08_In_Puro_3': 29235694,
+                            'uf_muellermcnicoll_2025_04_09_In_Puro_4': 26411807,
+                            'uf_muellermcnicoll_2025_04_10_In_CHX_1': 27106673,
+                            'uf_muellermcnicoll_2025_04_11_In_CHX_2': 27709830,
+                            'uf_muellermcnicoll_2025_04_12_In_CHX_4': 26852660,
+                            'uf_muellermcnicoll_2025_04_13_IP_Puro_1': 23927046,
+                            'uf_muellermcnicoll_2025_04_14_IP_Puro_3': 25064225,
+                            'uf_muellermcnicoll_2025_04_15_IP_Puro_4': 24337638,
+                            'uf_muellermcnicoll_2025_04_16_IP_CHX_1': 24226505,
+                            'uf_muellermcnicoll_2025_04_17_IP_CHX_2': 20622935,
+                            'uf_muellermcnicoll_2025_04_18_IP_CHX_4': 28061501
                             }
 
     summary_mapping_stats_df = None
@@ -127,6 +139,7 @@ def summarize_mapping_statistics(reference_dict, idx_stats, raw=False):
         # map the tids to their source
         idx_stat_df['source'] = idx_stat_df['tID'].map(reference_dict)
         if raw:
+
             nr_unmapped = raw_read_counts_dict[idx_name] - \
                 sum(idx_stat_df['mapped'])
             add_unmapped_row = {'tID': 'unmapped', 'length': 0,
@@ -150,15 +163,6 @@ def summarize_mapping_statistics(reference_dict, idx_stats, raw=False):
             summary_mapping_stats_df = idx_stat_df_by_source.rename(
                 columns={'mapped': f'{idx_name}_mapped'})
 
-        # if raw:
-        #     idx_stat_df_by_source[f'{idx_name}_percentage'] = idx_stat_df_by_source['mapped'] / \
-        #         raw_read_counts_dict[idx_name]
-        #     idx_stat_df_by_source[f'{idx_name}_not_mapped_or_filtered']\
-        #         = raw_read_counts_dict[idx_name] - idx_stat_df_by_source['mapped']
-        #     idx_stat_df_by_source[f'{idx_name}_not_mapped_or_filtered_percentage']\
-        #         = (raw_read_counts_dict[idx_name] - idx_stat_df_by_source['mapped'])/raw_read_counts_dict[idx_name]
-        # else:
-
         ############### PLOT VIOLIN PLOTS INDIVIDUALLY ##########################################################
         fig, ax = plt.subplots()
         ax.pie(idx_stat_df_by_source['mapped'],
@@ -166,13 +170,13 @@ def summarize_mapping_statistics(reference_dict, idx_stats, raw=False):
         plt.title(f'Mapping statistics of {idx_name}')
         if raw:
             plt.savefig(
-                os.path.join(os.path.dirname(idx_stat), f'{idx_name}_mapping_percentages_raw.png'))
+                os.path.join(out_dir, f'{idx_name}_mapping_percentages_raw.png'))
         else:
             plt.savefig(
-                os.path.join(os.path.dirname(idx_stat), f'{idx_name}_mapping_percentages.png'))
+                os.path.join(out_dir, f'{idx_name}_mapping_percentages.png'))
         plt.close()
 
-    plot_summary(summary_mapping_stats_df, os.path.dirname(idx_stat), raw)
+    plot_summary(summary_mapping_stats_df, out_dir, raw)
 
     return summary_mapping_stats_df
 
@@ -187,13 +191,17 @@ def main():
         if filename.endswith("idxstats.out"):
             idx_stats.append(os.path.join(idx_dir, filename))
 
+    out_dir = os.path.dirname(idx_stats[0])
+
     reference_dict = assign_trans_IDs_to_source(ref_fastas)
 
     summarized_map_stats_df = summarize_mapping_statistics(
-        reference_dict, idx_stats)  # , raw=True
+        reference_dict, idx_stats, out_dir=out_dir, raw=True)  #
 
-    out_dir = os.path.dirname(idx_stats[0])
     summarized_map_stats_df.to_csv(f'{out_dir}/summarized_map_stats_df.csv')
+
+    sys.stdout.flush()
+    sys.stderr.flush()
 
 
 if __name__ == '__main__':

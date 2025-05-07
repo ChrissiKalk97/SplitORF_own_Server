@@ -1,4 +1,5 @@
 import os
+import sys
 
 from Bio import SeqIO
 import gzip
@@ -6,13 +7,13 @@ import gzip
 # fastq_path = '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/fastp'
 # umi_trimmed_path = '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/fastp/UMI_trimmed_custom'
 
-fastq_path = '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt'
-umi_trimmed_path = '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/UMI_trimmed_custom'
+fastq_path = sys.argv[1]
+umi_trimmed_path = sys.argv[2]
 
 files = os.listdir(fastq_path)
 # Filter out only files (if needed)
 files = [f for f in files if os.path.isfile(os.path.join(
-    fastq_path, f)) and 'huvec' in f and 'R1' in f and f.endswith('fastq.gz')]
+    fastq_path, f)) and 'R1' in f and f.endswith('fastq.gz')]
 print(files, flush=True)
 
 

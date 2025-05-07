@@ -5,7 +5,7 @@ OUTDIR_FASTP=$2
 append_outfile=$3
 
 
-for FQ in "${INDIR}"/*R1.*fastq
+for FQ in "${INDIR}"/*R1.*fastq.gz
 do
 SAMPLE=$(basename "$FQ")
 SAMPLE=${SAMPLE%%R1*}     
