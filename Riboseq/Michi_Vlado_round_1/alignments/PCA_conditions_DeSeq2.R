@@ -52,17 +52,58 @@ print(plotPCA(vid, intgroup = c("condition")))
 dev.off()
 
 summary(sizeFactors(dds))
-#    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#  0.2796  0.3392  0.4362 16.0354  0.6618 94.0167 
+
 which(sizeFactors(dds) > 10)
-# 2025_04_01_huvec_dnor_2. 
-#                        1 
+# NULL
 
 
 
 # RLOG TRANSFORMATION
 rid <- rlog(dds, blind = FALSE)
+print('correlation rid')
+cor(assay(rid))
 
 png(file.path(in_dir, 'PCA_transcriptome_counts_greater_0_rlog.png'), width = 800, height = 800)
 print(plotPCA(rid, intgroup = c("condition")))
+dev.off()
+
+
+
+# MA plot
+dds <- DESeq(dds)
+res <- results(dds)
+png(file.path(in_dir, 'MA_plot_transcriptome.png'), width = 800, height = 800)
+print(plotMA(res), ylim=c(-2,2))
+dev.off()
+
+summary(dds)
+
+resultsNames(dds)
+
+resLFC <- lfcShrink(dds, coef = 2, type="apeglm")
+png(file.path(in_dir, 'MA_res_LFC_plot_transcriptome.png'), width = 800, height = 800)
+print(plotMA(resLFC, ylim=c(-2,2)))
+dev.off()
+
+
+
+norm_counts <- counts(dds, normalized = TRUE)
+condition <- colData(dds)$condition
+control_samples <- colnames(dds)[condition == "norm"]
+print(control_samples)
+treated_samples <- colnames(dds)[condition == "hypo"]
+print(treated_samples)
+avg_control <- rowMeans(norm_counts[, control_samples])
+avg_treated <- rowMeans(norm_counts[, treated_samples])
+
+png(file.path(in_dir, 'scatter_DESeq2_all_conditions.png'), width = 800, height = 800)
+plot(
+  x = log2(avg_control + 1), 
+  y = log2(avg_treated + 1),
+  xlab = "log2(Average norm expression + 1)",
+  ylab = "log2(Average hypo expression + 1)",
+  main = "Gene Expression: hypo vs norm",
+  pch = 16, col = rgb(0, 0, 1, 0.3)
+)
+abline(0, 1, col = "red")  # line of equality
 dev.off()

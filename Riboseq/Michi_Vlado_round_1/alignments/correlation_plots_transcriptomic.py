@@ -46,8 +46,8 @@ def main():
         idx_stat_df_1, idx_stat_df_2, on='tID', how='outer')
 
     # calculate pearson correlation
-    r, _ = sp.stats.pearsonr(
-        x=idx_merged_df[f'{idx_name1}_log_mapping_perc'], y=idx_merged_df[f'{idx_name2}_log_mapping_perc'])
+    r, _ = sp.stats.spearmanr(
+        a=idx_merged_df[f'{idx_name1}_log_mapping_perc'], b=idx_merged_df[f'{idx_name2}_log_mapping_perc'])
     scat_plot = sbn.scatterplot(data=idx_merged_df,
                                 x=f'{idx_name1}_log_mapping_perc', y=f'{idx_name2}_log_mapping_perc')
 
@@ -55,7 +55,7 @@ def main():
                   title='Scatterplot of log scaled mapping percentage of genes')
     second_rep = idx_name2.split('_')[-1]
     ax = plt.gca()  # Get a matplotlib's axes instance
-    plt.text(.05, .8, "Pearson's r ={:.2f}".format(r), transform=ax.transAxes)
+    plt.text(.05, .8, "Spearman's r ={:.2f}".format(r), transform=ax.transAxes)
     plt.savefig(os.path.join(
         out_dir, f'scatterplot_{idx_name1}_{second_rep}.png'), bbox_inches='tight', dpi=300)
     plt.close()

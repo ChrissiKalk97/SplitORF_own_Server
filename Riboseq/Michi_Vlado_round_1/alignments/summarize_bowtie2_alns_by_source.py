@@ -24,7 +24,7 @@ def assign_trans_IDs_to_source(ref_fastas):
     return reference_dict
 
 
-def plot_summary(summary_mapping_stats_df, outdir, raw=False):
+def plot_summary(summary_mapping_stats_df, outdir, raw=False, figsize=(12, 6)):
     """
         plot summary statistics of the mapping to Ignolia like reference
 
@@ -58,7 +58,7 @@ def plot_summary(summary_mapping_stats_df, outdir, raw=False):
     tRNA_df = summary_mapping_stats_df_t["tRNA"]
 
     x = ['_'.join(x[2:8]) for x in mRNA_df.index.str.split('_')]
-
+    plt.figure(figsize=figsize)
     plt.bar(x, ncRNA_df,
             color='#40A3CD', label='ncRNA')
     plt.bar(x, tRNA_df, bottom=ncRNA_df, color='#019c91', label='tRNA')
@@ -196,7 +196,9 @@ def main():
     reference_dict = assign_trans_IDs_to_source(ref_fastas)
 
     summarized_map_stats_df = summarize_mapping_statistics(
-        reference_dict, idx_stats, out_dir=out_dir, raw=True)  #
+        reference_dict, idx_stats, out_dir=out_dir)
+    summarized_map_stats_df = summarize_mapping_statistics(
+        reference_dict, idx_stats, out_dir=out_dir, raw=True)
 
     summarized_map_stats_df.to_csv(f'{out_dir}/summarized_map_stats_df.csv')
 
