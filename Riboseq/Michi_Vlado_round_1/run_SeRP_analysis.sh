@@ -13,11 +13,14 @@ Bowtie2_ref_fasta="/projects/splitorfs/work/reference_files/own_data_refs/Ribose
 Bowtie2_base_name="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/index"
 Bowtie2_out_dir="/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia"
 
-UMI_Indir="/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia"
-UMI_dedup_outdir="/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/deduplicated"
+UMI_dedup_outdir_transcriptomic=${Bowtie2_out_dir}/deduplicated
+
+UMI_dedup_outdir="/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated"
 
 
-
+################################################################################
+# QC and PREPROCESSING                                                         #
+################################################################################
 
 # bash preprocessing_cutadapt_steps.sh \
 #  $INDIR \
@@ -33,26 +36,140 @@ UMI_dedup_outdir="/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round
 
 
 
-source alignments/bowtie2_align_k1.sh ${Bowtie2_base_name} no_index ${fastpOut} ${Bowtie2_out_dir} concat_transcriptome
+################################################################################
+# TRANSCRIPTOMIC ALIGNMENT                                                     #
+################################################################################
 
-STAR_index="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index"
-OutputSTAR="/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1"
-source alignments/genome_alignment_star.sh ${OutputSTAR} ${fastpOut} ${STAR_index}
+# align to transcriptome, still duplicated
+# source alignments/bowtie2_align_k1.sh \
+#  ${Bowtie2_base_name} \
+#  no_index \
+#  ${fastpOut} \
+#  ${Bowtie2_out_dir} \
+#  concat_transcriptome \
+#  run_SeRP_analysis_bowtie2.out
+# python alignments/analyze_soft_clipping.py ${Bowtie2_out_dir}
 
-python /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random/analyze_mappings/analyze_STAR_alignments.py \
-   ${OutputSTAR} \
-    STAR_align_Ribo_genome.csv
+
+
+################################################################################
+# TRANSCRIPTOMIC DEDUPLICATION                                                 #
+################################################################################
+# deduplicate UMIs
+# source deduplication/deduplicate_umi_tools.sh \
+#  ${Bowtie2_out_dir} \
+#  $UMI_dedup_outdir_transcriptomic \
+#  "transcriptomic"
+
+
+
+for FQ in "$UMI_dedup_outdir_transcriptomic"/*dedup.bam
+do
+    fastqc \
+    -o "$UMI_dedup_outdir_transcriptomic"/fastqc/ \
+    -t 32\
+    ${FQ}
+done
+
+
+multiqc --force --filename "$UMI_dedup_outdir_transcriptomic"/fastqc/multiqc_dedup_transcriptomic_alignment "$UMI_dedup_outdir_transcriptomic"/fastqc/
+
+
+
+python alignments/correlation_plots_transcriptomic.py \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_13_IP_Puro_1.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_14_IP_Puro_3.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
+
+python alignments/correlation_plots_transcriptomic.py \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_13_IP_Puro_1.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_15_IP_Puro_4.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
+
+python alignments/correlation_plots_transcriptomic.py \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_15_IP_Puro_4.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_14_IP_Puro_3.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
+
+python alignments/correlation_plots_transcriptomic.py \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_16_IP_CHX_1.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_17_IP_CHX_2.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
+
+python alignments/correlation_plots_transcriptomic.py \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_16_IP_CHX_1.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_18_IP_CHX_4.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
+
+python alignments/correlation_plots_transcriptomic.py \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_18_IP_CHX_4.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_17_IP_CHX_2.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
+
+
+python alignments/correlation_plots_transcriptomic.py \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_10_In_CHX_1.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_11_In_CHX_2.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
+
+
+python alignments/correlation_plots_transcriptomic.py \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_10_In_CHX_1.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_12_In_CHX_4.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
+
+
+python alignments/correlation_plots_transcriptomic.py \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_12_In_CHX_4.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_11_In_CHX_2.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
 
 
 
 
-# UMI_dedup_outdir="/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated"
+python alignments/correlation_plots_transcriptomic.py \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_07_In_Puro_1.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_08_In_Puro_3.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
 
+python alignments/correlation_plots_transcriptomic.py \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_07_In_Puro_1.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_09_In_Puro_4.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
+
+python alignments/correlation_plots_transcriptomic.py \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_09_In_Puro_4.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_08_In_Puro_3.dedup_idxstats.out \
+    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
+
+
+# need to change the script
+Rscript alignments/PCA_conditions_DeSeq2_SeRP.R $UMI_dedup_outdir_transcriptomic
+
+
+
+
+# align to genome for deduplication
+# STAR_index="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index"
+# OutputSTAR="/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1"
+# source alignments/genome_alignment_star.sh ${OutputSTAR} ${fastpOut} ${STAR_index}
+
+# python /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random/analyze_mappings/analyze_STAR_alignments.py \
+#    ${OutputSTAR} \
+#     STAR_align_Ribo_genome.csv
+
+
+
+
+# 
+
+# FOR THE DEDUPLICATION: HOW CAN RUN IT IN PARALLEL W/O HAVING TO USE DISTINCT MASTER SCRIPTS?
 
 # # deduplicate UMIs
 # source deduplication/deduplicate_umi_tools.sh \
 #  $OutputSTAR \
-#  $UMI_dedup_outdir
+#  $UMI_dedup_outdir \
+# genomic
 
 
 
