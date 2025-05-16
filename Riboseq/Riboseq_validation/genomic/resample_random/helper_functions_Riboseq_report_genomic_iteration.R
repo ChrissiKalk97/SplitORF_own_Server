@@ -19,6 +19,11 @@ if (!requireNamespace("cmapR", quietly = TRUE)) {
 if (!requireNamespace("data.table", quietly = TRUE)) {
     install.packages("data.table")
 }
+if (!requireNamespace("kableExtra", quietly = TRUE)) {
+    install.packages("kableExtra")
+    # tinytex::reinstall_tinytex(repository = "illinois")
+    # tinytex::tlmgr_install('multirow')
+}
 
 
 library(glue)
@@ -30,6 +35,7 @@ library(knitr)
 library(lemon)
 library(cmapR)
 library(data.table)
+library(kableExtra)
 
 
 calculate_background_threshold <- function(unique_region_type = `?`(character), path) {
@@ -183,8 +189,15 @@ count_unique_regions_above_threhsold <- function(dataframes,
         frame$new_name <- paste(frame$name, frame$chr_unique,
             frame$start, frame$stop, sep = "_")
 
-        processed_frame <- frame %>%
+        UR_lengths <- frame %>%
             mutate(len = stop - start) %>%
+             group_by(name) %>%
+             distinct(start, len) %>%
+             summarize(len = sum(len))
+
+        frame <- frame %>% left_join(UR_lengths, by = "name")
+
+        processed_frame <- frame %>%
         filter(nr_bp_overlap > 0) %>%
           group_by(name, name_ribo) %>%
           summarize(total_bp_overlap = sum(nr_bp_overlap, na.rm = TRUE),
@@ -193,7 +206,9 @@ count_unique_regions_above_threhsold <- function(dataframes,
                     chr_unique = first(chr_unique),
                     start = min(start),
                     stop = max(stop),
-                    new_name = paste(new_name, collapse = "_"))%>%
+                    new_name = paste(new_name, collapse = "_"))
+                    
+          processed_frame <- processed_frame %>%
           filter(total_bp_overlap > 9) %>%  # Filter based on total bp overlap
           group_by(name) %>%  # Group by name to count distinct name_ribo per name
           summarize(distinct_ribo_count = n_distinct(name_ribo),
@@ -297,8 +312,9 @@ print_unique_region_above_t <- function(relevantregionscount,
     printframe <- as.data.frame(t(printframe))
     rownames(printframe) <- names(dataframes)
     colnames(printframe) <- paste0("Number of unique regions with relative count >= threshold")
-    print(kable(printframe, caption = "Regions above the threshold",
-        escape = TRUE))
+    kable(printframe, caption = "Regions above the threshold",
+        escape = TRUE) %>%
+        kable_styling(font_size = 8)
 }
 
 
@@ -320,8 +336,9 @@ get_top_5_unique_regions <- function(dataframes_list_genomic, threshold) {
 
             unique_region_frame$ID <-
             gsub('\\|', '-', unique_region_frame$ID)
-            print(kable(unique_region_frame[1:5, ], caption = names(dataframes_list_genomic)[j],
-                row.names = FALSE, escape = TRUE))
+            kable(unique_region_frame[1:5, ], caption = names(dataframes_list_genomic)[j],
+                row.names = FALSE, escape = TRUE)  %>%
+                kable_styling(font_size = 8)
         } else {
             names <- names[!names %in% c(names[j])]
         }
@@ -330,19 +347,55 @@ get_top_5_unique_regions <- function(dataframes_list_genomic, threshold) {
     names(upsetlist) <- names
 }
 
-# get_ORF_number <- function(frame, column, SO_pipe_path, region_type){
-#     identification_column <- frame[[column]]
-#     frame$ORF_start <- as.integer(sapply(strsplit(identification_column , ":"), `[`, 3))
-#     frame$OrfTransID <- sapply(strsplit(identification_column , "[|:]"), `[`, 1)
 
-#     # read the SO predictions and extract their first and later start sites
-#     SO_df <- read.delim(file.path(SO_pipe_path, paste0("UniqueProteinORFPairs_", region_type,".txt")),
-#      sep = "\t", header = TRUE, stringsAsFactors = FALSE)
-    
-#     SO_df$ORF_starts <- lapply(strsplit(SO_df$OrfPos, ","), function(x) as.integer(sapply(strsplit(x, "-"), `[`, 1)))
-#     SO_df$ORF_starts <- sapply(SO_df$ORF_starts, sort)
-#     # SO_df$ORF_starts[[1]][1]
-# }
+
+get_start_positions <- function(pos_string) {
+      single_ORFs <- unlist(str_split(pos_string, ','))
+      single_positions <- unlist(str_split(single_ORFs, '-'))
+      ORF_starts <- sort(as.integer(single_positions[seq(1, length(single_positions), by = 2)]))
+      return(ORF_starts)
+}
+
+get_print_ORF_ranks <- function(SO_pipe_path, frames, region_type){
+    SO_results <- read.delim(file.path(SO_pipe_path, paste0('UniqueProteinORFPairs_', region_type, '.txt')))
+    SO_results$ORF_starts <- sapply(SO_results$OrfPos, get_start_positions)
+    head(SO_results)
+
+    nr_URs <- c()
+    nr_first <- c()
+    nr_second <- c()
+    perc_first <- c()
+    perc_second <- c()
+    return_frames <- list()
+    for (frame in frames){
+        # filter for significant URs
+        frame <- frame[frame$name %in% unlist(upsetlist), ]
+        frame$OrfTransID <- str_split_fixed(frame$name, '\\|', 4)[,2]
+        frame$OrfTransID <- str_split_fixed(frame$OrfTransID, ':', 2)[,1]
+        frame$ORF_start <- as.integer(str_split_fixed(frame$name, ':', 4)[,3])
+        merged_df <- merge(frame, SO_results, by = "OrfTransID")
+        merged_df$ORF_rank <- mapply(function(x, y) match(x, y), merged_df$ORF_start, merged_df$ORF_starts)
+        # print(head(merged_df[c('ORF_start', 'ORF_starts', 'OrfPos', 'ORF_rank')]))
+        
+        ORF_ranks_dict <- setNames(merged_df$ORF_rank, merged_df$OrfTransID)
+
+        # Map values from df1 to df2 based on the shared column
+        frame$ORF_ranks <- ORF_ranks_dict[as.character(frame$OrfTransID)]
+
+        nr_URs <- c(length(rownames(frame)), nr_URs)
+        nr_first <- c(length(rownames(merged_df[merged_df$ORF_rank == 1, ])), nr_first)
+        nr_second <- c(length(rownames(merged_df[merged_df$ORF_rank > 1, ])), nr_second)
+        perc_first <- c(length(rownames(merged_df[merged_df$ORF_rank == 1, ]))/length(rownames(frame)), perc_first)
+        perc_second <- c(length(rownames(merged_df[merged_df$ORF_rank > 1, ]))/length(rownames(frame)), perc_second) 
+        return_frames[[length(return_frames) + 1]] <- frame
+    }
+
+    NR_ORFs_df <- data.frame(nr_URs = nr_URs, nr_first = nr_first, nr_second = nr_second, perc_first = perc_first, perc_second = perc_second)
+    rownames(NR_ORFs_df) <- names(counts_and_names_list$frames_processed)
+    kable(NR_ORFs_df, caption = "ORF positions of validated URs") %>%
+        kable_styling(font_size = 8)
+    return(return_frames)
+}
 
 
 write_csv <- function(dataframes_genomic, unique_names_per_sample_genomic, dataframes, unique_names_per_sample, outdir) {
@@ -381,7 +434,8 @@ write_csv <- function(dataframes_genomic, unique_names_per_sample_genomic, dataf
                             "new_name",
                             "num_reads",
                             "relative_count", 
-                            "significant")]
+                            "significant",
+                            "ORF_ranks")]
 
         write.csv(write_frame, file.path(outdir, paste(names(dataframes)[frame_number],
             "unique_regions.csv", sep = "_")))

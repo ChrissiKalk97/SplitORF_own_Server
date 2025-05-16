@@ -76,8 +76,6 @@ upset(fromList(upsetlist), order.by = "freq", nsets = 12, point.size = 2.25, lin
       set_size.scale_max = 400, 
       mainbar.y.label = "Split-ORF Intersections", sets.x.label = "Matching Split-ORFs per dataset",
       text.scale = c(1, 1, 0.9, 1, 1, 1))
-png(file.path(outdir_RI, 'upset_RI_SO.png'))
-dev.off()
 ```
 
 The following plot shows how many distinct genomic Unique regions were validated against the 3'UTR background.
@@ -90,12 +88,48 @@ upset(fromList(upsetlist_genomic), order.by = "freq", nsets = 12, point.size = 2
       set_size.scale_max = 200, 
       mainbar.y.label = "Unique region Intersections", sets.x.label = "Matching unique regions per dataset",
       text.scale = c(1, 1, 0.9, 1, 1, 1))
+```
+
+```{r, echo=FALSE, message=FALSE}
+png(file.path(outdir_RI, 'upset_RI_SO.png'))
+names(counts_and_names_list$unique_names) <- names(list_ridataframes)
+upsetlist <- counts_and_names_list$unique_names
+upsetlist <- lapply(upsetlist, function(x) x)
+upset(fromList(upsetlist), order.by = "freq", nsets = 12, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+      set_size.scale_max = 400, 
+      mainbar.y.label = "Split-ORF Intersections", sets.x.label = "Matching Split-ORFs per dataset",
+      text.scale = c(1, 1, 0.9, 1, 1, 1))
+dev.off()
+```
+
+
+```{r, echo=FALSE, message=FALSE}
 png(file.path(outdir_RI, 'upset_RI_UR.png'))
+names(counts_and_names_list$unique_names_genomic) <- names(list_ridataframes)
+upsetlist_genomic <- counts_and_names_list$unique_names_genomic
+upsetlist_genomic <- lapply(upsetlist_genomic, function(x) x)
+upset(fromList(upsetlist_genomic), order.by = "freq", nsets = 12, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+      set_size.scale_max = 200, 
+      mainbar.y.label = "Unique region Intersections", sets.x.label = "Matching unique regions per dataset",
+      text.scale = c(1, 1, 0.9, 1, 1, 1))
+dev.off()
+```
+
+```{r, echo=FALSE, message=FALSE}
+svg(file.path(outdir_RI, 'upset_RI_UR.svg'))
+names(counts_and_names_list$unique_names_genomic) <- names(list_ridataframes)
+upsetlist_genomic <- counts_and_names_list$unique_names_genomic
+upsetlist_genomic <- lapply(upsetlist_genomic, function(x) x)
+upset(fromList(upsetlist_genomic), order.by = "freq", nsets = 12, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+      set_size.scale_max = 200, 
+      mainbar.y.label = "Unique region Intersections", sets.x.label = "Matching unique regions per dataset",
+      text.scale = c(1, 1, 0.9, 1, 1, 1))
 dev.off()
 ```
 
 
 ```{r, message = FALSE}
+counts_and_names_list$frames_processed <- get_print_ORF_ranks(SO_pipe_path, counts_and_names_list$frames_processed, 'RI')
 names(counts_and_names_list$frames_processed) <- names(list_ridataframes)
 names(counts_and_names_list$genomic_frames) <- names(list_ridataframes)
 write_csv(counts_and_names_list$genomic_frames, upsetlist_genomic, counts_and_names_list$frames_processed, upsetlist, outdir_RI)
@@ -106,6 +140,7 @@ Print the unique regions where at least 2 unique regions on the same transcript 
 ```{r}
 Split_ORFs_validation(counts_and_names_list$frames_processed, upsetlist, outdir_RI)
 ```
+
 
 
 # Alignment against NMD transcripts
@@ -144,6 +179,7 @@ get_top_5_unique_regions(counts_and_names_list$genomic_frames, threshold)
 The following plot shows how many Split-ORFs were validated against the 3'UTR background.
 Please note the validated Unique region of different Split-ORFs may overlap or be identical.
 ```{r, echo=FALSE, message=FALSE}
+png(file.path(outdir_NMD, 'upset_NMD_SO.png'))
 names(counts_and_names_list$unique_names) <- names(list_nmddataframes)
 upsetlist <- counts_and_names_list$unique_names
 upsetlist <- lapply(upsetlist, function(x) x)
@@ -151,8 +187,17 @@ upset(fromList(upsetlist), order.by = "freq", nsets = 12, point.size = 2.25, lin
       set_size.scale_max = 550, 
       mainbar.y.label = "Split-ORF Intersections", sets.x.label = "Matching Split-ORFs per dataset",
       text.scale = c(1, 1, 0.9, 1, 1, 1))# c(1.5, 1.25, 0.9, 1.25, 1.25, 1.5)
-png(file.path(outdir_NMD, 'upset_NMD_SO.png'))
 dev.off()
+```
+
+```{r, echo=FALSE, message=FALSE}
+names(counts_and_names_list$unique_names) <- names(list_nmddataframes)
+upsetlist <- counts_and_names_list$unique_names
+upsetlist <- lapply(upsetlist, function(x) x)
+upset(fromList(upsetlist), order.by = "freq", nsets = 12, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+      set_size.scale_max = 550, 
+      mainbar.y.label = "Split-ORF Intersections", sets.x.label = "Matching Split-ORFs per dataset",
+      text.scale = c(1, 1, 0.9, 1, 1, 1))# c(1.5, 1.25, 0.9, 1.25, 1.25, 1.5)
 ```
 
 
@@ -164,15 +209,39 @@ upsetlist_genomic <- counts_and_names_list$unique_names_genomic
 upsetlist_genomic <- lapply(upsetlist_genomic, function(x) x)
 upset(fromList(upsetlist_genomic), order.by = "freq", nsets = 12, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
       set_size.scale_max = 550, 
-      mainbar.y.label = "Split-ORF Intersections", sets.x.label = "Matching Split-ORFs per dataset",
+      mainbar.y.label = "Unique region Intersections", sets.x.label = "Matching Split-ORFs per dataset",
       text.scale = c(1, 1, 0.9, 1, 1, 1))# c(1.5, 1.25, 0.9, 1.25, 1.25, 1.5)
-png(file.path(outdir_NMD, 'upset_NMD_SO.png'))
+```
+
+
+```{r, echo=FALSE, message=FALSE}
+png(file.path(outdir_NMD, 'upset_NMD_UR.png'))
+names(counts_and_names_list$unique_names_genomic) <- names(list_nmddataframes)
+upsetlist_genomic <- counts_and_names_list$unique_names_genomic
+upsetlist_genomic <- lapply(upsetlist_genomic, function(x) x)
+upset(fromList(upsetlist_genomic), order.by = "freq", nsets = 12, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+      set_size.scale_max = 550, 
+      mainbar.y.label = "Unique region Intersections", sets.x.label = "Matching Split-ORFs per dataset",
+      text.scale = c(1, 1, 0.9, 1, 1, 1))# c(1.5, 1.25, 0.9, 1.25, 1.25, 1.5)
 dev.off()
 ```
 
 
+```{r, echo=FALSE, message=FALSE}
+svg(file.path(outdir_NMD, 'upset_NMD_UR.svg'))
+names(counts_and_names_list$unique_names_genomic) <- names(list_nmddataframes)
+upsetlist_genomic <- counts_and_names_list$unique_names_genomic
+upsetlist_genomic <- lapply(upsetlist_genomic, function(x) x)
+upset(fromList(upsetlist_genomic), order.by = "freq", nsets = 12, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+      set_size.scale_max = 550, 
+      mainbar.y.label = "Unique region Intersections", sets.x.label = "Matching Split-ORFs per dataset",
+      text.scale = c(1, 1, 0.9, 1, 1, 1))# c(1.5, 1.25, 0.9, 1.25, 1.25, 1.5)
+dev.off()
+```
+
 
 ```{r, message = FALSE}
+counts_and_names_list$frames_processed <- get_print_ORF_ranks(SO_pipe_path, counts_and_names_list$frames_processed, 'NMD')
 names(counts_and_names_list$frames_processed) <- names(list_nmddataframes)
 names(counts_and_names_list$genomic_frames) <- names(list_nmddataframes)
 
