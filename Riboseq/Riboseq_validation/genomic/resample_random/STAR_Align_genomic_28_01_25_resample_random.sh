@@ -69,40 +69,42 @@ fi
 sample=$(basename $bamfile .bam)
 # # # align Riboreads against the genome
 # STAR\
-# --runThreadN $numberOfThreads\
-# --alignEndsType EndToEnd\
-# --outSAMstrandField intronMotif\
-# --alignIntronMin 20\
-# --alignIntronMax 1000000\
-# --genomeDir $StarIndex\
-# --readFilesIn $Riboreads\
-# --twopassMode Basic\
-# --outSAMattributes All\
-# --outSAMtype BAM SortedByCoordinate\
-# --outFileNamePrefix $out_path/$sample
+#   --runThreadN $numberOfThreads\
+#   --alignEndsType EndToEnd\
+#   --outSAMstrandField intronMotif\
+#   --alignIntronMin 20\
+#   --alignIntronMax 1000000\
+#   --genomeDir $StarIndex\
+#   --readFilesIn $Riboreads\
+#   --twopassMode Basic\
+#   --seedSearchStartLmax 20\
+#   --seedSearchStartLmaxOverLread 0.5\
+#   --outSAMattributes All\
+#   --outSAMtype BAM SortedByCoordinate\
+#   --outFileNamePrefix $out_path/$sample
 
-# samtools view -@ $numberOfThreads -bo $bamfile $out_path/$(basename $bamfile .bam)Aligned.out.sam
+# # samtools view -@ $numberOfThreads -bo $bamfile $out_path/$(basename $bamfile .bam)Aligned.out.sam
 bamfile=$out_path/${sample}Aligned.sortedByCoord.out.bam
 
-filteredBamFile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_filtered.bam
+# filteredBamFile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_filtered.bam
 # samtools view -F 256 -F 2048 -b $bamfile > $filteredBamFile
-sortedBamFile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_sorted.bam
+# sortedBamFile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_sorted.bam
 # samtools sort -o $sortedBamFile $filteredBamFile
 # samtools index -@ 10 $sortedBamFile
 bedfile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam).bed
 
-present_chromosomes=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_chromosomes.txt
+# present_chromosomes=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_chromosomes.txt
 # samtools view -H $sortedBamFile | grep '@SQ' | cut -f 2 | cut -d ':' -f 2  | sort | uniq > $present_chromosomes
 
-# get the union of all chromosomes
-# cat $present_chromosomes $out_path/chromosomes_unique_regions.txt | sort | uniq > temp_file
-# mv temp_file $present_chromosomes
+# # get the union of all chromosomes
+# # cat $present_chromosomes $out_path/chromosomes_unique_regions.txt | sort | uniq > temp_file
+# # mv temp_file $present_chromosomes
 
 
 sorted_unique_regions=$(dirname $unique_regions)/$(basename $unique_regions .bed)_chrom_sorted.bed
-if [ ! -e  $sorted_unique_regions ]; then
-    sort -k1,1 -k2,2n $unique_regions > $sorted_unique_regions
-fi
+# if [ ! -e  $sorted_unique_regions ]; then
+#     sort -k1,1 -k2,2n $unique_regions > $sorted_unique_regions
+# fi
 
 
 
@@ -111,15 +113,13 @@ fi
 
 
 echo "intersecting with unique regions"
-sortedBedfile=$out_path/$(basename $bedfile .bed)_intersect_counts_sorted.bed
+intersectBedfile=$out_path/$(basename $bedfile .bed)_intersect_counts_sorted.bed
 
 
 # sort unique regions for intersect
-
-#TEST#############
-
 #############################################################
 sorted_bedfile=$out_path/$(basename $bedfile .bed)_chrom_sort.bed
+
 # sort -k1,1 -k2,2n $bedfile > $sorted_bedfile
 
 # subset the genome bedfile to the present genomes
@@ -128,15 +128,16 @@ sorted_bedfile=$out_path/$(basename $bedfile .bed)_chrom_sort.bed
 # -w: match the whole word, e.g. 1 does not match 10, 11 etc but only 1
 # -f: file input of the pattern that are searched for
 
-# bedtools intersect\
-#    -s\
-#    -wao\
-#    -a $sorted_unique_regions\
-#    -b $sorted_bedfile\
-#    -sorted\
-#    -g $out_path/genome_chrom_ordering_$(basename $bamfile Aligned.sortedByCoord.out.bam).txt\
-#    | sort -T /scratch/tmp/$USER -nr -k13,13\
-#    > $sortedBedfile
+
+bedtools intersect\
+   -s\
+   -wao\
+   -a "$sorted_unique_regions"\
+   -b "$sorted_bedfile"\
+   -sorted\
+   -g $out_path/genome_chrom_ordering_$(basename $bamfile Aligned.sortedByCoord.out.bam).txt\
+   | sort -T /scratch/tmp/$USER -nr -k13,13\
+   > "$intersectBedfile"
 
 
 
@@ -146,7 +147,7 @@ sorted_bedfile=$out_path/$(basename $bedfile .bed)_chrom_sort.bed
 for i in {1..20}; do
   randomfile=$out_path/Random_background_regions_${i}.bed
   sorted_randomfile="$out_path"/$(basename $randomfile .bed)_sorted_${i}.bed
-  if [ ! -e  $randomfile ]; then
+  if [ ! -e  $sorted_randomfile ]; then
     python BackgroundRegions_bed_genomic_fix.py\
     $sorted_unique_regions\
     $coordinates_3_prime\

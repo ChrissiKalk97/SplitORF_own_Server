@@ -16,11 +16,15 @@ import time
 
 def get_length_dist(bed_file):
     # read in bedfile and obtain length distribution
-    lengthdistribution = []
+    UR_region_lengths = {}
     for line in bed_file:
         elems = line.split('\t')
         length = int(elems[2])-int(elems[1])
-        lengthdistribution.append(length)
+        if elems[3] in UR_region_lengths.keys():
+            UR_region_lengths[elems[3]] = UR_region_lengths[elems[3]] + length
+        else:
+            UR_region_lengths[elems[3]] = length
+    lengthdistribution = list(UR_region_lengths.values())
     return lengthdistribution
 
 
@@ -41,7 +45,6 @@ def get_random_bed_ids(lengthdistribution, UTR_bed_file, outname):
             # need to convert to bed format here
             filtered_intervals = [(name, length, chrom, str(int(start) - 1), stop, strand) for name, length,
                                   chrom, start, stop, strand in random_regions_lengths if length >= required_length + 18]
-            bed_names = list(set(filtered_intervals))
             random_seq = random.choices(filtered_intervals, k=1)[0]
             random_key = random_seq[0]
             # if key has already been sampled, randomly choose a new key
