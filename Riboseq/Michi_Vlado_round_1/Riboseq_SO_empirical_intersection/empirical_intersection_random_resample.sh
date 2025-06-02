@@ -86,8 +86,8 @@ out_path=$(dirname $outname)
 echo $out_path
 
 sortedBamFile=$out_path/$(basename $Ribobam .bam)_sorted.bam
-samtools sort -o $sortedBamFile $Ribobam
-samtools index -@ 10 $sortedBamFile
+# samtools sort -o $sortedBamFile $Ribobam
+# samtools index -@ 10 $sortedBamFile
 
 bedfile=$out_path/$(basename $Ribobam _dedup_filtered.bam).bed
 if [ ! -e $bedfile ]; then
@@ -96,7 +96,7 @@ if [ ! -e $bedfile ]; then
 fi
 
 present_chromosomes=$out_path/$(basename $Ribobam _dedup_filtered.bam)_chromosomes.txt
-samtools view -H $sortedBamFile | grep '@SQ' | cut -f 2 | cut -d ':' -f 2  | sort | uniq > $present_chromosomes
+# samtools view -H $sortedBamFile | grep '@SQ' | cut -f 2 | cut -d ':' -f 2  | sort | uniq > $present_chromosomes
 
 
 
@@ -143,17 +143,17 @@ bedtools intersect\
 for i in {1..20}; do
   randomfile=$random_region_path/Random_background_regions_${i}.bed
   sorted_randomfile=$random_region_path/$(basename $randomfile .bed)_sorted_${i}.bed
-  if [ ! -e  $randomfile ]; then
-    python BackgroundRegions_bed_genomic_fix.py\
+  if [ ! -e  $sorted_randomfile ]; then
+    python /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random/BackgroundRegions_bed_genomic_fix.py\
     $sorted_unique_regions\
     $coordinates_3_prime\
     $randomfile\
     $i
 
     # sort the randomfile with dummy entries
-    echo $sorted_randomfile
     sort -T /scratch/tmp/"$USER" -k1,1 -k2,2n $randomfile > $sorted_randomfile
-    rm $randomfile
+    echo $sorted_randomfile
+    # rm $randomfile
   fi
 
 

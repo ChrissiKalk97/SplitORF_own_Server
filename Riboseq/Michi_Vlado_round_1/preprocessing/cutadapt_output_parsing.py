@@ -6,8 +6,9 @@ import pandas as pd
 
 def parse_cutadapt_block(block):
     # Extract filename
-    filename_match = re.search(r'-o (\S+)', block)
-    filename = filename_match.group(1) if filename_match else "unknown"
+    filename_match = re.search(r'-o (\S+)|--output (\S+)', block)
+    filename = filename_match.group(1) or filename_match.group(
+        2) if filename_match else "unknown"
     filename = filename.split('/')[-1]
     filename = filename.split('.')[0]
 

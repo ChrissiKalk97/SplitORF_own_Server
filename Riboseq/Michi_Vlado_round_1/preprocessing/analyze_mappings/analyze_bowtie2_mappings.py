@@ -15,7 +15,7 @@ def parse_log_file(file_path):
     with open(file_path, "r") as file:
         for line in file:
             # Match the sample name
-            sample_match = re.match(r"^=+.*Sample (\S+) finished", line)
+            sample_match = re.match(r"^uf_muellermcnicoll_(\S+)*", line)
             if sample_match:
                 # Save current sample data if it's complete
                 if sample_data:

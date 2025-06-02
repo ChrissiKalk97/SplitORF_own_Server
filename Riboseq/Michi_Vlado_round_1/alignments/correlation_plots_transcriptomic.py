@@ -53,11 +53,11 @@ def main():
 
     scat_plot.set(xlabel=f"{idx_name1} log percentage", ylabel=f"{idx_name2} log percentage",
                   title='Scatterplot of log scaled mapping percentage of genes')
-    second_rep = idx_name2.split('_')[-1]
+    second_rep = '_'.join(idx_name2.split('_')[-3:])
     ax = plt.gca()  # Get a matplotlib's axes instance
     plt.text(.05, .8, "Spearman's r ={:.2f}".format(r), transform=ax.transAxes)
     plt.savefig(os.path.join(
-        out_dir, f'scatterplot_{idx_name1}_{second_rep}.png'), bbox_inches='tight', dpi=300)
+        out_dir, f'scatterplot_spearman_{idx_name1}_{second_rep}.png'), bbox_inches='tight', dpi=300)
     plt.close()
 
     # how to get both in the same df?

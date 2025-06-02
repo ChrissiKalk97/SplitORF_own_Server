@@ -3,7 +3,7 @@
 eval "$(conda shell.bash hook)"
 conda activate Riboseq
 
-INDIR="/projects/splitorfs/work/own_data/Riboseq/SeRP/Michi_Vlado_round_1"
+INDIR="/projects/serp/work/data/SeRP_April_2025/Michi_Vlado_round_1"
 OUTDIR_FASTQC1="/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/fastqc_unprocessed"
 OUTDIR_CUTADAPT="/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt"
 Umi_adpt_trimmed_path="/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/UMI_trimmed_custom"
@@ -63,91 +63,53 @@ UMI_dedup_outdir="/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round
 
 
 
-for FQ in "$UMI_dedup_outdir_transcriptomic"/*dedup.bam
-do
-    fastqc \
-    -o "$UMI_dedup_outdir_transcriptomic"/fastqc/ \
-    -t 32\
-    ${FQ}
-done
+# for FQ in "$UMI_dedup_outdir_transcriptomic"/*dedup.bam
+# do
+#     fastqc \
+#     -o "$UMI_dedup_outdir_transcriptomic"/fastqc/ \
+#     -t 32\
+#     ${FQ}
+# done
 
 
-multiqc --force --filename "$UMI_dedup_outdir_transcriptomic"/fastqc/multiqc_dedup_transcriptomic_alignment "$UMI_dedup_outdir_transcriptomic"/fastqc/
+# multiqc --force --filename "$UMI_dedup_outdir_transcriptomic"/fastqc/multiqc_dedup_transcriptomic_alignment "$UMI_dedup_outdir_transcriptomic"/fastqc/
 
-
-
-python alignments/correlation_plots_transcriptomic.py \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_13_IP_Puro_1.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_14_IP_Puro_3.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
-
-python alignments/correlation_plots_transcriptomic.py \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_13_IP_Puro_1.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_15_IP_Puro_4.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
-
-python alignments/correlation_plots_transcriptomic.py \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_15_IP_Puro_4.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_14_IP_Puro_3.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
-
-python alignments/correlation_plots_transcriptomic.py \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_16_IP_CHX_1.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_17_IP_CHX_2.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
-
-python alignments/correlation_plots_transcriptomic.py \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_16_IP_CHX_1.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_18_IP_CHX_4.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
-
-python alignments/correlation_plots_transcriptomic.py \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_18_IP_CHX_4.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_17_IP_CHX_2.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
-
-
-python alignments/correlation_plots_transcriptomic.py \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_10_In_CHX_1.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_11_In_CHX_2.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
-
-
-python alignments/correlation_plots_transcriptomic.py \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_10_In_CHX_1.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_12_In_CHX_4.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
-
-
-python alignments/correlation_plots_transcriptomic.py \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_12_In_CHX_4.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_11_In_CHX_2.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
+# bash alignments/create_correlation_plots_reps_SeRP.sh "$UMI_dedup_outdir_transcriptomic"
 
 
 
 
-python alignments/correlation_plots_transcriptomic.py \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_07_In_Puro_1.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_08_In_Puro_3.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
-
-python alignments/correlation_plots_transcriptomic.py \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_07_In_Puro_1.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_09_In_Puro_4.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
-
-python alignments/correlation_plots_transcriptomic.py \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_09_In_Puro_4.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/uf_muellermcnicoll_2025_04_08_In_Puro_3.dedup_idxstats.out \
-    ${UMI_dedup_outdir_transcriptomic}/correlation_plots
-
-
-# need to change the script
+# # need to change the script
 Rscript alignments/PCA_conditions_DeSeq2_SeRP.R $UMI_dedup_outdir_transcriptomic
 
 
 
+if [ ! -d $UMI_dedup_outdir_transcriptomic/filtered ]; then
+    mkdir $UMI_dedup_outdir_transcriptomic/filtered
+fi
+
+# for bam in "$UMI_dedup_outdir_transcriptomic"/*dedup.bam
+# do
+#     samtools view -b -q 10 $bam > $UMI_dedup_outdir_transcriptomic/filtered/$(basename $bam .bam)_q10_filtered.bam
+#     samtools index $UMI_dedup_outdir_transcriptomic/filtered/$(basename $bam .bam)_q10_filtered.bam
+# done
+
+
+################################################################################
+# SeRP coverage plots                                                          #
+################################################################################
+# bash SeRP/create_coverage_plots_SeRP_over_Input.sh $UMI_dedup_outdir_transcriptomic
+
+
+
+
+
+
+
+
+################################################################################
+# GENOMIC ALIGNMENT                                                            #
+################################################################################
 
 # align to genome for deduplication
 # STAR_index="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index"
@@ -160,10 +122,6 @@ Rscript alignments/PCA_conditions_DeSeq2_SeRP.R $UMI_dedup_outdir_transcriptomic
 
 
 
-
-# 
-
-# FOR THE DEDUPLICATION: HOW CAN RUN IT IN PARALLEL W/O HAVING TO USE DISTINCT MASTER SCRIPTS?
 
 # # deduplicate UMIs
 # source deduplication/deduplicate_umi_tools.sh \

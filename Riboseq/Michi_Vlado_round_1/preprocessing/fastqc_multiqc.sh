@@ -7,12 +7,13 @@ multiQC_outname=$3
 
 for FQ in "${INDIR}"/*.fastq.gz
 do
-    fastqc \
+    (fastqc \
     -o ${OUTDIR_FASTQC}/ \
     -t 32\
-    ${FQ}
+    ${FQ}) &
 done
 
+wait
 
 multiqc --force --filename ${OUTDIR_FASTQC}/${multiQC_outname} ${OUTDIR_FASTQC}
 

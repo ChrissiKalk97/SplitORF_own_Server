@@ -27,16 +27,19 @@ for filename in os.listdir(bam_dir):
         bamfile = pysam.AlignmentFile(os.path.join(bam_dir, filename), "rb")
         for aln in bamfile:
             nr_alns += 1
-            if 'S' in set(aln.cigarstring):
-                groups_front = re.search(r'^[0-9]+S', aln.cigarstring)
-                groups_end = re.search(r'[0-9]+S$', aln.cigarstring)
-                if groups_front is not None:
-                    soft_clip_counter_front += 1
-                if groups_end is not None:
-                    soft_clip_counter_end += 1
-                    if aln.query_sequence.endswith('A'):
-                        trimmed_A_at_end += 1
-                soft_clip_counter += 1
+            if aln.cigarstring is not None:
+                if 'S' in set(aln.cigarstring):
+                    groups_front = re.search(r'^[0-9]+S', aln.cigarstring)
+                    groups_end = re.search(r'[0-9]+S$', aln.cigarstring)
+                    if groups_front is not None:
+                        soft_clip_counter_front += 1
+                    if groups_end is not None:
+                        soft_clip_counter_end += 1
+                        if aln.query_sequence.endswith('A'):
+                            trimmed_A_at_end += 1
+                    soft_clip_counter += 1
+            else:
+                print(aln)
         sample_name = os.path.basename(filename)
         sample_name = sample_name.rsplit("_", 2)[0]
         clipping_dict[sample_name] = [nr_alns, soft_clip_counter,

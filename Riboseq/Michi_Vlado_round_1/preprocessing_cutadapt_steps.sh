@@ -20,7 +20,7 @@ OUTDIR_FASTQC1=$2
 # ################################################################################
 # # RUN FASTQC                                                                   #
 # ################################################################################
-# source preprocessing/fastqc_multiqc.sh ${INDIR} ${OUTDIR_FASTQC1} fastqc_unprocessed_multiqc
+source preprocessing/fastqc_multiqc.sh ${INDIR} ${OUTDIR_FASTQC1} fastqc_unprocessed_multiqc
 
 
 ################################################################################
@@ -57,7 +57,7 @@ OUTDIR_CUTADAPT=$3
 # ################################################################################
 # # RUN FASTQC AFTER CUTADAPT                                                    #
 # ################################################################################
-# source preprocessing/fastqc_multiqc.sh ${OUTDIR_CUTADAPT} ${OUTDIR_CUTADAPT} cutadapt_multiqc
+source preprocessing/fastqc_multiqc.sh ${OUTDIR_CUTADAPT} ${OUTDIR_CUTADAPT} cutadapt_multiqc
 
 
 ################################################################################
@@ -72,11 +72,11 @@ Umi_adpt_trimmed_path=$4
 
 
 
-# source preprocessing/fastqc_multiqc.sh ${Umi_adpt_trimmed_path} ${Umi_adpt_trimmed_path} UMI_trimmed_multiqc
+source preprocessing/fastqc_multiqc.sh ${Umi_adpt_trimmed_path} ${Umi_adpt_trimmed_path} UMI_trimmed_multiqc
 
-cd ${Umi_adpt_trimmed_path}
-gzip *.fastq
-rm *.fastq
+# cd ${Umi_adpt_trimmed_path}
+# gzip *.fastq
+# rm *.fastq
 
 cd -
 
@@ -85,7 +85,7 @@ cd -
 ################################################################################
 fastpOut=$5
 fastpFASTQC=$6
-source preprocessing/filter_fastp.sh ${Umi_adpt_trimmed_path} ${fastpOut} cutadapt_umi_fastp
+# source preprocessing/filter_fastp.sh ${Umi_adpt_trimmed_path} ${fastpOut} cutadapt_umi_fastp
 source preprocessing/fastqc_multiqc.sh ${fastpOut} ${fastpFASTQC} fastqc_fastp_trim_after_umi_trim_multiqc
 multiqc --force --filename ${fastpOut}/fastp_filter_after_umi_trim_multiqc ${fastpOut}
 

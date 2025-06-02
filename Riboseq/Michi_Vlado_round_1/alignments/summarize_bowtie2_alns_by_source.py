@@ -57,31 +57,33 @@ def plot_summary(summary_mapping_stats_df, outdir, raw=False, figsize=(12, 6)):
     mt_df = summary_mapping_stats_df_t["MT"]
     tRNA_df = summary_mapping_stats_df_t["tRNA"]
 
-    x = ['_'.join(x[2:8]) for x in mRNA_df.index.str.split('_')]
+    sample_names = ['_'.join(x[2:9]) if 'RR' in x else '_'.join(
+        x[2:8]) for x in mRNA_df.index.str.split('_')]
     plt.figure(figsize=figsize)
-    plt.bar(x, ncRNA_df,
+    plt.bar(sample_names, ncRNA_df,
             color='#40A3CD', label='ncRNA')
-    plt.bar(x, tRNA_df, bottom=ncRNA_df, color='#019c91', label='tRNA')
-    plt.bar(x, rRNA_df, bottom=ncRNA_df + tRNA_df,
+    plt.bar(sample_names, tRNA_df, bottom=ncRNA_df,
+            color='#019c91', label='tRNA')
+    plt.bar(sample_names, rRNA_df, bottom=ncRNA_df + tRNA_df,
             color='#b79165', label='rRNA')
-    plt.bar(x, mt_df, bottom=ncRNA_df + tRNA_df + rRNA_df,
+    plt.bar(sample_names, mt_df, bottom=ncRNA_df + tRNA_df + rRNA_df,
             color='orange', label='MT')
-    plt.bar(x, mRNA_df, bottom=ncRNA_df + tRNA_df +
+    plt.bar(sample_names, mRNA_df, bottom=ncRNA_df + tRNA_df +
             rRNA_df + mt_df, color='#c73832', label='mRNA')
 
     # add percentage labels
-    add_labels(x, mRNA_df, ncRNA_df + tRNA_df + rRNA_df + mt_df)
-    add_labels(x, mt_df, ncRNA_df + tRNA_df + rRNA_df)
-    add_labels(x, rRNA_df, ncRNA_df + tRNA_df)
-    add_labels(x, tRNA_df, ncRNA_df)
-    add_labels(x, ncRNA_df, None)
+    add_labels(sample_names, mRNA_df, ncRNA_df + tRNA_df + rRNA_df + mt_df)
+    add_labels(sample_names, mt_df, ncRNA_df + tRNA_df + rRNA_df)
+    add_labels(sample_names, rRNA_df, ncRNA_df + tRNA_df)
+    add_labels(sample_names, tRNA_df, ncRNA_df)
+    add_labels(sample_names, ncRNA_df, None)
 
     if raw:
         unmapped_filtered_df = summary_mapping_stats_df_t["filtered_unmapped"]
-        plt.bar(x, unmapped_filtered_df, bottom=ncRNA_df +
+        plt.bar(sample_names, unmapped_filtered_df, bottom=ncRNA_df +
                 tRNA_df + rRNA_df + mt_df + mRNA_df,
                 color='#FDDA0D', label='filtered_unmapped')
-        add_labels(x, unmapped_filtered_df, ncRNA_df +
+        add_labels(sample_names, unmapped_filtered_df, ncRNA_df +
                    tRNA_df + rRNA_df + mt_df + mRNA_df)
 
     plt.ylabel('Percentage')
@@ -123,7 +125,32 @@ def summarize_mapping_statistics(reference_dict, idx_stats, out_dir, raw=False):
                             'uf_muellermcnicoll_2025_04_15_IP_Puro_4': 24337638,
                             'uf_muellermcnicoll_2025_04_16_IP_CHX_1': 24226505,
                             'uf_muellermcnicoll_2025_04_17_IP_CHX_2': 20622935,
-                            'uf_muellermcnicoll_2025_04_18_IP_CHX_4': 28061501
+                            'uf_muellermcnicoll_2025_04_18_IP_CHX_4': 28061501,
+                            'uf_muellermcnicoll_2025_05_18_RR_A2_CHX_E1': 26281252,
+                            'uf_muellermcnicoll_2025_05_19_RR_A2_CHX_E2': 21850590,
+                            'uf_muellermcnicoll_2025_05_20_RR_A2_CHX_E3': 28072070,
+                            'uf_muellermcnicoll_2025_05_21_RR_A2_CHX_E4': 25134187,
+                            'uf_muellermcnicoll_2025_05_22_RR_A2_Puro_E1': 26937848,
+                            'uf_muellermcnicoll_2025_05_23_RR_A2_Puro_E2': 21151387,
+                            'uf_muellermcnicoll_2025_05_24_RR_A2_Puro_E3': 26771687,
+                            'uf_muellermcnicoll_2025_05_25_RR_B1_CHX_E1': 29423782,
+                            'uf_muellermcnicoll_2025_05_26_RR_B1_CHX_E2': 28519436,
+                            'uf_muellermcnicoll_2025_05_27_RR_B1_CHX_E3': 20533262,
+                            'uf_muellermcnicoll_2025_05_28_RR_B1_CHX_E4': 22720343,
+                            'uf_muellermcnicoll_2025_05_29_RR_B1_Puro_E1': 22952596,
+                            'uf_muellermcnicoll_2025_05_30_RR_B1_Puro_E2': 16497721,
+                            'uf_muellermcnicoll_2025_05_31_RR_B1_Puro_E3': 22143053,
+                            'uf_muellermcnicoll_2025_05_32_RR_In_CHX_1': 27157334,
+                            'uf_muellermcnicoll_2025_05_33_RR_In_CHX_2': 31787851,
+                            'uf_muellermcnicoll_2025_05_34_RR_In_CHX_3': 27470164,
+                            'uf_muellermcnicoll_2025_05_35_RR_In_CHX_4': 18438108,
+                            'uf_muellermcnicoll_2025_05_36_RR_In_Puro_1': 27408841,
+                            'uf_muellermcnicoll_2025_05_37_RR_In_Puro_2': 25715829,
+                            'uf_muellermcnicoll_2025_05_38_RR_In_Puro_3': 26110767,
+                            'uf_muellermcnicoll_2025_05_39_RR_M_CHX_E1': 16836171,
+                            'uf_muellermcnicoll_2025_05_40_RR_M_CHX_E2': 21822278,
+                            'uf_muellermcnicoll_2025_05_41_RR_M_CHX_E3': 12929426,
+                            'uf_muellermcnicoll_2025_05_42_RR_M_CHX_E4': 30557025
                             }
 
     summary_mapping_stats_df = None

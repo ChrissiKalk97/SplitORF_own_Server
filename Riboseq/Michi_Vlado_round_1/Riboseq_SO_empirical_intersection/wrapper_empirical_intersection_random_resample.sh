@@ -14,7 +14,7 @@ source activate Riboseq
 outputSTAR="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated"
 nmd=${outputSTAR}"/empirical_Riboseq_validation/NMD_genome"
 unique_region_dir="/projects/splitorfs/work/Riboseq/data/region_input/genomic"
-ri=${outputSTAR}"/RI_genome"
+ri=${outputSTAR}"/empirical_Riboseq_validation/RI_genome"
 random_region_path="/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample/NMD_genome"
 
 
@@ -49,36 +49,36 @@ echo "Starting empirical Riboseq validation"
 
 
 
-for Ribobam in $input_data; do
-        echo $Ribobam
-        sample_name=$(basename "$Ribobam" _dedup_filtered.bam)
+# for Ribobam in $input_data; do
+#         echo $Ribobam
+#         sample_name=$(basename "$Ribobam" _dedup_filtered.bam)
 
-        bash ./Riboseq_SO_empirical_intersection/empirical_intersection_random_resample.sh \
-        "$Ribobam" \
-        "$unique_region_dir"/Unique_DNA_regions_genomic_NMD_16_12_24.bed \
-        "$three_primes" \
-        "$nmd"/"${sample_name}"_NMD \
-        "$random_region_path"
+#         bash ./Riboseq_SO_empirical_intersection/empirical_intersection_random_resample.sh \
+#         "$Ribobam" \
+#         "$unique_region_dir"/Unique_DNA_regions_genomic_NMD_16_12_24.bed \
+#         "$three_primes" \
+#         "$nmd"/"${sample_name}"_NMD \
+#         "$random_region_path"
 
-        echo "===================       Sample $sample_name finished"
+#         echo "===================       Sample $sample_name finished"
 
-done
+# done
 
 
-for Ribobam in $input_data; do
-        echo $Ribobam
-        sample_name=$(basename "$Ribobam" _dedup_filtered.bam)
+# for Ribobam in $input_data; do
+#         echo $Ribobam
+#         sample_name=$(basename "$Ribobam" _dedup_filtered.bam)
 
-        bash ./Riboseq_SO_empirical_intersection/empirical_intersection_random_resample.sh \
-        "$Ribobam" \
-        "$unique_region_dir"/Unique_DNA_regions_genomic_RI_16_12_24.bed \
-        "$three_primes" \
-        "$ri"/"${sample_name}"_RI \
-        "$random_region_path"
+#         bash ./Riboseq_SO_empirical_intersection/empirical_intersection_random_resample.sh \
+#         "$Ribobam" \
+#         "$unique_region_dir"/Unique_DNA_regions_genomic_RI_16_12_24.bed \
+#         "$three_primes" \
+#         "$ri"/"${sample_name}"_RI \
+#         "$random_region_path"
 
-        echo "===================       Sample $sample_name finished"
+#         echo "===================       Sample $sample_name finished"
 
-done
+# done
 
 
 
@@ -90,4 +90,4 @@ export MKL_ENABLE_INSTRUCTIONS=SSE4_2
 Rscript -e 'if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown", repos="http://cran.us.r-project.org")'
 
 cd /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random
-R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/Riboseq_empirical_validation_report_15_05_15.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/", "/projects/splitorfs/work/LLMs/TIS_transformer/Input/SO_pipeline_results")))'
+R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/Riboseq_empirical_validation_report_15_05_15.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/", "/projects/splitorfs/work/LLMs/TIS_transformer/Input/SO_pipeline_results")))'
