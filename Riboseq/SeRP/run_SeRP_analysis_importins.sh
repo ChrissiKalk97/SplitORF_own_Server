@@ -35,7 +35,7 @@ Bowtie2_out_dir="/projects/serp/work/Output/April_2025/importins/transcriptome_m
 ################################################################################
 # TRANSCRIPTOMIC ALIGNMENT                                                     #
 ################################################################################
-# align to transcriptome, still duplicated
+# align to transcriptome
 # source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie2_align_k1_only_R1.sh \
 #  ${Bowtie2_base_name} \
 #  no_index \
@@ -56,17 +56,48 @@ Bowtie2_out_dir="/projects/serp/work/Output/April_2025/importins/transcriptome_m
 # Rscript  PCA_conditions_DeSeq2_SeRP_importins.R \
 #  "${Bowtie2_out_dir}"/filtered/q10
 
-# Rscript  PCA_conditions_DeSeq2_SeRP_importins.R \
-#  "${Bowtie2_out_dir}"/filtered/
 
-Rscript RiboWaltz_SeRP_importins_single_samples.R \
-"${Bowtie2_out_dir}"/filtered/q10
+# if [ ! -d "${Bowtie2_out_dir}"/filtered/q10/DEGs ]; then
+#         mkdir "${Bowtie2_out_dir}"/filtered/q10/DEGs
+# fi
+
+# conda activate pygtftk
+# # obtain gene IDs of differentially expressed transcripts
+# python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/DEG_analysis/map_tids_to_gids_gtf.py \
+#  /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf \
+#  "${Bowtie2_out_dir}"/filtered/q10/DEGs/DEGs_CHX_A2_mock_mRNA.txt  \
+#  "${Bowtie2_out_dir}"/filtered/q10/DEGs/DEGs_CHX_A2_mock_mRNA_gene_IDs.txt 
+
+# python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/DEG_analysis/map_tids_to_gids_gtf.py \
+#  /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf \
+#  "${Bowtie2_out_dir}"/filtered/q10/DEGs/DEGs_CHX_B1_mock_mRNA.txt  \
+#  "${Bowtie2_out_dir}"/filtered/q10/DEGs/DEGs_CHX_B1_mock_mRNA_gene_IDs.txt 
+
+# python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/DEG_analysis/map_tids_to_gids_gtf.py \
+#  /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf \
+#  "${Bowtie2_out_dir}"/filtered/q10/DEGs/DEGs_CHX_A2_mock_mRNA_downreg.txt  \
+#  "${Bowtie2_out_dir}"/filtered/q10/DEGs/DEGs_CHX_A2_mock_mRNA_downreg_gene_IDs.txt 
+
+# python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/DEG_analysis/map_tids_to_gids_gtf.py \
+#  /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf \
+#  "${Bowtie2_out_dir}"/filtered/q10/DEGs/DEGs_CHX_B1_mock_mRNA_downreg.txt  \
+#  "${Bowtie2_out_dir}"/filtered/q10/DEGs/DEGs_CHX_B1_mock_mRNA_downreg_gene_IDs.txt 
+
+
+# conda activate Riboseq
+# Rscript RiboWaltz_SeRP_importins_single_samples.R \
+# "${Bowtie2_out_dir}"/filtered/q10
+
+
 
 ################################################################################
 # SeRP coverage plots                                                          #
 ################################################################################
-# bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/SeRP/create_coverage_plots_SeRP_over_Input.sh \
-#  $UMI_dedup_outdir_transcriptomic
+bash create_coverage_plots_importins_over_mock.sh \
+ "${Bowtie2_out_dir}"/filtered/q10
+
+
+
 
 
 
