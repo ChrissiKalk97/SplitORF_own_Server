@@ -4,6 +4,7 @@ import os.path
 from Bio import SeqIO
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def assign_trans_IDs_to_source(ref_fastas):
@@ -43,6 +44,7 @@ def plot_summary(summary_mapping_stats_df, outdir, raw=False, figsize=(12, 6)):
     summary_mapping_stats_df_t = summary_mapping_stats_df_t * 100
     summary_mapping_stats_df_t = summary_mapping_stats_df_t[summary_mapping_stats_df_t.index.str.contains(
         'percentage')]
+    summary_mapping_stats_df_t = summary_mapping_stats_df_t.sort_index()
 
     # rename columns for better readability
     summary_mapping_stats_df_t = summary_mapping_stats_df_t.rename(columns={'Ens_Gencode_lncRNA_ncRNA': 'ncRNA',
@@ -59,35 +61,38 @@ def plot_summary(summary_mapping_stats_df, outdir, raw=False, figsize=(12, 6)):
 
     sample_names = ['_'.join(x[2:9]) if 'RR' in x else '_'.join(
         x[2:8]) for x in mRNA_df.index.str.split('_')]
+
+    x = np.arange(len(sample_names))  # Numeric x-axis positions
+
     plt.figure(figsize=figsize)
     plt.bar(sample_names, ncRNA_df,
             color='#40A3CD', label='ncRNA')
-    plt.bar(sample_names, tRNA_df, bottom=ncRNA_df,
+    plt.bar(x, tRNA_df, bottom=ncRNA_df,
             color='#019c91', label='tRNA')
-    plt.bar(sample_names, rRNA_df, bottom=ncRNA_df + tRNA_df,
+    plt.bar(x, rRNA_df, bottom=ncRNA_df + tRNA_df,
             color='#b79165', label='rRNA')
-    plt.bar(sample_names, mt_df, bottom=ncRNA_df + tRNA_df + rRNA_df,
+    plt.bar(x, mt_df, bottom=ncRNA_df + tRNA_df + rRNA_df,
             color='orange', label='MT')
-    plt.bar(sample_names, mRNA_df, bottom=ncRNA_df + tRNA_df +
+    plt.bar(x, mRNA_df, bottom=ncRNA_df + tRNA_df +
             rRNA_df + mt_df, color='#c73832', label='mRNA')
 
     # add percentage labels
-    add_labels(sample_names, mRNA_df, ncRNA_df + tRNA_df + rRNA_df + mt_df)
-    add_labels(sample_names, mt_df, ncRNA_df + tRNA_df + rRNA_df)
-    add_labels(sample_names, rRNA_df, ncRNA_df + tRNA_df)
-    add_labels(sample_names, tRNA_df, ncRNA_df)
-    add_labels(sample_names, ncRNA_df, None)
+    add_labels(x, mRNA_df, ncRNA_df + tRNA_df + rRNA_df + mt_df)
+    add_labels(x, mt_df, ncRNA_df + tRNA_df + rRNA_df)
+    add_labels(x, rRNA_df, ncRNA_df + tRNA_df)
+    add_labels(x, tRNA_df, ncRNA_df)
+    add_labels(x, ncRNA_df, None)
 
     if raw:
         unmapped_filtered_df = summary_mapping_stats_df_t["filtered_unmapped"]
-        plt.bar(sample_names, unmapped_filtered_df, bottom=ncRNA_df +
+        plt.bar(x, unmapped_filtered_df, bottom=ncRNA_df +
                 tRNA_df + rRNA_df + mt_df + mRNA_df,
                 color='#FDDA0D', label='filtered_unmapped')
-        add_labels(sample_names, unmapped_filtered_df, ncRNA_df +
+        add_labels(x, unmapped_filtered_df, ncRNA_df +
                    tRNA_df + rRNA_df + mt_df + mRNA_df)
 
     plt.ylabel('Percentage')
-    plt.xticks(rotation=90)
+    plt.xticks(x, sample_names, rotation=90)
     plt.legend(title='RNA Type', loc='upper left', bbox_to_anchor=(1, 1))
     plt.title('Stacked Mapping Percentages per Sample')
 
