@@ -1,13 +1,36 @@
 library(DESeq2)
 library(stringr)
+library(tximportData)
+library(GenomicFeatures)
 
 args <- commandArgs(trailingOnly = TRUE)
 in_dir <- args[1]
 
 
 ################################################################################
-# READ IN IDX STATS                                                            #
+# READ IN QUANT.sf files                                                       #
 ################################################################################
+
+gtf <- "/projects/splitorfs/work/reference_files/clean_Ensembl_ref/Ensembl_equality_and_TSL_filtered.gtf"
+txdb.filename <- "/projects/splitorfs/work/reference_files/clean_Ensembl_ref/Ensembl_equality_and_TSL_filtered.sqlite"
+txdb <- makeTxDbFromGFF(gtf)
+saveDb(txdb, txdb.filename)
+
+txdb <- loadDb(txdb.filename)
+k <- keys(txdb, keytype = "TXNAME")
+tx2gene <- select(txdb, k, "GENEID", "TXNAME")
+
+
+
+get_name <- function(filename){
+  new_name <- file.path(in_dir, filename, "quant.sf")
+  return(new_name)
+}
+
+files <- lapply(list.files(in_dir), get_name)
+files <- unlist(files)
+txi <- tximport(files, type = "salmon", tx2gene = tx2gene)
+
 idx_files <- c()
 if (!(identical(
     list.files(in_dir,

@@ -4,33 +4,29 @@ INDIR=$1
 OUTDIR_FASTP=$2
 append_outfile=$3
 
-fq_files=()
-while IFS= read -r line; do
-    fq_files+=("$line")
-done < <(find "$INDIR" -type f -name "*_1.*fq.gz")
 
-# for FQ in "${fq_files[@]}"; 
-# do
-# SAMPLE=$(basename "$FQ")
-# SAMPLE=${SAMPLE%%_1*}     
-# FQ2=${FQ/_1.fq.gz/_2.fq.gz}
-# fastp \
-#     --in1 ${FQ} \
-#     --in2 ${FQ2} \
-#     --out1 ${OUTDIR_FASTP}/${SAMPLE}${append_outfile}.R1.fastp.fastq.gz \
-#     --out2 ${OUTDIR_FASTP}/${SAMPLE}${append_outfile}.R2.fastp.fastq.gz \
-#     --json ${OUTDIR_FASTP}/${SAMPLE}fastp.json \
-#     -h ${OUTDIR_FASTP}/${SAMPLE}fastp.html \
-#     --adapter_sequence  AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC \
-#     --adapter_sequence_r2 AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
-#     --trim_poly_g \
-#     --trim_poly_x \
-#     --overrepresentation_analysis \
-#     --thread 16 \
-#     --length_required 25 \
-#     --correction \
-#     --overlap_len_require 5
-# done
+for FQ in ${INDIR}/*_1.fq.gz; 
+do
+SAMPLE=$(basename "$FQ")
+SAMPLE=${SAMPLE%%_1*}     
+FQ2=${FQ/_1.fq.gz/_2.fq.gz}
+fastp \
+    --in1 ${FQ} \
+    --in2 ${FQ2} \
+    --out1 ${OUTDIR_FASTP}/${SAMPLE}${append_outfile}.R1.fastp.fastq.gz \
+    --out2 ${OUTDIR_FASTP}/${SAMPLE}${append_outfile}.R2.fastp.fastq.gz \
+    --json ${OUTDIR_FASTP}/${SAMPLE}fastp.json \
+    -h ${OUTDIR_FASTP}/${SAMPLE}fastp.html \
+    --adapter_sequence  AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC \
+    --adapter_sequence_r2 AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
+    --trim_poly_g \
+    --trim_poly_x \
+    --overrepresentation_analysis \
+    --thread 16 \
+    --length_required 25 \
+    --correction \
+    --overlap_len_require 5
+done
 # Parameters:
 # default quality filter: Q15
 # length required: not sure how long they will be after adapter

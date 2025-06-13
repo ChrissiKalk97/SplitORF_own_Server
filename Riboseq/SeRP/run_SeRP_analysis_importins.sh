@@ -11,6 +11,10 @@ fastpFASTQC="/projects/serp/work/Output/April_2025/importins/preprocess/fastp/fa
 Bowtie2_ref_fasta="/projects/splitorfs/work/reference_files/own_data_refs/Riboseq/Ignolia/Ignolia_transcriptome_and_contamination.fasta"
 Bowtie2_base_name="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/index"
 Bowtie2_out_dir="/projects/serp/work/Output/April_2025/importins/transcriptome_mapping"
+Genome_Fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
+EnsemblFilteredRef="/projects/splitorfs/work/reference_files/clean_Ensembl_ref/Ensembl_equality_and_TSL_filtered.gtf"
+SalmonRefDir="/projects/splitorfs/work/reference_files/clean_Ensembl_ref/Salmon"
+SalmonOutDir="/projects/serp/work/Output/April_2025/importins/Salmon/clean_Ens_ref"
 
 
 
@@ -42,8 +46,8 @@ Bowtie2_out_dir="/projects/serp/work/Output/April_2025/importins/transcriptome_m
 #  ${fastpOut} \
 #  ${Bowtie2_out_dir} \
 #  concat_transcriptome \
-#  /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out \
-#  > /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out 2>&1
+#  /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out #\
+ # > /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out 2>&1
 
 # python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_soft_clipping.py ${Bowtie2_out_dir}/filtered
 
@@ -54,34 +58,10 @@ Bowtie2_out_dir="/projects/serp/work/Output/April_2025/importins/transcriptome_m
 
 
 # Rscript  PCA_conditions_DeSeq2_SeRP_importins.R \
-#  "${Bowtie2_out_dir}"/filtered/q10
+# "${Bowtie2_out_dir}"/filtered/q10
 
 
-# if [ ! -d "${Bowtie2_out_dir}"/filtered/q10/DEGs ]; then
-#         mkdir "${Bowtie2_out_dir}"/filtered/q10/DEGs
-# fi
-
-# conda activate pygtftk
-# # obtain gene IDs of differentially expressed transcripts
-# python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/DEG_analysis/map_tids_to_gids_gtf.py \
-#  /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf \
-#  "${Bowtie2_out_dir}"/filtered/q10/DEGs/DEGs_CHX_A2_mock_mRNA.txt  \
-#  "${Bowtie2_out_dir}"/filtered/q10/DEGs/DEGs_CHX_A2_mock_mRNA_gene_IDs.txt 
-
-# python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/DEG_analysis/map_tids_to_gids_gtf.py \
-#  /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf \
-#  "${Bowtie2_out_dir}"/filtered/q10/DEGs/DEGs_CHX_B1_mock_mRNA.txt  \
-#  "${Bowtie2_out_dir}"/filtered/q10/DEGs/DEGs_CHX_B1_mock_mRNA_gene_IDs.txt 
-
-# python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/DEG_analysis/map_tids_to_gids_gtf.py \
-#  /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf \
-#  "${Bowtie2_out_dir}"/filtered/q10/DEGs/DEGs_CHX_A2_mock_mRNA_downreg.txt  \
-#  "${Bowtie2_out_dir}"/filtered/q10/DEGs/DEGs_CHX_A2_mock_mRNA_downreg_gene_IDs.txt 
-
-# python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/DEG_analysis/map_tids_to_gids_gtf.py \
-#  /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf \
-#  "${Bowtie2_out_dir}"/filtered/q10/DEGs/DEGs_CHX_B1_mock_mRNA_downreg.txt  \
-#  "${Bowtie2_out_dir}"/filtered/q10/DEGs/DEGs_CHX_B1_mock_mRNA_downreg_gene_IDs.txt 
+# bash map_DEG_tID_to_gID.sh "${Bowtie2_out_dir}"
 
 
 # conda activate Riboseq
@@ -96,11 +76,29 @@ Bowtie2_out_dir="/projects/serp/work/Output/April_2025/importins/transcriptome_m
 bash create_coverage_plots_importins_over_mock.sh \
  "${Bowtie2_out_dir}"/filtered/q10
 
+################################################################################
+# Check al counts with bam multicov                                            #
+################################################################################
 
+# faidx --transform bed ${Bowtie2_ref_fasta} > $(dirname ${Bowtie2_ref_fasta})/Ignolia_transcriptome_and_contamination.bed
 
+# reference_bed=$(dirname ${Bowtie2_ref_fasta})/Ignolia_transcriptome_and_contamination.bed
 
+# for bam in "${Bowtie2_out_dir}"/filtered/q10/*.bam; do
+    # bedtools multicov -bams $bam -bed $reference_bed > "${Bowtie2_out_dir}"/filtered/q10/$(basename $bam .bam)_mulitcov.bed
+#     diff <(cut -f 1,4 "${Bowtie2_out_dir}"/filtered/q10/$(basename $bam .bam)_mulitcov.bed)\
+#      <(cut -f 1,3  "${Bowtie2_out_dir}"/filtered/q10/$(basename $bam .bam)_idxstats.out)
+# done
 
-
+################################################################################
+# Salmon counts for DeSeq2                                                     #
+################################################################################
+# bash Salmon_quantification.sh \
+#   ${Genome_Fasta} \
+#   ${EnsemblFilteredRef} \
+#   ${SalmonRefDir} \
+#   ${fastpOut} \
+#   ${SalmonOutDir}
 
 
 

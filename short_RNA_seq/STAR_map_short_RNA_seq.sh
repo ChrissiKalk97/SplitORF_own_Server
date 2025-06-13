@@ -10,13 +10,18 @@ if [ ! -d ${STAR_out_dir} ]; then
     mkdir $STAR_out_dir
 fi
 
-# STAR \
-#  --runThreadN 16 \
-#  --runMode genomeGenerate \
-#  --genomeDir $STAR_index\
-#  --genomeFastaFiles $genome_fasta \
-#  --sjdbGTFfile $genome_annotation \
-#  --sjdbOverhang 149
+if [ ! -d ${STAR_out_dir}/index ]; then
+    mkdir $STAR_out_dir/index
+fi
+
+
+STAR \
+ --runThreadN 16 \
+ --runMode genomeGenerate \
+ --genomeDir $STAR_index\
+ --genomeFastaFiles $genome_fasta \
+ --sjdbGTFfile $genome_annotation \
+ --sjdbOverhang 149
 
 
 shopt -s nullglob
@@ -34,8 +39,8 @@ do
         --readFilesIn $FQ $FQ2\
         --readFilesCommand gunzip -c \
         --alignEndsType EndToEnd \
-        --alignSJoverhangMin 15 \
-        --alignSJDBoverhangMin 10 \
+        --alignSJoverhangMin 10 \
+        --alignSJDBoverhangMin 5 \
         --outFilterMultimapNmax 20 \
         --outFilterScoreMin 1 \
         --outFilterMismatchNmax 999 \
@@ -51,7 +56,10 @@ do
         
 done
 
-wait
+# wait
+
+
+
 
 # --outSAMstrandField intronMotif required for Stringtie, XS tag
 # --alignMatesGapMax 1000000 id the default

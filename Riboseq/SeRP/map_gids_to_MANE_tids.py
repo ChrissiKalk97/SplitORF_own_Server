@@ -14,13 +14,17 @@ def main():
         gid_tid_dict = {k.split('.')[0]: v for (k, v) in gid_tid_dict.items()}
         return gid_tid_dict
 
-    def map_tid_txt_to_gid_txt(gid_txt_file, gid_tid_dict, outfile_path, map_csv):
-        tid_series = pd.read_csv(gid_txt_file, sep=";", header=0)
-        tid_series = tid_series.iloc[1:, :]
-        tid_series.iloc[:, 0] = tid_series.iloc[:, 0].apply(
-            lambda x: x.split('.')[0])
+    def map_tid_txt_to_gid_txt(gid_txt_file, gid_tid_dict, outfile_path, map_csv, format='multirow'):
+        if format == 'multirow':
+            tid_series = pd.read_csv(gid_txt_file, sep=";", header=0)
+            tid_series = tid_series.iloc[1:, :]
+            tid_series.iloc[:, 0] = tid_series.iloc[:, 0].apply(
+                lambda x: x.split('.')[0])
+        else:
+            tid_series = pd.read_csv(gid_txt_file, header=None)
         tid_series['tid'] = tid_series.iloc[:, 0].map(gid_tid_dict)
-        tid_series.to_csv(map_csv)
+        if format == 'multirow':
+            tid_series.to_csv(map_csv)
         with open(outfile_path, 'w') as outfile:
             for tid in tid_series['tid'].dropna():
                 outfile.write(tid + '\n')
@@ -29,8 +33,10 @@ def main():
     gid_txt_file = sys.argv[2]
     outfile_path = sys.argv[3]
     map_csv = sys.argv[4]
+    format = sys.argv[5]
     gid_tid_dict = obtain_gid_tid_dict(gtf_path)
-    map_tid_txt_to_gid_txt(gid_txt_file, gid_tid_dict, outfile_path, map_csv)
+    map_tid_txt_to_gid_txt(gid_txt_file, gid_tid_dict,
+                           outfile_path, map_csv, format)
 
 
 if __name__ == "__main__":
