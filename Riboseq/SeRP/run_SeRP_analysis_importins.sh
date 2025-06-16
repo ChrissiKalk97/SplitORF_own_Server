@@ -40,13 +40,13 @@ SalmonOutDir="/projects/serp/work/Output/April_2025/importins/Salmon/clean_Ens_r
 # TRANSCRIPTOMIC ALIGNMENT                                                     #
 ################################################################################
 # align to transcriptome
-# source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie2_align_k1_only_R1.sh \
-#  ${Bowtie2_base_name} \
-#  no_index \
-#  ${fastpOut} \
-#  ${Bowtie2_out_dir} \
-#  concat_transcriptome \
-#  /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out #\
+source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie2_align_k1_only_R1.sh \
+ ${Bowtie2_base_name} \
+ no_index \
+ ${fastpOut} \
+ ${Bowtie2_out_dir} \
+ concat_transcriptome \
+ /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out #\
  # > /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out 2>&1
 
 # python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_soft_clipping.py ${Bowtie2_out_dir}/filtered
@@ -57,8 +57,8 @@ SalmonOutDir="/projects/serp/work/Output/April_2025/importins/Salmon/clean_Ens_r
 #  "${Bowtie2_out_dir}"/filtered/q10
 
 
-# Rscript  PCA_conditions_DeSeq2_SeRP_importins.R \
-# "${Bowtie2_out_dir}"/filtered/q10
+Rscript  PCA_conditions_DeSeq2_SeRP_importins.R \
+"${Bowtie2_out_dir}"/filtered/q10
 
 
 # bash map_DEG_tID_to_gID.sh "${Bowtie2_out_dir}"
@@ -73,8 +73,8 @@ SalmonOutDir="/projects/serp/work/Output/April_2025/importins/Salmon/clean_Ens_r
 ################################################################################
 # SeRP coverage plots                                                          #
 ################################################################################
-bash create_coverage_plots_importins_over_mock.sh \
- "${Bowtie2_out_dir}"/filtered/q10
+# bash create_coverage_plots_importins_over_mock.sh \
+#  "${Bowtie2_out_dir}"/filtered/q10
 
 ################################################################################
 # Check al counts with bam multicov                                            #
@@ -90,15 +90,7 @@ bash create_coverage_plots_importins_over_mock.sh \
 #      <(cut -f 1,3  "${Bowtie2_out_dir}"/filtered/q10/$(basename $bam .bam)_idxstats.out)
 # done
 
-################################################################################
-# Salmon counts for DeSeq2                                                     #
-################################################################################
-# bash Salmon_quantification.sh \
-#   ${Genome_Fasta} \
-#   ${EnsemblFilteredRef} \
-#   ${SalmonRefDir} \
-#   ${fastpOut} \
-#   ${SalmonOutDir}
+
 
 
 
