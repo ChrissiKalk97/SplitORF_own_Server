@@ -81,29 +81,54 @@ UMI_dedup_outdir_transcriptomic="/projects/splitorfs/work/Riboseq/Output/Michi_V
 # TRANSCRIPTOMIC DEDUPLICATION                                                 #
 ################################################################################
 # deduplicate UMIs
-source deduplication/deduplicate_umi_tools.sh \
- ${UMI_Indir_transcriptomic}/filtered/q10 \
- ${UMI_Indir_transcriptomic}/filtered/q10/dedup \
- transcriptomic
+# source deduplication/deduplicate_umi_tools.sh \
+#  ${UMI_Indir_transcriptomic}/filtered/q10 \
+#  ${UMI_Indir_transcriptomic}/filtered/q10/dedup \
+#  transcriptomic
 
 
-source deduplication/deduplicate_umi_tools.sh \
- ${UMI_Indir_transcriptomic}/filtered \
- $UMI_dedup_outdir_transcriptomic/ \
- transcriptomic
+# source deduplication/deduplicate_umi_tools.sh \
+#  ${UMI_Indir_transcriptomic}/filtered \
+#  $UMI_dedup_outdir_transcriptomic/ \
+#  transcriptomic
 
 
 
 # count soft clipping in transcriptomic alignments
-python alignments/analyze_soft_clipping.py $UMI_dedup_outdir_transcriptomic
+# python alignments/analyze_soft_clipping.py $UMI_dedup_outdir_transcriptomic
 
-Rscript alignments/PCA_conditions_DeSeq2.R $UMI_dedup_outdir_transcriptomic
+if [ ! -d ${UMI_Indir_transcriptomic}/filtered/q10/dedup/DEGs ]; then
+    mkdir ${UMI_Indir_transcriptomic}/filtered/q10/dedup/DEGs
+fi
+# Rscript alignments/PCA_conditions_DeSeq2.R ${UMI_Indir_transcriptomic}/filtered/q10/dedup
 
-# FILTER TO KEEP ONLY MRNA MAPPING READS FOR DOWNSTREAM PURPOSES
-# MOVE THE SCATTERPLOTS HERE
-bash alignments/create_correlation_plots_Riboseq.sh ${UMI_Indir_transcriptomic}/filtered/q10/dedup
+# conda activate pygtftk
+# # obtain gene IDs of differentially expressed transcripts
+# python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/DEG_analysis/map_tids_to_gids_gtf.py \
+#  /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf \
+#  ${UMI_Indir_transcriptomic}/filtered/q10/dedup/DEGs/hypo_vs_norm_Riboseq_DEGs_1.txt \
+#  ${UMI_Indir_transcriptomic}/filtered/q10/dedup/DEGs/hypo_vs_norm_Riboseq_DEGs_gene_ids_1.txt
+
+#  python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/DEG_analysis/map_tids_to_gids_gtf.py \
+#  /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf \
+#  ${UMI_Indir_transcriptomic}/filtered/q10/dedup/DEGs/hypo_vs_norm_downreg_Riboseq_DEGs_1.txt \
+#  ${UMI_Indir_transcriptomic}/filtered/q10/dedup/DEGs/hypo_vs_norm_downreg_Riboseq_DEGs_gene_ids_1.txt
+
+#   python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/DEG_analysis/map_tids_to_gids_gtf.py \
+#  /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf \
+#  ${UMI_Indir_transcriptomic}/filtered/q10/dedup/DEGs/hypo_vs_norm_up_down_Riboseq_DEGs_1.txt \
+#  ${UMI_Indir_transcriptomic}/filtered/q10/dedup/DEGs/hypo_vs_norm_up_down_Riboseq_DEGs_gene_ids_1.txt
 
 
+# # FILTER TO KEEP ONLY MRNA MAPPING READS FOR DOWNSTREAM PURPOSES
+# # MOVE THE SCATTERPLOTS HERE
+# bash alignments/create_correlation_plots_Riboseq.sh ${UMI_Indir_transcriptomic}/filtered/q10/dedup
+
+if [ ! -d ${UMI_Indir_transcriptomic}/Ribowaltz ]; then
+    mkdir ${UMI_Indir_transcriptomic}/Ribowaltz
+fi
+
+# Rscript Ribowaltz/RiboWaltz_Michi_Vlado_1_Ignolia_single_samples.R 
 
 ################################################################################
 # GENOMIC ALIGNMENT                                                            #
@@ -112,6 +137,27 @@ bash alignments/create_correlation_plots_Riboseq.sh ${UMI_Indir_transcriptomic}/
 STAR_index="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index"
 OutputSTAR="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1"
 # source alignments/genome_alignment_star.sh ${OutputSTAR} ${fastpOut} ${STAR_index}
+
+Ens110_dir="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_rRNA/Ens110"
+NCBI_dir="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_rRNA/NCBI"
+
+# source alignments/bowtie2_align_k1_only_R1.sh \
+#  ${Ens110_dir}/index \
+#  /projects/splitorfs/work/Riboseq/data/contamination/rRNA_transcripts_110.fasta \
+#  ${fastpOut} \
+#  $Ens110_dir \
+#  EnsrRNA \
+#  None
+
+#  source alignments/bowtie2_align_k1_only_R1.sh \
+#  ${NCBI_dir}/index \
+#  /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/rRNA/redownload/NCBI_rRNAs.fasta \
+#  ${fastpOut} \
+#  $NCBI_dir \
+#  NCBIrRNA \
+#  None
+ 
+
 
 # python /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random/analyze_mappings/analyze_STAR_alignments.py \
 #     /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1 \
@@ -136,24 +182,24 @@ UMI_dedup_outdir="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/al
 
 
 # filter out secondary and suppl alignments
-# files=("${UMI_dedup_outdir}"/*_dedup.bam)
+files=("${UMI_dedup_outdir}"/*_dedup.bam)
 
-# for bam in "${files[@]}"
-# do
-#     samtools view -F 256 -F 2048 -b ${bam} > \
-#      "${UMI_dedup_outdir}"/$(basename $bam .bam)_filtered.bam
+for bam in "${files[@]}"
+do
+    samtools view -F 256 -F 2048 -q 10 -b ${bam} > \
+     "${UMI_dedup_outdir}"/$(basename $bam .bam)_filtered.bam
 
-#      samtools index "${UMI_dedup_outdir}"/$(basename $bam .bam)_filtered.bam
+     samtools index "${UMI_dedup_outdir}"/$(basename $bam .bam)_filtered.bam
 
-#      samtools idxstats "${UMI_dedup_outdir}"/$(basename $bam .bam)_filtered.bam > \
-#     "${UMI_dedup_outdir}"/$(basename $bam .bam)_filtered_idxstats.out
+     samtools idxstats "${UMI_dedup_outdir}"/$(basename $bam .bam)_filtered.bam > \
+    "${UMI_dedup_outdir}"/$(basename $bam .bam)_filtered_idxstats.out
 
-#     samtools stats "${UMI_dedup_outdir}"/$(basename $bam .bam)_filtered.bam > \
-#     "${UMI_dedup_outdir}"/$(basename $bam .bam)_filtered_stats.out
+    samtools stats "${UMI_dedup_outdir}"/$(basename $bam .bam)_filtered.bam > \
+    "${UMI_dedup_outdir}"/$(basename $bam .bam)_filtered_stats.out
 
-#     samtools flagstat "${UMI_dedup_outdir}"/$(basename $bam .bam)_filtered.bam > \
-#     "${UMI_dedup_outdir}"/$(basename $bam .bam)_filtered_flagstat.out
-# done
+    samtools flagstat "${UMI_dedup_outdir}"/$(basename $bam .bam)_filtered.bam > \
+    "${UMI_dedup_outdir}"/$(basename $bam .bam)_filtered_flagstat.out
+done
 
 
 # # # analyze soft clipping of genomic deduplciated reads
@@ -161,7 +207,7 @@ UMI_dedup_outdir="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/al
 
 
 # run FeatureCounts to get mapping percentages
-# Rscript preprocessing/analyze_mappings/genome_aligned_reads_biotype_counting.R
+Rscript preprocessing/analyze_mappings/genome_aligned_reads_biotype_counting.R
 
 
 
@@ -169,4 +215,4 @@ UMI_dedup_outdir="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/al
 ################################################################################
 # SO ANALYSIS OF GENOMIC ALIGNMENTS                                            #
 ################################################################################
-# bash Riboseq_SO_empirical_intersection/wrapper_empirical_intersection_random_resample.sh
+bash Riboseq_SO_empirical_intersection/wrapper_empirical_intersection_random_resample.sh

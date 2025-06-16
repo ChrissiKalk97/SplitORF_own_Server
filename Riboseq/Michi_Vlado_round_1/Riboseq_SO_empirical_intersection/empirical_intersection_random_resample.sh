@@ -101,7 +101,7 @@ present_chromosomes=$out_path/$(basename $Ribobam _dedup_filtered.bam)_chromosom
 
 
 echo "intersecting with unique regions"
-intersectBedfile="${outname}"_intersect_counts_sorted.bed
+intersectBedfile="${random_region_path}"/"$(basename $outname)"_intersect_counts_sorted.bed
 
 
 sorted_bedfile=$out_path/$(basename $Ribobam _dedup_filtered.bam)_chrom_sort.bed
@@ -159,7 +159,7 @@ for i in {1..20}; do
 
   # debug mode on
   # set -x 
-  randomintersectfile="${outname}"_${i}_random_intersect_counts.bed
+  randomintersectfile="${random_region_path}"/"$(basename $outname)"_${i}_random_intersect_counts.bed
   bedtools intersect\
     -s\
     -wao\
