@@ -13,28 +13,46 @@ def load_TranslationAI(TIS_results):
     return TIS_results_df
 
 
-def load_SO_results(SO_results):
-    predicted_SO_ORFs = pd.read_csv(SO_results, header=0, sep='\t')
-    SO_transcripts = predicted_SO_ORFs['OrfTransID'].to_list()
-    predicted_SO_ORFs['OrfPos'] = predicted_SO_ORFs['OrfPos'].apply(
+def load_so_results(so_results):
+    predicted_so_orfs = pd.read_csv(so_results, header=0, sep='\t')
+    so_transcripts = predicted_so_orfs['OrfTransID'].to_list()
+    predicted_so_orfs['OrfPos'] = predicted_so_orfs['OrfPos'].apply(
         lambda x: x.split(','))
-    predicted_SO_ORFs['OrfStarts'] = predicted_SO_ORFs['OrfPos'].apply(
+    predicted_so_orfs['OrfStarts'] = predicted_so_orfs['OrfPos'].apply(
         lambda x: [y.split('-')[0] for y in x])
     # get Id to match the TIS transformer output one!
-    predicted_SO_ORFs['nr_SO_starts'] = predicted_SO_ORFs['OrfPos'].apply(
+    predicted_so_orfs['nr_SO_starts'] = predicted_so_orfs['OrfPos'].apply(
         lambda x: len(x))
-    return predicted_SO_ORFs, SO_transcripts
+    return predicted_so_orfs, so_transcripts
 
 
 def load_Ensembl_canonical(Ensembl_path):
-    Ensembl_canonical_starts = pd.read_csv(Ensembl_path, sep ='\t', header = 0, encoding="utf-8")
+    Ensembl_canonical_starts = pd.read_csv(
+        Ensembl_path, sep='\t', header=0, encoding="utf-8")
     print(Ensembl_canonical_starts.columns)
     Ensembl_canonical_starts = Ensembl_canonical_starts.groupby('Transcript stable ID').agg({'Gene stable ID': 'first',
-                                                                  'cDNA coding start': 'min',
-                                                                  'cDNA coding end': 'max'})
-    Ensembl_canonical_starts['cDNA coding start'] = Ensembl_canonical_starts['cDNA coding start'].apply(lambda x: int(x) - 1)
-    Ensembl_canonical_starts['cDNA coding end'] = Ensembl_canonical_starts['cDNA coding end'].apply(lambda x: int(x) - 1)
+                                                                                             'cDNA coding start': 'min',
+                                                                                             'cDNA coding end': 'max'})
+    Ensembl_canonical_starts['cDNA coding start'] = Ensembl_canonical_starts['cDNA coding start'].apply(
+        lambda x: int(x) - 1)
+    Ensembl_canonical_starts['cDNA coding end'] = Ensembl_canonical_starts['cDNA coding end'].apply(
+        lambda x: int(x) - 1)
     Ensembl_canonical_starts = Ensembl_canonical_starts.reset_index()
-    Ensembl_canonical_starts.rename(columns={'Transcript stable ID': 'OrfTransID'}, inplace = True)
+    Ensembl_canonical_starts.rename(
+        columns={'Transcript stable ID': 'OrfTransID'}, inplace=True)
     return Ensembl_canonical_starts
-    
+
+
+def load_DNA_UR_df(UR_path):
+    DNA_UR_df = pd.read_csv(UR_path, sep='\t', header=None, names=[
+                            'chr', 'start', 'stop', 'ID', 'score', 'strand'])
+    DNA_UR_df['OrfID'] = DNA_UR_df['ID'].str.split(':').apply(lambda x: x[1])
+    DNA_UR_df['OrfTransID'] = DNA_UR_df['ID'].str.split(
+        ':').apply(lambda x: x[0])
+
+    nr_orfs_with_UR = len(DNA_UR_df['OrfID'].unique())
+    nr_transcripts_with_UR = len(DNA_UR_df['OrfTransID'].unique())
+    print('Number of ORFs with unique region', nr_orfs_with_UR)
+    print('Number of transcripts with unique region', nr_transcripts_with_UR)
+
+    return DNA_UR_df, nr_orfs_with_UR, nr_transcripts_with_UR
