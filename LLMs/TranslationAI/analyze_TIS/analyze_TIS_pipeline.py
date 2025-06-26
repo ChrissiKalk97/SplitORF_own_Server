@@ -7,7 +7,8 @@ from data_loader import load_TranslationAI, load_so_results, load_DNA_UR_df
 from helper_functions_analysis import nr_trans_and_mean_probs, get_TransAI_so_info, merge_df, \
     preprocess_k4neo_data, get_trans_ai_so_preds_df, \
     explode_so_df, subset_validated_sos_df, val_so_by_position, all_URs_by_position, \
-    val_perc_first_middle_last_orfs_csv, get_so_position_in_transcript
+    val_perc_first_middle_last_orfs_csv, get_so_position_in_transcript, \
+    compare_so_set_probabilities_by_position
 from analysis_steps import perform_so_background_analysis, validated_so_per_sample_analysis, \
     RiboTISH_analysis
 from plotting import plot_start_prob_by_orf_position, \
@@ -100,6 +101,8 @@ def main(TIS_results, so_results, Ribo_coverage_path, RiboTISH_path, Ensembl_can
         all_predicted_so_orfs)
     all_so_trans_ai_df = get_trans_ai_so_preds_df(
         TransAI_so_preds, all_predicted_so_orfs)
+    compare_so_set_probabilities_by_position(
+        all_so_trans_ai_df, DNA_UR_df, val_so_trans_ai_df, region_type, outdir)
 
     plot_start_prob_by_orf_position(val_so_trans_ai_df,
                                     'Probability of Riboseq validated ORFs by ORF position',
@@ -138,12 +141,12 @@ if __name__ == "__main__":
     k4neo_path = args.k4neo_path
     Ensembl_canonical_path = args.Ensembl_canonical_path
 
-    TIS_results = '/projects/splitorfs/work/LLMs/TranslationAI/Output/NMD_trnascripts_110_for_TranslationAI.fa_predTIS_0.0000001.txt'
-    so_results = '/projects/splitorfs/work/LLMs/TIS_transformer/Input/SO_pipeline_results/UniqueProteinORFPairs_NMD.txt'
-    Ribo_coverage_path = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/NMD_genome'
-    RiboTISH_path = '/projects/splitorfs/work/Riboseq/Output/RiboTISH_NMD_custom'
-    Ensembl_canonical_path = '/projects/splitorfs/work/LLMs/TranslationAI/Input/NMD_transcripts_cDNA_coordinates.txt'
-    k4neo_path = '/projects/splitorfs/work/LLMs/TranslationAI/Input/k4neo_val_transcripts/NMD_transcripts_found_with_k4neo.txt'
+    # TIS_results = '/projects/splitorfs/work/LLMs/TranslationAI/Output/NMD_trnascripts_110_for_TranslationAI.fa_predTIS_0.0000001.txt'
+    # so_results = '/projects/splitorfs/work/LLMs/TIS_transformer/Input/SO_pipeline_results/UniqueProteinORFPairs_NMD.txt'
+    # Ribo_coverage_path = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/NMD_genome'
+    # RiboTISH_path = '/projects/splitorfs/work/Riboseq/Output/RiboTISH_NMD_custom'
+    # Ensembl_canonical_path = '/projects/splitorfs/work/LLMs/TranslationAI/Input/NMD_transcripts_cDNA_coordinates.txt'
+    # k4neo_path = '/projects/splitorfs/work/LLMs/TranslationAI/Input/k4neo_val_transcripts/NMD_transcripts_found_with_k4neo.txt'
 
     resultdir = os.path.dirname(TIS_results)
     region_type = os.path.basename(so_results).split('_')[1].split('.')[0]

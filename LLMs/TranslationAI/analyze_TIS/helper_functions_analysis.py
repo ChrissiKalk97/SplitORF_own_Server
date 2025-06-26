@@ -5,7 +5,7 @@ import pandas as pd
 from scipy import stats
 from pybedtools import BedTool
 
-from plotting import plot_three_category_pie
+from plotting import plot_three_category_pie, plot_so_start_probs_by_position_box
 
 #################################################################################
 # ------------------ ALL PRED SO AGAISNT BACKGROUND          ------------------ #
@@ -137,15 +137,12 @@ def analyze_emp_background_riboseq(empirical_Ribo_findings_file, df_merged):
         lambda x: x.split(':')[0].split('|')[1])
     Ribo_results_significant_df['genomic_UR'] = Ribo_results_significant_df['new_name'].apply(
         lambda x: x.split(':')[-1])
+    # in case an ORF has several URs, select the first entry
     Ribo_results_significant_df = Ribo_results_significant_df.groupby(
-        'genomic_UR').agg('first').copy()
+        'ORF').agg('first').copy()
     Ribo_results_significant_df = Ribo_results_significant_df.reset_index()
-
     Ribo_df_merged, Ribo_df_merged_first, Ribo_df_merged_second = get_orf_start_probs(
         Ribo_results_significant_df, df_merged)
-
-    print('Nr validated ORFs not being the first',
-          sum(Ribo_df_merged['OrfNumber'] > 1))
 
     return Ribo_df_merged, Ribo_df_merged_first, Ribo_df_merged_second, sample
 
@@ -169,12 +166,6 @@ def count_orfs_by_position(so_df):
     nr_last_orfs = sum(so_df['OrfPosition'] == 'last')
     return nr_first_orfs, nr_middle_orfs, nr_last_orfs
 
-
-# def subset_orfs_by_position(so_df):
-#     first_orfs_df = sum(so_df['OrfPosition'] == 'first')
-#     middle_orfs_df = sum(so_df['OrfPosition'] == 'middle')
-#     last_orfs_df = sum(so_df['OrfPosition'] == 'last')
-#     return first_orfs_df, middle_orfs_df, last_orfs_df
 
 def print_validation_percentage(nr_val, nr_total):
     val_perc = nr_val/nr_total
@@ -283,7 +274,7 @@ def get_trans_ai_so_preds_df(TransAI_so_preds, validated_so_df):
     TransAI_so_preds_subset = TransAI_so_preds.loc[:, [
         'OrfTransID', 'TIS_dict', 'TIS_pos_list']].copy()
     validated_so_df_subset = validated_so_df.loc[:, [
-        'OrfTransID', 'OrfIDs', 'OrfStarts', 'OrfStart', 'OrfIndex', 'OrfPosition']].copy()
+        'OrfTransID', 'OrfIDs', 'OrfStarts', 'OrfStart', 'OrfID', 'OrfIndex', 'OrfPosition']].copy()
     validated_so_df_subset['OrfNumber'] = validated_so_df_subset['OrfIndex'] + 1
 
     val_so_trans_ai_df, _, _ = get_orf_start_probs(
@@ -291,15 +282,49 @@ def get_trans_ai_so_preds_df(TransAI_so_preds, validated_so_df):
     return val_so_trans_ai_df
 
 
-def compare_so_set_probabilities_by_position(all_so_trans_ai_df, DNA_UR_df, val_so_trans_ai_df):
-    pass
-    # get all URs SO IDs from DNA_UR_df
-    # get all val IDs from val_so_trans_si_Df
-    # all URs-val: UR but not validated
-    # all SO - all URs: no UR
-    # assign these classes to each of the SOs in the all_so_trans_ai_df
-    # for first, middle, last,plot box by SO set
-    # compute a test (UR val vs UR non-val, maybe also UR val vs no UR, but less important)
+# def subset_so_df_by_position(so_df):
+#     first_orfs_df = so_df[so_df['OrfPosition'] == 'first'].copy()
+#     middle_orfs_df = so_df[so_df['OrfPosition'] == 'middle'].copy()
+#     last_orfs_df = so_df[so_df['OrfPosition'] == 'last'].copy()
+#     return first_orfs_df, middle_orfs_df, last_orfs_df
+
+# def test_differences_in_start_probs_by_so_position_and_class(all_so_trans_ai_df):
+#     first_orfs_df, middle_orfs_df, last_orfs_df = subset_so_df_by_position(all_so_trans_ai_df)
+
+#     first_orfs_df['SO_class']
+#     result_one_sided = stats.ranksums(
+#     background_transcripts_df[f'{nr_start}_start'], df_merged[f'{nr_start}_start_SO'], alternative='less')
+
+
+def compare_so_set_probabilities_by_position(all_so_trans_ai_df, DNA_UR_df, val_so_trans_ai_df, region_type, outdir):
+    all_so_trans_ai_df['SO_class'] = 'SO without UR'
+    so_with_ur_list = DNA_UR_df['OrfID'].to_list()
+    so_validated_list = val_so_trans_ai_df['OrfID'].to_list()
+    so_with_ur_not_validated_list = [
+        so for so in so_with_ur_list if so not in so_validated_list]
+
+    all_so_trans_ai_df.loc[all_so_trans_ai_df['OrfID'].isin(
+        so_validated_list), 'SO_class'] = 'validated'
+    all_so_trans_ai_df.loc[all_so_trans_ai_df['OrfID'].isin(
+        so_with_ur_not_validated_list), 'SO_class'] = 'SO with UR not validated'
+
+    plot_so_start_probs_by_position_box(
+        all_so_trans_ai_df, 'Boxplot of start probabilities by SO position and SO class', region_type, outdir)
+
+
+def identify_overlapping_unique_regions(validated_so_df, DNA_UR_df):
+    DNA_UR_df = DNA_UR_df[DNA_UR_df['OrfID'].isin(
+        validated_so_df['OrfID'])].copy()
+    DNA_UR_df['OrfPosition'] = DNA_UR_df['OrfID'].map(
+        validated_so_df.set_index('OrfID')['OrfPosition'])
+    DNA_UR_df['genomic_UR'] = DNA_UR_df['chr'].astype(
+        str) + '_' + DNA_UR_df['start'].astype(str) + '_' + DNA_UR_df['stop'].astype(str)
+    DNA_UR_grouped_df = DNA_UR_df.groupby('genomic_UR')[['OrfID', 'OrfPosition']] \
+        .agg(list) \
+        .reset_index()
+    DNA_UR_grouped_df['ORFs_sharing_region'] = DNA_UR_grouped_df['OrfPosition'].apply(
+        lambda x: len(x))
+    DNA_UR_distinct_df = DNA_UR_grouped_df[DNA_UR_grouped_df['ORFs_sharing_region'] == 1]
 
 
 #################################################################################
@@ -401,8 +426,7 @@ def obtain_correct_orf_RiboTISH(UR_BedTool, RiboTISH_BedTool):
         'rt_stop': 'first',
         'rt_strand': 'first',
         'nr_bp': 'sum'}).copy()
-    # print('length after aggregation', len(
-    #     URs_found_in_RiboTISH_df.index))
+
     URs_found_in_RiboTISH_df = URs_found_in_RiboTISH_df.reset_index()
 
     # filter for the wrong transcript
@@ -412,8 +436,6 @@ def obtain_correct_orf_RiboTISH(UR_BedTool, RiboTISH_BedTool):
         lambda x: re.split(r'[:\|]', x)[1])
     URs_found_in_RiboTISH_df = URs_found_in_RiboTISH_df[
         URs_found_in_RiboTISH_df['Tid_RT'] == URs_found_in_RiboTISH_df['Tid_UR']]
-    # print('nr regions after  Tid filtering',
-    #         len(URs_found_in_RiboTISH_df.index))
 
     # calculate the UR length
     URs_found_in_RiboTISH_df['UR_length'] = URs_found_in_RiboTISH_df['name'].apply(
@@ -422,16 +444,12 @@ def obtain_correct_orf_RiboTISH(UR_BedTool, RiboTISH_BedTool):
     # even though: is that correct? If I now only have one coordinate min max???
     URs_found_in_RiboTISH_df = URs_found_in_RiboTISH_df[
         URs_found_in_RiboTISH_df['UR_length'] == URs_found_in_RiboTISH_df['nr_bp']].copy()
-    # print('nr regions after bp overlap filtering',
-    #         len(URs_found_in_RiboTISH_df.index))
 
     idx_max = URs_found_in_RiboTISH_df.groupby('rt_name')[
         'nr_bp'].idxmax()
 
     # Filter the DataFrame to keep only those rows with the maximum 'col2' values
     URs_found_in_RiboTISH_df = URs_found_in_RiboTISH_df.loc[idx_max].copy()
-    print('nr regions aftermax bp overlap filtering for dups',
-          len(URs_found_in_RiboTISH_df.index))
 
     return URs_found_in_RiboTISH_df
 
