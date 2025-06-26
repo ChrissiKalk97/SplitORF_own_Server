@@ -313,19 +313,45 @@ def compare_so_set_probabilities_by_position(all_so_trans_ai_df, DNA_UR_df, val_
 
 
 def identify_overlapping_unique_regions(validated_so_df, DNA_UR_df):
+    # filter for validated ORFs
     DNA_UR_df = DNA_UR_df[DNA_UR_df['OrfID'].isin(
         validated_so_df['OrfID'])].copy()
-    DNA_UR_df['OrfPosition'] = DNA_UR_df['OrfID'].map(
-        validated_so_df.set_index('OrfID')['OrfPosition'])
+
+    # map ORF positions to IDs
+    orf_id_position_map = validated_so_df.set_index('OrfID')['OrfPosition']
+    DNA_UR_df['OrfPosition'] = DNA_UR_df['OrfID'].map(orf_id_position_map
+                                                      )
+
+    # concatenate genomic regions
     DNA_UR_df['genomic_UR'] = DNA_UR_df['chr'].astype(
         str) + '_' + DNA_UR_df['start'].astype(str) + '_' + DNA_UR_df['stop'].astype(str)
+
+    # groupby genomic regions: get OrfIDs and positions as list, convert to set,
+    # count how many ORFs share that region
     DNA_UR_grouped_df = DNA_UR_df.groupby('genomic_UR')[['OrfID', 'OrfPosition']] \
         .agg(list) \
         .reset_index()
-    DNA_UR_grouped_df['ORFs_sharing_region'] = DNA_UR_grouped_df['OrfPosition'].apply(
+    DNA_UR_grouped_df['OrfPosition_set'] = DNA_UR_grouped_df['OrfPosition'].apply(
+        lambda x: set(x))
+    DNA_UR_grouped_df['ORFs_sharing_region'] = DNA_UR_grouped_df['OrfPosition_set'].apply(
         lambda x: len(x))
-    DNA_UR_distinct_df = DNA_UR_grouped_df[DNA_UR_grouped_df['ORFs_sharing_region'] == 1]
 
+    # get distinct number of URs that are either only part of one ORF or shared
+    # among the same position
+    DNA_UR_exploded_df = DNA_UR_grouped_df.explode(
+        ['OrfID', 'OrfPosition'], ignore_index=True).copy()
+    DNA_UR_exploded_df = DNA_UR_exploded_df.groupby('OrfID').agg({
+        'genomic_UR': 'first',
+        'OrfPosition': 'first',
+        'ORFs_sharing_region': 'max'
+    }).reset_index().copy()
+    DNA_UR_exploded_df = DNA_UR_exploded_df.groupby('genomic_UR').agg({
+        'OrfID': 'first',
+        'OrfPosition': 'first',
+        'ORFs_sharing_region': 'max'
+    }).reset_index().copy()
+    DNA_UR_distinct_df = DNA_UR_exploded_df[DNA_UR_exploded_df['ORFs_sharing_region'] == 1]
+    DNA_UR_distinct_df['OrfPosition'].value_counts()
 
 #################################################################################
 # ------------------ ENSMEBL CANONICAL                       ------------------ #
