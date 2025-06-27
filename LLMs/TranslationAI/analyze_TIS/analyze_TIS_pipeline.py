@@ -8,7 +8,7 @@ from helper_functions_analysis import nr_trans_and_mean_probs, get_TransAI_so_in
     preprocess_k4neo_data, get_trans_ai_so_preds_df, \
     explode_so_df, subset_validated_sos_df, val_so_by_position, all_URs_by_position, \
     val_perc_first_middle_last_orfs_csv, get_so_position_in_transcript, \
-    compare_so_set_probabilities_by_position
+    compare_so_set_probabilities_by_position, identify_overlapping_unique_regions
 from analysis_steps import perform_so_background_analysis, validated_so_per_sample_analysis, \
     RiboTISH_analysis
 from plotting import plot_start_prob_by_orf_position, \
@@ -55,7 +55,7 @@ def main(TIS_results, so_results, Ribo_coverage_path, RiboTISH_path, Ensembl_can
 
     # ----------- COMPARE SO TO BACKGROUND TRANSLATIONAI PREDICTIONS --------- #
     perform_so_background_analysis(
-        TIS_results_df, so_transcripts, df_merged, region_type, outdir)
+        TIS_results_df, so_transcripts, df_merged, region_type, os.path.join(outdir, 'plots'))
 
     all_predicted_so_orfs, predicted_so_orfs, total_nr_so = explode_so_df(
         predicted_so_orfs)
@@ -64,7 +64,7 @@ def main(TIS_results, so_results, Ribo_coverage_path, RiboTISH_path, Ensembl_can
     # ------------------ COMPARE WITH RIBOSEQ EMPIRICAL FINDINGS ------------------ #
     #################################################################################
     all_predicted_so_orfs = validated_so_per_sample_analysis(
-        df_merged, Ribo_coverage_path, outdir, region_type, all_predicted_so_orfs, Ensembl_canonical_path='')
+        df_merged, Ribo_coverage_path, os.path.join(outdir, 'plots', 'Riboseq_single_samples'), region_type, all_predicted_so_orfs, Ensembl_canonical_path='')
 
     validated_so_df, nr_validated_so, nr_validated_transcripts = subset_validated_sos_df(
         all_predicted_so_orfs)
@@ -75,15 +75,15 @@ def main(TIS_results, so_results, Ribo_coverage_path, RiboTISH_path, Ensembl_can
 
     # ------------------ PLOT VALIDATED TRANSCRIPT PROPORTIONS ------------------ #
     plot_val_so_sets(nr_orfs_with_UR, nr_validated_so,
-                     total_nr_so, outdir, region_type)
+                     total_nr_so, os.path.join(outdir, 'plots'), region_type)
 
     # ------------------ PLOT VALIDATED SO POSITIONS ------------------ #
     nr_val_first_orfs, nr_val_middle_orfs, nr_val_last_orfs = val_so_by_position(
-        validated_so_df, nr_validated_so, outdir, region_type)
+        validated_so_df, nr_validated_so, os.path.join(outdir, 'plots'), region_type)
 
     # ------------------ DNA URs among first, middle and last ORFs ------------------ #
     nr_first_orfs_ur, nr_middle_orfs_ur, nr_last_orfs_ur = all_URs_by_position(
-        DNA_UR_df, all_predicted_so_orfs, outdir, region_type)
+        DNA_UR_df, all_predicted_so_orfs, os.path.join(outdir, 'plots'), region_type)
 
     val_perc_first_middle_last_orfs_csv(nr_val_first_orfs,
                                         nr_val_middle_orfs,
@@ -91,7 +91,7 @@ def main(TIS_results, so_results, Ribo_coverage_path, RiboTISH_path, Ensembl_can
                                         nr_first_orfs_ur,
                                         nr_middle_orfs_ur,
                                         nr_last_orfs_ur,
-                                        outdir,
+                                        os.path.join(outdir, 'plots'),
                                         'validated_percentages_by_position.csv')
 
     # ------------------ TransSI probs of first, middle, last orfs ------------------ #
@@ -102,19 +102,22 @@ def main(TIS_results, so_results, Ribo_coverage_path, RiboTISH_path, Ensembl_can
     all_so_trans_ai_df = get_trans_ai_so_preds_df(
         TransAI_so_preds, all_predicted_so_orfs)
     compare_so_set_probabilities_by_position(
-        all_so_trans_ai_df, DNA_UR_df, val_so_trans_ai_df, region_type, outdir)
+        all_so_trans_ai_df, DNA_UR_df, val_so_trans_ai_df, region_type, os.path.join(outdir, 'plots'))
+
+    val_dna_overlapping_ur_df = identify_overlapping_unique_regions(
+        validated_so_df, DNA_UR_df, os.path.join(outdir, 'files'))
 
     plot_start_prob_by_orf_position(val_so_trans_ai_df,
                                     'Probability of Riboseq validated ORFs by ORF position',
                                     region_type,
-                                    outdir)
+                                    os.path.join(outdir, 'plots'))
 
     #################################################################################
     # ------------------ COMPARE WITH RIBOTISH VAL ORFS FINDINGS ------------------ #
     #################################################################################
     # create unique genomic region bedtool
     UR_BedTool = RiboTISH_analysis(
-        df_merged, region_type, RiboTISH_path, outdir, UR_path)
+        df_merged, region_type, RiboTISH_path, os.path.join(outdir, 'plots'), UR_path)
 
     #################################################################################
     # ------------------ COMPARE WITH K4NEO TRANSCRIPTS          ------------------ #
@@ -127,7 +130,7 @@ def main(TIS_results, so_results, Ribo_coverage_path, RiboTISH_path, Ensembl_can
             k4neo_path, UR_BedTool, df_merged)
 
         perform_so_background_analysis(
-            TransAI_so_preds, k4neo_validated_transcripts, k4neo_TransAI_preds, region_type, outdir, so='k4neo')
+            TransAI_so_preds, k4neo_validated_transcripts, k4neo_TransAI_preds, region_type, os.path.join(outdir, 'plots'), so='k4neo')
 
 
 if __name__ == "__main__":
@@ -141,20 +144,24 @@ if __name__ == "__main__":
     k4neo_path = args.k4neo_path
     Ensembl_canonical_path = args.Ensembl_canonical_path
 
-    # TIS_results = '/projects/splitorfs/work/LLMs/TranslationAI/Output/NMD_trnascripts_110_for_TranslationAI.fa_predTIS_0.0000001.txt'
-    # so_results = '/projects/splitorfs/work/LLMs/TIS_transformer/Input/SO_pipeline_results/UniqueProteinORFPairs_NMD.txt'
-    # Ribo_coverage_path = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/NMD_genome'
-    # RiboTISH_path = '/projects/splitorfs/work/Riboseq/Output/RiboTISH_NMD_custom'
-    # Ensembl_canonical_path = '/projects/splitorfs/work/LLMs/TranslationAI/Input/NMD_transcripts_cDNA_coordinates.txt'
-    # k4neo_path = '/projects/splitorfs/work/LLMs/TranslationAI/Input/k4neo_val_transcripts/NMD_transcripts_found_with_k4neo.txt'
+    TIS_results = '/projects/splitorfs/work/LLMs/TranslationAI/Output/NMD_trnascripts_110_for_TranslationAI.fa_predTIS_0.0000001.txt'
+    so_results = '/projects/splitorfs/work/LLMs/TIS_transformer/Input/SO_pipeline_results/UniqueProteinORFPairs_NMD.txt'
+    Ribo_coverage_path = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/NMD_genome'
+    RiboTISH_path = '/projects/splitorfs/work/Riboseq/Output/RiboTISH_NMD_custom'
+    Ensembl_canonical_path = '/projects/splitorfs/work/LLMs/TranslationAI/Input/NMD_transcripts_cDNA_coordinates.txt'
+    k4neo_path = '/projects/splitorfs/work/LLMs/TranslationAI/Input/k4neo_val_transcripts/NMD_transcripts_found_with_k4neo.txt'
 
     resultdir = os.path.dirname(TIS_results)
     region_type = os.path.basename(so_results).split('_')[1].split('.')[0]
 
-    os.makedirs(f'{resultdir}/plots', exist_ok=True)
-    os.makedirs(f'{resultdir}/plots/{region_type}', exist_ok=True)
-    outdir = f'{resultdir}/plots/{region_type}'
-    os.makedirs(f'{outdir}/RiboTISH', exist_ok=True)
+    os.makedirs(f'{resultdir}/analyze_TIS', exist_ok=True)
+    os.makedirs(f'{resultdir}/analyze_TIS/{region_type}', exist_ok=True)
+    os.makedirs(f'{resultdir}/analyze_TIS/{region_type}/plots', exist_ok=True)
+    os.makedirs(
+        f'{resultdir}/analyze_TIS/{region_type}/plots/Riboseq_single_samples', exist_ok=True)
+    os.makedirs(f'{resultdir}/analyze_TIS/{region_type}/files', exist_ok=True)
+    outdir = f'{resultdir}/analyze_TIS/{region_type}'
+    os.makedirs(f'{outdir}/plots/RiboTISH', exist_ok=True)
 
     main(TIS_results, so_results, Ribo_coverage_path,
          RiboTISH_path, Ensembl_canonical_path, k4neo_path)

@@ -312,46 +312,102 @@ def compare_so_set_probabilities_by_position(all_so_trans_ai_df, DNA_UR_df, val_
         all_so_trans_ai_df, 'Boxplot of start probabilities by SO position and SO class', region_type, outdir)
 
 
-def identify_overlapping_unique_regions(validated_so_df, DNA_UR_df):
+def calculate_overlapping_region_percentage(start1, end1, start2, end2):
+    if end1 <= start2 or end2 <= start1:
+        return 0
+    elif start1 < end2 and start2 < end1:
+        overlap_start = max(start2, start1)
+        overlap_end = min(end1, end2)
+        nr_bp_overlap = overlap_end - overlap_start
+        shorter_region = min(end2-start2, end1-start1)
+        return nr_bp_overlap/shorter_region
+
+
+def get_max_overlap_of_regions_in_df(chr_df):
+    for index1 in chr_df.index:
+        for index2 in chr_df.index:
+            if index1 != index2:
+                start1 = float(chr_df.iloc[index1]['start'])
+                end1 = float(chr_df.iloc[index1]['stop'])
+                start2 = float(chr_df.iloc[index2]['start'])
+                end2 = float(chr_df.iloc[index2]['stop'])
+                overlap = calculate_overlapping_region_percentage(
+                    start1, end1, start2, end2)
+                if overlap > 0.7:
+                    chr_df.iloc[index2]['OrfPositionsOverlapping'].add(
+                        chr_df.iloc[index1]['OrfPosition'])
+                    chr_df.iloc[index2]['OrfIDsOverlapping'].add(
+                        chr_df.iloc[index1]['OrfID'])
+                    chr_df.iloc[index1]['OrfPositionsOverlapping'].add(
+                        chr_df.iloc[index2]['OrfPosition'])
+                    chr_df.iloc[index1]['OrfIDsOverlapping'].add(
+                        chr_df.iloc[index2]['OrfID'])
+                if overlap > float(chr_df.iloc[index1]['OverlapPercentage']):
+                    chr_df.iloc[index2]['OverlapPercentage'] = overlap
+                if overlap > float(chr_df.iloc[index1]['OverlapPercentage']):
+                    chr_df.iloc[index2]['OverlapPercentage'] = overlap
+    return chr_df
+
+
+def identify_overlapping_unique_regions(validated_so_df, DNA_UR_df, outdir):
     # filter for validated ORFs
-    DNA_UR_df = DNA_UR_df[DNA_UR_df['OrfID'].isin(
+    val_dna_ur_df = DNA_UR_df[DNA_UR_df['OrfID'].isin(
         validated_so_df['OrfID'])].copy()
+
+    # group several exonic URs per ORF together
+    val_dna_ur_df = val_dna_ur_df.groupby('OrfID').agg({'start': 'min',
+                                                        'stop': 'max',
+                                                        'chr': 'first',
+                                                        'ID': 'first',
+                                                        'OrfTransID': 'first'}).reset_index().copy()
 
     # map ORF positions to IDs
     orf_id_position_map = validated_so_df.set_index('OrfID')['OrfPosition']
-    DNA_UR_df['OrfPosition'] = DNA_UR_df['OrfID'].map(orf_id_position_map
-                                                      )
+    val_dna_ur_df['OrfPosition'] = val_dna_ur_df['OrfID'].map(orf_id_position_map
+                                                              )
 
     # concatenate genomic regions
-    DNA_UR_df['genomic_UR'] = DNA_UR_df['chr'].astype(
-        str) + '_' + DNA_UR_df['start'].astype(str) + '_' + DNA_UR_df['stop'].astype(str)
+    val_dna_ur_df['genomic_UR'] = val_dna_ur_df['chr'].astype(
+        str) + '_' + val_dna_ur_df['start'].astype(str) + '_' + val_dna_ur_df['stop'].astype(str)
 
-    # groupby genomic regions: get OrfIDs and positions as list, convert to set,
-    # count how many ORFs share that region
-    DNA_UR_grouped_df = DNA_UR_df.groupby('genomic_UR')[['OrfID', 'OrfPosition']] \
-        .agg(list) \
-        .reset_index()
-    DNA_UR_grouped_df['OrfPosition_set'] = DNA_UR_grouped_df['OrfPosition'].apply(
-        lambda x: set(x))
-    DNA_UR_grouped_df['ORFs_sharing_region'] = DNA_UR_grouped_df['OrfPosition_set'].apply(
+    val_dna_ur_df['OverlapPercentage'] = 0.0
+    val_dna_ur_df['OrfPositionsOverlapping'] = val_dna_ur_df['OrfPosition'].apply(
+        lambda x: set([x]))
+    val_dna_ur_df['OrfIDsOverlapping'] = val_dna_ur_df['OrfID'].apply(
+        lambda x: set([x]))
+
+    # get > 70% overlapping URs
+    chr_dfs = {chr: chr_df.reset_index(drop=True).copy(
+    ) for chr, chr_df in val_dna_ur_df.groupby('chr')}
+    chr_dfs = {chr: get_max_overlap_of_regions_in_df(
+        chr_df) for chr, chr_df in chr_dfs.items()}
+    val_dna_overlapping_ur_df = pd.concat(
+        chr_dfs.values()).reset_index(drop=True).copy()
+
+    val_dna_overlapping_ur_df['ORFs_sharing_region'] = val_dna_overlapping_ur_df['OrfIDsOverlapping'].apply(
+        lambda x: len(x))
+    val_dna_overlapping_ur_df['shared_region_type'] = val_dna_overlapping_ur_df['OrfPositionsOverlapping'].apply(
         lambda x: len(x))
 
-    # get distinct number of URs that are either only part of one ORF or shared
-    # among the same position
-    DNA_UR_exploded_df = DNA_UR_grouped_df.explode(
-        ['OrfID', 'OrfPosition'], ignore_index=True).copy()
-    DNA_UR_exploded_df = DNA_UR_exploded_df.groupby('OrfID').agg({
-        'genomic_UR': 'first',
-        'OrfPosition': 'first',
-        'ORFs_sharing_region': 'max'
-    }).reset_index().copy()
-    DNA_UR_exploded_df = DNA_UR_exploded_df.groupby('genomic_UR').agg({
-        'OrfID': 'first',
-        'OrfPosition': 'first',
-        'ORFs_sharing_region': 'max'
-    }).reset_index().copy()
-    DNA_UR_distinct_df = DNA_UR_exploded_df[DNA_UR_exploded_df['ORFs_sharing_region'] == 1]
-    DNA_UR_distinct_df['OrfPosition'].value_counts()
+    # subset for single ORF having the UR or ORFs from the same position (first, middle last)
+    val_dna_overlapping_ur_df = val_dna_overlapping_ur_df[(val_dna_overlapping_ur_df['ORFs_sharing_region'] == 1) | (
+        val_dna_overlapping_ur_df['shared_region_type'] == 1)]
+
+    val_dna_overlapping_ur_df['OrfIDsOverlapping'] = val_dna_overlapping_ur_df['OrfIDsOverlapping'].apply(
+        lambda x: frozenset(x))
+
+    val_dna_overlapping_ur_df = val_dna_overlapping_ur_df.groupby('OrfIDsOverlapping').agg(
+        {'genomic_UR': 'first',
+         'ORFs_sharing_region': 'first',
+         'OrfPosition': 'first',
+         'OrfPositionsOverlapping': 'first',
+         'OrfIDsOverlapping': 'first'
+         }).reset_index(drop=True)
+
+    val_dna_overlapping_ur_df['OrfPosition'].value_counts(
+    ).reset_index().to_csv(os.path.join(outdir, 'distinct_URs_per_position.csv'))
+
+    return val_dna_overlapping_ur_df
 
 #################################################################################
 # ------------------ ENSMEBL CANONICAL                       ------------------ #
