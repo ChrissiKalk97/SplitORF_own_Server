@@ -13,8 +13,6 @@ Bowtie2_base_name="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/a
 Bowtie2_out_dir="/projects/serp/work/Output/April_2025/importins/transcriptome_mapping"
 Genome_Fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
 EnsemblFilteredRef="/projects/splitorfs/work/reference_files/clean_Ensembl_ref/Ensembl_equality_and_TSL_filtered.gtf"
-SalmonRefDir="/projects/splitorfs/work/reference_files/clean_Ensembl_ref/Salmon"
-SalmonOutDir="/projects/serp/work/Output/April_2025/importins/Salmon/clean_Ens_ref"
 
 
 
@@ -40,14 +38,14 @@ SalmonOutDir="/projects/serp/work/Output/April_2025/importins/Salmon/clean_Ens_r
 # TRANSCRIPTOMIC ALIGNMENT                                                     #
 ################################################################################
 # align to transcriptome
-source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie2_align_k1_only_R1.sh \
- ${Bowtie2_base_name} \
- no_index \
- ${fastpOut} \
- ${Bowtie2_out_dir} \
- concat_transcriptome \
- /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out #\
- # > /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out 2>&1
+# source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie2_align_k1_only_R1.sh \
+#  ${Bowtie2_base_name} \
+#  no_index \
+#  ${fastpOut} \
+#  ${Bowtie2_out_dir} \
+#  concat_transcriptome \
+#  /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out \
+ #> /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out 2>&1
 
 # python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_soft_clipping.py ${Bowtie2_out_dir}/filtered
 
@@ -57,8 +55,8 @@ source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowt
 #  "${Bowtie2_out_dir}"/filtered/q10
 
 
-Rscript  PCA_conditions_DeSeq2_SeRP_importins.R \
-"${Bowtie2_out_dir}"/filtered/q10
+# Rscript  PCA_conditions_DeSeq2_SeRP_importins.R \
+# "${Bowtie2_out_dir}"/filtered/q10
 
 
 # bash map_DEG_tID_to_gID.sh "${Bowtie2_out_dir}"
@@ -73,8 +71,8 @@ Rscript  PCA_conditions_DeSeq2_SeRP_importins.R \
 ################################################################################
 # SeRP coverage plots                                                          #
 ################################################################################
-# bash create_coverage_plots_importins_over_mock.sh \
-#  "${Bowtie2_out_dir}"/filtered/q10
+bash create_coverage_plots_importins_over_mock.sh \
+ "${Bowtie2_out_dir}"/filtered/q10
 
 ################################################################################
 # Check al counts with bam multicov                                            #

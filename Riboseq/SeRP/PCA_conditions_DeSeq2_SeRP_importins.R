@@ -208,6 +208,10 @@ perform_diff_analysis <- function(dds_mRNA, treatment, control, outname, in_dir)
         file.path(in_dir, "DEGs", outname)
     )
 
+    write.csv(res_treat_pval,
+    file=file.path(in_dir, "DEGs", paste(str_split(outname, "\\.")[[1]][1], "all_results_p_greater_0_05.csv", sep = "_")),
+    row.names=TRUE, quote=FALSE)
+
     writeLines(
         rownames(res_treat_pval[
             (res_treat_pval$padj < 0.05) & (res_treat_pval$log2FoldChange < -0.5),
