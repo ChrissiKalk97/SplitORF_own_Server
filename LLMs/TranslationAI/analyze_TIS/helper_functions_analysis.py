@@ -226,6 +226,32 @@ def subset_validated_sos_df(all_predicted_so_orfs):
     return validated_so_df, nr_validated_so, nr_validated_transcripts
 
 
+def subset_UR_for_expressed_genes(genes_to_keep_file, dna_ur_df, validated_so_df, df_merged):
+    # load genes to keep
+    genes_to_keep = pd.read_csv(genes_to_keep_file, header=None)
+
+    # get gene and transcript ID in dna_ur_df from name
+    dna_ur_df['gene'] = dna_ur_df['OrfTransID'].apply(
+        lambda x: x.split('|')[0])
+    dna_ur_df['tID'] = dna_ur_df['OrfTransID'].apply(
+        lambda x: x.split('|')[1])
+
+    # subset and count ORFs with URs for expressed genes
+    dna_ur_df_subset = dna_ur_df[(dna_ur_df['gene'].isin(genes_to_keep[0])) | (
+        dna_ur_df['tID'].isin(validated_so_df['OrfTransID']))]
+    nr_orfs_with_UR_expressed = len(dna_ur_df_subset['OrfID'].unique())
+    # nr_orfs_with_UR = len(dna_ur_df['OrfID'].unique())
+
+    # test whether none of the validated SOs would be lost
+    # validated_so_with_gene = df_merged[df_merged['OrfTransID'].isin(
+    #     validated_so_df['OrfTransID'])]
+    # nr_val_SO_trans = len(validated_so_with_gene.index)
+    # nr_val_SO_trans_filtered = len(
+    #     validated_so_with_gene[validated_so_with_gene['geneID'].isin(genes_to_keep[0])].index)
+    # nr_val_lost = nr_val_SO_trans - nr_val_SO_trans_filtered
+    return nr_orfs_with_UR_expressed, dna_ur_df_subset
+
+
 def val_so_by_position(validated_so_df, nr_validated_so, outdir, region_type):
     validated_so_df = get_so_position_in_transcript(validated_so_df)
     nr_first_orfs, nr_middle_orfs, nr_last_orfs = count_orfs_by_position(
@@ -247,15 +273,15 @@ def val_so_by_position(validated_so_df, nr_validated_so, outdir, region_type):
     return nr_first_orfs, nr_middle_orfs, nr_last_orfs
 
 
-def all_URs_by_position(DNA_UR_df, all_predicted_so_orfs, outdir, region_type):
-    DNA_UR_df = pd.merge(
-        DNA_UR_df, all_predicted_so_orfs.iloc[:, 1:5], on='OrfID', how='left')
+def all_URs_by_position(dna_ur_df, all_predicted_so_orfs, outdir, region_type):
+    dna_ur_df = pd.merge(
+        dna_ur_df, all_predicted_so_orfs.iloc[:, 1:5], on='OrfID', how='left')
 
-    nr_DNA_URs = len(DNA_UR_df.index)
+    nr_DNA_URs = len(dna_ur_df.index)
 
-    DNA_UR_df = get_so_position_in_transcript(DNA_UR_df)
+    dna_ur_df = get_so_position_in_transcript(dna_ur_df)
     nr_first_orfs, nr_middle_orfs, nr_last_orfs = count_orfs_by_position(
-        DNA_UR_df)
+        dna_ur_df)
     plot_three_category_pie(nr_first_orfs,
                             nr_middle_orfs,
                             nr_last_orfs,
@@ -296,17 +322,24 @@ def get_trans_ai_so_preds_df(TransAI_so_preds, validated_so_df):
 #     background_transcripts_df[f'{nr_start}_start'], df_merged[f'{nr_start}_start_SO'], alternative='less')
 
 
-def compare_so_set_probabilities_by_position(all_so_trans_ai_df, DNA_UR_df, val_so_trans_ai_df, region_type, outdir):
-    all_so_trans_ai_df['SO_class'] = 'SO without UR'
-    so_with_ur_list = DNA_UR_df['OrfID'].to_list()
+def compare_so_set_probabilities_by_position(all_so_trans_ai_df, dna_ur_df, val_so_trans_ai_df, region_type, outdir, gene_filtering=False):
+    if gene_filtering:
+        all_so_trans_ai_df['SO_class'] = 'SO without UR or gene not expressed'
+    else:
+        all_so_trans_ai_df['SO_class'] = 'SO without UR'
+    so_with_ur_list = dna_ur_df['OrfID'].to_list()
     so_validated_list = val_so_trans_ai_df['OrfID'].to_list()
     so_with_ur_not_validated_list = [
         so for so in so_with_ur_list if so not in so_validated_list]
 
     all_so_trans_ai_df.loc[all_so_trans_ai_df['OrfID'].isin(
         so_validated_list), 'SO_class'] = 'validated'
-    all_so_trans_ai_df.loc[all_so_trans_ai_df['OrfID'].isin(
-        so_with_ur_not_validated_list), 'SO_class'] = 'SO with UR not validated'
+    if gene_filtering:
+        all_so_trans_ai_df.loc[all_so_trans_ai_df['OrfID'].isin(
+            so_with_ur_not_validated_list), 'SO_class'] = 'SO with UR not validated but gene expressed'
+    else:
+        all_so_trans_ai_df.loc[all_so_trans_ai_df['OrfID'].isin(
+            so_with_ur_not_validated_list), 'SO_class'] = 'SO with UR not validated'
 
     plot_so_start_probs_by_position_box(
         all_so_trans_ai_df, 'Boxplot of start probabilities by SO position and SO class', region_type, outdir)
@@ -323,7 +356,7 @@ def calculate_overlapping_region_percentage(start1, end1, start2, end2):
         return nr_bp_overlap/shorter_region
 
 
-def get_max_overlap_of_regions_in_df(chr_df):
+def get_max_overlap_of_regions_in_df(chr_df, threshold=0.7):
     for index1 in chr_df.index:
         for index2 in chr_df.index:
             if index1 != index2:
@@ -333,7 +366,7 @@ def get_max_overlap_of_regions_in_df(chr_df):
                 end2 = float(chr_df.iloc[index2]['stop'])
                 overlap = calculate_overlapping_region_percentage(
                     start1, end1, start2, end2)
-                if overlap > 0.7:
+                if overlap > threshold:
                     chr_df.iloc[index2]['OrfPositionsOverlapping'].add(
                         chr_df.iloc[index1]['OrfPosition'])
                     chr_df.iloc[index2]['OrfIDsOverlapping'].add(
@@ -343,22 +376,33 @@ def get_max_overlap_of_regions_in_df(chr_df):
                     chr_df.iloc[index1]['OrfIDsOverlapping'].add(
                         chr_df.iloc[index2]['OrfID'])
                 if overlap > float(chr_df.iloc[index1]['OverlapPercentage']):
-                    chr_df.iloc[index2]['OverlapPercentage'] = overlap
-                if overlap > float(chr_df.iloc[index1]['OverlapPercentage']):
-                    chr_df.iloc[index2]['OverlapPercentage'] = overlap
+                    chr_df.loc[index1, 'OverlapPercentage'] = overlap
+                if overlap > float(chr_df.iloc[index2]['OverlapPercentage']):
+                    chr_df.loc[index2, 'OverlapPercentage'] = overlap
     return chr_df
 
 
-def identify_overlapping_unique_regions(validated_so_df, DNA_UR_df, outdir):
+def get_transcript_with_2_distinct_val_URs(val_dna_overlapping_ur_df):
+    """this information needs to be seen, so printed or saved as a file, otherwise this function is useless"""
+    val_dna_overlapping_ur_df['OrfTransID'] = val_dna_overlapping_ur_df['OrfTransID'].apply(
+        lambda x: x.split(',')).copy()
+    val_dna_overlapping_ur_df['OrfTransID'].explode().value_counts()
+    # how often are there two URs that do not overlap more than 50% validated
+    sum(val_dna_overlapping_ur_df['OrfTransID'].explode().value_counts() > 1)
+    val_dna_overlapping_ur_df['OrfTransID'].explode().value_counts(
+    )[val_dna_overlapping_ur_df['OrfTransID'].explode().value_counts() > 1]
+
+
+def identify_overlapping_unique_regions(validated_so_df, dna_ur_df, outdir):
     # filter for validated ORFs
-    val_dna_ur_df = DNA_UR_df[DNA_UR_df['OrfID'].isin(
+    val_dna_ur_df = dna_ur_df[dna_ur_df['OrfID'].isin(
         validated_so_df['OrfID'])].copy()
 
     # group several exonic URs per ORF together
     val_dna_ur_df = val_dna_ur_df.groupby('OrfID').agg({'start': 'min',
                                                         'stop': 'max',
                                                         'chr': 'first',
-                                                        'ID': 'first',
+                                                        'ID': lambda x: ','.join(x),
                                                         'OrfTransID': 'first'}).reset_index().copy()
 
     # map ORF positions to IDs
@@ -380,7 +424,7 @@ def identify_overlapping_unique_regions(validated_so_df, DNA_UR_df, outdir):
     chr_dfs = {chr: chr_df.reset_index(drop=True).copy(
     ) for chr, chr_df in val_dna_ur_df.groupby('chr')}
     chr_dfs = {chr: get_max_overlap_of_regions_in_df(
-        chr_df) for chr, chr_df in chr_dfs.items()}
+        chr_df, 0.5) for chr, chr_df in chr_dfs.items()}
     val_dna_overlapping_ur_df = pd.concat(
         chr_dfs.values()).reset_index(drop=True).copy()
 
@@ -393,16 +437,21 @@ def identify_overlapping_unique_regions(validated_so_df, DNA_UR_df, outdir):
     val_dna_overlapping_ur_df = val_dna_overlapping_ur_df[(val_dna_overlapping_ur_df['ORFs_sharing_region'] == 1) | (
         val_dna_overlapping_ur_df['shared_region_type'] == 1)]
 
-    val_dna_overlapping_ur_df['OrfIDsOverlapping'] = val_dna_overlapping_ur_df['OrfIDsOverlapping'].apply(
+    val_dna_overlapping_ur_df.loc[:, 'OrfIDsOverlapping'] = val_dna_overlapping_ur_df['OrfIDsOverlapping'].apply(
         lambda x: frozenset(x))
 
     val_dna_overlapping_ur_df = val_dna_overlapping_ur_df.groupby('OrfIDsOverlapping').agg(
         {'genomic_UR': 'first',
          'ORFs_sharing_region': 'first',
          'OrfPosition': 'first',
+         'ID': lambda x: ','.join(x),
+         'OrfTransID': lambda x: ','.join(x),
          'OrfPositionsOverlapping': 'first',
-         'OrfIDsOverlapping': 'first'
+         'OrfIDsOverlapping': 'first',
+         'OverlapPercentage': 'max',
          }).reset_index(drop=True)
+
+    get_transcript_with_2_distinct_val_URs(val_dna_overlapping_ur_df)
 
     val_dna_overlapping_ur_df['OrfPosition'].value_counts(
     ).reset_index().to_csv(os.path.join(outdir, 'distinct_URs_per_position.csv'))
@@ -427,6 +476,10 @@ def check_start_probs_Ensembl_canonical(Ribo_df_merged, Ensembl_canonical_df, ve
     if verbose:
         print(Ens_start_not_so[['cDNA coding start',
               'OrfStarts', 'Ensmebl_start_prob']])
+
+
+def ensembl_nmd_starts_are_so_starts(Ensembl_canonical_df, all_so_trans_ai_df, val_so_trans_ai_df):
+    pass
 
 
 #################################################################################

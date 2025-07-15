@@ -29,30 +29,29 @@ def load_so_results(so_results):
 def load_Ensembl_canonical(Ensembl_path):
     Ensembl_canonical_starts = pd.read_csv(
         Ensembl_path, sep='\t', header=0, encoding="utf-8")
-    print(Ensembl_canonical_starts.columns)
     Ensembl_canonical_starts = Ensembl_canonical_starts.groupby('Transcript stable ID').agg({'Gene stable ID': 'first',
                                                                                              'cDNA coding start': 'min',
                                                                                              'cDNA coding end': 'max'})
     Ensembl_canonical_starts['cDNA coding start'] = Ensembl_canonical_starts['cDNA coding start'].apply(
         lambda x: int(x) - 1)
     Ensembl_canonical_starts['cDNA coding end'] = Ensembl_canonical_starts['cDNA coding end'].apply(
-        lambda x: int(x) - 1)
+        lambda x: int(x))
     Ensembl_canonical_starts = Ensembl_canonical_starts.reset_index()
     Ensembl_canonical_starts.rename(
         columns={'Transcript stable ID': 'OrfTransID'}, inplace=True)
     return Ensembl_canonical_starts
 
 
-def load_DNA_UR_df(UR_path):
-    DNA_UR_df = pd.read_csv(UR_path, sep='\t', header=None, names=[
+def load_dna_ur_df(UR_path):
+    dna_ur_df = pd.read_csv(UR_path, sep='\t', header=None, names=[
                             'chr', 'start', 'stop', 'ID', 'score', 'strand'])
-    DNA_UR_df['OrfID'] = DNA_UR_df['ID'].str.split(':').apply(lambda x: x[1])
-    DNA_UR_df['OrfTransID'] = DNA_UR_df['ID'].str.split(
+    dna_ur_df['OrfID'] = dna_ur_df['ID'].str.split(':').apply(lambda x: x[1])
+    dna_ur_df['OrfTransID'] = dna_ur_df['ID'].str.split(
         ':').apply(lambda x: x[0])
 
-    nr_orfs_with_UR = len(DNA_UR_df['OrfID'].unique())
-    nr_transcripts_with_UR = len(DNA_UR_df['OrfTransID'].unique())
+    nr_orfs_with_UR = len(dna_ur_df['OrfID'].unique())
+    nr_transcripts_with_UR = len(dna_ur_df['OrfTransID'].unique())
     print('Number of ORFs with unique region', nr_orfs_with_UR)
     print('Number of transcripts with unique region', nr_transcripts_with_UR)
 
-    return DNA_UR_df, nr_orfs_with_UR, nr_transcripts_with_UR
+    return dna_ur_df, nr_orfs_with_UR, nr_transcripts_with_UR

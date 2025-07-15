@@ -71,11 +71,12 @@ def plot_three_category_pie(cat1, cat2, cat3, nr_total_so, names_list, title, ou
     plt.title(f'{title} - {region_type}')
 
     plt.savefig(
-        os.path.join(out_dir, f'{region_type}_{figname}.png'))
+        os.path.join(out_dir, f'{region_type}_{figname}.png'), bbox_inches='tight')
     plt.close()
 
 
-def plot_val_so_sets(nr_orfs_with_UR, nr_validated_so, total_nr_so, outdir, region_type):
+def plot_val_so_sets(nr_orfs_with_UR, nr_validated_so, total_nr_so, outdir, region_type, category_names=['# validated SO', '# SO with UR not validated',
+                                                                                                         '# SO without UR']):
     nr_so_not_validated = nr_orfs_with_UR - nr_validated_so
     nr_so_no_UR = total_nr_so - nr_orfs_with_UR
 
@@ -85,8 +86,7 @@ def plot_val_so_sets(nr_orfs_with_UR, nr_validated_so, total_nr_so, outdir, regi
                             nr_so_not_validated,
                             nr_so_no_UR,
                             total_nr_so,
-                            ['# validated SO', '# SO with UR not validated',
-                                '# SO without UR'],
+                            category_names,
                             'Split-ORF validation pie chart',
                             outdir,
                             'SO_validation_pie_chart',

@@ -61,12 +61,13 @@ def validated_so_per_sample_analysis(df_merged, Ribo_coverage_path, outdir, data
         all_predicted_so_orfs[sample] = all_predicted_so_orfs['OrfID'].isin(
             Ribo_results_significant_df['ORF'])
 
+        Ensembl_canonical_df = None
         if Ensembl_canonical_path:
             Ensembl_canonical_df = load_Ensembl_canonical(
                 Ensembl_canonical_path)
             check_start_probs_Ensembl_canonical(
                 Ribo_df_merged, Ensembl_canonical_df, verbose=True)
-    return all_predicted_so_orfs
+    return all_predicted_so_orfs, Ensembl_canonical_df
 
 
 def RiboTISH_analysis(df_merged, datatype, RiboTISH_path, outdir, UR_path):
