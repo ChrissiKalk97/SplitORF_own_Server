@@ -1,0 +1,224 @@
+{
+    "full-splice_match": [
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE"
+        }
+    ],
+    "incomplete-splice_match": [
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "min_cov": 3
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "min_cov": 3
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "RTS_stage": "FALSE",
+            "min_cov": 1
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "RTS_stage": "FALSE",
+            "min_cov": 1
+        }
+    ],
+    "novel_in_catalog": [
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "ratio_TSS": 1.1,
+            "RTS_stage": "FALSE",
+            "min_cov": 1,
+            "bite": "FALSE"
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "ratio_TSS": 1.1,
+            "RTS_stage": "FALSE",
+            "min_cov": 1,
+            "bite": "FALSE"
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "ratio_TSS": 1.3,
+            "min_cov": 4,
+            "bite": "FALSE"
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "ratio_TSS": 1.3,
+            "min_cov": 4,
+            "bite": "FALSE"
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "ratio_TSS": 1.3,
+            "min_cov": 5,
+            "RTS_stage": "FALSE"
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "ratio_TSS": 1.3,
+            "min_cov": 5,
+            "RTS_stage": "FALSE"
+        }
+    ],
+    "fusion": [
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "ratio_TSS": 1.3,
+            "min_cov": 3,
+            "RTS_stage": "FALSE",
+            "bite": "FALSE"
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "ratio_TSS": 1.3,
+            "min_cov": 3,
+            "RTS_stage": "FALSE",
+            "bite": "FALSE"
+        }
+    ],
+    "novel_not_in_catalog": [
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "ratio_TSS": 1.1,
+            "RTS_stage": "FALSE",
+            "bite": "FALSE",
+            "min_cov": 1,
+            "all_canonical": "canconical"
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "ratio_TSS": 1.1,
+            "RTS_stage": "FALSE",
+            "bite": "FALSE",
+            "min_cov": 1,
+            "all_canonical": "canconical"
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "ratio_TSS": 1.3,
+            "bite": "FALSE",
+            "min_cov": 4
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "ratio_TSS": 1.3,
+            "bite": "FALSE",
+            "min_cov": 4
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "ratio_TSS": 1.3,
+            "RTS_stage": "FALSE",
+            "min_cov": 4,
+            "all_canonical": "canonical"
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "ratio_TSS": 1.3,
+            "RTS_stage": "FALSE",
+            "min_cov": 4,
+            "all_canonical": "canonical"
+        }
+    ],
+    "genic": [
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "min_cov": 3,
+            "all_canonical": "canonical"
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "min_cov": 3,
+            "all_canonical": "canonical"
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "min_cov": 6
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "min_cov": 6
+        }
+    ],
+    "rest": [
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "min_cov": 4,
+            "all_canonical": "canonical",
+            "RTS_stage": "FALSE",
+            "bite": "FALSE",
+            "ratio_TSS": 1.3
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "min_cov": 4,
+            "all_canonical": "canonical",
+            "RTS_stage": "FALSE",
+            "bite": "FALSE",
+            "ratio_TSS": 1.3
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "min_cov": 6,
+            "RTS_stage": "FALSE",
+            "bite": "FALSE",
+            "ratio_TSS": 1.3
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "min_cov": 6,
+            "RTS_stage": "FALSE",
+            "bite": "FALSE",
+            "ratio_TSS": 1.3
+        }
+    ]
+}
