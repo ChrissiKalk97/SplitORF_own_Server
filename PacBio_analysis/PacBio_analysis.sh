@@ -31,7 +31,7 @@ fi
 # not running there are many errors
 
 # run lima for primer and polyA removal
-# bash run_lima.sh $pacbio_merged_bamdir $lima_outdir $primer_fasta
+bash run_lima.sh $pacbio_merged_bamdir $lima_outdir $primer_fasta
 
 # run isoseq pipeline steps
-bash run_isoseq.sh $lima_outdir $isoseq_outdir $genome_fasta_file $primer_fasta
+# bash run_isoseq.sh $lima_outdir $isoseq_outdir $genome_fasta_file $primer_fasta
