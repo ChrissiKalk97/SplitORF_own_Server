@@ -14,7 +14,7 @@ Bowtie2_out_dir="/projects/serp/work/Output/April_2025/importins/transcriptome_m
 Genome_Fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
 EnsemblFilteredRef="/projects/splitorfs/work/reference_files/clean_Ensembl_ref/Ensembl_equality_and_TSL_filtered.gtf"
 
-
+coverage_script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/SeRP/coverage_plots"
 
 ################################################################################
 # QC and PREPROCESSING                                                         #
@@ -71,8 +71,13 @@ EnsemblFilteredRef="/projects/splitorfs/work/reference_files/clean_Ensembl_ref/E
 ################################################################################
 # SeRP coverage plots                                                          #
 ################################################################################
-bash create_coverage_plots_importins_over_mock.sh \
- "${Bowtie2_out_dir}"/filtered/q10
+# bash create_coverage_plots_importins_over_mock.sh \
+#  "${Bowtie2_out_dir}"/filtered/q10
+
+bash ${coverage_script_dir}/create_coverage_plots_codons_whole_transcript.sh \
+    "${Bowtie2_out_dir}"/filtered/q10 \
+    "/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates" \
+    ${coverage_script_dir}
 
 ################################################################################
 # Check al counts with bam multicov                                            #

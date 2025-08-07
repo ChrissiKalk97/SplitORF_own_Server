@@ -71,7 +71,7 @@ for bam in $outdir/CDS_bams/*.bam; do
 
   fi
 done
-wait
+
 
 ################################################################################
 # create CHX over Mock bigwig                                                 #
