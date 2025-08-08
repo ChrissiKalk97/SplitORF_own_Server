@@ -1,5 +1,3 @@
-# need to run with bwtool
-
 import os
 import argparse
 
@@ -33,18 +31,18 @@ def parse_args():
     return parser.parse_args()
 
 
-# path_to_bw_files = '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/whole_transcript_bigwig'
-# mane_transcripts_cds_bed = '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed'
-# transcripts_to_plot_txt = '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt'
-# out_path = '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript'
-# importin = 'A2'
-# background = 'In'
-# puro = False
-# color = '#1eb0e6'
+path_to_bw_files = '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/whole_transcript_bigwig'
+mane_transcripts_cds_bed = '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed'
+transcripts_to_plot_txt = '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt'
+out_path = '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript'
+importin = 'A2'
+background = 'In'
+puro = ''
+color = '#1eb0e6'
 
 
 def main(path_to_bw_files, mane_transcripts_cds_bed, transcripts_to_plot_txt,
-         out_path, importin='A2', background='Input', puro=False, color='blue'):
+         out_path, importin='A2', background='Input', puro='', color='blue'):
 
     def get_bw_file_paths(path_to_bw_files, importin, background, puro):
         if puro == 'Puro':
@@ -58,7 +56,7 @@ def main(path_to_bw_files, mane_transcripts_cds_bed, transcripts_to_plot_txt,
             importin_over_input_bw_list = []
             for file in os.listdir(path_to_bw_files):
                 if file.endswith('.bw'):
-                    if file.startswith(importin) and background in file:
+                    if file.startswith(importin) and background in file and 'CHX' in file:
                         importin_over_input_bw_list.append(
                             os.path.join(path_to_bw_files, file))
         return importin_over_input_bw_list
@@ -154,12 +152,22 @@ def main(path_to_bw_files, mane_transcripts_cds_bed, transcripts_to_plot_txt,
             observed_values_np = np.array(observed_values)
             observed_values_averaged_np = np.mean(observed_values_np, axis=0)
             observed_std_np = np.std(observed_values_np, axis=0)
+            observed_values_min_np = np.min(observed_values_np, axis=0)
+            observed_values_max_np = np.max(observed_values_np, axis=0)
 
             transcript_df = pd.DataFrame({'CDS_position': range(0, len(bw_values_smoothed)),
                                           'average_ratio': observed_values_averaged_np,
-                                          'stddev_ratio': observed_std_np.transpose()})
+                                          'stddev_ratio': observed_std_np,
+                                          'min_value': observed_values_min_np,
+                                          'max_value': observed_values_max_np})
 
             transcript_df = calculate_std_sem(transcript_df, observed_values)
+            if puro == 'Puro':
+                transcript_df.to_csv(os.path.join(
+                    path_to_bw_files, 'coordinates_per_transcript_csvs', f'{transcript}_{importin}_{background}_{puro}_coords_for_plotting.csv'))
+            else:
+                transcript_df.to_csv(os.path.join(
+                    path_to_bw_files, 'coordinates_per_transcript_csvs', f'{transcript}_{importin}_{background}_coords_for_plotting.csv'))
             plot_enrichment(transcript_df, out_path,
                             transcript, importin, background, color)
 

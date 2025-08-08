@@ -149,6 +149,39 @@ python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript
 
 
 
+# over Mock
+python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
+ '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/whole_transcript_bigwig' \
+ '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
+'/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt' \
+'/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' \
+'A2' \
+ 'M' \
+ --puro '' \
+ --color 'orange'
+
+
+
+
+
+readarray -t importin_enriched_A2_and_B1 < /projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt
+
+for MANE_trans in "${importin_enriched_A2_and_B1[@]}"
+do
+        python ${coverage_script_dir}/plot_two_comparisons_in_one_plot.py \
+        '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/whole_transcript_bigwig/coordinates_per_transcript_csvs' \
+        $MANE_trans \
+        '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript/plot_input_and_mock' \
+        'A2' \
+        --background1 'In' \
+        --background2 'M' \
+        --puro '' \
+        --color1 '#1eb0e6' \
+        --color2 'orange'
+
+done
+
+
 ################################################################################
 # Imp b enrichment plots                                                       #
 ################################################################################
