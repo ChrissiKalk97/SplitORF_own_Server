@@ -3,13 +3,8 @@
 bam_dir=$1
 outdir=$2
 coverage_script_dir=$3
+mane_gtf=$4
 
-# need to supply these via the main SeRP call
-# '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/whole_transcript_bigwig'
-#  '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed'
-# '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt'
-# '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' 
-# "/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf"
 
 if [ ! -d $bam_dir/enrichment_plots_CDS ]; then
          mkdir $bam_dir/enrichment_plots_CDS
@@ -29,7 +24,7 @@ fi
 # conda activate pygtftk
 # python ${coverage_script_dir}/filter_Ensembl_structures_for_CDS_coords.py \
 # "$outdir/MANE_transcripts_114.txt" \
-# "/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf" \
+# ${mane_gtf} \
 # "$outdir/MANE_CDS_coordinates"
 
 
@@ -106,87 +101,224 @@ fi
 # Imp a enrichment plots                                                       #
 ################################################################################
 
+transcripts_to_plot_txts=(
+        "${bam_dir}/DEGs/DEGs_A2_CHX_0_5_enriched_over_Input_and_Mock_MANE_tIDs.txt"
+        "${bam_dir}/DEGs/DEGs_B1_CHX_0_5_enriched_over_Input_and_Mock_MANE_tIDs.txt"
+        "${bam_dir}/DEGs/RIP_LFC2_IP_against_Input_MANE_tIDs.txt"
+        "${bam_dir}/DEGs/SeRP_KPNAs_MANE_tIDs_modified.txt"
+        "${bam_dir}/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt"
+        )
 
-python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
- '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/whole_transcript_bigwig' \
- '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
-'/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt' \
-'/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' \
-'A2' \
- 'In' \
- --puro '' \
- --color '#1eb0e6'
+out_dirs_for_plot_files=(
+        "${bam_dir}/enrichment_plots_CDS/impA_0_5_M_and_input_DEG_plots_whole_transcript"
+        "${bam_dir}/enrichment_plots_CDS/impB_0_5_M_and_input_DEG_plots_whole_transcript"
+        "${bam_dir}/enrichment_plots_CDS/RIP_LFC2_IP"
+        "${bam_dir}/enrichment_plots_CDS/SeRP_KPNAs"
+        "${bam_dir}/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript"
+)
 
-python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
- '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/whole_transcript_bigwig' \
- '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
-'/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt' \
-'/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' \
-'B1' \
- 'In' \
- --puro '' \
- --color '#29449c'
+# Loop through all
+for i in "${!transcripts_to_plot_txts[@]}"; do
+     to_plot_txt=${transcripts_to_plot_txts[$i]}  
+     outdir_plot=${out_dirs_for_plot_files[$i]}
 
- python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript_min_max.py \
- '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/whole_transcript_bigwig' \
- '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
-'/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt' \
-'/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' \
-'A2' \
- 'In' \
- --puro '' \
- --color '#1eb0e6'
-
-python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript_min_max.py \
- '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/whole_transcript_bigwig' \
- '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
-'/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt' \
-'/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' \
-'B1' \
- 'In' \
- --puro '' \
- --color '#29449c'
+     if [ ! -d $outdir_plot ]; then
+        mkdir $outdir_plot
+        fi
 
 
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        ${to_plot_txt} \
+        ${outdir_plot} \
+        "A2" \
+        "In" \
+        --puro "" \
+        --color "#1eb0e6"
 
-# over Mock
-python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
- '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/whole_transcript_bigwig' \
- '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
-'/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt' \
-'/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' \
-'A2' \
- 'M' \
- --puro '' \
- --color 'orange'
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        ${to_plot_txt} \
+        ${outdir_plot} \
+        "B1" \
+        "In" \
+        --puro "" \
+        --color "#29449c"
+
+        # python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript_min_max.py \
+        # "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        # "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        # ${to_plot_txt} \
+        # ${outdir_plot} \
+        # "A2" \
+        # "In" \
+        # --puro "" \
+        # --color "#1eb0e6"
+
+        # python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript_min_max.py \
+        # "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        # "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        # ${to_plot_txt} \
+        # ${outdir_plot} \
+        # "B1" \
+        # "In" \
+        # --puro "" \
+        # --color "#29449c"
 
 
 
+        # over Mock
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        ${to_plot_txt} \
+        ${outdir_plot} \
+        "A2" \
+        "M" \
+        --puro "" \
+        --color "#1eb0e6"
 
+                # over Mock
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        ${to_plot_txt} \
+        ${outdir_plot} \
+        "B1" \
+        "M" \
+        --puro "" \
+        --color "#29449c"
 
-readarray -t importin_enriched_A2_and_B1 < /projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt
+                # over Mock
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        ${to_plot_txt} \
+        ${outdir_plot} \
+        "A2" \
+        "In" \
+        --puro "Puro" \
+        --color "#1eb0e6"
 
-for MANE_trans in "${importin_enriched_A2_and_B1[@]}"
-do
-        python ${coverage_script_dir}/plot_two_comparisons_in_one_plot.py \
-        '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/whole_transcript_bigwig/coordinates_per_transcript_csvs' \
-        $MANE_trans \
-        '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript/plot_input_and_mock' \
-        'A2' \
-        --background1 'In' \
-        --background2 'M' \
-        --puro '' \
-        --color1 '#1eb0e6' \
-        --color2 'orange'
+                # over Mock
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        ${to_plot_txt} \
+        ${outdir_plot} \
+        "B1" \
+        "In" \
+        --puro "Puro" \
+        --color "#29449c"
+
+                # over Mock
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        ${to_plot_txt} \
+        ${outdir_plot} \
+        "A2" \
+        "M" \
+        --puro "" \
+        --color "#1eb0e6"
+
+                # over Mock
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        ${to_plot_txt} \
+        ${outdir_plot} \
+        "M" \
+        "In" \
+        --puro "" \
+        --color "#6d6d6d"
 
 done
+
+
+
+# python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
+#  '${outdir}/enrichment_plots_CDS/whole_transcript_bigwig' \
+#  '${outdir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
+# '${outdir}/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt' \
+# '${outdir}/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' \
+# 'A2' \
+#  'In' \
+#  --puro '' \
+#  --color '#1eb0e6'
+
+# python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
+#  '${outdir}/enrichment_plots_CDS/whole_transcript_bigwig' \
+#  '${outdir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
+# '${outdir}/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt' \
+# '${outdir}/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' \
+# 'B1' \
+#  'In' \
+#  --puro '' \
+#  --color '#29449c'
+
+#  python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript_min_max.py \
+#  '${outdir}/enrichment_plots_CDS/whole_transcript_bigwig' \
+#  '${outdir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
+# '${outdir}/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt' \
+# '${outdir}/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' \
+# 'A2' \
+#  'In' \
+#  --puro '' \
+#  --color '#1eb0e6'
+
+# python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript_min_max.py \
+#  '${outdir}/enrichment_plots_CDS/whole_transcript_bigwig' \
+#  '${outdir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
+# '${outdir}/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt' \
+# '${outdir}/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' \
+# 'B1' \
+#  'In' \
+#  --puro '' \
+#  --color '#29449c'
+
+
+
+# # over Mock
+# python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
+#  '${outdir}/enrichment_plots_CDS/whole_transcript_bigwig' \
+#  '${outdir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
+# '${outdir}/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt' \
+# '${outdir}/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' \
+# 'A2' \
+#  'M' \
+#  --puro '' \
+#  --color 'orange'
+
+
+
+
+
+# readarray -t importin_enriched_A2_and_B1 < ${outdir}/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt
+
+# for MANE_trans in "${importin_enriched_A2_and_B1[@]}"
+# do
+#         python ${coverage_script_dir}/plot_two_comparisons_in_one_plot.py \
+#         '${outdir}/enrichment_plots_CDS/whole_transcript_bigwig/coordinates_per_transcript_csvs' \
+#         $MANE_trans \
+#         '${outdir}/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript/plot_input_and_mock' \
+#         'A2' \
+#         --background1 'In' \
+#         --background2 'M' \
+#         --puro '' \
+#         --color1 '#1eb0e6' \
+#         --color2 'orange'
+
+# done
 
 
 ################################################################################
 # Imp b enrichment plots                                                       #
 ################################################################################
 
-# readarray -t importin_enriched_B1 < /projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/DEGs/DEGs_B1_CHX_enriched_over_Input_and_Mock_MANE_tIDs.txt
+# readarray -t importin_enriched_B1 < ${outdir}/DEGs/DEGs_B1_CHX_enriched_over_Input_and_Mock_MANE_tIDs.txt
 
 
 ################################################################################
