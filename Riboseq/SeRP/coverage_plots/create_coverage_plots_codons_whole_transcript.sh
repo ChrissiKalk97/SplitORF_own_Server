@@ -58,6 +58,30 @@ export TMPDIR=/scratch/tmp/$USER
 #  "In" \
 #  ""
 
+# Mock over Input need to do separately as not included in the sytax
+# export TMPDIR=/scratch/tmp/$USER
+# for bam in $bam_dir/*.bam; do
+#   mock_filename=$(basename "$bam")
+#   if [[ "$mock_filename" =~ ^uf_muellermcnicoll_([0-9_]+)_RR_M_CHX_E([0-9]+)\.cut\.fastp\.bowtie2_concat_transcriptome_k1_R1_sorted_filtered_q10\.bam$ ]]; then
+#         date="${BASH_REMATCH[1]}"
+#         batch="${BASH_REMATCH[2]}"
+
+
+#         input_filename=$bam_dir/uf_muellermcnicoll_2025_05_??_RR_In_CHX_${batch}.cut.fastp.bowtie2_concat_transcriptome_k1_R1_sorted_filtered_q10.bam
+#         echo $input_filename
+#         echo $mock_filename
+        
+#         bamCompare -b1 $bam_dir/$mock_filename\
+#          -b2 $input_filename\
+#          -o $bam_dir/enrichment_plots_CDS/whole_transcript_bigwig/M_E${batch}_over_In_CHX_whole_trans_b1_no_smooth.bw\
+#          --operation ratio \
+#          --binSize 1 \
+#          -of bigwig\
+#          -p 64
+
+#   fi
+# done
+
 
 
 
@@ -72,29 +96,6 @@ CDS_coordinates="$outdir/MANE_CDS_coordinates.bed"
 #  $bam_dir/enrichment_plots/RIP_hits_gids_to_MANE_tIDs.csv \
 #  multirow
 
-
-
-
-
-if [ ! -d $bam_dir/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots ]; then
-        mkdir $bam_dir/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots
-fi
-
-if [ ! -d $bam_dir/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript ]; then
-        mkdir $bam_dir/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript
-fi
-
-# if [ ! -d $bam_dir/enrichment_plots/impB_DEG_plots ]; then
-#         mkdir $bam_dir/enrichment_plots/impB_DEG_plots
-# fi
-
-# if [ ! -d $bam_dir/enrichment_plots/hot_candiates ]; then
-#         mkdir $bam_dir/enrichment_plots/hot_candiates
-# fi
-
-# if [ ! -d $bam_dir/enrichment_plots/histones ]; then
-#         mkdir $bam_dir/enrichment_plots/histones
-# fi
 
 
 ################################################################################
@@ -124,8 +125,11 @@ for i in "${!transcripts_to_plot_txts[@]}"; do
 
      if [ ! -d $outdir_plot ]; then
         mkdir $outdir_plot
-        fi
+     fi
 
+     if [ ! -d $outdir_plot/plot_input_and_mock ]; then
+        mkdir $outdir_plot/plot_input_and_mock
+     fi
 
         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
@@ -169,7 +173,7 @@ for i in "${!transcripts_to_plot_txts[@]}"; do
 
 
 
-        # over Mock
+        # A2 over Mock
         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
@@ -180,7 +184,7 @@ for i in "${!transcripts_to_plot_txts[@]}"; do
         --puro "" \
         --color "#1eb0e6"
 
-                # over Mock
+        # B1 over Mock
         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
@@ -191,7 +195,7 @@ for i in "${!transcripts_to_plot_txts[@]}"; do
         --puro "" \
         --color "#29449c"
 
-                # over Mock
+        # Puro A2 over In
         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
@@ -202,7 +206,7 @@ for i in "${!transcripts_to_plot_txts[@]}"; do
         --puro "Puro" \
         --color "#1eb0e6"
 
-                # over Mock
+        # Puro B1 over In
         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
@@ -213,18 +217,8 @@ for i in "${!transcripts_to_plot_txts[@]}"; do
         --puro "Puro" \
         --color "#29449c"
 
-                # over Mock
-        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
-        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
-        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
-        ${to_plot_txt} \
-        ${outdir_plot} \
-        "A2" \
-        "M" \
-        --puro "" \
-        --color "#1eb0e6"
 
-                # over Mock
+        # Mock over Input
         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
@@ -235,65 +229,25 @@ for i in "${!transcripts_to_plot_txts[@]}"; do
         --puro "" \
         --color "#6d6d6d"
 
+
+        readarray -t trans_to_plot < ${to_plot_txt}
+
+        for MANE_trans in "${trans_to_plot[@]}"
+        do
+                if grep -q -F "${MANE_trans}" "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed"; then
+                        python ${coverage_script_dir}/plot_two_comparisons_in_one_plot.py \
+                        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig/coordinates_per_transcript_csvs" \
+                        $MANE_trans \
+                        $outdir_plot/plot_input_and_mock \
+                        'A2' \
+                        --background1 'In' \
+                        --background2 'M' \
+                        --puro '' \
+                        --color1 '#1eb0e6' \
+                        --color2 'orange'
+                fi
+        done
 done
-
-
-
-# python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
-#  '${outdir}/enrichment_plots_CDS/whole_transcript_bigwig' \
-#  '${outdir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
-# '${outdir}/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt' \
-# '${outdir}/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' \
-# 'A2' \
-#  'In' \
-#  --puro '' \
-#  --color '#1eb0e6'
-
-# python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
-#  '${outdir}/enrichment_plots_CDS/whole_transcript_bigwig' \
-#  '${outdir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
-# '${outdir}/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt' \
-# '${outdir}/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' \
-# 'B1' \
-#  'In' \
-#  --puro '' \
-#  --color '#29449c'
-
-#  python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript_min_max.py \
-#  '${outdir}/enrichment_plots_CDS/whole_transcript_bigwig' \
-#  '${outdir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
-# '${outdir}/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt' \
-# '${outdir}/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' \
-# 'A2' \
-#  'In' \
-#  --puro '' \
-#  --color '#1eb0e6'
-
-# python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript_min_max.py \
-#  '${outdir}/enrichment_plots_CDS/whole_transcript_bigwig' \
-#  '${outdir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
-# '${outdir}/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt' \
-# '${outdir}/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' \
-# 'B1' \
-#  'In' \
-#  --puro '' \
-#  --color '#29449c'
-
-
-
-# # over Mock
-# python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_whole_transcript.py \
-#  '${outdir}/enrichment_plots_CDS/whole_transcript_bigwig' \
-#  '${outdir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
-# '${outdir}/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt' \
-# '${outdir}/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript' \
-# 'A2' \
-#  'M' \
-#  --puro '' \
-#  --color 'orange'
-
-
-
 
 
 # readarray -t importin_enriched_A2_and_B1 < ${outdir}/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt
@@ -312,24 +266,3 @@ done
 #         --color2 'orange'
 
 # done
-
-
-################################################################################
-# Imp b enrichment plots                                                       #
-################################################################################
-
-# readarray -t importin_enriched_B1 < ${outdir}/DEGs/DEGs_B1_CHX_enriched_over_Input_and_Mock_MANE_tIDs.txt
-
-
-################################################################################
-# plot hot candidates on the same scale                                        #
-################################################################################
-# hot_candidates=(ENST00000397885.3 ENST00000330560.8 ENST00000428849.7 ENST00000611405.5)
-
-
-
-################################################################################
-# plot histones and GAPDH                                                      #
-################################################################################
-# readarray -t histone_array < $bam_dir/enrichment_plots/RIP_hits_MANE_tIDs_GAPDH.txt
-

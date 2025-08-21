@@ -3,6 +3,8 @@
 eval "$(conda shell.bash hook)"
 conda activate Riboseq
 
+script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1"
+
 INDIR="/projects/serp/work/data/SeRP_April_2025/importins"
 OUTDIR_FASTQC1="/projects/serp/work/Output/April_2025/importins/preprocess/fastqc_unprocessed"
 OUTDIR_CUTADAPT="/projects/serp/work/Output/April_2025/importins/preprocess/cutadapt"
@@ -14,7 +16,9 @@ Bowtie2_out_dir="/projects/serp/work/Output/April_2025/importins/transcriptome_m
 Genome_Fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
 EnsemblFilteredRef="/projects/splitorfs/work/reference_files/clean_Ensembl_ref/Ensembl_equality_and_TSL_filtered.gtf"
 
+
 coverage_script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/SeRP/coverage_plots"
+mane_gtf="/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf"
 
 ################################################################################
 # QC and PREPROCESSING                                                         #
@@ -28,7 +32,7 @@ coverage_script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/SeRP/coverage_plots"
 #   $fastpFASTQC\
 # > "out_reports_of_runs/preprocessing_cutadapt_importins.out" 2>&1
 
-# python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/preprocessing/cutadapt_output_parsing.py \
+# python ${script_dir}/preprocessing/cutadapt_output_parsing.py \
 #  "out_reports_of_runs/preprocessing_cutadapt_importins.out" \
 #   "/home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/cutadapt_summary.csv"
 
@@ -38,7 +42,7 @@ coverage_script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/SeRP/coverage_plots"
 # TRANSCRIPTOMIC ALIGNMENT                                                     #
 ################################################################################
 # align to transcriptome
-# source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie2_align_k1_only_R1.sh \
+# source ${script_dir}/alignments/bowtie2_align_k1_only_R1.sh \
 #  ${Bowtie2_base_name} \
 #  no_index \
 #  ${fastpOut} \
@@ -47,7 +51,7 @@ coverage_script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/SeRP/coverage_plots"
 #  /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out \
  #> /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out 2>&1
 
-# python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_soft_clipping.py ${Bowtie2_out_dir}/filtered
+# python ${script_dir}/alignments/analyze_soft_clipping.py ${Bowtie2_out_dir}/filtered
 
 
 
@@ -76,8 +80,9 @@ coverage_script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/SeRP/coverage_plots"
 
 bash ${coverage_script_dir}/create_coverage_plots_codons_whole_transcript.sh \
     "${Bowtie2_out_dir}"/filtered/q10 \
-    "/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates" \
-    ${coverage_script_dir}
+    ""${Bowtie2_out_dir}"/filtered/q10/enrichment_plots_CDS/CDS_coordinates" \
+    ${coverage_script_dir} \
+    $mane_gtf
 
 ################################################################################
 # Check al counts with bam multicov                                            #
