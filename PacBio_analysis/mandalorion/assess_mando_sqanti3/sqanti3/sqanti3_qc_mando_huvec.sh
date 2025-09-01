@@ -12,23 +12,10 @@ kallisto_quant_mando_raw=$7
 
 export LD_LIBRARY_PATH="$CONDA_PREFIX/lib/gcc/x86_64-conda-linux-gnu/15.1.0:$LD_LIBRARY_PATH"
 
-if [ ! -d "${sqanti_qc_outdir}" ]; then
-    mkdir "${sqanti_qc_outdir}"
+if [ ! -d "${sqanti_qc_outdir}"/HUVEC ]; then
+    mkdir "${sqanti_qc_outdir}"/HUVEC
 fi
 
-# get the txt file of R1 space R2
-short_read_file="sqanti3/huvec_short_reads.txt"
-
-> "$short_read_file"  # Clear or create the output file
-
-for r1 in $outdir_fastp/*_merged_fastp.R1.fastp.fastq.gz; do
-    r2="${r1/R1/R2}"
-    if [ -f "$r2" ]; then
-        echo "$r1 $r2" >> "$short_read_file"
-    else
-        echo "Warning: No matching R2 for $r1" >&2
-    fi
-done
 
 # comma separated list of kallisto quant tsv abundance files
 kallisto_quant_files=$(find $kallisto_quant_mando_raw -type f -name "*.tsv" | paste -sd,)
@@ -40,7 +27,7 @@ python ${sqanti_path}/sqanti3_qc.py \
  --isoforms ${gtf_file} \
  --refGTF ${reference_gtf} \
  --refFasta ${genome_fasta}\
- -d ${sqanti_qc_outdir} \
+ -d ${sqanti_qc_outdir}/HUVEC \
  --short_reads ${short_read_file} \
  --expression $kallisto_quant_files \
  --force_id_ignore \

@@ -194,3 +194,15 @@ filter_rest = (
 )
 classification_huvec_filtered[
     filter_rest]['structural_category'].value_counts()
+
+
+# ISM filter update
+# ratio_TSS quite important: not an degradation artifact, RTS stage not so much
+
+filter_ism_updated = (
+    (classification_huvec_filtered['min_cov'] > 2) |
+    ((classification_huvec_filtered['ratio_TSS'] > 1.3) &
+     (classification_huvec_filtered['min_cov'] > 0))
+)
+classification_huvec_filtered[
+    filter_ism_updated]['structural_category'].value_counts()
