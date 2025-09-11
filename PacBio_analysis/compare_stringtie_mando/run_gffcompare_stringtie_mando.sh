@@ -107,113 +107,127 @@ genome_fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.p
 #################################################################################
 # ------------------ MERGE WITH TAMA                          ----------------- #
 #################################################################################
-#TAMA STUFF IS NOT WORKING...
-
 
 outdir_tama="/projects/splitorfs/work/PacBio/merged_bam_files/compare_mando_stringtie/tama"
 
-if [[ ! -d "$outdir_tama" ]]; then
-    mkdir $outdir_tama
-fi
+# if [[ ! -d "$outdir_tama" ]]; then
+#     mkdir $outdir_tama
+# fi
 
-if [[ ! -d "$outdir_tama/CM" ]]; then
-    mkdir $outdir_tama/CM
-fi
+# if [[ ! -d "$outdir_tama/CM" ]]; then
+#     mkdir $outdir_tama/CM
+# fi
 
-if [[ ! -d "$outdir_tama/HUVEC" ]]; then
-    mkdir $outdir_tama/HUVEC
-fi
+# if [[ ! -d "$outdir_tama/HUVEC" ]]; then
+#     mkdir $outdir_tama/HUVEC
+# fi
 
 
-# Need to change the order of gene id and transcript ID
+# # Need to change the order of gene id and transcript ID
 mando_dir_cm=$(dirname $mando_rescued_cm_gtf)
 mando_base_cm=$(basename $mando_rescued_cm_gtf .gtf)
 mando_tama_cm_gtf=${mando_dir_cm}/${mando_base_cm}_for_tama.gtf
-python change_order_gene_id_transcript_id_sqanti_gtf.py \
- $mando_rescued_cm_gtf \
- $mando_tama_cm_gtf
+# python change_order_gene_id_transcript_id_sqanti_gtf.py \
+#  $mando_rescued_cm_gtf \
+#  $mando_tama_cm_gtf
 
 
 
 mando_dir_huvec=$(dirname $mando_rescued_huvec_gtf)
 mando_base_huvec=$(basename $mando_rescued_huvec_gtf .gtf)
 mando_tama_huvec_gtf=${mando_dir_huvec}/${mando_base_huvec}_for_tama.gtf
-python change_order_gene_id_transcript_id_sqanti_gtf.py \
- $mando_rescued_huvec_gtf \
- $mando_tama_huvec_gtf
+# python change_order_gene_id_transcript_id_sqanti_gtf.py \
+#  $mando_rescued_huvec_gtf \
+#  $mando_tama_huvec_gtf
 
 
 
-# Need bed12 format
-conda activate tama
+# # Need bed12 format
+# conda activate tama
 
-python /home/ckalk/tools/tama/tama_go/format_converter/tama_format_gtf_to_bed12_stringtie.py \
- $mando_tama_cm_gtf \
- $mando_dir_cm/$mando_base_cm.bed12
-
-
-python /home/ckalk/tools/tama/tama_go/format_converter/tama_format_gtf_to_bed12_stringtie.py \
- $mando_tama_huvec_gtf \
- $mando_dir_huvec/$mando_base_huvec.bed12
+# python /home/ckalk/tools/tama/tama_go/format_converter/tama_format_gtf_to_bed12_stringtie.py \
+#  $mando_tama_cm_gtf \
+#  $mando_dir_cm/$mando_base_cm.bed12
 
 
-stringtie_dir_cm=$(dirname $stringtie_cm_gtf)
-stringtie_base_cm=$(basename $stringtie_cm_gtf .gtf)
-python /home/ckalk/tools/tama/tama_go/format_converter/tama_format_gtf_to_bed12_stringtie.py \
- $stringtie_cm_gtf \
- $stringtie_dir_cm/$stringtie_base_cm.bed12
-
-stringtie_dir_huvec=$(dirname $stringtie_huvec_gtf)
-stringtie_base_huvec=$(basename $stringtie_huvec_gtf .gtf)
-python /home/ckalk/tools/tama/tama_go/format_converter/tama_format_gtf_to_bed12_stringtie.py \
- $stringtie_huvec_gtf \
- $stringtie_dir_huvec/$stringtie_base_huvec.bed12
+# python /home/ckalk/tools/tama/tama_go/format_converter/tama_format_gtf_to_bed12_stringtie.py \
+#  $mando_tama_huvec_gtf \
+#  $mando_dir_huvec/$mando_base_huvec.bed12
 
 
-sed -i "s|annotation_capped.bed|$stringtie_dir_cm/$stringtie_base_cm.bed12|" file_list_cm.txt
-sed -i "s|annotation_nocap.bed|$mando_dir_cm/$mando_base_cm.bed12|" file_list_cm.txt
+# stringtie_dir_cm=$(dirname $stringtie_cm_gtf)
+# stringtie_base_cm=$(basename $stringtie_cm_gtf .gtf)
+# python /home/ckalk/tools/tama/tama_go/format_converter/tama_format_gtf_to_bed12_stringtie.py \
+#  $stringtie_cm_gtf \
+#  $stringtie_dir_cm/$stringtie_base_cm.bed12
 
-sed -i 's/ \+/\t/g' file_list_cm.txt
-sed -i '/^$/d' file_list_cm.txt
-
-
-sed -i "s|annotation_capped.bed|$stringtie_dir_huvec/$stringtie_base_huvec.bed12|" file_list_huvec.txt
-sed -i "s|annotation_nocap.bed|$mando_dir_huvec/$mando_base_huvec.bed12|" file_list_huvec.txt
-
-sed -i 's/ \+/\t/g' file_list_huvec.txt
-sed -i '/^$/d' file_list_huvec.txt
-
-
-python /home/ckalk/tools/tama/tama_merge.py \
--f file_list_cm.txt \
--p $outdir_tama/CM/CM_merged_tama \
--s mandalorion
+# stringtie_dir_huvec=$(dirname $stringtie_huvec_gtf)
+# stringtie_base_huvec=$(basename $stringtie_huvec_gtf .gtf)
+# python /home/ckalk/tools/tama/tama_go/format_converter/tama_format_gtf_to_bed12_stringtie.py \
+#  $stringtie_huvec_gtf \
+#  $stringtie_dir_huvec/$stringtie_base_huvec.bed12
 
 
-python /home/ckalk/tools/tama/tama_merge.py \
--f file_list_huvec.txt \
--p $outdir_tama/HUVEC/HUVEC_merged_tama \
--s mandalorion
+# sed -i "s|annotation_capped.bed|$stringtie_dir_cm/$stringtie_base_cm.bed12|" file_list_cm.txt
+# sed -i "s|annotation_nocap.bed|$mando_dir_cm/$mando_base_cm.bed12|" file_list_cm.txt
 
-python /home/ckalk/tools/tama/tama_go/format_converter/tama_convert_bed_gtf_ensembl_no_cds.py \
- $outdir_tama/CM/CM_merged_tama.bed \
- $outdir_tama/CM/CM_merged_tama.gtf
-
-python /home/ckalk/tools/tama/tama_go/format_converter/tama_convert_bed_gtf_ensembl_no_cds.py \
- $outdir_tama/HUVEC/HUVEC_merged_tama.bed \
- $outdir_tama/HUVEC/HUVEC_merged_tama.gtf
+# sed -i 's/ \+/\t/g' file_list_cm.txt
+# sed -i '/^$/d' file_list_cm.txt
 
 
-bash ${script_dir}/sqanti3/sqanti3_qc_mando_cm.sh \
- /home/ckalk/tools/sqanti3 \
- $outdir_tama/CM/CM_merged_tama.gtf \
- ${reference_gtf} \
- ${genome_fasta} \
- $outdir_tama/CM/SQANTI_QC
+# sed -i "s|annotation_capped.bed|$stringtie_dir_huvec/$stringtie_base_huvec.bed12|" file_list_huvec.txt
+# sed -i "s|annotation_nocap.bed|$mando_dir_huvec/$mando_base_huvec.bed12|" file_list_huvec.txt
 
- bash ${script_dir}/sqanti3/sqanti3_qc_mando_cm.sh \
- /home/ckalk/tools/sqanti3 \
+# sed -i 's/ \+/\t/g' file_list_huvec.txt
+# sed -i '/^$/d' file_list_huvec.txt
+
+
+# python /home/ckalk/tools/tama/tama_merge.py \
+# -f file_list_cm.txt \
+# -p $outdir_tama/CM/CM_merged_tama \
+# -s mandalorion \
+# -a 50 \
+# -m 5 \
+# -z 50
+
+
+# python /home/ckalk/tools/tama/tama_merge.py \
+# -f file_list_huvec.txt \
+# -p $outdir_tama/HUVEC/HUVEC_merged_tama \
+# -s mandalorion \
+# -a 50 \
+# -m 5 \
+# -z 50
+
+# python /home/ckalk/tools/tama/tama_go/format_converter/tama_convert_bed_gtf_ensembl_no_cds.py \
+#  $outdir_tama/CM/CM_merged_tama.bed \
+#  $outdir_tama/CM/CM_merged_tama.gtf
+
+# python /home/ckalk/tools/tama/tama_go/format_converter/tama_convert_bed_gtf_ensembl_no_cds.py \
+#  $outdir_tama/HUVEC/HUVEC_merged_tama.bed \
+#  $outdir_tama/HUVEC/HUVEC_merged_tama.gtf
+
+
+# bash ${script_dir}/sqanti3/sqanti3_qc_mando_cm.sh \
+#  /home/ckalk/tools/sqanti3 \
+#  $outdir_tama/CM/CM_merged_tama.gtf \
+#  ${reference_gtf} \
+#  ${genome_fasta} \
+#  $outdir_tama/CM/SQANTI_QC
+
+#  bash ${script_dir}/sqanti3/sqanti3_qc_mando_cm.sh \
+#  /home/ckalk/tools/sqanti3 \
+#  $outdir_tama/HUVEC/HUVEC_merged_tama.gtf \
+#  ${reference_gtf} \
+#  ${genome_fasta} \
+#  $outdir_tama/HUVEC/SQANTI_QC
+
+python get_gene_id_tama_gtf.py \
  $outdir_tama/HUVEC/HUVEC_merged_tama.gtf \
- ${reference_gtf} \
- ${genome_fasta} \
- $outdir_tama/HUVEC/SQANTI_QC
+ $outdir_tama/HUVEC/SQANTI_QC/isoforms_classification.txt  \
+ $outdir_tama/HUVEC/HUVEC_merged_tama_gene_id.gtf
+
+python get_gene_id_tama_gtf.py \
+ $outdir_tama/CM/CM_merged_tama.gtf \
+ $outdir_tama/CM/SQANTI_QC/isoforms_classification.txt  \
+ $outdir_tama/CM/CM_merged_tama_gene_id.gtf

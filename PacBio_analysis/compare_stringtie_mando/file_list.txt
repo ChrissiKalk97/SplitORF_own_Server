@@ -1,0 +1,3 @@
+file_name   cap_flag    merge_priority(start,junctions,end) source_name
+annotation_capped.bed   capped 1,1,1  stringtie
+annotation_nocap.bed    capped  1,1,1   mandalorion
