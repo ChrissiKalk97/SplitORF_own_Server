@@ -1,0 +1,519 @@
+{
+    "full-splice_match": [
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE"
+        }
+    ],
+    "incomplete-splice_match": [
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "min_cov": 1
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "ratio_TSS": 1.0
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "min_cov": 1
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "ratio_TSS": 1.0
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "FL": 3
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "FL": 3
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        }
+    ],
+    "novel_in_catalog": [
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ],
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ],
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "FL": 3,
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "FL": 3,
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "FL": 3,
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "FL": 3,
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "ratio_TSS": 1.0,
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "ratio_TSS": 1.0,
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "ratio_TSS": 1.0,
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "ratio_TSS": 1.0,
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "min_cov": 1,
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "min_cov": 1,
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "min_cov": 1,
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "min_cov": 1,
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        }
+    ],
+    "fusion": [
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "FL": 4,
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ],
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "FL": 4,
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ],
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        }
+    ],
+    "novel_not_in_catalog": [
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ],
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ],
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "bite": [
+                "FALSE",
+                "nan"
+            ],
+            "FL": 3
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "bite": [
+                "FALSE",
+                "nan"
+            ],
+            "FL": 3
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ],
+            "FL": 3
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ],
+            "FL": 3
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ],
+            "all_canonical": [
+                "canonical",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "bite": [
+                "FALSE",
+                "nan"
+            ],
+            "all_canonical": [
+                "canonical",
+                "nan"
+            ]
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ],
+            "all_canonical": [
+                "canonical",
+                "nan"
+            ]
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "bite": [
+                "FALSE",
+                "nan"
+            ],
+            "all_canonical": [
+                "canonical",
+                "nan"
+            ]
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "ratio_TSS": 1.0,
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "ratio_TSS": 1.0,
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "ratio_TSS": 1.0,
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "ratio_TSS": 1.0,
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "min_cov": 1,
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "min_cov": 1,
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "min_cov": 1,
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "min_cov": 1,
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        }
+    ],
+    "genic": [
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ],
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ],
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "FL": 3
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "FL": 3
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "min_cov": 1
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "min_cov": 1
+        },
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "ratio_TSS": 1.0
+        },
+        {
+            "polyA_motif_found": "TRUE",
+            "ratio_TSS": 1.0
+        }
+    ],
+    "rest": [
+        {
+            "perc_A_downstream_TTS": [
+                0,
+                69
+            ],
+            "RTS_stage": [
+                "FALSE",
+                "nan"
+            ],
+            "bite": [
+                "FALSE",
+                "nan"
+            ]
+        }
+    ]
+}

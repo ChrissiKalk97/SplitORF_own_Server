@@ -22,6 +22,7 @@ merged_data_dir="/projects/splitorfs/work/own_data/Novogene/Michi_Vlado_run_1/me
 # reference file directories
 genome_fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
 gtf_file="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion/HUVEC/HUVEC_mando_gene_id.gtf"
+gtf_file_cm="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion/CM/CM_mando_gene_id.gtf"
 decoys="/projects/splitorfs/work/reference_files/decoys.txt"
 transcript_fasta="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion/HUVEC/HUVEC_mando_gene_id_correct.fasta"
 reference_gtf="/projects/splitorfs/work/reference_files/clean_Ensembl_ref/Ensembl_equality_and_TSL_filtered.gtf"
@@ -111,18 +112,18 @@ fi
 # SQANTI3 QC on HUVEC and CM assembly                                          #
 ################################################################################
  # get the txt file of R1 space R2
-short_read_file="sqanti3/huvec_short_reads.txt"
+# short_read_file="sqanti3/huvec_short_reads.txt"
 
-> "$short_read_file"  # Clear or create the output file
+# > "$short_read_file"  # Clear or create the output file
 
-for r1 in $outdir_fastp/*_merged_fastp.R1.fastp.fastq.gz; do
-    r2="${r1/R1/R2}"
-    if [ -f "$r2" ]; then
-        echo "$r1 $r2" >> "$short_read_file"
-    else
-        echo "Warning: No matching R2 for $r1" >&2
-    fi
-done
+# for r1 in $outdir_fastp/*_merged_fastp.R1.fastp.fastq.gz; do
+#     r2="${r1/R1/R2}"
+#     if [ -f "$r2" ]; then
+#         echo "$r1 $r2" >> "$short_read_file"
+#     else
+#         echo "Warning: No matching R2 for $r1" >&2
+#     fi
+# done
 
 
 # bash sqanti3/sqanti3_qc_mando_huvec.sh \
@@ -136,45 +137,45 @@ done
 
 
 
-# bash sqanti3/sqanti3_qc_mando_cm.sh \
-#  /home/ckalk/tools/sqanti3 \
-#  ${gtf_file} \
-#  ${reference_gtf} \
-#  ${genome_fasta} \
-#  ${sqanti_qc_outdir}/CM
+bash sqanti3/sqanti3_qc_mando_cm.sh \
+ /home/ckalk/tools/sqanti3 \
+ ${gtf_file_cm} \
+ ${reference_gtf} \
+ ${genome_fasta} \
+ ${sqanti_qc_outdir}
 
 
 ################################################################################
 # SQANTI3 RULES FILTER on HUVEC assembly                                       #
 ################################################################################
-bash sqanti3/sqanti_rules/sqanti3_rules_huvec_06_08_25.sh \
- /home/ckalk/tools/sqanti3 \
- ${sqanti_qc_outdir}/HUVEC/isoforms \
- ${sqanti_dir}/SQANTI3_Filter/HUVEC \
- sqanti3/sqanti_rules/huvec_filter_v2_07_08_25.json
+# bash sqanti3/sqanti_rules/sqanti3_rules_huvec_06_08_25.sh \
+#  /home/ckalk/tools/sqanti3 \
+#  ${sqanti_qc_outdir}/HUVEC/isoforms \
+#  ${sqanti_dir}/SQANTI3_Filter/HUVEC \
+#  sqanti3/sqanti_rules/huvec_filter_v2_07_08_25.json
 
-# QC to get overview over filtered assembly
- bash sqanti3/sqanti3_qc_mando_huvec.sh \
- /home/ckalk/tools/sqanti3 \
- ${sqanti_dir}/SQANTI3_Filter/HUVEC/isoforms.filtered.gtf\
- ${reference_gtf} \
- ${genome_fasta} \
- ${sqanti_qc_outdir}/HUVEC_after_filter \
- sqanti3/huvec_short_reads.txt \
- ${kallisto_quant_mando_raw}
+# # QC to get overview over filtered assembly
+#  bash sqanti3/sqanti3_qc_mando_huvec.sh \
+#  /home/ckalk/tools/sqanti3 \
+#  ${sqanti_dir}/SQANTI3_Filter/HUVEC/isoforms.filtered.gtf\
+#  ${reference_gtf} \
+#  ${genome_fasta} \
+#  ${sqanti_qc_outdir}/HUVEC_after_filter \
+#  sqanti3/huvec_short_reads.txt \
+#  ${kallisto_quant_mando_raw}
 
 ################################################################################
 # SQANTI3 RESCUE FILTER on HUVEC assembly                                      #
 ################################################################################
 # QC on reference needed for rescue
-bash sqanti3/sqanti3_qc_mando_huvec.sh \
- /home/ckalk/tools/sqanti3 \
- ${reference_gtf}\
- ${reference_gtf} \
- ${genome_fasta} \
- ${sqanti_qc_outdir}/Ens_110_filtered_QC \
- sqanti3/huvec_short_reads.txt \
- ${kallisto_quant_mando_raw}
+# bash sqanti3/sqanti3_qc_mando_huvec.sh \
+#  /home/ckalk/tools/sqanti3 \
+#  ${reference_gtf}\
+#  ${reference_gtf} \
+#  ${genome_fasta} \
+#  ${sqanti_qc_outdir}/Ens_110_filtered_QC \
+#  sqanti3/huvec_short_reads.txt \
+#  ${kallisto_quant_mando_raw}
 
 
 # bash sqanti3/sqanti_rescue/sqanti_rescue.sh \
