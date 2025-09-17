@@ -6,6 +6,7 @@ eval "$(conda shell.bash hook)"
 conda activate pacbio
 
 reference_gtf="/projects/splitorfs/work/reference_files/clean_Ensembl_ref/Ensembl_equality_and_TSL_filtered.gtf"
+ensembl_full_gtf="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.113.chr.gtf"
 
 mando_rescued_cm_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_updated_parameters/SQANTI3/SQANTI3_Rescue/CM/CM_rescue_rules_filter_rescued.gtf"
 stringtie_cm_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/stringtie3/CM/CM_strigntie3_assembly_renamed_filtered.gtf"
@@ -29,7 +30,8 @@ genome_fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.p
 #     $mando_rescued_cm_gtf \
 #     $stringtie_cm_gtf \
 #     $outdir_cm \
-#     $prefix_cm
+#     $prefix_cm \
+#     $genome_fasta
 
 
 # bash gffcompare_stringtie_mando.sh \
@@ -37,7 +39,8 @@ genome_fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.p
 #     $mando_rescued_huvec_gtf \
 #     $stringtie_huvec_gtf \
 #     $outdir_huvec \
-#     $prefix_huvec
+#     $prefix_huvec \
+#     $genome_fasta
 
 
 
@@ -112,158 +115,157 @@ genome_fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.p
 
 outdir_tama="/projects/splitorfs/work/PacBio/merged_bam_files/compare_mando_stringtie/tama"
 
-# if [[ ! -d "$outdir_tama" ]]; then
-#     mkdir $outdir_tama
+bash tama_steps.sh \
+ -r $reference_gtf \
+ -f $genome_fasta \
+ -o $outdir_tama \
+ -s $stringtie_cm_gtf \
+ -m $mando_rescued_cm_gtf \
+ -c CM \
+ -t "/home/ckalk/tools/tama"
+
+bash tama_steps.sh \
+ -r $reference_gtf \
+ -f $genome_fasta \
+ -o $outdir_tama \
+ -s $stringtie_huvec_gtf \
+ -m $mando_rescued_huvec_gtf \
+ -c HUVEC \
+ -t "/home/ckalk/tools/tama"
+
+
+# #################################################################################
+# # ------------------ RUN SPLIT-ORFs PIPELINE                 ------------------ #
+# #################################################################################
+# bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_splitorf_pipeline_on_assembly.sh \
+#  $outdir_tama/CM/CM_merged_tama_gene_id.gtf \
+#  /home/ckalk/tools/SplitORF_pipeline \
+#  $genome_fasta
+
+
+# bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_splitorf_pipeline_on_assembly.sh \
+#  $outdir_tama/HUVEC/HUVEC_merged_tama_gene_id.gtf \
+#  /home/ckalk/tools/SplitORF_pipeline \
+#  $genome_fasta
+
+# #################################################################################
+# # ------------------ RUN FIFTYNT PIPELINE                    ------------------ #
+# #################################################################################
+# bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_fiftynt_on_assembly.sh \
+#     $outdir_tama/CM/CM_merged_tama_gene_id.gtf \
+#     /home/ckalk/tools/NMD_fetaure_composition \
+#     $genome_fasta \
+#     $ensembl_full_gtf \
+#     CM_merged_tama_50nt.csv
+
+
+# bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_fiftynt_on_assembly.sh \
+#     $outdir_tama/HUVEC/HUVEC_merged_tama_gene_id.gtf \
+#     /home/ckalk/tools/NMD_fetaure_composition \
+#     $genome_fasta \
+#     $ensembl_full_gtf \
+#     HUVEC_merged_tama_50nt.csv
+
+#################################################################################
+# ------------------ COMPARE TO ENSEMBL FULL  ASSEMBLY       ------------------ #
+#################################################################################
+
+
+# if [[ ! -d "$outdir_tama/HUVEC/compare_Ens_full_ref" ]]; then
+#     mkdir $outdir_tama/HUVEC/compare_Ens_full_ref
 # fi
 
-# if [[ ! -d "$outdir_tama/CM" ]]; then
-#     mkdir $outdir_tama/CM
-# fi
-
-# if [[ ! -d "$outdir_tama/HUVEC" ]]; then
-#     mkdir $outdir_tama/HUVEC
+# if [[ ! -d "$outdir_tama/CM/compare_Ens_full_ref" ]]; then
+#     mkdir $outdir_tama/CM/compare_Ens_full_ref
 # fi
 
 
-# # Need to change the order of gene id and transcript ID
-mando_dir_cm=$(dirname $mando_rescued_cm_gtf)
-mando_base_cm=$(basename $mando_rescued_cm_gtf .gtf)
-mando_tama_cm_gtf=${mando_dir_cm}/${mando_base_cm}_for_tama.gtf
-# python change_order_gene_id_transcript_id_sqanti_gtf.py \
-#  $mando_rescued_cm_gtf \
-#  $mando_tama_cm_gtf
+# gffcompare -o $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_compare_full_GTF\
+#  -r $ensembl_full_gtf\
+#   $outdir_tama/HUVEC/HUVEC_merged_tama_gene_id.gtf
+
+# mv $outdir_tama/HUVEC/HUVEC_compare_full_GTF* $outdir_tama/HUVEC/compare_Ens_full_ref
 
 
+# gffcompare -o $outdir_tama/CM/compare_Ens_full_ref/CM_compare_full_GTF\
+#  -r $ensembl_full_gtf\
+#   $outdir_tama/CM/CM_merged_tama_gene_id.gtf
 
-mando_dir_huvec=$(dirname $mando_rescued_huvec_gtf)
-mando_base_huvec=$(basename $mando_rescued_huvec_gtf .gtf)
-mando_tama_huvec_gtf=${mando_dir_huvec}/${mando_base_huvec}_for_tama.gtf
-# python change_order_gene_id_transcript_id_sqanti_gtf.py \
-#  $mando_rescued_huvec_gtf \
-#  $mando_tama_huvec_gtf
+# mv $outdir_tama/CM/CM_compare_full_GTF* $outdir_tama/CM/compare_Ens_full_ref
 
+# # # which isoforms have non ejcs?
+# python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/get_equal_ejc_isoforms.py \
+#  $outdir_tama/CM/compare_Ens_full_ref/CM_compare_full_GTF.CM_merged_tama_gene_id.gtf.tmap
 
-
-# # Need bed12 format
-# conda activate tama
-
-# python /home/ckalk/tools/tama/tama_go/format_converter/tama_format_gtf_to_bed12_stringtie.py \
-#  $mando_tama_cm_gtf \
-#  $mando_dir_cm/$mando_base_cm.bed12
+# python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/get_equal_ejc_isoforms.py \
+#  $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_compare_full_GTF.HUVEC_merged_tama_gene_id.gtf.tmap
 
 
-# python /home/ckalk/tools/tama/tama_go/format_converter/tama_format_gtf_to_bed12_stringtie.py \
-#  $mando_tama_huvec_gtf \
-#  $mando_dir_huvec/$mando_base_huvec.bed12
+# # which isoforms are novel nmd transcripts?
+#  python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/count_nr_novel_nmd_transcripts.py \
+#  /home/ckalk/tools/NMD_fetaure_composition/Output/CM_merged_tama_50nt/CM_merged_tama_50nt.csv \
+#  $outdir_tama/CM/compare_Ens_full_ref/CM_merged_tama_gene_id_novel_isoforms.txt \
+#  --assembly_type full
 
-
-# stringtie_dir_cm=$(dirname $stringtie_cm_gtf)
-# stringtie_base_cm=$(basename $stringtie_cm_gtf .gtf)
-# python /home/ckalk/tools/tama/tama_go/format_converter/tama_format_gtf_to_bed12_stringtie.py \
-#  $stringtie_cm_gtf \
-#  $stringtie_dir_cm/$stringtie_base_cm.bed12
-
-# stringtie_dir_huvec=$(dirname $stringtie_huvec_gtf)
-# stringtie_base_huvec=$(basename $stringtie_huvec_gtf .gtf)
-# python /home/ckalk/tools/tama/tama_go/format_converter/tama_format_gtf_to_bed12_stringtie.py \
-#  $stringtie_huvec_gtf \
-#  $stringtie_dir_huvec/$stringtie_base_huvec.bed12
-
-
-# sed -i "s|annotation_capped.bed|$stringtie_dir_cm/$stringtie_base_cm.bed12|" file_list_cm.txt
-# sed -i "s|annotation_nocap.bed|$mando_dir_cm/$mando_base_cm.bed12|" file_list_cm.txt
-
-# sed -i 's/ \+/\t/g' file_list_cm.txt
-# sed -i '/^$/d' file_list_cm.txt
-
-
-# sed -i "s|annotation_capped.bed|$stringtie_dir_huvec/$stringtie_base_huvec.bed12|" file_list_huvec.txt
-# sed -i "s|annotation_nocap.bed|$mando_dir_huvec/$mando_base_huvec.bed12|" file_list_huvec.txt
-
-# sed -i 's/ \+/\t/g' file_list_huvec.txt
-# sed -i '/^$/d' file_list_huvec.txt
-
-
-# python /home/ckalk/tools/tama/tama_merge.py \
-# -f file_list_cm.txt \
-# -p $outdir_tama/CM/CM_merged_tama \
-# -s mandalorion \
-# -a 50 \
-# -m 5 \
-# -z 50
-
-
-# python /home/ckalk/tools/tama/tama_merge.py \
-# -f file_list_huvec.txt \
-# -p $outdir_tama/HUVEC/HUVEC_merged_tama \
-# -s mandalorion \
-# -a 50 \
-# -m 5 \
-# -z 50
-
-# python /home/ckalk/tools/tama/tama_go/format_converter/tama_convert_bed_gtf_ensembl_no_cds.py \
-#  $outdir_tama/CM/CM_merged_tama.bed \
-#  $outdir_tama/CM/CM_merged_tama.gtf
-
-# python /home/ckalk/tools/tama/tama_go/format_converter/tama_convert_bed_gtf_ensembl_no_cds.py \
-#  $outdir_tama/HUVEC/HUVEC_merged_tama.bed \
-#  $outdir_tama/HUVEC/HUVEC_merged_tama.gtf
-
-# conda activate pacbio
-# bash ${script_dir}/sqanti3/sqanti3_qc_mando_cm.sh \
-#  /home/ckalk/tools/sqanti3 \
-#  $outdir_tama/CM/CM_merged_tama.gtf \
-#  ${reference_gtf} \
-#  ${genome_fasta} \
-#  $outdir_tama/CM/SQANTI_QC
-
-#  bash ${script_dir}/sqanti3/sqanti3_qc_mando_cm.sh \
-#  /home/ckalk/tools/sqanti3 \
-#  $outdir_tama/HUVEC/HUVEC_merged_tama.gtf \
-#  ${reference_gtf} \
-#  ${genome_fasta} \
-#  $outdir_tama/HUVEC/SQANTI_QC
-
-# python get_gene_id_tama_gtf.py \
-#  $outdir_tama/HUVEC/HUVEC_merged_tama.gtf \
-#  $outdir_tama/HUVEC/SQANTI_QC/isoforms_classification.txt  \
-#  $outdir_tama/HUVEC/HUVEC_merged_tama_gene_id.gtf
-
-# python get_gene_id_tama_gtf.py \
-#  $outdir_tama/CM/CM_merged_tama.gtf \
-#  $outdir_tama/CM/SQANTI_QC/isoforms_classification.txt  \
-#  $outdir_tama/CM/CM_merged_tama_gene_id.gtf
+#  python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/count_nr_novel_nmd_transcripts.py \
+#  /home/ckalk/tools/NMD_fetaure_composition/Output/HUVEC_merged_tama_50nt/HUVEC_merged_tama_50nt.csv \
+#  $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_merged_tama_gene_id_novel_isoforms.txt \
+#  --assembly_type full
 
 
 #################################################################################
-# ------------------ RUN SPLIT-ORFs PIPELINE                 ------------------ #
+# ------------------ ALIGN TO TRANSCRIPTOME                  ------------------ #
 #################################################################################
-bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_splitorf_pipeline_on_assembly.sh \
- $outdir_tama/CM/CM_merged_tama_gene_id.gtf \
- /home/ckalk/tools/SplitORF_pipeline \
- $genome_fasta
+# if [[ ! -d "$outdir_tama/HUVEC/minimap2" ]]; then
+#     mkdir $outdir_tama/HUVEC/minimap2
+# fi
+
+# if [[ ! -d "$outdir_tama/HUVEC/minimap2/HUVEC_index" ]]; then
+#     mkdir $outdir_tama/HUVEC/minimap2/HUVEC_index
+# fi
+
+# if [[ ! -d "$outdir_tama/CM/minimap2" ]]; then
+#     mkdir $outdir_tama/CM/minimap2
+# fi
+
+# if [[ ! -d "$outdir_tama/CM/minimap2/CM_index" ]]; then
+#     mkdir $outdir_tama/CM/minimap2/CM_index
+# fi
 
 
-bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_splitorf_pipeline_on_assembly.sh \
- $outdir_tama/HUVEC/HUVEC_merged_tama_gene_id.gtf \
- /home/ckalk/tools/SplitORF_pipeline \
- $genome_fasta
+# map-hifi unspliced genome alignment of Pacbio Long Reads
+# minimap2 -x map-hifi -d $outdir_tama/HUVEC/minimap2/HUVEC_index/HUVEC_index.mmi $outdir_tama/HUVEC/HUVEC_merged_tama_gene_id.fasta
+# minimap2 -x map-hifi -d $outdir_tama/CM/minimap2/CM_index/CM_index.mmi $outdir_tama/CM/CM_merged_tama_gene_id.fasta
 
-#################################################################################
-# ------------------ RUN FIFTYNT PIPELINE                    ------------------ #
-#################################################################################
-bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_fiftynt_on_assembly.sh \
-    $outdir_tama/CM/CM_merged_tama_gene_id.gtf \
-    /home/ckalk/tools/NMD_fetaure_composition \
-    $genome_fasta \
-    $ensembl_full_gtf \
-    CM_merged_tama_50nt.csv
+isoseq_reads_dir="/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq"
+
+# minimap2 align HUVEC LRs
+# for fastq in "${isoseq_reads_dir}"/HUVEC*.fastq; do
+#     sample=$(basename $fastq)
+#     sample="${sample%_merged_lima_refined.fastq}"
+#     minimap2 -a -x map-hifi $outdir_tama/HUVEC/minimap2/HUVEC_index/HUVEC_index.mmi $fastq > $outdir_tama/HUVEC/minimap2/${sample}_minimap2_aligned.sam
+#     samtools view -bo $outdir_tama/HUVEC/minimap2/${sample}_minimap2_aligned.bam $outdir_tama/HUVEC/minimap2/${sample}_minimap2_aligned.sam
+#     samtools sort -o  $outdir_tama/HUVEC/minimap2/${sample}_minimap2_aligned_sort.bam $outdir_tama/HUVEC/minimap2/${sample}_minimap2_aligned.bam
+#     samtools index $outdir_tama/HUVEC/minimap2/${sample}_minimap2_aligned_sort.bam
+#     samtools idxstats $outdir_tama/HUVEC/minimap2/${sample}_minimap2_aligned_sort.bam > \
+#      $outdir_tama/HUVEC/minimap2/${sample}_minimap2_aligned_idxstats.out
+#     samtools flagstat $outdir_tama/HUVEC/minimap2/${sample}_minimap2_aligned_sort.bam > \
+#      $outdir_tama/HUVEC/minimap2/${sample}_minimap2_aligned_sort_flagstat.out
+# done
+
+# minimap2 align CM LRs
+# for fastq in "${isoseq_reads_dir}"/CM*.fastq; do
+#     sample=$(basename $fastq)
+#     sample="${sample%_merged_lima_refined.fastq}"
+#     minimap2 -a -x map-hifi $outdir_tama/CM/minimap2/CM_index/CM_index.mmi $fastq > $outdir_tama/CM/minimap2/${sample}_minimap2_aligned.sam
+#     samtools view -bo $outdir_tama/CM/minimap2/${sample}_minimap2_aligned.bam $outdir_tama/CM/minimap2/${sample}_minimap2_aligned.sam
+#     samtools sort -o $outdir_tama/CM/minimap2/${sample}_minimap2_aligned_sort.bam $outdir_tama/CM/minimap2/${sample}_minimap2_aligned.bam
+#     samtools index $outdir_tama/CM/minimap2/${sample}_minimap2_aligned.bam
+#     samtools idxstats $outdir_tama/CM/minimap2/${sample}_minimap2_aligned_sort.bam > \
+#      $outdir_tama/CM/minimap2/${sample}_minimap2_aligned_idxstats.out
+#     samtools flagstat $outdir_tama/CM/minimap2/${sample}_minimap2_aligned_sort.bam > \
+#      $outdir_tama/CM/minimap2/${sample}_minimap2_aligned_sort_flagstat.out
+# done
 
 
-bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_fiftynt_on_assembly.sh \
-    $outdir_tama/HUVEC/HUVEC_merged_tama_gene_id.gtf \
-    /home/ckalk/tools/NMD_fetaure_composition \
-    $genome_fasta \
-    $ensembl_full_gtf \
-    HUVEC_merged_tama_50nt.csv
 
