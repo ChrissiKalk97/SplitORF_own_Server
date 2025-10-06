@@ -68,48 +68,48 @@ fi
 
 sample=$(basename $bamfile .bam)
 # # # align Riboreads against the genome
-# STAR\
-#   --runThreadN $numberOfThreads\
-#   --alignEndsType EndToEnd\
-#   --outSAMstrandField intronMotif\
-#   --alignIntronMin 20\
-#   --alignIntronMax 1000000\
-#   --genomeDir $StarIndex\
-#   --readFilesIn $Riboreads\
-#   --twopassMode Basic\
-#   --seedSearchStartLmax 20\
-#   --seedSearchStartLmaxOverLread 0.5\
-#   --outSAMattributes All\
-#   --outSAMtype BAM SortedByCoordinate\
-#   --outFileNamePrefix $out_path/$sample
+STAR\
+  --runThreadN $numberOfThreads\
+  --alignEndsType EndToEnd\
+  --outSAMstrandField intronMotif\
+  --alignIntronMin 20\
+  --alignIntronMax 1000000\
+  --genomeDir $StarIndex\
+  --readFilesIn $Riboreads\
+  --twopassMode Basic\
+  --seedSearchStartLmax 20\
+  --seedSearchStartLmaxOverLread 0.5\
+  --outSAMattributes All\
+  --outSAMtype BAM SortedByCoordinate\
+  --outFileNamePrefix $out_path/$sample
 
-# # samtools view -@ $numberOfThreads -bo $bamfile $out_path/$(basename $bamfile .bam)Aligned.out.sam
+samtools view -@ $numberOfThreads -bo $bamfile $out_path/$(basename $bamfile .bam)Aligned.out.sam
 bamfile=$out_path/${sample}Aligned.sortedByCoord.out.bam
 
-# filteredBamFile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_filtered.bam
-# samtools view -F 256 -F 2048 -b $bamfile > $filteredBamFile
-# sortedBamFile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_sorted.bam
-# samtools sort -o $sortedBamFile $filteredBamFile
-# samtools index -@ 10 $sortedBamFile
+filteredBamFile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_filtered.bam
+samtools view -F 256 -F 2048 -b $bamfile > $filteredBamFile
+sortedBamFile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_sorted.bam
+samtools sort -o $sortedBamFile $filteredBamFile
+samtools index -@ 10 $sortedBamFile
 bedfile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam).bed
 
-# present_chromosomes=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_chromosomes.txt
-# samtools view -H $sortedBamFile | grep '@SQ' | cut -f 2 | cut -d ':' -f 2  | sort | uniq > $present_chromosomes
+present_chromosomes=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_chromosomes.txt
+samtools view -H $sortedBamFile | grep '@SQ' | cut -f 2 | cut -d ':' -f 2  | sort | uniq > $present_chromosomes
 
 # # get the union of all chromosomes
-# # cat $present_chromosomes $out_path/chromosomes_unique_regions.txt | sort | uniq > temp_file
-# # mv temp_file $present_chromosomes
+# cat $present_chromosomes $out_path/chromosomes_unique_regions.txt | sort | uniq > temp_file
+# mv temp_file $present_chromosomes
 
 
 sorted_unique_regions=$(dirname $unique_regions)/$(basename $unique_regions .bed)_chrom_sorted.bed
-# if [ ! -e  $sorted_unique_regions ]; then
-#     sort -k1,1 -k2,2n $unique_regions > $sorted_unique_regions
-# fi
+if [ ! -e  $sorted_unique_regions ]; then
+    sort -k1,1 -k2,2n $unique_regions > $sorted_unique_regions
+fi
 
 
 
 # echo "converting bam to bed"
-# bedtools bamtobed -i $sortedBamFile -split > $bedfile
+bedtools bamtobed -i $sortedBamFile -split > $bedfile
 
 
 echo "intersecting with unique regions"
@@ -120,10 +120,10 @@ intersectBedfile=$out_path/$(basename $bedfile .bed)_intersect_counts_sorted.bed
 #############################################################
 sorted_bedfile=$out_path/$(basename $bedfile .bed)_chrom_sort.bed
 
-# sort -k1,1 -k2,2n $bedfile > $sorted_bedfile
+sort -k1,1 -k2,2n $bedfile > $sorted_bedfile
 
 # subset the genome bedfile to the present genomes
-# grep -Fwf $present_chromosomes $out_path/genome_chrom_ordering.txt | sort -k1,1 -k2,2n > $out_path/genome_chrom_ordering_$(basename $bamfile Aligned.sortedByCoord.out.bam).txt
+grep -Fwf $present_chromosomes $out_path/genome_chrom_ordering.txt | sort -k1,1 -k2,2n > $out_path/genome_chrom_ordering_$(basename $bamfile Aligned.sortedByCoord.out.bam).txt
 # -F: no regex, take chrs literally
 # -w: match the whole word, e.g. 1 does not match 10, 11 etc but only 1
 # -f: file input of the pattern that are searched for

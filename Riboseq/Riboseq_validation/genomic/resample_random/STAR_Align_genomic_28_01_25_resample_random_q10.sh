@@ -1,7 +1,7 @@
 #!/bin/bash
 #Help message:
 usage="
-Usage: ./Bowtie_Align_transcriptomic.sh [-options] numberOfThreads BowtieBaseName Reads.fastq out unique_regions.bed exonAnnotation genomicAnnotation
+Usage: ./STAR_align_genomic.sh [-options] numberOfThreads BowtieBaseName Reads.fastq out unique_regions.bed exonAnnotation genomicAnnotation
 
 numberOfThreads 		Int setting the number of threads to use with BOWTIE2
 BowtieBaseName 			BaseName to use for creating BOWTIE2 Index files, or if allready created, BaseName of the existing index files
@@ -68,29 +68,28 @@ fi
 
 sample=$(basename $bamfile .bam)
 # # # align Riboreads against the genome
-STAR\
-  --runThreadN $numberOfThreads\
-  --alignEndsType EndToEnd\
-  --outSAMstrandField intronMotif\
-  --alignIntronMin 20\
-  --alignIntronMax 1000000\
-  --genomeDir $StarIndex\
-  --readFilesIn $Riboreads\
-  --twopassMode Basic\
-  --seedSearchStartLmax 20\
-  --seedSearchStartLmaxOverLread 0.5\
-  --outSAMattributes All\
-  --outSAMtype BAM SortedByCoordinate\
-  --outFileNamePrefix $out_path/$sample
+# STAR\
+#   --runThreadN $numberOfThreads\
+#   --alignEndsType EndToEnd\
+#   --outSAMstrandField intronMotif\
+#   --alignIntronMin 20\
+#   --alignIntronMax 1000000\
+#   --genomeDir $StarIndex\
+#   --readFilesIn $Riboreads\
+#   --twopassMode Basic\
+#   --seedSearchStartLmax 20\
+#   --seedSearchStartLmaxOverLread 0.5\
+#   --outSAMattributes All\
+#   --outSAMtype BAM SortedByCoordinate\
+#   --outFileNamePrefix $out_path/$sample
 
-samtools view -@ $numberOfThreads -bo $bamfile $out_path/$(basename $bamfile .bam)Aligned.out.sam
 bamfile=$out_path/${sample}Aligned.sortedByCoord.out.bam
 
 filteredBamFile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_filtered.bam
-samtools view -F 256 -F 2048 -q 10 -b $bamfile > $filteredBamFile
+# samtools view -F 256 -F 2048 -q 10 -b $bamfile > $filteredBamFile
 sortedBamFile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_sorted.bam
-samtools sort -o $sortedBamFile $filteredBamFile
-samtools index -@ 10 $sortedBamFile
+# samtools sort -o $sortedBamFile $filteredBamFile
+# samtools index -@ 10 $sortedBamFile
 bedfile=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam).bed
 
 present_chromosomes=$out_path/$(basename $bamfile Aligned.sortedByCoord.out.bam)_chromosomes.txt
@@ -160,9 +159,9 @@ for i in {1..20}; do
     rm $randomfile
   fi
 
-  # echo $randomfile
-  # echo $sorted_bedfile 
-  # echo $sorted_randomfile
+  echo $randomfile
+  echo $sorted_bedfile 
+  echo $sorted_randomfile
 
   # debug mode on
   # set -x 

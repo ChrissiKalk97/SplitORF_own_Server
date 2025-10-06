@@ -404,8 +404,8 @@ get_start_positions <- function(pos_string) {
     return(ORF_starts)
 }
 
-get_print_ORF_ranks <- function(SO_pipe_path, frames) {
-    SO_results <- read.delim(file.path(SO_pipe_path, paste0("UniqueProteinORFPairs.txt")))
+get_print_ORF_ranks <- function(SO_pipe_path, frames, region_type) {
+    SO_results <- read.delim(file.path(SO_pipe_path, paste0("UniqueProteinORFPairs_", region_type, ".txt")))
     SO_results$ORF_starts <- sapply(SO_results$OrfPos, get_start_positions)
     head(SO_results)
 

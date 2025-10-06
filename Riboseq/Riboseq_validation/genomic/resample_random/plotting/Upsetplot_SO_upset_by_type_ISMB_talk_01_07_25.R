@@ -39,28 +39,31 @@ library(readr)
 args <- commandArgs(trailingOnly = TRUE)
 nmd_path <- args[1]
 ri_path <- args[2]
+coarse <- args[3]
 
 
-sample_to_cell_type_dict <- c(
-    "ERR3367797" = "CM_IPSC",
-    "ERR3367798" = "CM_IPSC",
-    "OHMX20220060_001" = "HUVEC_untreated",
-    "OHMX20220060_002" = "HUVEC_untreated",
-    "OHMX20220060_003" = "HUVEC_untreated",
-    "OHMX20220060_004" = "HUVEC_treated",
-    "OHMX20220060_005" = "HUVEC_treated",
-    "OHMX20220060_006" = "HUVEC_treated",
-    "SRR11294608" = "Leukemia_untreated",
-    "SRR11294609" = "Leukemia_untreated",
-    "SRR11294610"  = "Leukemia_treated",
-    "SRR11294611"  = "Leukemia_treated",
-    "uf_muellermcnicoll_2025_04_01_huvec_dnor_2" = "HUVEC_normoxia",
-    "uf_muellermcnicoll_2025_04_02_huvec_dnor_3" = "HUVEC_normoxia",
-    "uf_muellermcnicoll_2025_04_03_huvec_dnor_4" = "HUVEC_normoxia",
-    "uf_muellermcnicoll_2025_04_04_huvec_dhypo_2" = "HUVEC_hypoxia",
-    "uf_muellermcnicoll_2025_04_05_huvec_dhypo_3" = "HUVEC_hypoxia",
-    "uf_muellermcnicoll_2025_04_06_huvec_dhypo_4" = "HUVEC_hypoxia"
-)
+
+
+# sample_to_cell_type_dict <- c(
+#     "ERR3367797" = "CM_IPSC",
+#     "ERR3367798" = "CM_IPSC",
+#     "OHMX20220060_001" = "HUVEC_untreated",
+#     "OHMX20220060_002" = "HUVEC_untreated",
+#     "OHMX20220060_003" = "HUVEC_untreated",
+#     "OHMX20220060_004" = "HUVEC_treated",
+#     "OHMX20220060_005" = "HUVEC_treated",
+#     "OHMX20220060_006" = "HUVEC_treated",
+#     "SRR11294608" = "Leukemia_untreated",
+#     "SRR11294609" = "Leukemia_untreated",
+#     "SRR11294610"  = "Leukemia_treated",
+#     "SRR11294611"  = "Leukemia_treated",
+#     "uf_muellermcnicoll_2025_04_01_huvec_dnor_2" = "HUVEC_normoxia",
+#     "uf_muellermcnicoll_2025_04_02_huvec_dnor_3" = "HUVEC_normoxia",
+#     "uf_muellermcnicoll_2025_04_03_huvec_dnor_4" = "HUVEC_normoxia",
+#     "uf_muellermcnicoll_2025_04_04_huvec_dhypo_2" = "HUVEC_hypoxia",
+#     "uf_muellermcnicoll_2025_04_05_huvec_dhypo_3" = "HUVEC_hypoxia",
+#     "uf_muellermcnicoll_2025_04_06_huvec_dhypo_4" = "HUVEC_hypoxia"
+# )
 
 cell_type_to_sample_dict <- list(
     "CM_IPSC" = c("ERR3367797", "ERR3367798"),
@@ -70,6 +73,40 @@ cell_type_to_sample_dict <- list(
     "Leukemia_treated" = c("SRR11294610", "SRR11294611"),
     "HUVEC_normoxia" = c("uf_muellermcnicoll_2025_04_01_huvec_dnor_2", "uf_muellermcnicoll_2025_04_02_huvec_dnor_3", "uf_muellermcnicoll_2025_04_03_huvec_dnor_4"),
     "HUVEC_hypoxia" = c("uf_muellermcnicoll_2025_04_04_huvec_dhypo_2", "uf_muellermcnicoll_2025_04_05_huvec_dhypo_3","uf_muellermcnicoll_2025_04_06_huvec_dhypo_4")
+)
+
+# sample_to_cell_type_dict_coarse <- c(
+#     "ERR3367797" = "CM_IPSC",
+#     "ERR3367798" = "CM_IPSC",
+#     "OHMX20220060_001" = "HUVEC",
+#     "OHMX20220060_002" = "HUVEC",
+#     "OHMX20220060_003" = "HUVEC",
+#     "OHMX20220060_004" = "HUVEC",
+#     "OHMX20220060_005" = "HUVEC",
+#     "OHMX20220060_006" = "HUVEC",
+#     "SRR11294608" = "Leukemia",
+#     "SRR11294609" = "Leukemia",
+#     "SRR11294610"  = "Leukemia",
+#     "SRR11294611"  = "Leukemia",
+#     "uf_muellermcnicoll_2025_04_01_huvec_dnor_2" = "HUVEC",
+#     "uf_muellermcnicoll_2025_04_02_huvec_dnor_3" = "HUVEC",
+#     "uf_muellermcnicoll_2025_04_03_huvec_dnor_4" = "HUVEC",
+#     "uf_muellermcnicoll_2025_04_04_huvec_dhypo_2" = "HUVEC",
+#     "uf_muellermcnicoll_2025_04_05_huvec_dhypo_3" = "HUVEC",
+#     "uf_muellermcnicoll_2025_04_06_huvec_dhypo_4" = "HUVEC"
+# )
+
+cell_type_to_sample_dict_coarse <- list(
+    "CM_IPSC" = c("ERR3367797", "ERR3367798"),
+    "HUVEC" = c("OHMX20220060_001", "OHMX20220060_002", "OHMX20220060_003", 
+                "OHMX20220060_004", "OHMX20220060_005", "OHMX20220060_006",
+                "uf_muellermcnicoll_2025_04_01_huvec_dnor_2",
+                "uf_muellermcnicoll_2025_04_02_huvec_dnor_3",
+                "uf_muellermcnicoll_2025_04_03_huvec_dnor_4", 
+                "uf_muellermcnicoll_2025_04_04_huvec_dhypo_2", 
+                "uf_muellermcnicoll_2025_04_05_huvec_dhypo_3",
+                "uf_muellermcnicoll_2025_04_06_huvec_dhypo_4"),
+    "Leukemia" = c("SRR11294608", "SRR11294609", "SRR11294610", "SRR11294611")
 )
 
 
@@ -107,7 +144,7 @@ upset_list_gen_regions_per_cell_type <- function(cell_type_to_sample_dict, valid
 }
 
 
-get_upset_list_from_csvs <- function(path) {
+get_upset_list_from_csvs <- function(path, coarse) {
     files <- list.files(path, pattern = 
                 "*_genomicunique_regions.csv"
             )
@@ -123,30 +160,72 @@ get_upset_list_from_csvs <- function(path) {
     sample_names <- sub("_genomicunique_regions\\.csv$", "", files)
 
     names(validated_dfs) <- sample_names
-
-    upsetlist_genomic <- upset_list_gen_regions_per_cell_type(cell_type_to_sample_dict, validated_dfs)
+    if (coarse){
+        upsetlist_genomic <- upset_list_gen_regions_per_cell_type(cell_type_to_sample_dict_coarse, validated_dfs)
+    } else {
+        upsetlist_genomic <- upset_list_gen_regions_per_cell_type(cell_type_to_sample_dict, validated_dfs)
+    }
     return(upsetlist_genomic)
-
 }
 
-upsetlist_genomic_nmd <- get_upset_list_from_csvs(nmd_path)
-upsetlist_genomic_ri <- get_upset_list_from_csvs(ri_path)
+upsetlist_genomic_nmd <- get_upset_list_from_csvs(nmd_path, coarse)
+upsetlist_genomic_ri <- get_upset_list_from_csvs(ri_path, coarse)
 
 sorted_samples_nmd <- sort(names(upsetlist_genomic_nmd))
 sorted_samples_ri <- sort(names(upsetlist_genomic_ri))
 
 
-svg(file.path(nmd_path, 'upset_NMD_cell_types_01_07_25.svg'), width = 12, height = 6)
-upset(fromList(upsetlist_genomic_nmd), order.by = "freq", nsets = 7, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
-      set_size.scale_max = 500,
-      mainbar.y.label = "NMD Unique Region Intersections", sets.x.label = "Matching NMD unique regions per cell type",
-      text.scale = c(1, 1, 0.9, 1, 1, 1))
+if (coarse) {
+    nsets <- 3
+    set_size.scale_max_nmd <- 650
+    set_size.scale_max_ri <- 350
+    nmd_out <- 'upset_NMD_cell_types_01_07_25_coarse.svg'
+    ri_out <-'upset_RI_cell_types_01_07_25_coarse.svg'
+} else {
+    nsets <- 7
+    set_size.scale_max_nmd <- 500
+    set_size.scale_max_ri <- 300
+    nmd_out <- 'upset_NMD_cell_types_01_07_25.svg'
+    ri_out <-'upset_RI_cell_types_01_07_25.svg'
+}
+
+svg(file.path(nmd_path, nmd_out), width = 14, height = 6)
+    upset(fromList(upsetlist_genomic_nmd), order.by = "freq", nsets = nsets, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+        set_size.scale_max = set_size.scale_max_nmd,
+        mainbar.y.label = "NMD Unique Region Intersections", sets.x.label = "Matching NMD unique regions per cell type",
+        text.scale = 1.7)
+dev.off()
+svg(file.path(ri_path, ri_out), width = 14, height = 6)
+    upset(fromList(upsetlist_genomic_ri), order.by = "freq", nsets = nsets, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+        set_size.scale_max = set_size.scale_max_ri, sets = sorted_samples_ri, 
+        mainbar.y.label = "RI Unique Region Intersections", sets.x.label = "Matching RI unique regions per cell type",
+        text.scale = 1.7)
 dev.off()
 
+    # svg(file.path(nmd_path, 'upset_NMD_cell_types_01_07_25_coarse.svg'), width = 12, height = 6)
+    # upset(fromList(upsetlist_genomic_nmd), order.by = "freq", nsets = 3, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+    #     set_size.scale_max = 650,
+    #     mainbar.y.label = "NMD Unique Region Intersections", sets.x.label = "Matching NMD unique regions per cell type",
+    #     text.scale = c(1, 1, 0.9, 1, 1, 1))
+    # dev.off()
+    # svg(file.path(ri_path, 'upset_RI_cell_types_01_07_25_coarse.svg'), width = 12, height = 6)
+    # upset(fromList(upsetlist_genomic_ri), order.by = "freq", nsets = 3, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+    #     set_size.scale_max = 350, sets = sorted_samples_ri,
+    #     mainbar.y.label = "RI Unique Region Intersections", sets.x.label = "Matching RI unique regions per cell type",
+    #     text.scale = c(1, 1, 0.9, 1, 1, 1))
+    # dev.off()
+# } else {
+#     svg(file.path(nmd_path, 'upset_NMD_cell_types_01_07_25.svg'), width = 12, height = 6)
+#     upset(fromList(upsetlist_genomic_nmd), order.by = "freq", nsets = 7, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+#         set_size.scale_max = 500,
+#         mainbar.y.label = "NMD Unique Region Intersections", sets.x.label = "Matching NMD unique regions per cell type",
+#         text.scale = c(1, 1, 0.9, 1, 1, 1))
+#     dev.off()
+#     svg(file.path(ri_path, 'upset_RI_cell_types_01_07_25.svg'), width = 12, height = 6)
+#     upset(fromList(upsetlist_genomic_ri), order.by = "freq", nsets = 7, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+#         set_size.scale_max = 300, sets = sorted_samples_ri,
+#         mainbar.y.label = "RI Unique Region Intersections", sets.x.label = "Matching RI unique regions per cell type",
+#         text.scale = c(1, 1, 0.9, 1, 1, 1))
+#     dev.off()
+# }
 
-svg(file.path(ri_path, 'upset_RI_cell_types_01_07_25.svg'), width = 12, height = 6)
-upset(fromList(upsetlist_genomic_ri), order.by = "freq", nsets = 7, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
-      set_size.scale_max = 300, sets = sorted_samples_ri,
-      mainbar.y.label = "RI Unique Region Intersections", sets.x.label = "Matching RI unique regions per cell type",
-      text.scale = c(1, 1, 0.9, 1, 1, 1))
-dev.off()

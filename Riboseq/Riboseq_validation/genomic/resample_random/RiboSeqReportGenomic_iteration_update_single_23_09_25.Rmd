@@ -1,0 +1,154 @@
+---
+title: "RiboSeq_Report_Genomic"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  pdf_document: default
+  html_document: default
+params:
+  args: myarg
+---
+The following document is a report on the alignment of multiple Ribo-Seq datasets against the transcriptome. This alignment was intersected with the unique regions of the SplitORFs of NMD and RI transcripts, as calculated in the SplitORFs pipeline. Random regions of the 3' and 5' UTR with the same length distribution as the unique regions were created and intersected with the alignment as well. These serve as the null distribution, or background noise, as these regions should not be actively translated. From the null distribution a threshold is calculated as the upper limit of the 95% CI to classify whether the unique regions are found more often than expected by random chance.
+
+```{r, echo=FALSE, libraries, message=FALSE}
+# setwd("/home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random")
+source("helper_functions_Riboseq_report_genomic_iteration.R")
+```
+
+# Calculate the null distribution for the unique Split-ORF regions
+
+```{r}
+args <- params[[1]]
+path <- args[[1]]
+SO_pipe_path <- args[[2]]
+unique_region_type <- args[[3]]
+
+# SO_pipe_path <- '/projects/splitorfs/work/LLMs/TIS_transformer/Input/SO_pipeline_results'
+# path <- '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample'
+# outdir_NMD <- file.path(path, "NMD_genome")
+# path <- file.path(path, "RI_genome")
+```
+
+
+Calculation of background based on 3' UTR randomly samples regions.
+```{r, message = FALSE, warning = FALSE}
+
+background <- calculate_background_threshold(unique_region_type, path)
+# print(background)
+background <- print_thresholds(unique_region_type, background, path)
+threshold=background
+```
+
+Load Riboseq reads intersectin with unique regions.
+```{r, message = FALSE, warning = FALSE}
+list_dataframes <- get_intersect_files(unique_region_type, path)
+```
+
+Nr of distinct Split-ORFs with significantly higher Riboseq coverage than the 3' UTR background.
+```{r, message = FALSE}
+counts_and_names_list <- count_unique_regions_above_threhsold(list_dataframes, threshold)
+print_unique_region_above_t(counts_and_names_list$counts_above_t_relative_length, list_dataframes)
+```
+
+Nr of distinct genomic Unique regions with significantly higher Riboseq coverage than the 3' UTR background.
+```{r, message = FALSE}
+print_unique_region_above_t(counts_and_names_list$counts_above_t_relative_length_genomic, list_dataframes)
+```
+
+
+
+The following table shows the top five unique regions with a relative count above the threshold (if available).
+```{r, message = FALSE}
+get_top_5_unique_regions(counts_and_names_list$genomic_frames, threshold)
+```
+
+
+
+
+The following plot shows how many Split-ORFs were validated against the 3'UTR background.
+Please note the validated Unique region of different Split-ORFs may overlap or be identical.
+
+```{r, echo=FALSE, message=FALSE}
+names(counts_and_names_list$unique_names) <- names(list_dataframes)
+upsetlist <- counts_and_names_list$unique_names
+nr_regions <- sapply(upsetlist, length)
+upsetlist <- lapply(upsetlist, function(x) x)
+nr_sets <- length(names(list_dataframes))
+upset(fromList(upsetlist), 
+      order.by = "freq",
+      nsets = nr_sets,
+      point.size = 1.5,   # grows with number of sets
+      line.size  = 1.2,   # grows with number of sets
+      set_size.show = TRUE,
+      set_size.scale_max = max(nr_regions) + 100, 
+      mainbar.y.label = "Split-ORF Intersections", 
+      sets.x.label = "Matching Split-ORFs per dataset",
+      text.scale = c(1, 1, 0.9, 1, 1, 1)
+      )
+```
+
+The following plot shows how many distinct genomic Unique regions were validated against the 3'UTR background.
+Please note the validated Unique region of different Split-ORFs may overlap but NOT be identical.
+```{r, echo=FALSE, message=FALSE}
+names(counts_and_names_list$unique_names_genomic) <- names(list_dataframes)
+upsetlist_genomic <- counts_and_names_list$unique_names_genomic
+nr_regions_genomic <- sapply(upsetlist_genomic, length)
+upsetlist_genomic <- lapply(upsetlist_genomic, function(x) x)
+upset(fromList(upsetlist_genomic), order.by = "freq", nsets = length(names(list_dataframes)), point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+      set_size.scale_max = max(nr_regions_genomic) + 100, 
+      mainbar.y.label = "Unique region Intersections", sets.x.label = "Matching unique regions per dataset",
+      text.scale = c(1, 1, 0.9, 1, 1, 1))
+```
+
+```{r, echo=FALSE, message=FALSE}
+png(file.path(path, paste('upset', unique_region_type, 'SO.png', sep = '_')))
+names(counts_and_names_list$unique_names) <- names(list_dataframes)
+upsetlist <- counts_and_names_list$unique_names
+upsetlist <- lapply(upsetlist, function(x) x)
+upset(fromList(upsetlist), order.by = "freq", nsets = length(names(list_dataframes)), point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+      set_size.scale_max = max(nr_regions) + 100, 
+      mainbar.y.label = "Split-ORF Intersections", sets.x.label = "Matching Split-ORFs per dataset",
+      text.scale = c(1, 1, 0.9, 1, 1, 1))
+dev.off()
+```
+
+
+```{r, echo=FALSE, message=FALSE}
+png(file.path(path, paste('upset', unique_region_type, 'UR.png', sep = '_')))
+names(counts_and_names_list$unique_names_genomic) <- names(list_dataframes)
+upsetlist_genomic <- counts_and_names_list$unique_names_genomic
+upsetlist_genomic <- lapply(upsetlist_genomic, function(x) x)
+upset(fromList(upsetlist_genomic), order.by = "freq", nsets = length(names(list_dataframes)), point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+      set_size.scale_max = max(nr_regions_genomic) + 100, 
+      mainbar.y.label = "Unique region Intersections", sets.x.label = "Matching unique regions per dataset",
+      text.scale = c(1, 1, 0.9, 1, 1, 1))
+dev.off()
+```
+
+```{r, echo=FALSE, message=FALSE}
+svg(file.path(path, paste('upset', unique_region_type, 'UR.png', sep = '_')))
+names(counts_and_names_list$unique_names_genomic) <- names(list_dataframes)
+upsetlist_genomic <- counts_and_names_list$unique_names_genomic
+upsetlist_genomic <- lapply(upsetlist_genomic, function(x) x)
+upset(fromList(upsetlist_genomic), order.by = "freq", nsets = length(names(list_dataframes)), point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+      set_size.scale_max = max(nr_regions_genomic) + 100, 
+      mainbar.y.label = "Unique region Intersections", sets.x.label = "Matching unique regions per dataset",
+      text.scale = c(1, 1, 0.9, 1, 1, 1))
+dev.off()
+```
+
+
+```{r, message = FALSE}
+counts_and_names_list$frames_processed <- get_print_ORF_ranks(SO_pipe_path, counts_and_names_list$frames_processed)
+names(counts_and_names_list$frames_processed) <- names(list_dataframes)
+names(counts_and_names_list$genomic_frames) <- names(list_dataframes)
+write_csv(counts_and_names_list$genomic_frames, upsetlist_genomic, counts_and_names_list$frames_processed, upsetlist, path)
+```
+
+
+Print the unique regions where at least 2 unique regions on the same transcript were found.
+```{r}
+Split_ORFs_validation(counts_and_names_list$frames_processed, upsetlist, path)
+```
+
+
+
