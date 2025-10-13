@@ -78,7 +78,7 @@ mane_gtf="/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA
 # bash create_coverage_plots_importins_over_mock.sh \
 #  "${Bowtie2_out_dir}"/filtered/q10
 
-bash ${coverage_script_dir}/create_coverage_plots_codons_whole_transcript.sh \
+bash ${coverage_script_dir}/create_coverage_plots_codons_CDS_different_buffer_transcript.sh \
     "${Bowtie2_out_dir}"/filtered/q10 \
     ""${Bowtie2_out_dir}"/filtered/q10/enrichment_plots_CDS/CDS_coordinates" \
     ${coverage_script_dir} \

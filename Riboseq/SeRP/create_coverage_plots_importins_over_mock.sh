@@ -101,7 +101,9 @@ if [ ! -d $bam_dir/enrichment_plots/hot_candiates ]; then
         mkdir $bam_dir/enrichment_plots/hot_candiates
 fi
 
-
+if [ ! -d $bam_dir/enrichment_plots/histones ]; then
+        mkdir $bam_dir/enrichment_plots/histones
+fi
 
 
 ################################################################################
@@ -199,54 +201,88 @@ fi
 ################################################################################
 # plot hot candidates on the same scale                                        #
 ################################################################################
-hot_candidates=(ENST00000397885.3 ENST00000330560.8 ENST00000428849.7 ENST00000611405.5)
+# hot_candidates=(ENST00000397885.3 ENST00000330560.8 ENST00000428849.7 ENST00000611405.5)
 
-for MANE_trans in "${hot_candidates[@]}"
+# for MANE_trans in "${hot_candidates[@]}"
+# do
+#         trans_length=$(grep $MANE_trans  /projects/splitorfs/work/reference_files/own_data_refs/Riboseq/Ignolia/Ignolia_transcriptome_and_contamination.fasta.fai | cut -f2)
+
+
+#     sed -i "s/^number_of_bins *= *.*/number_of_bins = $trans_length/" $bam_dir/enrichment_plots/tracks_impb_CHX_over_mock_ratio.ini
+#     pyGenomeTracks --tracks $bam_dir/enrichment_plots/tracks_impb_CHX_over_mock_ratio.ini\
+#     --region $MANE_trans:0-$trans_length\
+#     --height 40\
+#     --outFileName $bam_dir/enrichment_plots/hot_candiates/${MANE_trans}_hot_candidates_CHX_Impb_over_Mock_ratio.pdf
+
+
+#     sed -i "s/^number_of_bins *= *.*/number_of_bins = $trans_length/" $bam_dir/enrichment_plots/tracks_impb_puro_over_in_ratio.ini
+#     pyGenomeTracks --tracks $bam_dir/enrichment_plots/tracks_impb_puro_over_in_ratio.ini\
+#     --region $MANE_trans:0-$trans_length\
+#       --height 40\
+#     --outFileName $bam_dir/enrichment_plots/hot_candiates/${MANE_trans}_hot_candidates_Puro_Impb_over_Input_ratio.pdf
+
+
+#     sed -i "s/^number_of_bins *= *.*/number_of_bins = $trans_length/" $bam_dir/enrichment_plots/tracks_impb_CHX_over_in_ratio.ini
+#     pyGenomeTracks --tracks $bam_dir/enrichment_plots/tracks_impb_CHX_over_in_ratio.ini\
+#         --region $MANE_trans:0-$trans_length\
+#         --height 40\
+#         --outFileName $bam_dir/enrichment_plots/hot_candiates/${MANE_trans}_hot_candidates_CHX_Impb_over_Input_ratio.pdf
+
+
+
+#     # set number of bin to length of the transcript
+#     sed -i "s/^number_of_bins *= *.*/number_of_bins = $trans_length/" $bam_dir/enrichment_plots/tracks_impa_CHX_over_mock_ratio.ini
+#     pyGenomeTracks --tracks $bam_dir/enrichment_plots/tracks_impa_CHX_over_mock_ratio.ini\
+#     --region $MANE_trans:0-$trans_length\
+#     --height 40\
+#     --outFileName $bam_dir/enrichment_plots/hot_candiates/${MANE_trans}_hot_candiates_CHX_Impa_over_Mock_ratio.pdf
+
+    
+#     sed -i "s/^number_of_bins *= *.*/number_of_bins = $trans_length/" $bam_dir/enrichment_plots/tracks_impa_puro_over_in_ratio.ini
+#     pyGenomeTracks --tracks $bam_dir/enrichment_plots/tracks_impa_puro_over_in_ratio.ini\
+#     --region $MANE_trans:0-$trans_length\
+#     --height 40\
+#     --outFileName $bam_dir/enrichment_plots/hot_candiates/${MANE_trans}_hot_candiates_Puro_Impa_over_Input_ratio.pdf
+
+#     sed -i "s/^number_of_bins *= *.*/number_of_bins = $trans_length/" $bam_dir/enrichment_plots/tracks_impa_CHX_over_in_ratio.ini
+#     pyGenomeTracks --tracks $bam_dir/enrichment_plots/tracks_impa_CHX_over_in_ratio.ini\
+#         --region $MANE_trans:0-$trans_length\
+#         --height 40\
+#         --outFileName $bam_dir/enrichment_plots/hot_candiates/${MANE_trans}_hot_candiates_CHX_Impa_over_Input_ratio.pdf
+# done
+
+
+
+
+################################################################################
+# plot histones and GAPDH                                                      #
+################################################################################
+readarray -t histone_array < $bam_dir/enrichment_plots/RIP_hits_MANE_tIDs_GAPDH.txt
+
+for MANE_trans in "${histone_array[@]}"
 do
         trans_length=$(grep $MANE_trans  /projects/splitorfs/work/reference_files/own_data_refs/Riboseq/Ignolia/Ignolia_transcriptome_and_contamination.fasta.fai | cut -f2)
-        # max_val_A2_CHX_mock=$(bigWigSummary -type=max $bam_dir/enrichment_plots/CHX_A2_over_Mock_ratio_mov_avg.bw $MANE_trans 0 $trans_length 10)
-        # max_val_A2_CHX_Input=$(bigWigSummary -type=max $bam_dir/enrichment_plots/CHX_A2_over_Input_ratio_mov_avg.bw $MANE_trans 0 $trans_length 10)
-        # max_val_A2_Puro=$(bigWigSummary -type=max $bam_dir/enrichment_plots/Puro_A2_over_Input_ratio_mov_avg.bw $MANE_trans 0 $trans_length 1)
-        # max_val_B1_CHX_mock=$(bigWigSummary -type=max $bam_dir/enrichment_plots/CHX_B1_over_Mock_ratio_mov_avg.bw $MANE_trans 0 $trans_length 10)
-        # max_val_B1_CHX_Input=$(bigWigSummary -type=max $bam_dir/enrichment_plots/CHX_B1_over_Input_ratio_mov_avg.bw $MANE_trans 0 $trans_length 10)
-        # max_val_B1_Puro=$(bigWigSummary -type=max $bam_dir/enrichment_plots/Puro_B1_over_Input_ratio_mov_avg.bw $MANE_trans 0 $trans_length 1)
-
-
-        # numbers=($max_val_A2_CHX_mock $max_val_A2_CHX_Input $max_val_B1_CHX_mock $max_val_B1_CHX_Input)
-        # numbers=($max_val_A2_CHX_mock $max_val_A2_CHX_Input $max_val_A2_Puro $max_val_B1_CHX_mock $max_val_B1_CHX_Input $max_val_B1_Puro)
-        # max=$(printf "%s\n" "${numbers[@]}" | sort -nr | head -n1)
-
-
-        # max=20
-        # echo $max
-        # sed -i "s/^max_value *= *.*/max_value = $max/" $bam_dir/enrichment_plots/tracks_impa_CHX_over_mock_ratio.ini
-        # sed -i "s/^max_value *= *.*/max_value = $max/" $bam_dir/enrichment_plots/tracks_impa_puro_over_in_ratio.ini
-        # sed -i "s/^max_value *= *.*/max_value = $max/"$bam_dir/enrichment_plots/tracks_impa_CHX_over_in_ratio.ini
-
-        # sed -i "s/^max_value *= *.*/max_value = $max/" $bam_dir/enrichment_plots/tracks_impb_CHX_over_mock_ratio.ini
-        # sed -i "s/^max_value *= *.*/max_value = $max/" $bam_dir/enrichment_plots/tracks_impb_puro_over_in_ratio.ini
-        # sed -i "s/^max_value *= *.*/max_value = $max/"$bam_dir/enrichment_plots/tracks_impb_CHX_over_in_ratio.ini
 
 
     sed -i "s/^number_of_bins *= *.*/number_of_bins = $trans_length/" $bam_dir/enrichment_plots/tracks_impb_CHX_over_mock_ratio.ini
     pyGenomeTracks --tracks $bam_dir/enrichment_plots/tracks_impb_CHX_over_mock_ratio.ini\
     --region $MANE_trans:0-$trans_length\
     --height 40\
-    --outFileName $bam_dir/enrichment_plots/hot_candiates/${MANE_trans}_hot_candidates_CHX_Impb_over_Mock_ratio.pdf
+    --outFileName $bam_dir/enrichment_plots/histones/${MANE_trans}_histones_CHX_Impb_over_Mock_ratio.pdf
 
 
     sed -i "s/^number_of_bins *= *.*/number_of_bins = $trans_length/" $bam_dir/enrichment_plots/tracks_impb_puro_over_in_ratio.ini
     pyGenomeTracks --tracks $bam_dir/enrichment_plots/tracks_impb_puro_over_in_ratio.ini\
     --region $MANE_trans:0-$trans_length\
       --height 40\
-    --outFileName $bam_dir/enrichment_plots/hot_candiates/${MANE_trans}_hot_candidates_Puro_Impb_over_Input_ratio.pdf
+    --outFileName $bam_dir/enrichment_plots/histones/${MANE_trans}_histones_Puro_Impb_over_Input_ratio.pdf
 
 
     sed -i "s/^number_of_bins *= *.*/number_of_bins = $trans_length/" $bam_dir/enrichment_plots/tracks_impb_CHX_over_in_ratio.ini
     pyGenomeTracks --tracks $bam_dir/enrichment_plots/tracks_impb_CHX_over_in_ratio.ini\
         --region $MANE_trans:0-$trans_length\
         --height 40\
-        --outFileName $bam_dir/enrichment_plots/hot_candiates/${MANE_trans}_hot_candidates_CHX_Impb_over_Input_ratio.pdf
+        --outFileName $bam_dir/enrichment_plots/histones/${MANE_trans}_histones_CHX_Impb_over_Input_ratio.pdf
 
 
 
@@ -255,18 +291,18 @@ do
     pyGenomeTracks --tracks $bam_dir/enrichment_plots/tracks_impa_CHX_over_mock_ratio.ini\
     --region $MANE_trans:0-$trans_length\
     --height 40\
-    --outFileName $bam_dir/enrichment_plots/hot_candiates/${MANE_trans}_hot_candiates_CHX_Impa_over_Mock_ratio.pdf
+    --outFileName $bam_dir/enrichment_plots/histones/${MANE_trans}_histones_CHX_Impa_over_Mock_ratio.pdf
 
     
     sed -i "s/^number_of_bins *= *.*/number_of_bins = $trans_length/" $bam_dir/enrichment_plots/tracks_impa_puro_over_in_ratio.ini
     pyGenomeTracks --tracks $bam_dir/enrichment_plots/tracks_impa_puro_over_in_ratio.ini\
     --region $MANE_trans:0-$trans_length\
     --height 40\
-    --outFileName $bam_dir/enrichment_plots/hot_candiates/${MANE_trans}_hot_candiates_Puro_Impa_over_Input_ratio.pdf
+    --outFileName $bam_dir/enrichment_plots/histones/${MANE_trans}_histones_Puro_Impa_over_Input_ratio.pdf
 
     sed -i "s/^number_of_bins *= *.*/number_of_bins = $trans_length/" $bam_dir/enrichment_plots/tracks_impa_CHX_over_in_ratio.ini
     pyGenomeTracks --tracks $bam_dir/enrichment_plots/tracks_impa_CHX_over_in_ratio.ini\
         --region $MANE_trans:0-$trans_length\
         --height 40\
-        --outFileName $bam_dir/enrichment_plots/hot_candiates/${MANE_trans}_hot_candiates_CHX_Impa_over_Input_ratio.pdf
+        --outFileName $bam_dir/enrichment_plots/histones/${MANE_trans}_histones_CHX_Impa_over_Input_ratio.pdf
 done

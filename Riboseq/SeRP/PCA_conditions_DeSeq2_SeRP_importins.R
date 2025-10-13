@@ -176,7 +176,7 @@ dev.off()
 ################################################################################
 # OBTAINING DEGs (transcripts) between SeRP and Input ##########################
 ################################################################################
-perform_diff_analysis <- function(dds_mRNA, treatment, control, outname, in_dir)
+perform_diff_analysis <- function(dds_mRNA, treatment, control, outname, in_dir, lfc = 0.5)
  {
     # select conditions of interest
     dds_mRNA_treat <- dds_mRNA[, dds_mRNA$condition %in% c(treatment, control)]
@@ -203,18 +203,18 @@ perform_diff_analysis <- function(dds_mRNA, treatment, control, outname, in_dir)
     # write output
     writeLines(
         rownames(res_treat_pval[
-            (res_treat_pval$padj < 0.05) & (res_treat_pval$log2FoldChange > 0.5),
+            (res_treat_pval$padj < 0.05) & (res_treat_pval$log2FoldChange > lfc),
         ]),
         file.path(in_dir, "DEGs", outname)
     )
 
     write.csv(res_treat_pval,
-    file=file.path(in_dir, "DEGs", paste(str_split(outname, "\\.")[[1]][1], "all_results_p_greater_0_05.csv", sep = "_")),
+    file=file.path(in_dir, "DEGs", paste(str_split(outname, "\\.")[[1]][1], "all_results_p_smaller_0_05.csv", sep = "_")),
     row.names=TRUE, quote=FALSE)
 
     writeLines(
         rownames(res_treat_pval[
-            (res_treat_pval$padj < 0.05) & (res_treat_pval$log2FoldChange < -0.5),
+            (res_treat_pval$padj < 0.05) & (res_treat_pval$log2FoldChange < -lfc),
         ]),
         file.path(in_dir, "DEGs", paste(str_split(outname, "\\.")[[1]][1], "downreg.txt", sep = "_"))
     )
@@ -231,12 +231,18 @@ perform_diff_analysis <- function(dds_mRNA, treatment, control, outname, in_dir)
     return(res_treat_pval)
 }
 
-perform_diff_analysis(dds_mRNA, "SeRP_CHX_A2", "SeRP_CHX_M", "DEGs_CHX_A2_mock_mRNA.txt", in_dir)
-perform_diff_analysis(dds_mRNA, "SeRP_CHX_B1", "SeRP_CHX_M", "DEGs_CHX_B1_mock_mRNA.txt", in_dir)
-perform_diff_analysis(dds_mRNA, "SeRP_Puro_A2", "In_Puro", "DEGs_Puro_A2_mRNA.txt", in_dir)
-perform_diff_analysis(dds_mRNA, "SeRP_Puro_B1", "In_Puro", "DEGs_Puro_B1_mRNA.txt", in_dir)
-perform_diff_analysis(dds_mRNA, "SeRP_CHX_M", "In_CHX", "DEGs_Mock_In_CHX_mRNA.txt", in_dir)
-perform_diff_analysis(dds_mRNA, "SeRP_CHX_A2", "In_CHX", "DEGs_A2_In_CHX_mRNA.txt", in_dir)
-perform_diff_analysis(dds_mRNA, "SeRP_CHX_B1", "In_CHX", "DEGs_B1_In_CHX_mRNA.txt", in_dir)
+perform_diff_analysis(dds_mRNA, "SeRP_CHX_A2", "SeRP_CHX_M", paste0("DEGs_CHX_A2_mock_mRNA", "_1",".txt"), in_dir, 1)
+perform_diff_analysis(dds_mRNA, "SeRP_CHX_B1", "SeRP_CHX_M", paste0("DEGs_CHX_B1_mock_mRNA", "_1",".txt"), in_dir, 1)
+perform_diff_analysis(dds_mRNA, "SeRP_Puro_A2", "In_Puro",  paste0("DEGs_Puro_A2_mRNA", "_1",".txt"), in_dir, 1)
+perform_diff_analysis(dds_mRNA, "SeRP_Puro_B1", "In_Puro",  paste0("DEGs_Puro_B1_mRNA", "_1",".txt"), in_dir, 1)
+perform_diff_analysis(dds_mRNA, "SeRP_CHX_M", "In_CHX",  paste0("DEGs_Mock_In_CHX_mRNA", "_1",".txt"), in_dir, 1)
+perform_diff_analysis(dds_mRNA, "SeRP_CHX_A2", "In_CHX",  paste0("DEGs_A2_In_CHX_mRNA", "_1",".txt"), in_dir, 1)
+perform_diff_analysis(dds_mRNA, "SeRP_CHX_B1", "In_CHX",  paste0("DEGs_B1_In_CHX_mRNA", "_1",".txt"), in_dir, 1)
 
-
+perform_diff_analysis(dds_mRNA, "SeRP_CHX_A2", "SeRP_CHX_M", paste0("DEGs_CHX_A2_mock_mRNA", "_0_5",".txt"), in_dir, 0.5)
+perform_diff_analysis(dds_mRNA, "SeRP_CHX_B1", "SeRP_CHX_M", paste0("DEGs_CHX_B1_mock_mRNA", "_0_5",".txt"), in_dir, 0.5)
+perform_diff_analysis(dds_mRNA, "SeRP_Puro_A2", "In_Puro",  paste0("DEGs_Puro_A2_mRNA", "_0_5",".txt"), in_dir, 0.5)
+perform_diff_analysis(dds_mRNA, "SeRP_Puro_B1", "In_Puro",  paste0("DEGs_Puro_B1_mRNA", "_0_5",".txt"), in_dir, 0.5)
+perform_diff_analysis(dds_mRNA, "SeRP_CHX_M", "In_CHX",  paste0("DEGs_Mock_In_CHX_mRNA", "_0_5",".txt"), in_dir, 0.5)
+perform_diff_analysis(dds_mRNA, "SeRP_CHX_A2", "In_CHX",  paste0("DEGs_A2_In_CHX_mRNA", "_0_5",".txt"), in_dir, 0.5)
+perform_diff_analysis(dds_mRNA, "SeRP_CHX_B1", "In_CHX",  paste0("DEGs_B1_In_CHX_mRNA", "_0_5",".txt"), in_dir, 0.5)
