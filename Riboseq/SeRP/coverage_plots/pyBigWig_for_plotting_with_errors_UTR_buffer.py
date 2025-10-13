@@ -1,0 +1,239 @@
+import os
+import argparse
+
+import pyBigWig
+import numpy as np
+import pandas as pd
+
+import seaborn as sbn
+import matplotlib.pyplot as plt
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="."
+    )
+
+    # Required positional arguments
+    parser.add_argument("path_to_bw_files", help="Path to BigWig files")
+    parser.add_argument("mane_transcripts_cds_bed",
+                        help="Path to CDS coordinates BED file of MANE transcripts")
+    parser.add_argument("mane_trans_lengths",
+                        help="Path to TXT file with MANE transcript lengths")
+    parser.add_argument("transcripts_to_plot_txt",
+                        help="Path to TXT file with transcripts to plot")
+    parser.add_argument("out_path", help="Path where to output the plots")
+    parser.add_argument("importin", help="importin to be plotted")
+    parser.add_argument("background", help="background to be plotted")
+    parser.add_argument(
+        "--puro", help="Set Puro to 'Puro' if Puro samples are to be plotted")
+    parser.add_argument(
+        "--color", help="")
+    parser.add_argument(
+        "--window_size", help="window size must be mutliple of 3 and should be an odd number multiple of 3")
+
+    return parser.parse_args()
+
+
+# path_to_bw_files = '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/whole_transcript_bigwig'
+# mane_transcripts_cds_bed = '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed'
+# transcripts_to_plot_txt = '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt'
+# out_path = '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots_whole_transcript'
+# importin = 'A2'
+# background = 'In'
+# puro = ''
+# color = '#1eb0e6'
+
+
+def main(path_to_bw_files, mane_transcripts_cds_bed, mane_trans_lengths, transcripts_to_plot_txt,
+         out_path, importin='A2', background='Input', puro='', color='blue', window_size=21):
+
+    def get_bw_file_paths(path_to_bw_files, importin, background, puro):
+        if puro == 'Puro':
+            importin_over_input_bw_list = []
+            for file in os.listdir(path_to_bw_files):
+                if file.endswith('.bw'):
+                    if file.startswith(importin) and background in file and 'Puro' in file:
+                        importin_over_input_bw_list.append(
+                            os.path.join(path_to_bw_files, file))
+        else:
+            importin_over_input_bw_list = []
+            for file in os.listdir(path_to_bw_files):
+                if file.endswith('.bw'):
+                    if file.startswith(importin) and background in file and 'CHX' in file:
+                        importin_over_input_bw_list.append(
+                            os.path.join(path_to_bw_files, file))
+        return importin_over_input_bw_list
+
+    def read_in_bw(importin_over_input_bw_list):
+        bws_to_average = []
+        for bw_path in importin_over_input_bw_list:
+            bw_object = pyBigWig.open(os.path.join(
+                bw_path))
+            bws_to_average.append(bw_object)
+        return bws_to_average
+
+    def get_coords_transcripts_of_interest(transcripts_to_plot_txt, mane_transcripts_cds_bed):
+        transcripts_of_interest_df = pd.read_csv(
+            transcripts_to_plot_txt, header=None, names=['tid'])
+        MANE_CDS_coords = pd.read_csv(
+            mane_transcripts_cds_bed, sep='\t', header=None, names=['tid', 'start', 'stop'])
+        MANE_CDS_coords = MANE_CDS_coords[MANE_CDS_coords['tid'].isin(
+            transcripts_of_interest_df['tid'])]
+        MANE_CDS_coords = MANE_CDS_coords.set_index('tid')
+        return MANE_CDS_coords
+
+    def calculate_std_sem(transcript_df, observed_values):
+        transcript_df['average_ratio_plus_std'] = transcript_df['average_ratio'] + \
+            transcript_df['stddev_ratio']
+        transcript_df['average_ratio_minus_std'] = transcript_df['average_ratio'] - \
+            transcript_df['stddev_ratio']
+
+        n = len(observed_values)
+        transcript_df['sem'] = transcript_df['stddev_ratio'] / (n ** 0.5)
+        transcript_df['average_ratio_plus_sem'] = transcript_df['average_ratio'] + \
+            transcript_df['sem']
+        transcript_df['average_ratio_minus_sem'] = transcript_df['average_ratio'] - \
+            transcript_df['sem']
+        return transcript_df
+
+    def plot_enrichment(transcript_df, out_path, transcript, importin, background, color, window_size=21):
+        plt.figure(figsize=(10, 5))
+
+        # Plot the average line
+        plt.plot(transcript_df['CDS_position'],
+                 transcript_df['average_ratio'], label='Average Ratio', color=color)
+
+        # Fill between +std and -std
+        plt.fill_between(
+            transcript_df['CDS_position'],
+            transcript_df['average_ratio_minus_sem'],
+            transcript_df['average_ratio_plus_sem'],
+            color=color,
+            alpha=0.3,
+            label='±1 SEM'
+        )
+
+        plt.axhline(y=2.0, color='black', linestyle='--',
+                    linewidth=1, label='FC Threshold = 2')
+        plt.ylim(0, 20)
+        plt.xlim(min(transcript_df['CDS_position']),
+                 max(transcript_df['CDS_position']))
+        plt.xlabel('Transcript position (Codons)')
+        plt.ylabel(f'Enrichment (IP {importin}/{background})')
+        plt.title(f'SeRP enrichment signal across {transcript} CDS')
+        plt.legend()
+        plt.tight_layout()
+        if puro == 'Puro':
+            plt.savefig(os.path.join(out_path, f'{transcript}_enrichment_{importin}_over_{background}_{puro}_CDS_only_from_whole_trans_with_buffer_utr_w{window_size}.svg'),
+                        format='svg', dpi=300, bbox_inches='tight')
+        else:
+            plt.savefig(os.path.join(out_path, f'{transcript}_enrichment_{importin}_over_{background}_CDS_only_from_whole_trans_with_buffer_utr_w{window_size}.svg'),
+                        format='svg', dpi=300, bbox_inches='tight')
+        plt.close()
+
+    def calculate_and_plot_enrichment_df(MANE_CDS_coords, mane_trans_lengths, bws_to_average, out_path, importin, background, color, window_size=21):
+        buffer_zone = int((window_size - 3)/2)
+        # number of codons in the smoothing window (sw)
+        codons_sw = int(window_size/3)
+        # number of codons in sw in front (index for python)
+        codons_front = int(codons_sw/2)
+        # number of codons in sw in back (index for python), so plus one
+        codons_end = codons_front + 1
+        # buffer bool
+        buffer = False
+
+        mane_trans_lengths_df = pd.read_csv(
+            mane_trans_lengths, sep='\t', header=0)
+        mane_trans_lengths_df = mane_trans_lengths_df.set_index(
+            'Transcript stable ID')
+        for transcript in MANE_CDS_coords.index:
+            trans_len = int(
+                mane_trans_lengths_df.loc[transcript.split('.')[0], 'Transcript length (including UTRs and CDS)'])
+            start = MANE_CDS_coords.loc[transcript, 'start']
+            stop = MANE_CDS_coords.loc[transcript, 'stop']
+            observed_values = []
+
+            start = start - buffer_zone
+            stop = stop + buffer_zone
+
+            for bw_object in bws_to_average:
+                try:
+                    bw_values = bw_object.values(
+                        transcript, start, stop)
+
+                    bw_values_binned = [sum(bw_values[i:i+3]) /
+                                        3 for i in range(0, len(bw_values), 3)]
+
+                    bw_values_smoothed = [
+                        sum(bw_values_binned[i-codons_front:i+codons_end])/codons_sw for i in range(codons_front, len(bw_values_binned)-codons_front, 1)]
+
+                    observed_values.append(bw_values_smoothed)
+                    plot = True
+                except RuntimeError:
+                    print(
+                        f'{transcript} cannot be plotted with UTR buffer of size {window_size}')
+                    plot = False
+
+            if (len({len(values) for values in observed_values}) == 1 and len(observed_values) == 4 and puro == '') \
+                    or (len({len(values) for values in observed_values}) == 1 and len(observed_values) == 3 and puro == 'Puro'):
+                observed_values_np = np.array(observed_values)
+                observed_values_averaged_np = np.mean(
+                    observed_values_np, axis=0)
+                observed_std_np = np.std(observed_values_np, axis=0)
+                observed_values_min_np = np.min(observed_values_np, axis=0)
+                observed_values_max_np = np.max(observed_values_np, axis=0)
+            else:
+                print(transcript)
+                print(start)
+                print(stop)
+                print(observed_values)
+                plot = False
+
+            if plot:
+                transcript_df = pd.DataFrame({'CDS_position': range(0, len(bw_values_smoothed)),
+                                              'average_ratio': observed_values_averaged_np,
+                                              'stddev_ratio': observed_std_np,
+                                              'min_value': observed_values_min_np,
+                                              'max_value': observed_values_max_np})
+
+                transcript_df = calculate_std_sem(
+                    transcript_df, observed_values)
+                if puro == 'Puro':
+                    transcript_df.to_csv(os.path.join(
+                        path_to_bw_files, 'coordinates_per_transcript_csvs', f'{transcript}_{importin}_{background}_{puro}_coords_for_plotting_with_buffer_utr.csv'))
+                else:
+                    transcript_df.to_csv(os.path.join(
+                        path_to_bw_files, 'coordinates_per_transcript_csvs', f'{transcript}_{importin}_{background}_coords_for_plotting_with_buffer_utr.csv'))
+                plot_enrichment(transcript_df, out_path,
+                                transcript, importin, background, color, window_size)
+
+    importin_over_input_bw_list = get_bw_file_paths(
+        path_to_bw_files, importin, background, puro)
+
+    bws_to_average = read_in_bw(importin_over_input_bw_list)
+
+    MANE_CDS_coords = get_coords_transcripts_of_interest(
+        transcripts_to_plot_txt, mane_transcripts_cds_bed)
+
+    calculate_and_plot_enrichment_df(
+        MANE_CDS_coords, mane_trans_lengths, bws_to_average, out_path, importin, background, color, window_size)
+
+
+if __name__ == "__main__":
+    # ------------------ CONSTANTS ------------------ #
+    args = parse_args()
+
+    path_to_bw_files = args.path_to_bw_files
+    mane_transcripts_cds_bed = args.mane_transcripts_cds_bed
+    mane_trans_lengths = args.mane_trans_lengths
+    transcripts_to_plot_txt = args.transcripts_to_plot_txt
+    out_path = args.out_path
+    importin = args.importin
+    background = args.background
+    puro = args.puro
+    color = args.color
+    window_size = int(args.window_size)
+
+    main(path_to_bw_files, mane_transcripts_cds_bed, mane_trans_lengths, transcripts_to_plot_txt,
+         out_path, importin, background, puro, color, window_size)
