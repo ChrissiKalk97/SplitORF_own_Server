@@ -1,30 +1,101 @@
 #!/bin/bash
 
-outputSTAR=$1
-in_path=$2
-StarIndex=$3
 
-# STAR --runThreadN 50 --runMode genomeGenerate --genomeDir $Star_index --genomeFastaFiles /projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa\
-#  --sjdbGTFfile /projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.gtf --sjdbOverhang 49
-# --sjdbOverhang 49: maxreadlength - 1: this should actually be 37 for the leukemia samples, but for the others 30 should be fine
+# Help message:
+usage="
+Usage: ./genome_alignment_star.sh [-options] [arguments]
+
+where:
+-h			show this help
+"
+
+#Check that all arguments are provided and are in the correct file format. Give error messages according to errors in the call and exit the programm if something goes wrong
+RED='\033[0;31m' #Red colour for error messages
+NC='\033[0m'	 #No colour for normal messages
+
+
+#available options for the programm
+while getopts 'a:e:f:g:him:o:s:' option; do
+  case "$option" in
+    a)
+        annotation_gtf="$OPTARG"
+        ;;
+    e)
+        ending="$OPTARG"
+        ;;
+    f)
+        fastq_dir="$OPTARG"
+        ;;
+    g)
+        genome_fasta="$OPTARG"
+        ;;
+    i)
+        index=true
+        ;;
+    m)
+        align_mode="$OPTARG"
+        ;;
+    o)
+        output_star="$OPTARG"
+        ;;  
+    s)
+        star_index="$OPTARG"
+        ;;  
+    h) 
+        echo "$usage"
+        exit 1
+        ;;
+   \?) 
+        printf "illegal option: -%s\n" "$OPTARG" >&2
+        echo "$usage" >&2
+        exit 1
+        ;;
+  esac
+done
+
+# --- Check required options ---
+if [[ -z "$star_index" || -z "$output_star" || -z "$align_mode" || -z "$genome_fasta" || -z "$annotation_gtf" || -z "$fastq_dir" || -z "$ending" ]]; then
+  echo "Error: all -a -e -f -g -m -o -s options are required with arguments" >&2
+  exit 1
+fi
+
+echo "All required options provided: Index directory : "$star_index", Output directory "$output_star", mode "$align_mode", genome FASTA "$genome_fasta", annotation "$annotation_gtf", FASTQ dir "$fastq_dir", file ending "$ending" "
+
+
+
+if [ ! -d ${star_index} ]; then
+    mkdir ${star_index}
+fi
+
+if [ ! -d ${output_star} ]; then
+    mkdir ${output_star}
+fi
+
+if [[ "$index" == true ]]; then
+    STAR --runThreadN 50 --runMode genomeGenerate --genomeDir $star_index --genomeFastaFiles ${genome_fasta}\
+    --sjdbGTFfile $annotation_gtf --sjdbOverhang 49
+    # --sjdbOverhang 49: maxreadlength - 1: this should actually be 37 for the leukemia samples, but for the others 30 should be fine
+fi
 
 shopt -s nullglob  # Prevents literal pattern if no match
-files=(*.fatsq)
+files=(*.fastq)
 
 if [ ${#files[@]} -gt 0 ]; then
-    cd $in_path
+    cd $fastq_dir
     gunzip *.gz
     cd -
 fi
 
 # First try matching *R1* files
-shopt -s nullglob  # So non-matching globs result in empty arrays
-files=("${in_path}"/*R1*.fastq)
+files=("${fastq_dir}"/*R1*.fastq)
 
 if [ ${#files[@]} -eq 0 ]; then
-    files=("${in_path}"/*.fastq.1)
+    files=("${fastq_dir}"/*.fastq.1)
 fi
 
+if [ ${#files[@]} -eq 0 ]; then
+    files=("${fastq_dir}"/*.fastq)
+fi
 
 
 for FQ in "${files[@]}"
@@ -32,37 +103,34 @@ do
     sample=$(basename "$FQ")       # remove path
     if [[ ${sample} == *"R1"* ]]; then
         sample=${sample%%R1*}          # remove R1 and everything after
-        FQ2=${FQ/R1/R2} # substitute R1 with R2 in the whole file path
     else
-        sample=${sample%%.fastq*} 
-        FQ2=${FQ/.1/.2} # substitute R1 with R2 in the whole file path
+        sample=${sample%%.fastq*}
     fi
     echo ${sample}
     echo ${FQ}
-    echo ${FQ2}
 
     STAR\
     --runThreadN 16\
-    --alignEndsType Extend5pOfRead1\
+    --alignEndsType ${align_mode}\
     --outSAMstrandField intronMotif\
     --alignIntronMin 20\
     --alignIntronMax 1000000\
-    --genomeDir $StarIndex\
+    --genomeDir $star_index\
     --readFilesIn ${FQ}\
     --twopassMode Basic\
     --seedSearchStartLmax 20\
     --outFilterMatchNminOverLread 0.9\
     --outSAMattributes All\
     --outSAMtype BAM SortedByCoordinate\
-    --outFileNamePrefix "${outputSTAR}"/"${sample}"only_R1_
+    --outFileNamePrefix "${output_star}"/"${sample}"${ending}
 
-    samtools index --threads 32 "${outputSTAR}"/"${sample}"only_R1_Aligned.sortedByCoord.out.bam
+    samtools index --threads 32 "${output_star}"/"${sample}"${ending}Aligned.sortedByCoord.out.bam
 
-    samtools idxstats "${outputSTAR}"/"${sample}"only_R1_Aligned.sortedByCoord.out.bam > \
-    "${outputSTAR}"/"${sample}"only_R1_idxstats.out
+    samtools idxstats "${output_star}"/"${sample}"${ending}Aligned.sortedByCoord.out.bam > \
+    "${output_star}"/"${sample}"${ending}idxstats.out
 
-    samtools stats "${outputSTAR}"/"${sample}"only_R1_Aligned.sortedByCoord.out.bam > \
-    "${outputSTAR}"/"${sample}"only_R1_stats.out
+    samtools stats "${output_star}"/"${sample}"${ending}Aligned.sortedByCoord.out.bam > \
+    "${output_star}"/"${sample}"${ending}stats.out
 done
 
 # --alignMatesGapMax 20\# maximal genomic distance between mates, would like to set this to a small values as RPFs should fully overlap

@@ -15,8 +15,8 @@ outputSTAR="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignmen
 nmd=${outputSTAR}"/empirical_Riboseq_validation/NMD_genome"
 unique_region_dir="/projects/splitorfs/work/Riboseq/data/region_input/genomic"
 ri=${outputSTAR}"/empirical_Riboseq_validation/RI_genome"
-random_region_path_NMD="/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample/NMD_genome"
-random_region_path_RI="/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample/RI_genome"
+random_region_path_NMD="/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/NMD_genome"
+random_region_path_RI="/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome"
 
 
 if [ ! -d $outputSTAR ];then
@@ -91,4 +91,4 @@ export MKL_ENABLE_INSTRUCTIONS=SSE4_2
 Rscript -e 'if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown", repos="http://cran.us.r-project.org")'
 
 cd /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random
-R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/Riboseq_emp_val_report_hypo_q10_16_06_15.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/", "/projects/splitorfs/work/LLMs/TIS_transformer/Input/SO_pipeline_results")))'
+R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/Riboseq_emp_val_report_hypo_q10_16_06_15.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/", "/projects/splitorfs/work/LLMs/TIS_transformer/Input/SO_pipeline_results")))'

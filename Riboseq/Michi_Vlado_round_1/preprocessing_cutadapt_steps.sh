@@ -14,35 +14,35 @@ conda activate Riboseq
 ################################################################################
 # RUN FASTQ                                                                    #
 ################################################################################
-INDIR=$1
-OUTDIR_FASTQC1=$2
+indir=$1
+outdir_fastqc1=$2
 
 # ################################################################################
 # # RUN FASTQC                                                                   #
 # ################################################################################
-source preprocessing/fastqc_multiqc.sh ${INDIR} ${OUTDIR_FASTQC1} fastqc_unprocessed_multiqc
+source preprocessing/fastqc_multiqc.sh ${indir} ${outdir_fastqc1} fastqc_unprocessed_multiqc
 
 
 ################################################################################
 # RUN CUTADAPT TO TRIM ADAPTERS                                                #
 ################################################################################
-OUTDIR_CUTADAPT=$3
+outdir_cutadapt=$3
 
-# for FQ in "${INDIR}"/*R1.fastq.gz
-# do
-# SAMPLE=$(basename "$FQ" .R1.fastq.gz)
-# cutadapt \
-#     -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC \
-#     -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
-#     -o ${OUTDIR_CUTADAPT}/${SAMPLE}.R1.cutadapt.fastq.gz \
-#     -p ${OUTDIR_CUTADAPT}/${SAMPLE}.R2.cutadapt.fastq.gz \
-#     --cores 16 \
-#     --minimum-length 20 \
-#     --max-n 0.1 \
-#     --max-expected-errors 1 \
-#     ${FQ} \
-#     ${INDIR}/${SAMPLE}.R2.fastq.gz
-# done
+for fq in "${indir}"/*R1.fastq.gz
+do
+sample=$(basename "$fq" .R1.fastq.gz)
+cutadapt \
+    -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC \
+    -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
+    -o ${outdir_cutadapt}/${sample}.R1.cutadapt.fastq.gz \
+    -p ${outdir_cutadapt}/${sample}.R2.cutadapt.fastq.gz \
+    --cores 16 \
+    --minimum-length 20 \
+    --max-n 0.1 \
+    --max-expected-errors 1 \
+    ${fq} \
+    ${indir}/${sample}.R2.fastq.gz
+done
 
 # Parameters:
 # trim the adapter no matter where they are located and if they are parital 
@@ -57,37 +57,37 @@ OUTDIR_CUTADAPT=$3
 # ################################################################################
 # # RUN FASTQC AFTER CUTADAPT                                                    #
 # ################################################################################
-source preprocessing/fastqc_multiqc.sh ${OUTDIR_CUTADAPT} ${OUTDIR_CUTADAPT} cutadapt_multiqc
+source preprocessing/fastqc_multiqc.sh ${outdir_cutadapt} ${outdir_cutadapt} cutadapt_multiqc
 
 
 ################################################################################
 # EXTRACT UMIS CUSTOM                                                          #
 ################################################################################
-Umi_adpt_trimmed_path=$4
-# python preprocessing/extract_umi/extract_compare_umis.py \
-#  ${OUTDIR_CUTADAPT} \
-#  ${Umi_adpt_trimmed_path}
+umi_adpt_trimmed_path=$4
+python preprocessing/extract_umi/extract_compare_umis.py \
+ ${outdir_cutadapt} \
+ ${umi_adpt_trimmed_path}
 # this is not optimal, think I prefer to to have the output in the same .out as the rest
 # > preprocessing/extract_umi/extract_compare_umis_cutadapt.out 2>&1
 
 
 
-source preprocessing/fastqc_multiqc.sh ${Umi_adpt_trimmed_path} ${Umi_adpt_trimmed_path} UMI_trimmed_multiqc
+source preprocessing/fastqc_multiqc.sh ${umi_adpt_trimmed_path} ${umi_adpt_trimmed_path} UMI_trimmed_multiqc
 
-# cd ${Umi_adpt_trimmed_path}
-# gzip *.fastq
-# rm *.fastq
+cd ${umi_adpt_trimmed_path}
+gzip *.fastq
+rm *.fastq
 
 cd -
 
 ################################################################################
 # FILTERING ETC FASTP                                                          #
 ################################################################################
-fastpOut=$5
-fastpFASTQC=$6
-# source preprocessing/filter_fastp.sh ${Umi_adpt_trimmed_path} ${fastpOut} cutadapt_umi_fastp
-source preprocessing/fastqc_multiqc.sh ${fastpOut} ${fastpFASTQC} fastqc_fastp_trim_after_umi_trim_multiqc
-multiqc --force --filename ${fastpOut}/fastp_filter_after_umi_trim_multiqc ${fastpOut}
+fastp_out=$5
+fastp_fastqc=$6
+source preprocessing/filter_fastp.sh ${umi_adpt_trimmed_path} ${fastp_out} cutadapt_umi_fastp
+source preprocessing/fastqc_multiqc.sh ${fastp_out} ${fastp_fastqc} fastqc_fastp_trim_after_umi_trim_multiqc
+multiqc --force --filename ${fastp_out}/fastp_filter_after_umi_trim_multiqc ${fastp_out}
 
 
 
