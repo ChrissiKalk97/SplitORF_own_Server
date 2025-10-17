@@ -27,6 +27,7 @@ gtf_file=${mando_out_dir}"/HUVEC/HUVEC_mando_gene_id.gtf"
 gtf_file_cm=${mando_out_dir}"/CM/CM_mando_gene_id.gtf"
 decoys="/projects/splitorfs/work/reference_files/decoys.txt"
 transcript_fasta=${mando_out_dir}"/HUVEC/HUVEC_mando_gene_id_correct.fasta"
+transcript_cm_fasta=${mando_out_dir}"/CM/CM_mando_gene_id_correct.fasta"
 
 huvec_lrs=${mando_out_dir}/HUVEC/HUVEC_fl_counts.tsv
 cm_lrs=${mando_out_dir}/CM/CM_fl_counts.tsv
@@ -34,8 +35,11 @@ cm_lrs=${mando_out_dir}/CM/CM_fl_counts.tsv
 mando_dir_raw=$4
 sqanti_dir=${mando_out_dir}"/SQANTI3"
 outdir_fastp=$5
-kallisto_quant_mando_raw=${mando_dir_raw=}"/kallisto/quant"
+outdir_fastp_cm=$7
+kallisto_quant_mando_raw=${mando_dir_raw}"/kallisto/quant"
+kallisto_quant_mando_raw_cm=${mando_dir_raw}"/kallisto/quant_cm"
 kallisto_index_path="${mando_dir_raw}"/kallisto/index/HUVEC
+kallisto_index_cm_path="${mando_dir_raw}"/kallisto/index/CM
 sqanti_qc_outdir="${sqanti_dir}"/SQANTI3_QC
 
 script_dir=$6
@@ -64,6 +68,10 @@ fi
 
 if [ ! -d "${mando_dir_raw}"/kallisto/quant ]; then
     mkdir "${mando_dir_raw}"/kallisto/quant
+fi
+
+if [ ! -d "${mando_dir_raw}"/kallisto/quant_cm ]; then
+    mkdir "${mando_dir_raw}"/kallisto/quant_cm
 fi
 
 if [ ! -d "${sqanti_dir}" ]; then
@@ -123,6 +131,18 @@ fi
 #  ${kallisto_index_path}.idx \
 #  ${outdir_fastp} \
 #  ${kallisto_quant_mando_raw}
+
+
+bash ${script_dir}/kallisto/kallisto_index.sh \
+  ${gtf_file_cm} \
+  ${genome_fasta} \
+  ${transcript_cm_fasta} \
+  ${kallisto_index_cm_path}
+
+bash ${script_dir}/kallisto/kallisto_quantification.sh \
+ ${kallisto_index_cm_path}.idx \
+ ${outdir_fastp_cm} \
+ ${kallisto_quant_mando_raw_cm}
 
 
 ################################################################################
