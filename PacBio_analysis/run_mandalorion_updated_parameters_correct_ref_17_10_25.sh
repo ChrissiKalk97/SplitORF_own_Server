@@ -132,15 +132,15 @@ python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sq
 #################################################################################
 # ------------------ Run SQANTI                              ------------------ #
 #################################################################################
-conda activate pacbio
-bash mandalorion/assess_mando_sqanti3/run_sqanti3_on_mando_updated_arguments_august_2025.sh \
- $genome_fasta \
- $ensembl_filtered_gtf \
- $out_path \
- "/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Mandalorion_raw_updated_parameters" \
- "/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/fastp" \
- "/home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3" \
- "/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/CM_fastp"
+# conda activate pacbio
+# bash mandalorion/assess_mando_sqanti3/run_sqanti3_on_mando_updated_arguments_august_2025.sh \
+#  $genome_fasta \
+#  $ensembl_filtered_gtf \
+#  $out_path \
+#  "/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Mandalorion_raw_updated_parameters" \
+#  "/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/fastp" \
+#  "/home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3" \
+#  "/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/CM_fastp"
 
 
 #################################################################################
