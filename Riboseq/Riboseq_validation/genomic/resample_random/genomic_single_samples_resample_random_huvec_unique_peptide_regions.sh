@@ -11,7 +11,7 @@ source activate Riboseq
 
 
 OUTPUT_STAR="/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_huvec_tama_19_09_25"
-UNIQUE_REGION_DIR="/projects/splitorfs/work/Masspec/New_MS_run_19_09_25_tama_assembly_SOs/analysis_results_with_ref_19_09_25"
+UNIQUE_REGION_DIR="/projects/splitorfs/work/Masspec/New_MS_run_19_09_25_tama_assembly_SOs/analysis_results_with_ref_19_09_25/coordinates"
 TAMA_GTF="/projects/splitorfs/work/PacBio/merged_bam_files/compare_mando_stringtie/tama/HUVEC/HUVEC_merged_tama_gene_id.gtf"
 GENOME_FASTA="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
 # The following are the paths to the riboseq reads
@@ -58,8 +58,14 @@ fi
 
 # done
 
-# # run this once in the first run, after that there are the chrom_sort.bed files
-# # already in the respective directory, and they are run in the second loop
+
+# run this once in the first run, after that there are the chrom_sort.bed files
+# already in the respective directory, and they are run in the second loop
+if [ ! -s  $UNIQUE_REGION_DIR/huvec_tama_unique_peptides_masspec_genomic.bed ]; then
+	cat $UNIQUE_REGION_DIR/*genomic_coordinates.bed | sort -k1,1 -k2,2n > $UNIQUE_REGION_DIR/huvec_tama_unique_peptides_masspec_genomic.bed
+fi
+
+
 # for i in $UMI_dedup_outdir/*_filtered.bam; do
 #     sample_name=$(basename "$i" _dedup_filtered.bam)
     
@@ -85,33 +91,31 @@ fi
 # ################################################################################
 # # PREPARE BED FILES
 # ################################################################################
-# if [ ! -s  $UNIQUE_REGION_DIR/huvec_tama_unique_peptides_masspec_genomic.bed ]; then
-# 	cat $UNIQUE_REGION_DIR/*genomic_coordinates.bed | sort -k1,1 -k2,2n > $UNIQUE_REGION_DIR/huvec_tama_unique_peptides_masspec_genomic.bed
-# fi
 
-# for i in $OUTPUT_STAR/*_chrom_sort.bed; do
-#     sample_name="$(basename "$i" _chrom_sort.bed)"
 
-#     ./empirical_intersection_steps_23_09_25.sh \
-#         $i \
-#         $UNIQUE_REGION_DIR/huvec_tama_unique_peptides_masspec_genomic.bed \
-#         $THREE_PRIMES \
-#         "$OUTPUT_STAR"/HUVEC_peptides/${sample_name}_HUVEC_PEPTIDES \
-#         "$OUTPUT_STAR"/HUVEC_peptides \
-#         ${GENOME_FASTA}
+for i in $OUTPUT_STAR/*_chrom_sort.bed; do
+    sample_name="$(basename "$i" _chrom_sort.bed)"
 
-#     echo "===================       Sample $sample_name intersected"
+    ./empirical_intersection_steps_23_09_25.sh \
+        $i \
+        $UNIQUE_REGION_DIR/huvec_tama_unique_peptides_masspec_genomic.bed \
+        $THREE_PRIMES \
+        "$OUTPUT_STAR"/HUVEC_peptides/${sample_name}_HUVEC_PEPTIDES \
+        "$OUTPUT_STAR"/HUVEC_peptides \
+        ${GENOME_FASTA}
 
-# done
+    echo "===================       Sample $sample_name intersected"
+
+done
 
 
 
-# export LD_LIBRARY_PATH=/opt/intel/oneapi/mkl/2022.0.2/lib/intel64:$LD_LIBRARY_PATH
-# export MKL_ENABLE_INSTRUCTIONS=SSE4_2
+export LD_LIBRARY_PATH=/opt/intel/oneapi/mkl/2022.0.2/lib/intel64:$LD_LIBRARY_PATH
+export MKL_ENABLE_INSTRUCTIONS=SSE4_2
 
-# Rscript -e 'if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown", repos="http://cran.us.r-project.org")'
+Rscript -e 'if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown", repos="http://cran.us.r-project.org")'
 
-# R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration_update_single_23_09_25.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_huvec_tama_19_09_25/HUVEC_peptides/Riboseq_report_TAMA_HUVEC_peptides.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_huvec_tama_19_09_25/HUVEC_peptides", "/home/ckalk/tools/SplitORF_pipeline/Output/run_12.09.2025-17.51.04_HUVEC_tama_merged", "HUVEC_PEPTIDES")))'
+R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration_update_single_23_09_25.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_huvec_tama_19_09_25/HUVEC_peptides/Riboseq_report_TAMA_HUVEC_pep_filtered_peptides.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_huvec_tama_19_09_25/HUVEC_peptides", "/home/ckalk/tools/SplitORF_pipeline/Output/run_12.09.2025-17.51.04_HUVEC_tama_merged", "HUVEC_PEPTIDES")))'
 
 # Rscript plotting/Upsetplot_SO_upset_by_type_ISMB_talk_01_07_25.R $nmd $ri TRUE
 # Rscript plotting/Upsetplot_SO_upset_by_type_ISMB_talk_01_07_25.R $nmd $ri FALSE
@@ -124,4 +128,4 @@ fi
 python unique_peptide_helper_scripts/get_validated_protein_genes_masspec.py \
     /projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_huvec_tama_19_09_25/HUVEC_peptides \
     /projects/splitorfs/work/Masspec/New_MS_run_19_09_25_tama_assembly_SOs/analysis_results_with_ref_19_09_25/huvec_validated_SO_protein_original_Ids_with_assembly.csv \
-    /projects/splitorfs/work/Masspec/New_MS_run_19_09_25_tama_assembly_SOs/analysis_results_with_ref_19_09_25/huvec_tama_unique_peptides_masspec_genomic_chrom_sorted.bed
+    /projects/splitorfs/work/Masspec/New_MS_run_19_09_25_tama_assembly_SOs/analysis_results_with_ref_19_09_25/coordinates/huvec_tama_unique_peptides_masspec_genomic_chrom_sorted.bed

@@ -22,10 +22,9 @@ path <- args[[1]]
 SO_pipe_path <- args[[2]]
 unique_region_type <- args[[3]]
 
-# SO_pipe_path <- '/projects/splitorfs/work/LLMs/TIS_transformer/Input/SO_pipeline_results'
-# path <- '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample'
-# outdir_NMD <- file.path(path, "NMD_genome")
-# path <- file.path(path, "RI_genome")
+# unique_region_type <- "HUVEC_TAMA"
+# SO_pipe_path <- "/home/ckalk/tools/SplitORF_pipeline/Output/run_12.09.2025-17.51.04_HUVEC_tama_merged"
+# path <- "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_huvec_tama_19_09_25"
 ```
 
 
@@ -71,18 +70,19 @@ Please note the validated Unique region of different Split-ORFs may overlap or b
 names(counts_and_names_list$unique_names) <- names(list_dataframes)
 upsetlist <- counts_and_names_list$unique_names
 nr_regions <- sapply(upsetlist, length)
+upsetlist <- upsetlist[order(names(upsetlist))]
 upsetlist <- lapply(upsetlist, function(x) x)
 nr_sets <- length(names(list_dataframes))
 upset(fromList(upsetlist), 
       order.by = "freq",
       nsets = nr_sets,
-      point.size = 1.5,   # grows with number of sets
-      line.size  = 1.2,   # grows with number of sets
+      point.size = 1.5,   
+      line.size  = 1.2,   
       set_size.show = TRUE,
       set_size.scale_max = max(nr_regions) + 100, 
       mainbar.y.label = "Split-ORF Intersections", 
       sets.x.label = "Matching Split-ORFs per dataset",
-      text.scale = c(1, 1, 0.9, 1, 1, 1)
+      text.scale = c(0.7, 0.7, 0.6, 0.7, 0.7, 0.7)
       )
 ```
 
@@ -92,47 +92,81 @@ Please note the validated Unique region of different Split-ORFs may overlap but 
 names(counts_and_names_list$unique_names_genomic) <- names(list_dataframes)
 upsetlist_genomic <- counts_and_names_list$unique_names_genomic
 nr_regions_genomic <- sapply(upsetlist_genomic, length)
+upsetlist_genomic <- upsetlist_genomic[sort(names(upsetlist_genomic))]
 upsetlist_genomic <- lapply(upsetlist_genomic, function(x) x)
-upset(fromList(upsetlist_genomic), order.by = "freq", nsets = length(names(list_dataframes)), point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+upset(fromList(upsetlist_genomic), 
+      order.by = "freq",
+      nsets = length(names(list_dataframes)), 
+      point.size = 2.25, 
+      line.size = 1.5, 
+      set_size.show = TRUE,
       set_size.scale_max = max(nr_regions_genomic) + 100, 
-      mainbar.y.label = "Unique region Intersections", sets.x.label = "Matching unique regions per dataset",
-      text.scale = c(1, 1, 0.9, 1, 1, 1))
+      mainbar.y.label = "Unique region Intersections", 
+      sets.x.label = "Matching unique regions per dataset",
+      text.scale = c(0.7, 0.7, 0.6, 0.7, 0.7, 0.7)
+      )
 ```
 
 ```{r, echo=FALSE, message=FALSE}
 png(file.path(path, paste('upset', unique_region_type, 'SO.png', sep = '_')))
-names(counts_and_names_list$unique_names) <- names(list_dataframes)
-upsetlist <- counts_and_names_list$unique_names
-upsetlist <- lapply(upsetlist, function(x) x)
-upset(fromList(upsetlist), order.by = "freq", nsets = length(names(list_dataframes)), point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+upset(fromList(upsetlist), 
+      order.by = "freq", 
+      nsets = length(names(list_dataframes)), 
+      point.size = 2.25, 
+      line.size = 1.5, 
+      set_size.show = TRUE,
       set_size.scale_max = max(nr_regions) + 100, 
-      mainbar.y.label = "Split-ORF Intersections", sets.x.label = "Matching Split-ORFs per dataset",
-      text.scale = c(1, 1, 0.9, 1, 1, 1))
+      mainbar.y.label = "Split-ORF Intersections", 
+      sets.x.label = "Matching Split-ORFs per dataset",
+      text.scale = c(0.7, 0.7, 0.6, 0.7, 0.7, 0.7)
+      )
 dev.off()
 ```
 
 
 ```{r, echo=FALSE, message=FALSE}
 png(file.path(path, paste('upset', unique_region_type, 'UR.png', sep = '_')))
-names(counts_and_names_list$unique_names_genomic) <- names(list_dataframes)
-upsetlist_genomic <- counts_and_names_list$unique_names_genomic
-upsetlist_genomic <- lapply(upsetlist_genomic, function(x) x)
-upset(fromList(upsetlist_genomic), order.by = "freq", nsets = length(names(list_dataframes)), point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+upset(fromList(upsetlist_genomic), 
+      order.by = "freq", 
+      nsets = length(names(list_dataframes)), 
+      point.size = 2.25, 
+      line.size = 1.5, 
+      set_size.show = TRUE,
       set_size.scale_max = max(nr_regions_genomic) + 100, 
-      mainbar.y.label = "Unique region Intersections", sets.x.label = "Matching unique regions per dataset",
-      text.scale = c(1, 1, 0.9, 1, 1, 1))
+      mainbar.y.label = "Unique region Intersections", 
+      sets.x.label = "Matching unique regions per dataset",
+      text.scale = c(0.7, 0.7, 0.6, 0.7, 0.7, 0.7)
+      )
 dev.off()
 ```
 
 ```{r, echo=FALSE, message=FALSE}
-svg(file.path(path, paste('upset', unique_region_type, 'UR.png', sep = '_')))
-names(counts_and_names_list$unique_names_genomic) <- names(list_dataframes)
-upsetlist_genomic <- counts_and_names_list$unique_names_genomic
-upsetlist_genomic <- lapply(upsetlist_genomic, function(x) x)
-upset(fromList(upsetlist_genomic), order.by = "freq", nsets = length(names(list_dataframes)), point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
+svg(file.path(path, paste('upset', unique_region_type, 'UR.svg', sep = '_')))
+upset(fromList(upsetlist_genomic), 
+      order.by = "freq", 
+      nsets = length(names(list_dataframes)), 
+      point.size = 2.25, line.size = 1.5, 
+      set_size.show = TRUE,
       set_size.scale_max = max(nr_regions_genomic) + 100, 
-      mainbar.y.label = "Unique region Intersections", sets.x.label = "Matching unique regions per dataset",
-      text.scale = c(1, 1, 0.9, 1, 1, 1))
+      mainbar.y.label = "Unique region Intersections", 
+      sets.x.label = "Matching unique regions per dataset",
+      text.scale = c(0.7, 0.7, 0.6, 0.7, 0.7, 0.7)
+      )
+dev.off()
+```
+
+```{r, echo=FALSE, message=FALSE}
+svg(file.path(path, paste('upset', unique_region_type, 'SO.svg', sep = '_')))
+upset(fromList(upsetlist), 
+      order.by = "freq", 
+      nsets = length(names(list_dataframes)), 
+      point.size = 2.25, line.size = 1.5, 
+      set_size.show = TRUE,
+      set_size.scale_max = max(nr_regions_genomic) + 100, 
+      mainbar.y.label = "Unique region Intersections", 
+      sets.x.label = "Matching unique regions per dataset",
+      text.scale = c(0.7, 0.7, 0.6, 0.7, 0.7, 0.7)
+      )
 dev.off()
 ```
 
