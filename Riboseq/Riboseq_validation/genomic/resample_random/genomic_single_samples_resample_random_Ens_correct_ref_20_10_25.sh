@@ -36,25 +36,25 @@ fi
 exec > >(tee -i $output_star/AlignmentLogfile.txt)
 exec 2>&1
 
-echo "STAR index genome"
+# echo "STAR index genome"
 
-source ./STAR_Align_genomic_23_09_25.sh -i 50 "$output_star"/index \
- $genome_fasta \
- $ensembl_gtf
+# source ./STAR_Align_genomic_23_09_25.sh -i 50 "$output_star"/index \
+#  $genome_fasta \
+#  $ensembl_gtf
 
-echo "Starting alignment against genome"
+# echo "Starting alignment against genome"
 
 # for i in "${INPUT_DATA[@]}"; do
 #     sample_name=$(basename "$i" _fastp.fastq)
 #     echo $i
 
 #     ./STAR_Align_genomic_23_09_25.sh -a 16 "$output_star"/index $i \
-#     "$output_star"/${sample_name} \
+#     "$output_star"/NMD_genome/${sample_name} \
 #      EndToEnd
 
-#     rm "$output_star"/${sample_name}*Aligned.sortedByCoord.out.bam
-#     rm "$output_star"/${sample_name}*_filtered.bam
-#     rm "$output_star"/*${sample_name}.bed
+#     rm "$output_star"/NMD_genome/${sample_name}*Aligned.sortedByCoord.out.bam
+#     rm "$output_star"/NMD_genome/${sample_name}*_filtered.bam
+#     rm "$output_star"/NMD_genome/*${sample_name}.bed
 
 #     echo "===================       Sample $sample_name mapped"
 
@@ -66,6 +66,22 @@ echo "Starting alignment against genome"
 # NMD analysis                                                                 #
 ################################################################################
 
+for i in $output_star/NMD_genome/*_chrom_sort.bed; do
+    sample_name="$(basename "$i" _chrom_sort.bed)"
+
+    ./empirical_intersection_steps_23_09_25.sh \
+        $i \
+        $unique_region_dir_nmd/Unique_DNA_Regions_genomic.bed \
+        $three_primes \
+        "$output_star"/NMD_genome/${sample_name} \
+        "$output_star"/NMD_genome \
+        ${genome_fasta}
+
+    echo "===================       Sample $sample_name intersected"
+
+done
+
+
 # run this once in the first run, after that there are the chrom_sort.bed files
 # already in the respective directory, and they are run in the second loop
 for i in $UMI_dedup_outdir/*_filtered.bam; do
@@ -74,7 +90,6 @@ for i in $UMI_dedup_outdir/*_filtered.bam; do
     echo $sample_name
 
     if [[ "$sample_name" == uf_mueller* ]];then
-        echo "Hello there"
         sample_name="${sample_name:30}"
     fi
 
@@ -83,8 +98,8 @@ for i in $UMI_dedup_outdir/*_filtered.bam; do
         $i \
         $unique_region_dir_nmd/Unique_DNA_Regions_genomic.bed \
         $three_primes \
-        "$output_star"/${sample_name} \
-        "$output_star" \
+        "$output_star"/NMD_genome/${sample_name}_NMD \
+        "$output_star"/NMD_genome \
         ${genome_fasta}
 
     echo "===================       Sample $sample_name intersected"
@@ -98,7 +113,6 @@ for i in $umi_dedup_upf10/*_filtered.bam; do
     echo $sample_name
 
     if [[ "$sample_name" == uf_mueller* ]];then
-        echo "Hello there"
         sample_name="${sample_name:30}"
     fi
 
@@ -107,30 +121,14 @@ for i in $umi_dedup_upf10/*_filtered.bam; do
         $i \
         $unique_region_dir_nmd/Unique_DNA_Regions_genomic.bed \
         $three_primes \
-        "$output_star"/${sample_name} \
-        "$output_star" \
+        "$output_star"/NMD_genome/${sample_name}_NMD \
+        "$output_star"/NMD_genome \
         ${genome_fasta}
 
     echo "===================       Sample $sample_name intersected"
 
 done
 
-
-
-for i in $output_star/*_chrom_sort.bed; do
-    sample_name="$(basename "$i" _chrom_sort.bed)"
-
-    ./empirical_intersection_steps_23_09_25.sh \
-        $i \
-        $unique_region_dir_nmd/Unique_DNA_Regions_genomic.bed \
-        $three_primes \
-        "$output_star"/${sample_name} \
-        "$output_star" \
-        ${genome_fasta}
-
-    echo "===================       Sample $sample_name intersected"
-
-done
 
 
 
@@ -139,7 +137,7 @@ export MKL_ENABLE_INSTRUCTIONS=SSE4_2
 
 Rscript -e 'if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown", repos="http://cran.us.r-project.org")'
 
-R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration_update_single_23_09_25.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/Riboseq_report_NMD_Ens_correct_ref_20_10_25.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_huvec_tama_19_09_25", "/home/ckalk/tools/SplitORF_pipeline/Output/run_12.09.2025-17.51.04_HUVEC_tama_merged", "HUVEC_TAMA")))'
+R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration_update_single_23_09_25.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/Riboseq_report_NMD_Ens_correct_ref_20_10_25.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/NMD_genome", "/home/ckalk/tools/SplitORF_pipeline/Output/run_30.09.2025-11.30.56_NMD_transcripts_correct_TSL_ref", "NMD")))'
 
 
 
@@ -149,64 +147,60 @@ R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iterat
 # RI ANALYSIS                                                                  #
 ################################################################################
 
-for i in $UMI_dedup_outdir/*_filtered.bam; do
-    sample_name=$(basename "$i" _dedup_filtered.bam)
-    
-    echo $sample_name
-
-    if [[ "$sample_name" == uf_mueller* ]];then
-        echo "Hello there"
-        sample_name="${sample_name:30}"
-    fi
-
-    echo $sample_name
-    ./empirical_intersection_steps_23_09_25.sh \
-        $i \
-        $unique_region_dir_ri/Unique_DNA_Regions_genomic.bed \
-        $three_primes \
-        "$output_star"/${sample_name} \
-        "$output_star" \
-        ${genome_fasta}
-
-    echo "===================       Sample $sample_name intersected"
-
-done
-
-
-for i in $umi_dedup_upf10/*_filtered.bam; do
-    sample_name=$(basename "$i" _dedup_filtered.bam)
-    
-    echo $sample_name
-
-    if [[ "$sample_name" == uf_mueller* ]];then
-        echo "Hello there"
-        sample_name="${sample_name:30}"
-    fi
-
-    echo $sample_name
-    ./empirical_intersection_steps_23_09_25.sh \
-        $i \
-        $unique_region_dir_ri/Unique_DNA_Regions_genomic.bed \
-        $three_primes \
-        "$output_star"/${sample_name} \
-        "$output_star" \
-        ${genome_fasta}
-
-    echo "===================       Sample $sample_name intersected"
-
-done
-
-
-
-for i in $output_star/*_chrom_sort.bed; do
+for i in "$output_star"/RI_genome/*_chrom_sort.bed; do
     sample_name="$(basename "$i" _chrom_sort.bed)"
 
     ./empirical_intersection_steps_23_09_25.sh \
         $i \
         $unique_region_dir_ri/Unique_DNA_Regions_genomic.bed \
         $three_primes \
-        "$output_star"/${sample_name} \
-        "$output_star" \
+        "$output_star"/RI_genome/${sample_name} \
+        "$output_star"/RI_genome \
+        ${genome_fasta}
+
+    echo "===================       Sample $sample_name intersected"
+
+done
+
+for i in "$UMI_dedup_outdir"/*_filtered.bam; do
+    sample_name=$(basename "$i" _dedup_filtered.bam)
+    
+    echo $sample_name
+
+    if [[ "$sample_name" == uf_mueller* ]];then
+        sample_name="${sample_name:30}"
+    fi
+
+    echo $sample_name
+    ./empirical_intersection_steps_23_09_25.sh \
+        $i \
+        $unique_region_dir_ri/Unique_DNA_Regions_genomic.bed \
+        $three_primes \
+        "$output_star"/RI_genome/${sample_name}_RI \
+        "$output_star"/RI_genome \
+        ${genome_fasta}
+
+    echo "===================       Sample $sample_name intersected"
+
+done
+
+
+for i in "$umi_dedup_upf10"/*_filtered.bam; do
+    sample_name=$(basename "$i" _dedup_filtered.bam)
+    
+    echo $sample_name
+
+    if [[ "$sample_name" == uf_mueller* ]];then
+        sample_name="${sample_name:30}"
+    fi
+
+    echo $sample_name
+    ./empirical_intersection_steps_23_09_25.sh \
+        $i \
+        $unique_region_dir_ri/Unique_DNA_Regions_genomic.bed \
+        $three_primes \
+        "$output_star"/RI_genome/${sample_name}_RI \
+        "$output_star"/RI_genome \
         ${genome_fasta}
 
     echo "===================       Sample $sample_name intersected"
@@ -220,4 +214,4 @@ export MKL_ENABLE_INSTRUCTIONS=SSE4_2
 
 Rscript -e 'if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown", repos="http://cran.us.r-project.org")'
 
-R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration_update_single_23_09_25.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/Riboseq_report_NMD_Ens_correct_ref_20_10_25.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_huvec_tama_19_09_25", "/home/ckalk/tools/SplitORF_pipeline/Output/run_12.09.2025-17.51.04_HUVEC_tama_merged", "HUVEC_TAMA")))'
+R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration_update_single_23_09_25.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/Riboseq_report_RI_Ens_correct_ref_20_10_25.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome", "/home/ckalk/tools/SplitORF_pipeline/Output/run_30.09.2025-12.25.38_RI_transcripts_correct_TSL_ref", "RI")))'
