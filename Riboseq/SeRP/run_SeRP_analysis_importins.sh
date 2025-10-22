@@ -16,6 +16,8 @@ Bowtie2_out_dir="/projects/serp/work/Output/April_2025/importins/transcriptome_m
 Genome_Fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
 EnsemblFilteredRef="/projects/splitorfs/work/reference_files/clean_Ensembl_ref/Ensembl_equality_and_TSL_filtered.gtf"
 
+Bowtie1_base_name="/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/bowtie1/index"
+Bowtie1_out_dir="/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/bowtie1"
 
 coverage_script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/SeRP/coverage_plots"
 mane_gtf="/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf"
@@ -44,45 +46,65 @@ mane_gtf="/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA
 # align to transcriptome
 # source ${script_dir}/alignments/bowtie2_align_k1_only_R1.sh \
 #  ${Bowtie2_base_name} \
-#  no_index \
+#  index \
 #  ${fastpOut} \
 #  ${Bowtie2_out_dir} \
 #  concat_transcriptome \
 #  /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out \
- #> /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out 2>&1
+#  > /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out 2>&1
 
-# python ${script_dir}/alignments/analyze_soft_clipping.py ${Bowtie2_out_dir}/filtered
-
-
-
-# bash create_correlation_plots_reps_SeRP_importins.sh \
-#  "${Bowtie2_out_dir}"/filtered/q10
-
-
-# Rscript  PCA_conditions_DeSeq2_SeRP_importins.R \
-# "${Bowtie2_out_dir}"/filtered/q10
-
-
-# bash map_DEG_tID_to_gID.sh "${Bowtie2_out_dir}"
-
-
-# conda activate Riboseq
-# Rscript RiboWaltz_SeRP_importins_single_samples.R \
-# "${Bowtie2_out_dir}"/filtered/q10
+# source ${script_dir}/alignments/bowtie1_align_21_10_25.sh \
+#  ${Bowtie1_base_name} \
+#  ${Bowtie2_ref_fasta} \
+#  ${fastpOut} \
+#  ${Bowtie1_out_dir} \
+#  concat_transcriptome \
+#  /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie1.out \
+#  > /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie1.out 2>&1
 
 
 
-################################################################################
-# SeRP coverage plots                                                          #
-################################################################################
-# bash create_coverage_plots_importins_over_mock.sh \
-#  "${Bowtie2_out_dir}"/filtered/q10
 
-bash ${coverage_script_dir}/create_coverage_plots_codons_CDS_different_buffer_transcript.sh \
-    "${Bowtie2_out_dir}"/filtered/q10 \
-    ""${Bowtie2_out_dir}"/filtered/q10/enrichment_plots_CDS/CDS_coordinates" \
-    ${coverage_script_dir} \
-    $mane_gtf
+# python ${script_dir}/alignments/analyze_soft_clipping.py ${Bowtie1_out_dir}/filtered
+
+
+
+# # bash create_correlation_plots_reps_SeRP_importins.sh \
+# #  "${Bowtie1_out_dir}"/filtered/q10
+
+if [ ! -d ${Bowtie1_out_dir}/filtered/q10/DEGs ]; then
+    mkdir ${Bowtie1_out_dir}/filtered/q10/DEGs
+fi
+
+Rscript  PCA_conditions_DeSeq2_SeRP_importins.R \
+"${Bowtie1_out_dir}"/filtered/q10
+
+
+bash map_DEG_tID_to_gID.sh "${Bowtie1_out_dir}"
+
+
+conda activate Riboseq
+
+if [ ! -d ${Bowtie1_out_dir}/filtered/q10/Ribowaltz ]; then
+    mkdir ${Bowtie1_out_dir}/filtered/q10/Ribowaltz
+fi
+
+Rscript RiboWaltz_SeRP_importins_single_samples_bowtie1.R \
+"${Bowtie1_out_dir}"/filtered/q10
+
+
+
+# ################################################################################
+# # SeRP coverage plots                                                          #
+# ################################################################################
+# # bash create_coverage_plots_importins_over_mock.sh \
+# #  "${Bowtie2_out_dir}"/filtered/q10
+
+# bash ${coverage_script_dir}/create_coverage_plots_codons_CDS_different_buffer_transcript.sh \
+#     "${Bowtie1_out_dir}"/filtered/q10 \
+#     ""${Bowtie1_out_dir}"/filtered/q10/enrichment_plots_CDS/CDS_coordinates" \
+#     ${coverage_script_dir} \
+#     $mane_gtf
 
 ################################################################################
 # Check al counts with bam multicov                                            #

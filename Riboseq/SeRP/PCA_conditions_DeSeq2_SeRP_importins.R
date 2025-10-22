@@ -198,6 +198,7 @@ perform_diff_analysis <- function(dds_mRNA, treatment, control, outname, in_dir,
     )
     # kept the independent filter, filter out NA values
     res_treat <- res_treat[res_treat$baseMean > 0, ]
+    res_treat <- res_treat[complete.cases(res_treat), ]
     res_treat_pval <- res_treat[res_treat$pvalue < 0.05, ]
     res_treat_pval <- na.omit(res_treat_pval)
     # write output
