@@ -76,21 +76,21 @@ if [ ! -d ${Bowtie1_out_dir}/filtered/q10/DEGs ]; then
     mkdir ${Bowtie1_out_dir}/filtered/q10/DEGs
 fi
 
-Rscript  PCA_conditions_DeSeq2_SeRP_importins.R \
-"${Bowtie1_out_dir}"/filtered/q10
+# Rscript  PCA_conditions_DeSeq2_SeRP_importins.R \
+# "${Bowtie1_out_dir}"/filtered/q10
 
 
-bash map_DEG_tID_to_gID.sh "${Bowtie1_out_dir}"
+# bash map_DEG_tID_to_gID.sh "${Bowtie1_out_dir}"
 
 
-conda activate Riboseq
+# conda activate Riboseq
 
-if [ ! -d ${Bowtie1_out_dir}/filtered/q10/Ribowaltz ]; then
-    mkdir ${Bowtie1_out_dir}/filtered/q10/Ribowaltz
-fi
+# if [ ! -d ${Bowtie1_out_dir}/filtered/q10/Ribowaltz ]; then
+#     mkdir ${Bowtie1_out_dir}/filtered/q10/Ribowaltz
+# fi
 
-Rscript RiboWaltz_SeRP_importins_single_samples_bowtie1.R \
-"${Bowtie1_out_dir}"/filtered/q10
+# Rscript RiboWaltz_SeRP_importins_single_samples_bowtie1.R \
+# "${Bowtie1_out_dir}"/filtered/q10
 
 
 
@@ -100,11 +100,15 @@ Rscript RiboWaltz_SeRP_importins_single_samples_bowtie1.R \
 # # bash create_coverage_plots_importins_over_mock.sh \
 # #  "${Bowtie2_out_dir}"/filtered/q10
 
-# bash ${coverage_script_dir}/create_coverage_plots_codons_CDS_different_buffer_transcript.sh \
-#     "${Bowtie1_out_dir}"/filtered/q10 \
-#     ""${Bowtie1_out_dir}"/filtered/q10/enrichment_plots_CDS/CDS_coordinates" \
-#     ${coverage_script_dir} \
-#     $mane_gtf
+if [[ ! -d "${Bowtie1_out_dir}"/filtered/q10/enrichment_plots_CDS ]]; then
+    mkdir "${Bowtie1_out_dir}"/filtered/q10/enrichment_plots_CDS
+fi 
+
+bash ${coverage_script_dir}/create_coverage_plots_codons_CDS_different_buffer_transcript.sh \
+    "${Bowtie1_out_dir}"/filtered/q10 \
+    ""${Bowtie1_out_dir}"/filtered/q10/enrichment_plots_CDS/CDS_coordinates" \
+    ${coverage_script_dir} \
+    $mane_gtf
 
 ################################################################################
 # Check al counts with bam multicov                                            #

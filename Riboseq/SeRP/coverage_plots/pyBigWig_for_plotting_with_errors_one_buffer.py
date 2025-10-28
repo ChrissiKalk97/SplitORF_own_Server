@@ -177,6 +177,7 @@ def main(path_to_bw_files, mane_transcripts_cds_bed, transcripts_to_plot_txt,
                 print(start)
                 print(stop)
                 print(observed_values)
+                print(importin, background, puro)
 
             transcript_df = pd.DataFrame({'CDS_position': range(0, len(bw_values_smoothed)),
                                           'average_ratio': observed_values_averaged_np,
