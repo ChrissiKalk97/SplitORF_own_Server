@@ -109,234 +109,256 @@ CDS_coordinates="$outdir/MANE_CDS_coordinates.bed"
 # Imp a enrichment plots                                                       #
 ################################################################################
 
-# transcripts_to_plot_txts=(
-#         "${bam_dir}/DEGs/DEGs_A2_CHX_0_5_enriched_over_Input_and_Mock_MANE_tIDs.txt"
-#         "${bam_dir}/DEGs/DEGs_B1_CHX_0_5_enriched_over_Input_and_Mock_MANE_tIDs.txt"
-#         "${bam_dir}/DEGs/RIP_LFC2_IP_against_Input_MANE_tIDs.txt"
-#         "${bam_dir}/DEGs/SeRP_KPNAs_MANE_tIDs_modified.txt"
-#         "${bam_dir}/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt"
-#         )
+transcripts_to_plot_txts=(
+        "${bam_dir}/DEGs/DEGs_A2_CHX_0_5_enriched_over_Input_and_Mock_MANE_tIDs.txt"
+        "${bam_dir}/DEGs/DEGs_B1_CHX_0_5_enriched_over_Input_and_Mock_MANE_tIDs.txt"
+        "${bam_dir}/DEGs/RIP_LFC2_IP_against_Input_MANE_tIDs.txt"
+        "${bam_dir}/DEGs/SeRP_KPNAs_MANE_tIDs_modified.txt"
+        "${bam_dir}/DEGs/DEGs_both_A2_B1_CHX_0_5_Input_and_Mock_MANE_tIDs.txt"
+        )
 
-# out_dirs_for_plot_files=(
-#         "${bam_dir}/enrichment_plots_CDS/impA_0_5_M_and_input_DEG_plots"
-#         "${bam_dir}/enrichment_plots_CDS/impB_0_5_M_and_input_DEG_plots"
-#         "${bam_dir}/enrichment_plots_CDS/RIP_LFC2_IP"
-#         "${bam_dir}/enrichment_plots_CDS/SeRP_KPNAs"
-#         "${bam_dir}/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots"
-# )
-
-
-# if [ ! -d "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig/coordinates_per_transcript_csvs" ]; then
-#         mkdir "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig/coordinates_per_transcript_csvs"
-# fi
-
-# # Loop through all
-# for i in "${!transcripts_to_plot_txts[@]}"; do
-#      to_plot_txt=${transcripts_to_plot_txts[$i]}  
-#      outdir_plot=${out_dirs_for_plot_files[$i]}
-
-#      if [ ! -d $outdir_plot ]; then
-#         mkdir $outdir_plot
-#      fi
-
-#      if [ ! -d ${outdir_plot}_buffer_UTR ]; then
-#         mkdir ${outdir_plot}_buffer_UTR
-#      fi
-
-#         ############# buffer UTR #####################################################
-#         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_UTR_buffer.py \
-#         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_transcript_length.txt" \
-#         ${to_plot_txt} \
-#         ${outdir_plot}_buffer_UTR \
-#         "A2" \
-#         "In" \
-#         --puro "" \
-#         --color "#1eb0e6" \
-#         --window_size 63
-
-#         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_UTR_buffer.py \
-#         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_transcript_length.txt" \
-#         ${to_plot_txt} \
-#         ${outdir_plot}_buffer_UTR \
-#         "B1" \
-#         "In" \
-#         --puro "" \
-#         --color "#29449c" \
-#         --window_size 63
-
-#         # A2 over Mock
-#         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_UTR_buffer.py \
-#         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_transcript_length.txt" \
-#         ${to_plot_txt} \
-#         ${outdir_plot}_buffer_UTR \
-#         "A2" \
-#         "M" \
-#         --puro "" \
-#         --color "#1eb0e6" \
-#         --window_size 63
-
-#         # B1 over Mock
-#         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_UTR_buffer.py \
-#         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_transcript_length.txt" \
-#         ${to_plot_txt} \
-#         ${outdir_plot}_buffer_UTR \
-#         "B1" \
-#         "M" \
-#         --puro "" \
-#         --color "#29449c" \
-#         --window_size 63
+out_dirs_for_plot_files=(
+        "${bam_dir}/enrichment_plots_CDS/impA_0_5_M_and_input_DEG_plots"
+        "${bam_dir}/enrichment_plots_CDS/impB_0_5_M_and_input_DEG_plots"
+        "${bam_dir}/enrichment_plots_CDS/RIP_LFC2_IP"
+        "${bam_dir}/enrichment_plots_CDS/SeRP_KPNAs"
+        "${bam_dir}/enrichment_plots_CDS/impA_B_0_5_M_and_input_DEG_plots"
+)
 
 
+if [ ! -d "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig/coordinates_per_transcript_csvs" ]; then
+        mkdir "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig/coordinates_per_transcript_csvs"
+fi
 
-#         # Puro A2 over In
-#         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_UTR_buffer.py \
-#         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_transcript_length.txt" \
-#         ${to_plot_txt} \
-#         ${outdir_plot}_buffer_UTR \
-#         "A2" \
-#         "In" \
-#         --puro "Puro" \
-#         --color "#1eb0e6" \
-#         --window_size 63
+# Loop through all
+for i in "${!transcripts_to_plot_txts[@]}"; do
+     to_plot_txt=${transcripts_to_plot_txts[$i]}  
+     outdir_plot=${out_dirs_for_plot_files[$i]}
 
-#         # Puro B1 over In
-#         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_UTR_buffer.py \
-#         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_transcript_length.txt" \
-#         ${to_plot_txt} \
-#         ${outdir_plot}_buffer_UTR \
-#         "B1" \
-#         "In" \
-#         --puro "Puro" \
-#         --color "#29449c" \
-#         --window_size 63
+     if [ ! -d $outdir_plot ]; then
+        mkdir $outdir_plot
+     fi
 
+     if [ ! -d ${outdir_plot}_buffer_UTR ]; then
+        mkdir ${outdir_plot}_buffer_UTR
+     fi
 
-#         # Mock over Input
-#         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_UTR_buffer.py \
-#         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_transcript_length.txt" \
-#         ${to_plot_txt} \
-#         ${outdir_plot}_buffer_UTR \
-#         "M" \
-#         "In" \
-#         --puro "" \
-#         --color "#6d6d6d" \
-#         --window_size 63
+        ############# buffer UTR #####################################################
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_UTR_buffer.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_transcript_length.txt" \
+        ${to_plot_txt} \
+        ${outdir_plot}_buffer_UTR \
+        "A2" \
+        "In" \
+        --puro "" \
+        --color "#1eb0e6" \
+        --window_size 63
+
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_UTR_buffer.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_transcript_length.txt" \
+        ${to_plot_txt} \
+        ${outdir_plot}_buffer_UTR \
+        "B1" \
+        "In" \
+        --puro "" \
+        --color "#29449c" \
+        --window_size 63
+
+        # A2 over Mock
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_UTR_buffer.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_transcript_length.txt" \
+        ${to_plot_txt} \
+        ${outdir_plot}_buffer_UTR \
+        "A2" \
+        "M" \
+        --puro "" \
+        --color "#1eb0e6" \
+        --window_size 63
+
+        # B1 over Mock
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_UTR_buffer.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_transcript_length.txt" \
+        ${to_plot_txt} \
+        ${outdir_plot}_buffer_UTR \
+        "B1" \
+        "M" \
+        --puro "" \
+        --color "#29449c" \
+        --window_size 63
 
 
 
+        # Puro A2 over In
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_UTR_buffer.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_transcript_length.txt" \
+        ${to_plot_txt} \
+        ${outdir_plot}_buffer_UTR \
+        "A2" \
+        "In" \
+        --puro "Puro" \
+        --color "#e53e3e" \
+        --window_size 63
 
-#         ############## Buffer 1's ####################################################
-#         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer.py \
-#         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
-#         ${to_plot_txt} \
-#         ${outdir_plot} \
-#         "A2" \
-#         "In" \
-#         --puro "" \
-#         --color "#1eb0e6" \
-#         --window_size 63
+        # Puro B1 over In
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_UTR_buffer.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_transcript_length.txt" \
+        ${to_plot_txt} \
+        ${outdir_plot}_buffer_UTR \
+        "B1" \
+        "In" \
+        --puro "Puro" \
+        --color "#9b2020" \
+        --window_size 63
 
-#         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer.py \
-#         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
-#         ${to_plot_txt} \
-#         ${outdir_plot} \
-#         "B1" \
-#         "In" \
-#         --puro "" \
-#         --color "#29449c" \
-#         --window_size 63
 
-#         # A2 over Mock
-#         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer.py \
-#         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
-#         ${to_plot_txt} \
-#         ${outdir_plot} \
-#         "A2" \
-#         "M" \
-#         --puro "" \
-#         --color "#1eb0e6" \
-#         --window_size 63
-
-#         # B1 over Mock
-#         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer.py \
-#         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
-#         ${to_plot_txt} \
-#         ${outdir_plot} \
-#         "B1" \
-#         "M" \
-#         --puro "" \
-#         --color "#29449c" \
-#         --window_size 63
+        # Mock over Input
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_UTR_buffer.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_transcript_length.txt" \
+        ${to_plot_txt} \
+        ${outdir_plot}_buffer_UTR \
+        "M" \
+        "In" \
+        --puro "" \
+        --color "#6d6d6d" \
+        --window_size 63
 
 
 
-#         # Puro A2 over In
-#         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer.py \
-#         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
-#         ${to_plot_txt} \
-#         ${outdir_plot} \
-#         "A2" \
-#         "In" \
-#         --puro "Puro" \
-#         --color "#1eb0e6" \
-#         --window_size 63
 
-#         # Puro B1 over In
-#         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer.py \
-#         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
-#         ${to_plot_txt} \
-#         ${outdir_plot} \
-#         "B1" \
-#         "In" \
-#         --puro "Puro" \
-#         --color "#29449c" \
-#         --window_size 63
+        ############## Buffer 1's ####################################################
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        ${to_plot_txt} \
+        ${outdir_plot} \
+        "A2" \
+        "In" \
+        --puro "" \
+        --color "#1eb0e6" \
+        --window_size 63
+
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        ${to_plot_txt} \
+        ${outdir_plot} \
+        "B1" \
+        "In" \
+        --puro "" \
+        --color "#29449c" \
+        --window_size 63
+
+        # A2 over Mock
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        ${to_plot_txt} \
+        ${outdir_plot} \
+        "A2" \
+        "M" \
+        --puro "" \
+        --color "#1eb0e6" \
+        --window_size 63
+
+        # B1 over Mock
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        ${to_plot_txt} \
+        ${outdir_plot} \
+        "B1" \
+        "M" \
+        --puro "" \
+        --color "#29449c" \
+        --window_size 63
 
 
-#         # Mock over Input
-#         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer.py \
-#         "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
-#         "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
-#         ${to_plot_txt} \
-#         ${outdir_plot} \
-#         "M" \
-#         "In" \
-#         --puro "" \
-#         --color "#6d6d6d" \
-#         --window_size 63
+
+        # Puro A2 over In
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        ${to_plot_txt} \
+        ${outdir_plot} \
+        "A2" \
+        "In" \
+        --puro "Puro" \
+        --color "#e53e3e" \
+        --window_size 63
+
+        # Puro B1 over In
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        ${to_plot_txt} \
+        ${outdir_plot} \
+        "B1" \
+        "In" \
+        --puro "Puro" \
+        --color "#9b2020" \
+        --window_size 63
+
+
+        # Mock over Input
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer.py \
+        "${bam_dir}/enrichment_plots_CDS/whole_transcript_bigwig" \
+        "${bam_dir}/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed" \
+        ${to_plot_txt} \
+        ${outdir_plot} \
+        "M" \
+        "In" \
+        --puro "" \
+        --color "#6d6d6d" \
+        --window_size 63
 
 
 
-# done
+done
 
 
 coordinate_dir="/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/bowtie1/filtered/q10/enrichment_plots_CDS/whole_transcript_bigwig/coordinates_per_transcript_csvs"
 # this directory has every transcript several times, 1 buffering, UTR buffering and the different conditions A, B, M, Puro
 # idea: just loop through all files: pd_df: file name: then it is clear what it belongs to, redundancy does not matter
 
+if [ ! -d "${coordinate_dir}/onset_caclulation" ]; then
+         mkdir ${coordinate_dir}/onset_caclulation
+fi
+
 
 # enrichment_length: 51:3, 17 AA or 51 bp
+# change to 50 AA
 python ${coverage_script_dir}/get_onset.py \
         ${coordinate_dir} \
         --enrichment_length 17 \
+        --enrichment_threshold 2
+
+
+python ${coverage_script_dir}/get_onset.py \
+        ${coordinate_dir} \
+        --enrichment_length 50 \
+        --enrichment_threshold 2
+
+
+python ${coverage_script_dir}/get_onset.py \
+        ${coordinate_dir} \
+        --enrichment_length 75 \
+        --enrichment_threshold 2
+
+python ${coverage_script_dir}/get_onset.py \
+        ${coordinate_dir} \
+        --enrichment_length 100 \
         --enrichment_threshold 2

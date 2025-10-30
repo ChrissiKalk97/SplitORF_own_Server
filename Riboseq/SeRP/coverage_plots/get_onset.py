@@ -44,8 +44,10 @@ def main(path_to_coordinate_csv, enrichment_length, enrichment_threshold):
                     if coordinate_above_threshold_df.iloc[i, 1] == coordinate_above_threshold_df.iloc[i-1, 1] + 1:
                         nr_consecutive += 1
                     else:
-                        nr_consecutive = 0
-                        consecutive_start = coordinate_above_threshold_df.iloc[i + 1, 1]
+                        if i < len(coordinate_above_threshold_df.index) - 1:
+                            consecutive_start = coordinate_above_threshold_df.iloc[i + 1, 1]
+                            i += 1
+                            nr_consecutive = 1
                     if nr_consecutive == enrichment_length:
                         consecutive = True
                         onset_dict[coordinate_csv] = [consecutive_start]
@@ -55,7 +57,7 @@ def main(path_to_coordinate_csv, enrichment_length, enrichment_threshold):
     onset_df['name'] = onset_df.index
     onset_df = onset_df.sort_values(by=['name'], axis=0)
     onset_df.to_csv(
-        os.path.join(path_to_coordinate_csv, 'onset_per_csv.csv'), index=False)
+        os.path.join(path_to_coordinate_csv, 'onset_caclulation', f'onset_per_csv_length_{enrichment_length}_AA_thresh_{enrichment_threshold}.csv'), index=False)
 
 
 if __name__ == "__main__":
