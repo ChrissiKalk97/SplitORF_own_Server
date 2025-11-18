@@ -79,38 +79,53 @@ gffread /projects/serp/work/references/Supplementary_File_2.gtf \
 #  > /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/Chaetomium/out_reports_of_runs/Chaetomium_align_bowtie.out 2>&1
 
 
-# python get_trna_rrna_tids.py
+python get_trna_rrna_tids.py
 
-# python summarize_bowtie2_alns_by_source_chaetomium_noncoding.py \
-#     /projects/serp/work/references/Chaetomium_thermophilum_noncoding.fasta,/projects/serp/work/references/Chaetomium_thermophilum_protein_coding.fasta \
-#     ${bowtie_outdir}
+python summarize_bowtie2_alns_by_source_chaetomium_noncoding.py \
+    /projects/serp/work/references/Chaetomium_thermophilum_noncoding.fasta,/projects/serp/work/references/Chaetomium_thermophilum_protein_coding.fasta \
+    ${bowtie_outdir}
 
-# python summarize_bowtie2_alns_by_source_chaetomium_noncoding.py \
-#     /projects/serp/work/references/Chaetomium_thermophilum_noncoding.fasta,/projects/serp/work/references/Chaetomium_thermophilum_protein_coding.fasta \
-#     ${bowtie_outdir}/filtered
+python summarize_bowtie2_alns_by_source_chaetomium_noncoding.py \
+    /projects/serp/work/references/Chaetomium_thermophilum_noncoding.fasta,/projects/serp/work/references/Chaetomium_thermophilum_protein_coding.fasta \
+    ${bowtie_outdir}/filtered
 
-# python summarize_bowtie2_alns_by_source_chaetomium_noncoding.py \
-#     /projects/serp/work/references/Chaetomium_thermophilum_noncoding.fasta,/projects/serp/work/references/Chaetomium_thermophilum_protein_coding.fasta \
-#     ${bowtie_outdir}/filtered/q10
-
-
-# if [ ! -d ${bowtie_outdir}/filtered/q10/DEGs ]; then
-#         mkdir ${bowtie_outdir}/filtered/q10/DEGs
-# fi
-
-# samtools faidx "/projects/serp/work/references/Chaetomium_thermophilum_protein_coding.fasta"
-# Rscript  PCA_conditions_DeSeq2_SeRP_Chaetomium.R \
-# "${bowtie_outdir}"/filtered/q10
+python summarize_bowtie2_alns_by_source_chaetomium_noncoding.py \
+    /projects/serp/work/references/Chaetomium_thermophilum_noncoding.fasta,/projects/serp/work/references/Chaetomium_thermophilum_protein_coding.fasta \
+    ${bowtie_outdir}/filtered/q10
 
 
- grep -Fxf ${bowtie_outdir}/filtered/q10/DEGs/E_S_over_E_WT_0_5.txt \
- ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_0_5.txt \
+if [ ! -d ${bowtie_outdir}/filtered/q10/DEGs ]; then
+        mkdir ${bowtie_outdir}/filtered/q10/DEGs
+fi
+
+samtools faidx "/projects/serp/work/references/Chaetomium_thermophilum_protein_coding.fasta"
+Rscript  PCA_conditions_DeSeq2_SeRP_Chaetomium.R \
+"${bowtie_outdir}"/filtered/q10
+
+
+ grep -Fxf ${bowtie_outdir}/filtered/q10/DEGs/E_S_over_E_WT_0_5_0.05.txt \
+ ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_0_5_0.05.txt \
 > ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_0_5_and_E_S_over_E_WT_0_5.txt
 
 
- grep -Fxf ${bowtie_outdir}/filtered/q10/DEGs/E_S_over_E_WT_1_0.txt \
- ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0.txt \
+ grep -Fxf ${bowtie_outdir}/filtered/q10/DEGs/E_S_over_E_WT_1_0_0.01.txt \
+ ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_0.01.txt \
 > ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0.txt
+
+# -v invert match only select lines that do no match
+ grep -Fxvf  ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_WT_0_5_0.05.txt \
+ ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_0_5_and_E_S_over_E_WT_0_5.txt \
+> ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_0_5_and_E_S_over_E_WT_0_5_not_IP_WT_vs_IN.txt
+
+
+ grep -Fxvf ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_WT_1_0_0.01.txt \
+ ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0.txt \
+> ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0_not_IP_WT_vs_IN.txt
+
+python compare_old_new_results.py #\
+        # /projects/serp/work/Output/April_2025/Chaetomium/align_transcriptome/filtered/q10/DEGs/Analysis_31_10_25_Remus/final_results_SND3_WT_LFC1_padj0.01.csv  \
+        # /projects/serp/work/Output/April_2025/Chaetomium/align_transcriptome/filtered/q10/DEGs/Analysis_31_10_25_Remus/final_results_SND3_WT_LFC1_padj0.01_all.csv \
+        # ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0_not_IP_WT_vs_IN.txt
 
 # conda activate Riboseq
 # if [ ! -d "${bowtie_outdir}"/filtered/q10/Ribowaltz ]; then

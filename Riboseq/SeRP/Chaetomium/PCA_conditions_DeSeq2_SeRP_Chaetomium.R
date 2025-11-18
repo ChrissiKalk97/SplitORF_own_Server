@@ -171,7 +171,7 @@ dev.off()
 ################################################################################
 # OBTAINING DEGs (transcripts) between SeRP and Input ##########################
 ################################################################################
-perform_diff_analysis <- function(dds_mRNA, treatment, control, outname, in_dir, lfc = 0.5)
+perform_diff_analysis <- function(dds_mRNA, treatment, control, outname, in_dir, lfc = 0.5, p_adj = 0.05)
  {
     # select conditions of interest
     dds_mRNA_treat <- dds_mRNA[, dds_mRNA$condition %in% c(treatment, control)]
@@ -194,32 +194,34 @@ perform_diff_analysis <- function(dds_mRNA, treatment, control, outname, in_dir,
     # kept the independent filter, filter out NA values
     res_treat <- res_treat[res_treat$baseMean > 0, ]
     res_treat <- res_treat[complete.cases(res_treat), ]
-    res_treat_pval <- res_treat[res_treat$pvalue < 0.05, ]
+    res_treat_pval <- res_treat[res_treat$pvalue < p_adj, ]
     res_treat_pval <- na.omit(res_treat_pval)
     # write output
     writeLines(
         rownames(res_treat_pval[
-            (res_treat_pval$padj < 0.05) & (res_treat_pval$log2FoldChange > lfc),
+            (res_treat_pval$padj < p_adj) & (res_treat_pval$log2FoldChange > lfc),
         ]),
-        file.path(in_dir, "DEGs", outname)
+        file.path(in_dir, "DEGs", paste(str_split(outname, "\\.")[[1]][1], paste(p_adj, "txt", sep = "."), sep = "_")
+        )
     )
 
+
     write.csv(res_treat_pval,
-    file=file.path(in_dir, "DEGs", paste(str_split(outname, "\\.")[[1]][1], "all_results_p_smaller_0_05.csv", sep = "_")),
+    file=file.path(in_dir, "DEGs", paste(str_split(outname, "\\.")[[1]][1], "all_results_p_smaller", paste(p_adj, "csv", sep = "."), sep = "_")),
     row.names=TRUE, quote=FALSE)
 
     writeLines(
         rownames(res_treat_pval[
-            (res_treat_pval$padj < 0.05) & (res_treat_pval$log2FoldChange < -lfc),
+            (res_treat_pval$padj < p_adj) & (res_treat_pval$log2FoldChange < -lfc),
         ]),
-        file.path(in_dir, "DEGs", paste(str_split(outname, "\\.")[[1]][1], "downreg.txt", sep = "_"))
+        file.path(in_dir, "DEGs", paste(str_split(outname, "\\.")[[1]][1], p_adj, "downreg.txt", sep = "_"))
     )
 
-    svg(file.path(in_dir, "DEGs", paste(treatment, control, "MA_plot.svg", sep ="_")))
+    svg(file.path(in_dir, "DEGs", paste(treatment, control, p_adj, "MA_plot.svg", sep ="_")))
     print(plotMA(res_treat), ylim = c(-2, 2))
     dev.off()
 
-    png(file.path(in_dir, "DEGs", paste(treatment, control, "MA_plot.png", sep ="_")))
+    png(file.path(in_dir, "DEGs",  paste(treatment, control, p_adj, "MA_plot.png", sep ="_")))
     print(plotMA(res_treat), ylim = c(-2, 2))
     dev.off()
 
@@ -233,6 +235,6 @@ perform_diff_analysis(dds_mRNA, "E_S", "In_S", paste0("E_over_In_S", "_0_5",".tx
 perform_diff_analysis(dds_mRNA, "E_S", "E_WT", paste0("E_S_over_E_WT", "_0_5",".txt"), in_dir, 0.5)
 
 
-perform_diff_analysis(dds_mRNA, "E_WT", "In_WT", paste0("E_over_In_WT", "_1_0",".txt"), in_dir, 1.0)
-perform_diff_analysis(dds_mRNA, "E_S", "In_S", paste0("E_over_In_S", "_1_0",".txt"), in_dir, 1.0)
-perform_diff_analysis(dds_mRNA, "E_S", "E_WT", paste0("E_S_over_E_WT", "_1_0",".txt"), in_dir, 1.0)
+perform_diff_analysis(dds_mRNA, "E_WT", "In_WT", paste0("E_over_In_WT", "_1_0",".txt"), in_dir, 1.0, 0.01)
+perform_diff_analysis(dds_mRNA, "E_S", "In_S", paste0("E_over_In_S", "_1_0",".txt"), in_dir, 1.0, 0.01)
+perform_diff_analysis(dds_mRNA, "E_S", "E_WT", paste0("E_S_over_E_WT", "_1_0",".txt"), in_dir, 1.0, 0.01)

@@ -50,7 +50,7 @@ with open(out_name + 'noncoding.fasta', "w") as out_handle:
     # Parse input FASTA file
     for record in SeqIO.parse(transcript_fasta, "fasta"):
         # Check if any keyword is in the header
-        if any(word in record.description for word in noncod_transcripts):
+        if record.description in noncod_transcripts:
             SeqIO.write(record, out_handle, "fasta")
 
 
@@ -58,5 +58,5 @@ with open(out_name + 'protein_coding.fasta', "w") as out_handle:
     # Parse input FASTA file
     for record in SeqIO.parse(transcript_fasta, "fasta"):
         # Check if any keyword is in the header
-        if any(word in record.description for word in protcod_transcripts):
+        if record.description in protcod_transcripts:
             SeqIO.write(record, out_handle, "fasta")
