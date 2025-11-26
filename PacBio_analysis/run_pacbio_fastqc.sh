@@ -16,16 +16,16 @@ shopt -s nullglob
 bam_files=("${bam_dir}"/*bam)
 
 
-# for bam in "${bam_files[@]}"; 
-# do
-#     (
-#         fastqc \
-#         -o ${fastqc_dir}/ \
-#         -t 32\
-#         ${bam}
-#     )&
-# done
+for bam in "${bam_files[@]}"; 
+do
+    (
+        fastqc \
+        -o ${fastqc_dir}/ \
+        -t 32\
+        ${bam}
+    )&
+done
 
-# wait
+wait
 
 multiqc --force --filename ${fastqc_dir}/${multiqc_outname} ${fastqc_dir}

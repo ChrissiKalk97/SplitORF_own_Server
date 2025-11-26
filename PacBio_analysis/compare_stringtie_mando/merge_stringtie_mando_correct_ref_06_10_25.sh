@@ -5,7 +5,7 @@
 eval "$(conda shell.bash hook)"
 conda activate pacbio
 
-reference_gtf="/projects/splitorfs/work/reference_files/clean_Ensembl_ref/Ensembl_equality_and_TSL_filtered.gtf"
+reference_gtf="/projects/splitorfs/work/reference_files/filtered_Ens_reference_correct_29_09_25/Ensembl_110_filtered_equality_and_tsl1_2_correct_29_09_25.gtf"
 ensembl_full_gtf="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.113.chr.gtf"
 
 mando_rescued_cm_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_updated_parameters/SQANTI3/SQANTI3_Rescue/CM/CM_rescue_rules_filter_rescued.gtf"
@@ -216,15 +216,15 @@ outdir_tama="/projects/splitorfs/work/PacBio/merged_bam_files/compare_mando_stri
 # This can only be run when the name of the SO output folder is known   ------- #
 #################################################################################
 # which isoforms are novel Split-ORF transcripts?
- python /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/count_novel_SO_transcripts.py \
- /home/ckalk/tools/SplitORF_pipeline/Output/run_12.09.2025-17.51.04_HUVEC_tama_merged/UniqueProteinORFPairs.txt \
- $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_merged_tama_gene_id_novel_isoforms.txt \
- --assembly_type full
+#  python /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/count_novel_SO_transcripts.py \
+#  /home/ckalk/tools/SplitORF_pipeline/Output/run_12.09.2025-17.51.04_HUVEC_tama_merged/UniqueProteinORFPairs.txt \
+#  $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_merged_tama_gene_id_novel_isoforms.txt \
+#  --assembly_type full
 
- python /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/count_novel_SO_transcripts.py \
- /home/ckalk/tools/SplitORF_pipeline/Output/run_12.09.2025-14.10.14_CM_tama_merged/UniqueProteinORFPairs.txt \
-  $outdir_tama/CM/compare_Ens_full_ref/CM_merged_tama_gene_id_novel_isoforms.txt \
- --assembly_type full
+#  python /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/count_novel_SO_transcripts.py \
+#  /home/ckalk/tools/SplitORF_pipeline/Output/run_12.09.2025-14.10.14_CM_tama_merged/UniqueProteinORFPairs.txt \
+#   $outdir_tama/CM/compare_Ens_full_ref/CM_merged_tama_gene_id_novel_isoforms.txt \
+#  --assembly_type full
 
 
 #################################################################################
@@ -282,6 +282,28 @@ isoseq_reads_dir="/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine
 #     samtools flagstat $outdir_tama/CM/minimap2/${sample}_minimap2_aligned_sort.bam > \
 #      $outdir_tama/CM/minimap2/${sample}_minimap2_aligned_sort_flagstat.out
 # done
+
+
+
+#################################################################################
+# ------------------ ALIGN TO GENOME                         ------------------ #
+#################################################################################
+# if [[ ! -d "$outdir_tama/HUVEC/minimap2" ]]; then
+#     mkdir $outdir_tama/HUVEC/minimap2
+# fi
+
+# if [[ ! -d "$outdir_tama/HUVEC/minimap2/HUVEC_index" ]]; then
+#     mkdir $outdir_tama/HUVEC/minimap2/HUVEC_index
+# fi
+
+# if [[ ! -d "$outdir_tama/CM/minimap2" ]]; then
+#     mkdir $outdir_tama/CM/minimap2
+# fi
+
+# if [[ ! -d "$outdir_tama/CM/minimap2/CM_index" ]]; then
+#     mkdir $outdir_tama/CM/minimap2/CM_index
+# fi
+
 
 
 #################################################################################

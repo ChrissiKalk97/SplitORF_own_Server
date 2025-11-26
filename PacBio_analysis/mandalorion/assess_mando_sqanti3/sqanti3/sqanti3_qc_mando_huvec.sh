@@ -12,10 +12,6 @@ kallisto_quant_mando_raw=$7
 
 export LD_LIBRARY_PATH="$CONDA_PREFIX/lib/gcc/x86_64-conda-linux-gnu/15.1.0:$LD_LIBRARY_PATH"
 
-if [ ! -d "${sqanti_qc_outdir}"/HUVEC ]; then
-    mkdir "${sqanti_qc_outdir}"/HUVEC
-fi
-
 # comma separated list of kallisto quant tsv abundance files
 kallisto_quant_files=$(find $kallisto_quant_mando_raw -type f -name "*.tsv" | paste -sd,)
 

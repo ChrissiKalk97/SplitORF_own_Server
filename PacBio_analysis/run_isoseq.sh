@@ -44,28 +44,3 @@ do
     # I think require polyA will filter out reads wo polyA and anyway I do not have the primers file
     isoseq refine $bam $primer_file $isoseq_outdir/refine/${sample_name}_refined.bam --require-polya
 done
-
-
-#################################################################################
-# ------------------ CLUSTERING                              ------------------ #
-#################################################################################
-export OMP_NUM_THREADS=32
-
-# isoseq cluster2 "${bam_dir}"/HUVEC_flnc.fofn $isoseq_outdir/cluster/HUVEC_clustered.bam
-# isoseq cluster2 "${bam_dir}"/CM_flnc.fofn $isoseq_outdir/cluster/CM_clustered.bam
-
-
-#################################################################################
-# ------------------ GENOME ALIGNEMENT PBMM2                 ------------------ #
-#################################################################################
-# pbmm2 align --preset ISOSEQ --sort $isoseq_outdir/cluster/HUVEC_clustered.bam $ref_fasta $isoseq_outdir/mapped/HUVEC_mapped.bam &
-# pbmm2 align --preset ISOSEQ --sort $isoseq_outdir/cluster/CM_clustered.bam $ref_fasta $isoseq_outdir/mapped/CM_mapped.bam &
-# wait
-
-
-#################################################################################
-# ------------------ ISOSEQ COLLAPSE                         ------------------ #
-#################################################################################
-# isoseq collapse $isoseq_outdir/mapped/HUVEC_mapped.bam $isoseq_outdir/collapsed/HUVEC_collapsed.gff &
-# isoseq collapse $isoseq_outdir/mapped/CM_mapped.bam $isoseq_outdir/collapsed/CM_collapsed.gff &
-# wait

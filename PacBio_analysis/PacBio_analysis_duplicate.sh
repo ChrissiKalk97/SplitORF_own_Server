@@ -69,5 +69,5 @@ if [ ! -e $isoseq_outdir ];then
 fi
 
 # run mandalorion
-bash run_mandalorion_updated_parameters_correct_ref_one_cell_type_26_11_25.sh HUVEC
-# bash run_mandalorion_updated_parameters_correct_ref_one_cell_type_26_11_25.sh CM
+# bash run_mandalorion_updated_parameters_correct_ref_one_cell_type_26_11_25.sh HUVEC
+bash run_mandalorion_updated_parameters_correct_ref_one_cell_type_26_11_25.sh CM

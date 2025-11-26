@@ -19,11 +19,11 @@ fi
 shopt -s nullglob
 bam_files=("${bam_dir}"/*bam)
 
-# for bam in "${bam_files[@]}"; 
-# do
-#     sample=$(basename $bam .bam)
-#     lima $bam $primer_fasta $lima_outdir/${sample}_lima.bam --isoseq 
-# done
+for bam in "${bam_files[@]}"; 
+do
+    sample=$(basename $bam .bam)
+    lima $bam $primer_fasta $lima_outdir/${sample}_lima.bam --isoseq 
+done
 
 for bam in $lima_outdir/*.bam; 
 do

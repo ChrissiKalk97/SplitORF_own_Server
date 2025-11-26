@@ -7,12 +7,13 @@ conda activate pacbio
 # genome_fasta=$2
 # consensus_reads_fofn=$3
 
+cell_type=$1
+
 
 ensembl_filtered_gtf="/projects/splitorfs/work/reference_files/filtered_Ens_reference_correct_29_09_25/Ensembl_110_filtered_equality_and_tsl1_2_correct_29_09_25.gtf"
 ensembl_full_gtf="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.113.chr.gtf"
 genome_fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
-consensus_reads_fofn_HUVEC="pacbio_consensus_HUVEC.fofn"
-consensus_reads_fofn_CM="./pacbio_consensus_CM.fofn"
+consensus_reads_fofn="pacbio_consensus_${cell_type}.fofn"
 out_path="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_updated_parameters"
 # with the default filter settings
 out_path_filter="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion"
@@ -23,13 +24,6 @@ if [[ ! -d "$out_path" ]]; then
     mkdir $out_path
 fi
 
-if [[ ! -d "$out_path/HUVEC" ]]; then
-    mkdir $out_path/HUVEC
-fi
-
-if [[ ! -d "$out_path/CM" ]]; then
-    mkdir $out_path/CM
-fi
 
 if [[ ! -d "$bam_dir/fastq" ]]; then
     mkdir $bam_dir/fastq
@@ -48,73 +42,73 @@ bam_files=("${bam_dir}"/*bam)
 for bam in "${bam_files[@]}"; 
 do
     sample=$(basename $bam .bam)
-    bam2fastq -u -o $bam_dir/fastq/$sample $bam
+    if [ ! -e "$bam_dir/fastq/$sample.fastq" ];then
+        bam2fastq -u -o $bam_dir/fastq/$sample $bam
+    fi
 done
 
 #################################################################################
 # ------------------ RUN MANDOLORION TO CREATE ASSEMBLY      ------------------ #
 #################################################################################
-python3 /home/ckalk/scripts/SplitORFs/PacBio_analysis/tools/Mandalorion/Mando.py \
--p $out_path/HUVEC \
--t 32 \
--g $ensembl_filtered_gtf \
--G $genome_fasta \
---minimum_ratio 0 \
---minimum_reads 2 \
---minimum_feature_count 2 \
---Acutoff 1 \
--f /projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_50NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_5NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DHYPO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DMSO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DNOR_merged_lima_refined.fastq
 
-# python3 /home/ckalk/scripts/SplitORFs/PacBio_analysis/tools/Mandalorion/Mando.py \
-#     -p $out_path/CM \
-#     -t 32 \
-#     -g $ensembl_filtered_gtf \
-#     -G $genome_fasta \
-#     --minimum_ratio 0 \
-#     --minimum_reads 2 \
-#     --minimum_feature_count 2 \
-#     --Acutoff 1 \
-#     -f /projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_5NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_DHYPO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_DNOR_merged_lima_refined.fastq
+if [[ ! -d "$out_path/${cell_type}" ]]; then
+    mkdir $out_path/${cell_type}
 
-# get bam files of minimap2 alignments made with Mando
-samtools view -bo $out_path/HUVEC/tmp/Isoforms.aligned.out.filtered.bam \
- $out_path/HUVEC/tmp/Isoforms.aligned.out.filtered.sam 
-# samtools view -bo $out_path/CM/tmp/Isoforms.aligned.out.filtered.bam \
-#  $out_path/CM/tmp/Isoforms.aligned.out.filtered.sam 
+    if [[ ${cell_type} == "HUVEC" ]]; then
+        python3 /home/ckalk/scripts/SplitORFs/PacBio_analysis/tools/Mandalorion/Mando.py \
+        -p $out_path/HUVEC \
+        -t 32 \
+        -g $ensembl_filtered_gtf \
+        -G $genome_fasta \
+        --minimum_ratio 0 \
+        --minimum_reads 2 \
+        --minimum_feature_count 2 \
+        --Acutoff 1 \
+        -f /projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_50NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_5NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DHYPO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DMSO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DNOR_merged_lima_refined.fastq
 
-samtools sort $out_path/HUVEC/tmp/Isoforms.aligned.out.filtered.bam \
- -o $out_path/HUVEC/tmp/Isoforms.aligned.out.filtered.sorted.bam
-# samtools sort $out_path/CM/tmp/Isoforms.aligned.out.filtered.bam \
-#  -o $out_path/CM/tmp/Isoforms.aligned.out.filtered.sorted.bam
+    elif [[ ${cell_type} == "CM" ]]; then
+        python3 /home/ckalk/scripts/SplitORFs/PacBio_analysis/tools/Mandalorion/Mando.py \
+            -p $out_path/CM \
+            -t 32 \
+            -g $ensembl_filtered_gtf \
+            -G $genome_fasta \
+            --minimum_ratio 0 \
+            --minimum_reads 2 \
+            --minimum_feature_count 2 \
+            --Acutoff 1 \
+            -f /projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_5NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_DHYPO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_DNOR_merged_lima_refined.fastq
+    fi
 
-samtools index $out_path/HUVEC/tmp/Isoforms.aligned.out.filtered.sorted.bam
-# # samtools index $out_path/CM/tmp/Isoforms.aligned.out.filtered.sorted.bam
+fi
+
+if [ ! -e "$out_path/${cell_type}/tmp/Isoforms.aligned.out.filtered.bam" ];then
+    # get bam files of minimap2 alignments made with Mando
+    samtools view -bo $out_path/${cell_type}/tmp/Isoforms.aligned.out.filtered.bam \
+    $out_path/${cell_type}/tmp/Isoforms.aligned.out.filtered.sam 
+
+    samtools sort $out_path/${cell_type}/tmp/Isoforms.aligned.out.filtered.bam \
+    -o $out_path/${cell_type}/tmp/Isoforms.aligned.out.filtered.sorted.bam
+
+    samtools index $out_path/${cell_type}/tmp/Isoforms.aligned.out.filtered.sorted.bam
+fi
 
 
 #################################################################################
 # ------------RENAME ASSEMBLY TO GET GENE ID AND TID ENSEMBL ------------------ #
 #################################################################################
-python mandalorion/rename_gene_id_name_mando_gtf.py $out_path/HUVEC/Isoforms.filtered.clean.gtf $out_path/HUVEC/HUVEC_mando_gene_id.gtf
-# python mandalorion/rename_gene_id_name_mando_gtf.py $out_path/CM/Isoforms.filtered.clean.gtf $out_path/CM/CM_mando_gene_id.gtf
+python mandalorion/rename_gene_id_name_mando_gtf.py \
+    $out_path/${cell_type}/Isoforms.filtered.clean.gtf \
+    $out_path/${cell_type}/${cell_type}_mando_gene_id.gtf
 
-
-
-gffread $out_path/HUVEC/HUVEC_mando_gene_id.gtf \
- -g $genome_fasta -w $out_path/HUVEC/HUVEC_mando_gene_id.fasta
-
-# gffread $out_path/CM/CM_mando_gene_id.gtf \
-#  -g $genome_fasta -w $out_path/CM/CM_mando_gene_id.fasta
+gffread $out_path/${cell_type}/${cell_type}_mando_gene_id.gtf \
+    -g $genome_fasta -w $out_path/${cell_type}/${cell_type}_mando_gene_id.fasta
 
 
 ################################################################################
------------------- LR support/expression of isoforms       ------------------ #
+# ------------------ LR support/expression of isoforms       ------------------ #
 ################################################################################
-python mandalorion/plot_isoform_quantification_mando.py $out_path/HUVEC 5 50
-# python mandalorion/plot_isoform_quantification_mando.py $out_path/CM 3 50
-python mandalorion/plot_isoform_quantification_mando.py $out_path_filter/HUVEC 5 50
-# python mandalorion/plot_isoform_quantification_mando.py $out_path_filter/CM 3 50
-
-
+python mandalorion/plot_isoform_quantification_mando.py $out_path/${cell_type} 5 50
+python mandalorion/plot_isoform_quantification_mando.py $out_path_filter/${cell_type} 5 50
 
 
 #################################################################################
@@ -122,36 +116,22 @@ python mandalorion/plot_isoform_quantification_mando.py $out_path_filter/HUVEC 5
 #################################################################################
 conda activate Riboseq
 python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/sqanti3/get_fl_count_from_mando_quant_output.py \
-  $out_path/HUVEC
-
-# python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/sqanti3/get_fl_count_from_mando_quant_output.py \
-#   $out_path/CM
-
-
+  $out_path/${cell_type}
 
 #################################################################################
 # ------------------ Run SQANTI                              ------------------ #
 #################################################################################
 conda activate pacbio
-# bash mandalorion/assess_mando_sqanti3/run_sqanti3_on_mando_one_cell_type_20_10_25.sh \
-#  CM \
-#  $genome_fasta \
-#  $ensembl_filtered_gtf \
-#  $out_path \
-#  "/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Mandalorion_raw_updated_parameters" \
-#  "/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/CM_fastp" \
-#  "/home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3" \
-#  "/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine"
-
- bash mandalorion/assess_mando_sqanti3/run_sqanti3_on_mando_one_cell_type.sh \
- HUVEC \
+bash mandalorion/assess_mando_sqanti3/run_sqanti3_on_mando_one_cell_type_20_10_25.sh \
+ ${cell_type} \
  $genome_fasta \
  $ensembl_filtered_gtf \
  $out_path \
  "/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Mandalorion_raw_updated_parameters" \
- "/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/fastp" \
+ "/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/${cell_type}_fastp" \
  "/home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3" \
  "/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine"
+
 
 
 #################################################################################
@@ -196,13 +176,13 @@ conda activate pacbio
 #################################################################################
 
 
-if [[ ! -d "$out_path/SQANTI3/SQANTI3_Rescue/HUVEC/compare_Ens_full_ref" ]]; then
-    mkdir $out_path/SQANTI3/SQANTI3_Rescue/HUVEC/compare_Ens_full_ref
-fi
+# if [[ ! -d "$out_path/SQANTI3/SQANTI3_Rescue/HUVEC/compare_Ens_full_ref" ]]; then
+#     mkdir $out_path/SQANTI3/SQANTI3_Rescue/HUVEC/compare_Ens_full_ref
+# fi
 
-if [[ ! -d "$out_path/SQANTI3/SQANTI3_Rescue/CM/compare_Ens_full_ref" ]]; then
-    mkdir $out_path/SQANTI3/SQANTI3_Rescue/CM/compare_Ens_full_ref
-fi
+# if [[ ! -d "$out_path/SQANTI3/SQANTI3_Rescue/CM/compare_Ens_full_ref" ]]; then
+#     mkdir $out_path/SQANTI3/SQANTI3_Rescue/CM/compare_Ens_full_ref
+# fi
 
 
 # gffcompare -o $out_path/SQANTI3/SQANTI3_Rescue/HUVEC/compare_Ens_full_ref/HUVEC_rescue_compare_full_GTF\

@@ -178,16 +178,16 @@ kallisto_quant_mando_raw_reference=${reference_dir}/kallisto
 # KALLISTO ON RAW ENSEMBL FILTERED REFERENCE                                   #
 ################################################################################
 
-bash ${script_dir}/kallisto/kallisto_index.sh \
-  ${reference_gtf} \
-  ${genome_fasta} \
-  ${kallisto_quant_mando_raw_reference}/Ens_110_filtered_transcriptome.fa \
-  ${kallisto_quant_mando_raw_reference}/index
+# bash ${script_dir}/kallisto/kallisto_index.sh \
+#   ${reference_gtf} \
+#   ${genome_fasta} \
+#   ${kallisto_quant_mando_raw_reference}/Ens_110_filtered_transcriptome.fa \
+#   ${kallisto_quant_mando_raw_reference}/index
 
-bash ${script_dir}/kallisto/kallisto_quantification.sh \
- ${kallisto_quant_mando_raw_reference}/index.idx \
- ${outdir_fastp} \
- ${kallisto_quant_mando_raw_reference}/quant_${cell_type}
+# bash ${script_dir}/kallisto/kallisto_quantification.sh \
+#  ${kallisto_quant_mando_raw_reference}/index.idx \
+#  ${outdir_fastp} \
+#  ${kallisto_quant_mando_raw_reference}/quant_${cell_type}
 
 
 ################################################################################
@@ -201,32 +201,35 @@ if [ ! -d "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/${cell_type} ]; then
     mkdir "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/${cell_type}
 fi
 
-pbmm2 index ${kallisto_quant_mando_raw_reference}/Ens_110_filtered_transcriptome.fa \
- "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/Ens_index.mmi --preset ISOSEQ
+# pbmm2 index ${kallisto_quant_mando_raw_reference}/Ens_110_filtered_transcriptome.fa \
+#  "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/Ens_index.mmi --preset ISOSEQ
 
 
- for bam in "${isoseq_reads_dir}"/${cell_type}*bam; do
-    sample=$(basename $bam)
-    sample="${sample%_merged_lima_refined.bam}"
-    pbmm2 align "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/Ens_index.mmi \
-    $bam \
-    "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/${cell_type}/${sample}_pbmm2_aligned.bam \
-    --preset ISOSEQ \
-    --log-level INFO
+#  for bam in "${isoseq_reads_dir}"/${cell_type}*bam; do
+#     sample=$(basename $bam)
+#     sample="${sample%_merged_lima_refined.bam}"
+#     pbmm2 align "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/Ens_index.mmi \
+#     $bam \
+#     "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/${cell_type}/${sample}_pbmm2_aligned.bam \
+#     --preset ISOSEQ \
+#     --log-level INFO
 
-    bam="${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/${cell_type}/${sample}_pbmm2_aligned.bam
-    samtools sort -o $(dirname $bam)/$(basename $bam .bam)_sorted.bam $bam
-    samtools index $(dirname $bam)/$(basename $bam .bam)_sorted.bam
-    samtools idxstats $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
-     $(dirname $bam)/$(basename $bam .bam)_idxstats.out
-     samtools flagstat $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
-     $(dirname $bam)/$(basename $bam .bam)_flagstat.out
- done
+#     bam="${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/${cell_type}/${sample}_pbmm2_aligned.bam
+#     samtools sort -o $(dirname $bam)/$(basename $bam .bam)_sorted.bam $bam
+#     samtools index $(dirname $bam)/$(basename $bam .bam)_sorted.bam
+#     samtools idxstats $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
+#      $(dirname $bam)/$(basename $bam .bam)_idxstats.out
+#      samtools flagstat $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
+#      $(dirname $bam)/$(basename $bam .bam)_flagstat.out
+#  done
 
-python ${script_dir}/sqanti3/sqanti_rescue/idxstats_for_fl_counts.py \
- "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/${cell_type}
+# python ${script_dir}/sqanti3/sqanti_rescue/idxstats_for_fl_counts.py \
+#  "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/${cell_type}
 
 
+if [ ! -d "${sqanti_qc_outdir}/Ens_110_filtered_QC/" ]; then
+    mkdir ${sqanti_qc_outdir}/Ens_110_filtered_QC/
+fi
 
 if [ ! -d "${sqanti_qc_outdir}/Ens_110_filtered_QC/${cell_type}" ]; then
     mkdir ${sqanti_qc_outdir}/Ens_110_filtered_QC/${cell_type}
@@ -249,53 +252,29 @@ bash ${script_dir}/sqanti3/sqanti3_qc_mando_huvec.sh \
 ################################################################################
 
 
-# bash ${script_dir}/sqanti3/sqanti_rescue/sqanti_rescue.sh \
-#     /home/ckalk/tools/sqanti3 \
-#     ${sqanti_dir}/SQANTI3_Filter/HUVEC/isoforms_classification_TPM.tx.filtered.gtf \
-#     /projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_updated_parameters/SQANTI3/SQANTI3_QC/Ens_110_filtered_QC/HUVEC/isoforms_corrected.gtf \
-#     ${genome_fasta} \
-#     ${sqanti_dir}/SQANTI3_Filter/HUVEC/isoforms_classification_TPM.tx_RulesFilter_result_classification.txt \
-#     ${script_dir}/sqanti3/sqanti_rules/logic_filter_v5_02_09_25.json \
-#     HUVEC_rescue_rules_filter \
-#     ${sqanti_qc_outdir}/Ens_110_filtered_QC/HUVEC/isoforms_classification_TPM.txt \
-#     ${sqanti_qc_outdir}/HUVEC/isoforms_corrected.fasta \
-#     "${sqanti_dir}"/SQANTI3_Rescue/HUVEC
+bash ${script_dir}/sqanti3/sqanti_rescue/sqanti_rescue.sh \
+    /home/ckalk/tools/sqanti3 \
+    ${sqanti_dir}/SQANTI3_Filter/${cell_type}/isoforms_classification_TPM.tx.filtered.gtf \
+    /projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_updated_parameters/SQANTI3/SQANTI3_QC/Ens_110_filtered_QC/${cell_type}/isoforms_corrected.gtf \
+    ${genome_fasta} \
+    ${sqanti_dir}/SQANTI3_Filter/${cell_type}/isoforms_classification_TPM.tx_RulesFilter_result_classification.txt \
+    ${script_dir}/sqanti3/sqanti_rules/logic_filter_v5_02_09_25.json \
+    ${cell_type}_rescue_rules_filter \
+    ${sqanti_qc_outdir}/Ens_110_filtered_QC/${cell_type}/isoforms_classification_TPM.txt \
+    ${sqanti_qc_outdir}/${cell_type}/isoforms_corrected.fasta \
+    "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}
 
 
-# bash ${script_dir}/sqanti3/sqanti_rescue/sqanti_rescue.sh \
-#     /home/ckalk/tools/sqanti3 \
-#     ${sqanti_dir}/SQANTI3_Filter/CM/isoforms_classification_TPM.tx.filtered.gtf \
-#     /projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_updated_parameters/SQANTI3/SQANTI3_QC/Ens_110_filtered_QC/CM/isoforms_corrected.gtf \
-#     ${genome_fasta} \
-#     ${sqanti_dir}/SQANTI3_Filter/CM/isoforms_classification_TPM.tx_RulesFilter_result_classification.txt \
-#     ${script_dir}/sqanti3/sqanti_rules/logic_filter_v5_02_09_25.json \
-#     CM_rescue_rules_filter \
-#     ${sqanti_qc_outdir}/Ens_110_filtered_QC/CM/isoforms_classification_TPM.txt \
-#     ${sqanti_qc_outdir}/CM/isoforms_corrected.fasta \
-#     "${sqanti_dir}"/SQANTI3_Rescue/CM
+if [ ! -d "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}/QC ]; then
+    mkdir "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}/QC
+fi
 
-
-# if [ ! -d ${sqanti_dir}/SQANTI3_Rescue/CM/QC ]; then
-#     mkdir "${sqanti_dir}"/SQANTI3_Rescue/CM/QC
-# fi
-
-# bash ${script_dir}/sqanti3/sqanti3_qc_mando_cm.sh \
-#  /home/ckalk/tools/sqanti3 \
-#  "${sqanti_dir}"/SQANTI3_Rescue/CM/CM_rescue_rules_filter_rescued.gtf \
-#  ${reference_gtf} \
-#  ${genome_fasta} \
-#  "${sqanti_dir}"/SQANTI3_Rescue/CM/QC
-
-# if [ ! -d "${sqanti_dir}"/SQANTI3_Rescue/HUVEC/QC ]; then
-#     mkdir "${sqanti_dir}"/SQANTI3_Rescue/HUVEC/QC
-# fi
-
-# bash ${script_dir}/sqanti3/sqanti3_qc_mando_cm.sh \
-#  /home/ckalk/tools/sqanti3 \
-#  "${sqanti_dir}"/SQANTI3_Rescue/HUVEC/HUVEC_rescue_rules_filter_rescued.gtf \
-#  ${reference_gtf} \
-#  ${genome_fasta} \
-#  "${sqanti_dir}"/SQANTI3_Rescue/HUVEC/QC
+bash ${script_dir}/sqanti3/sqanti3_qc_mando_cm.sh \
+ /home/ckalk/tools/sqanti3 \
+ "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}/${cell_type}_rescue_rules_filter_rescued.gtf \
+ ${reference_gtf} \
+ ${genome_fasta} \
+ "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}/QC
 
 
 
