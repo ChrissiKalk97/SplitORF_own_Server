@@ -67,6 +67,10 @@ while getopts 'i:o:g:hbcdqr:stp' option; do
         genomic=true
         gtf="$OPTARG"
       ;;
+    l)
+        set_length=true
+        max_length="$OPTARG"
+      ;;
     q)
         riboseqc=true
       ;;
@@ -175,11 +179,18 @@ elif [[ "$cutadapt" == true ]]; then
     fastqc_dir="${outdir}/fastqc"
     fastp_dir="${outdir}/fastp"
     fastp_dir_single_samps="${outdir}/fastp/fastp_single_samples"
-
-    bash /home/ckalk/scripts/SplitORFs/Riboseq/preprocess_data/preprocessing_steps_general.sh \
-    ${indir} \
-    ${fastqc_dir} \
-    ${fastp_dir_single_samps}
+    if [[ "${set_length}" == true ]];then
+        bash /home/ckalk/scripts/SplitORFs/Riboseq/preprocess_data/preprocessing_steps_general.sh \
+        ${indir} \
+        ${fastqc_dir} \
+        ${fastp_dir_single_samps} \
+        ${max_length}
+    else
+        bash /home/ckalk/scripts/SplitORFs/Riboseq/preprocess_data/preprocessing_steps_general.sh \
+        ${indir} \
+        ${fastqc_dir} \
+        ${fastp_dir_single_samps}
+    fi
 
     indir=${fastp_dir_single_samps}
 fi
@@ -258,9 +269,9 @@ if [[ $genomic == true && $dedup == true && $soft_clip == true && $paired_reads 
 elif [[ $genomic == true && $dedup == true ]]; then
     genome_align_dir="${outdir}/alignment_genome"
     output_star="${genome_align_dir}/STAR"
-    echo $gtf $indir $genome_fasta $output_star $star_index
-    bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/genome_alignment_star.sh -a $gtf -e "Ens_110_" -f ${indir} \
-    -g $genome_fasta -m EndToEnd -o ${output_star} -s ${star_index} # -i
+    # echo $gtf $indir $genome_fasta $output_star $star_index
+    # bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/genome_alignment_star.sh -a $gtf -e "Ens_110_" -f ${indir} \
+    # -g $genome_fasta -m EndToEnd -o ${output_star} -s ${star_index} # -i
 
     python /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random/analyze_mappings/analyze_STAR_alignments.py \
     ${output_star} \
@@ -272,41 +283,88 @@ fi
 if [[ $genomic == true && $dedup == true ]]; then
     umi_dedup_outdir="${output_star}/deduplicated"
 
-    # deduplicate UMIs
-    source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/deduplication/deduplicate_umi_tools.sh \
-     $output_star \
-     $umi_dedup_outdir
+    # # deduplicate UMIs
+    # source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/deduplication/deduplicate_umi_tools.sh \
+    #  $output_star \
+    #  $umi_dedup_outdir
 
-    # filter out secondary and suppl alignments
-    FILES=("${umi_dedup_outdir}"/*_dedup.bam)
+    # # filter out secondary and suppl alignments
+    # FILES=("${umi_dedup_outdir}"/*_dedup.bam)
 
-    for BAM in "${FILES[@]}"
-    do
-        samtools view -F 256 -F 2048 -q 10 -b ${BAM} > \
-         "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam
+    # for BAM in "${FILES[@]}"
+    # do
+    #     samtools view -F 256 -F 2048 -q 10 -b ${BAM} > \
+    #      "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam
 
-         samtools index "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam
+    #      samtools index "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam
 
-         samtools idxstats "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam > \
-        "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered_idxstats.out
+    #      samtools idxstats "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam > \
+    #     "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered_idxstats.out
 
-        samtools stats "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam > \
-        "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered_stats.out
+    #     samtools stats "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam > \
+    #     "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered_stats.out
 
-        samtools flagstat "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam > \
-        "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered_flagstat.out
+    #     samtools flagstat "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam > \
+    #     "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered_flagstat.out
 
-    done
+    # done
+
+    # # remove all unfiltered .bam files
+    # rm "${umi_dedup_outdir}"/*dedup.bam
 
 
-    # # analyze soft clipping of genomic deduplciated reads
-    python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_soft_clipping.py $umi_dedup_outdir
+    # # # analyze soft clipping of genomic deduplciated reads
+    # python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_soft_clipping.py $umi_dedup_outdir
 
 
-    run FeatureCounts to get mapping percentages
-    Rscript /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_mappings/genome_aligned_reads_biotype_counting.R
+    # run FeatureCounts to get mapping percentages
+    Rscript /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_mappings/genome_aligned_reads_biotype_counting.R \
+    $umi_dedup_outdir
 
 fi
+
+if [[ $genomic == true && $riboseqc == true ]]; then
+    twobit_file="/projects/splitorfs/work/reference_files/Homo_sapiens.Ensembl110.2bit"
+    gtf_file="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.no.comment.gtf"
+    riboseqc_outdir="${outdir}/ORFquant"
+
+    if [[ ! -d $riboseqc_outdir ]]; then
+        mkdir $riboseqc_outdir
+    fi
+
+    if [[ $dedup == true ]]; then    
+        indir=${umi_dedup_outdir}
+    else
+        indir=${output_star}
+    fi
+
+    echo $indir
+    conda activate riboseq_qc 
+    Rscript /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/ORFquant/ORFquant_prepare_annotation.R \
+        $twobit_file \
+        $gtf_file \
+        $riboseqc_outdir \
+        $genome_fasta 
+
+    Rscript /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/ORFquant/RiboseQC.R \
+        $twobit_file \
+        $gtf_file \
+        $riboseqc_outdir \
+        $genome_fasta \
+        $indir
+fi
+
+
+
+################################################################################
+# THIS SHOULD NOT BE NECESSARY AS THE SO PIPELINE IS CHANGED to accomodate also 
+# for dup reads, so it would be Riboseq pipeline, then SO pipeline:
+# would maybe only do transcriptomic mapping and Ribowaltz for all
+# but for the non-dedup samples can use the SO pipeline scripts for the SO analysis...
+################################################################################
+# SO ANALYSIS OF GENOMIC ALIGNMENTS                                            #
+################################################################################
+# bash Riboseq_SO_empirical_intersection/wrapper_empirical_intersection_random_resample.sh
 
 
 
@@ -362,41 +420,3 @@ fi
 #     #  $output_star \
 #     #  $umi_dedup_outdir
 # fi
-
-
-
-if [[ $genomic == true && $riboseqc == true ]]; then
-    twobit_file="/projects/splitorfs/work/reference_files/Homo_sapiens.Ensembl110.2bit"
-    gtf_file="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.no.comment.gtf"
-    riboseqc_outdir="${outdir}/ORFquant"
-
-    if [[ ! -d $riboseqc_outdir ]]; then
-        mkdir $riboseqc_outdir
-    fi
-
-    if [[ $dedup == true ]]; then    
-        indir=${umi_dedup_outdir}
-    else
-        indir=${output_star}
-    fi
-
-    conda activate riboseq_qc 
-    Rscript /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/ORFquant/RiboseQC.R \
-        $twobit_file \
-        $gtf_file \
-        $riboseqc_outdir \
-        $genome_fasta \
-        $indir
-fi
-
-
-
-################################################################################
-# THIS SHOULD NOT BE NECESSARY AS THE SO PIPELINE IS CHANGED to accomodate also 
-# for dup reads, so it would be Riboseq pipeline, then SO pipeline:
-# would maybe only do transcriptomic mapping and Ribowaltz for all
-# but for the non-dedup samples can use the SO pipeline scripts for the SO analysis...
-################################################################################
-# SO ANALYSIS OF GENOMIC ALIGNMENTS                                            #
-################################################################################
-# bash Riboseq_SO_empirical_intersection/wrapper_empirical_intersection_random_resample.sh
