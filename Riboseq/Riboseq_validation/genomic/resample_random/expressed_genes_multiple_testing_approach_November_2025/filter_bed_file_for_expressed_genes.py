@@ -21,8 +21,10 @@ def parse_args():
 def main(bed_file_to_filter, htseq_counts):
     outdir = os.path.dirname(htseq_counts)
     print(outdir)
-    sample = os.path.basename(htseq_counts).rstrip('NMD_htseq_counts.tsv')
-    bed_file_name = os.path.basename(bed_file_to_filter).rstrip('.bed')
+    for file_end in ['_NMD_htseq_counts.tsv', '_RI_htseq_counts.tsv']:
+        if os.path.basename(htseq_counts).endswith(file_end):
+            sample = os.path.basename(htseq_counts).removesuffix(file_end)
+    bed_file_name = os.path.basename(bed_file_to_filter).removesuffix('.bed')
 
     bed_file_to_filter_df = pd.read_csv(
         bed_file_to_filter, sep='\t', header=None)

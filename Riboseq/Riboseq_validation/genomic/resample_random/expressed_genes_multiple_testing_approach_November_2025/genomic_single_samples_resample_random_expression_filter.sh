@@ -259,7 +259,7 @@ for folder in "$output_star"/NMD_genome/*/; do
 
             echo $sample_name
             ./empirical_intersection_steps_expressed_genes_filter_18_11_25.sh  \
-                "$output_star"/RI_genome/${sample_name}/${sample_name}_RI_chrom_sort.bed \
+                $i \
                 "$output_star"/RI_genome/${sample_name}/Unique_DNA_Regions_genomic_${sample_name}.bed \
                 "$output_star"/RI_genome/${sample_name}/3_primes_genomic_${sample_name}.bed \
                 "$output_star"/RI_genome/${sample_name}/${sample_name}_RI \
