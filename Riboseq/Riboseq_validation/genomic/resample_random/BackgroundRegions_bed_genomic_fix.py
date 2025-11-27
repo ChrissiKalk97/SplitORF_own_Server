@@ -53,22 +53,22 @@ def get_random_bed_ids(lengthdistribution, UTR_bed_file, outname):
 
             UTR_length = int(random_seq[4]) - int(random_seq[3])
             assert required_length + 18 <= UTR_length
-            if required_length + 18 < UTR_length and random_seq[5] == '1':
+            if required_length + 18 < UTR_length and random_seq[5] == '+':
                 start = random.randint(
                     int(random_seq[3]) + 18, UTR_length - required_length + int(random_seq[3]))
-            elif required_length + 18 < UTR_length and random_seq[5] == '-1':
+            elif required_length + 18 < UTR_length and random_seq[5] == '-':
                 start = random.randint(
                     int(random_seq[3]),  UTR_length - required_length + int(random_seq[3]) - 18)
-            elif UTR_length == required_length + 18 and random_seq[5] == '1':
+            elif UTR_length == required_length + 18 and random_seq[5] == '+':
                 start = int(random_seq[3]) + 18
-            elif UTR_length == required_length + 18 and random_seq[5] == '-1':
+            elif UTR_length == required_length + 18 and random_seq[5] == '-':
                 start = int(random_seq[3])
 
             end = start + required_length
-            if random_seq[5] == '1':
+            if random_seq[5] == '+':
                 out.write(random_seq[2] + '\t' + str(start) + '\t' + str(end) + '\t' + str(random_key)
                           + '\t' + str(0) + '\t' + '+' + '\n')
-            elif random_seq[5] == '-1':
+            elif random_seq[5] == '-':
                 out.write(random_seq[2] + '\t' + str(start) + '\t' + str(end) + '\t' + str(random_key)
                           + '\t' + str(0) + '\t' + '-' + '\n')
 
