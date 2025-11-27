@@ -55,7 +55,7 @@ fi
 # bash run_longqc.sh ${pacbio_merged_bamdir} ${raw_longqc_dir}
 # not running there are many errors
 
-if [ ! -e $lima_outdir ]
+if [ ! -e $lima_outdir ];then
     # run lima for primer and polyA removal
     bash run_lima.sh $pacbio_merged_bamdir $lima_outdir $primer_fasta
 fi
@@ -69,5 +69,13 @@ if [ ! -e $isoseq_outdir ];then
 fi
 
 # run mandalorion
-bash run_mandalorion_updated_parameters_correct_ref_one_cell_type_26_11_25.sh HUVEC
+# bash run_mandalorion_updated_parameters_correct_ref_one_cell_type_26_11_25.sh HUVEC
 # bash run_mandalorion_updated_parameters_correct_ref_one_cell_type_26_11_25.sh CM
+
+
+
+
+# run stringtie
+
+# first need to align to the genome
+bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/map_conditions/map_conditions_to_assemblies.sh
