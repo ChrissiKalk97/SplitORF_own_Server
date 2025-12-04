@@ -96,27 +96,37 @@ fi
 #################################################################################
 # ------------RENAME ASSEMBLY TO GET GENE ID AND TID ENSEMBL ------------------ #
 #################################################################################
-python mandalorion/rename_gene_id_name_mando_gtf.py \
-    $out_path/${cell_type}/Isoforms.filtered.clean.gtf \
-    $out_path/${cell_type}/${cell_type}_mando_gene_id.gtf
+if [ ! -e "$out_path/${cell_type}/${cell_type}_mando_gene_id.gtf" ]; then
+    python mandalorion/rename_gene_id_name_mando_gtf.py \
+        $out_path/${cell_type}/Isoforms.filtered.clean.gtf \
+        $out_path/${cell_type}/${cell_type}_mando_gene_id.gtf
 
-gffread $out_path/${cell_type}/${cell_type}_mando_gene_id.gtf \
-    -g $genome_fasta -w $out_path/${cell_type}/${cell_type}_mando_gene_id.fasta
+    gffread $out_path/${cell_type}/${cell_type}_mando_gene_id.gtf \
+        -g $genome_fasta -w $out_path/${cell_type}/${cell_type}_mando_gene_id.fasta
+fi
+
+
 
 
 ################################################################################
 # ------------------ LR support/expression of isoforms       ------------------ #
 ################################################################################
-python mandalorion/plot_isoform_quantification_mando.py $out_path/${cell_type} 5 50
-python mandalorion/plot_isoform_quantification_mando.py $out_path_filter/${cell_type} 5 50
-
+if [[ ${cell_type} == "HUVEC" ]]; then
+    python mandalorion/plot_isoform_quantification_mando.py $out_path/${cell_type} 5 50
+    # python mandalorion/plot_isoform_quantification_mando.py $out_path_filter/${cell_type} 5 50
+elif [[ ${cell_type} == "CM" ]]; then
+    python mandalorion/plot_isoform_quantification_mando.py $out_path/${cell_type} 3 50
+    # python mandalorion/plot_isoform_quantification_mando.py $out_path_filter/${cell_type} 3 50
+fi
 
 #################################################################################
 # ------------------ fl counts for SQANTI3                   ------------------ #
 #################################################################################
-conda activate Riboseq
-python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/sqanti3/get_fl_count_from_mando_quant_output.py \
-  $out_path/${cell_type}
+if [[ ! -e "${out_path}/${cell_type}/${cell_type}_fl_counts.tsv" ]];then
+    conda activate Riboseq
+    python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/sqanti3/get_fl_count_from_mando_quant_output.py \
+    $out_path/${cell_type}
+fi
 
 #################################################################################
 # ------------------ Run SQANTI                              ------------------ #
