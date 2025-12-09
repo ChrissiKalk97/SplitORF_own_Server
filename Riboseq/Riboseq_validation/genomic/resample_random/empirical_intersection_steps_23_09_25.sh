@@ -56,7 +56,7 @@ echo $random_region_path
 
 
 
-SAMPLE=$(basename $outname)
+sample=$(basename $outname)
 out_path=$(dirname $outname)
 echo $out_path
 
@@ -68,14 +68,6 @@ echo $out_path
 if [[ "$input_file" == *.bed ]]; then
   sorted_bedfile="$input_file"
 else
-    sample="$(basename $outname)"
-    IFS="_" read -r -a parts <<< "$sample"
-    # I guess this will again not work for any other samples
-    # just for the huvec_dnor_3 etc...
-    sample="${parts[0]}_${parts[1]}_${parts[2]}"
-
-    echo $sample
-
     BED_FILE="$out_path/${sample}.bed"
     sorted_bedfile="$out_path/${sample}_chrom_sort.bed"
     bedtools bamtobed -i $input_file -split > $BED_FILE
@@ -121,7 +113,7 @@ fi
 
 
 echo "intersecting with unique regions"
-intersectBedfile="${random_region_path}"/"${SAMPLE}"_intersect_counts_sorted.bed
+intersectBedfile="${random_region_path}"/"${sample}"_intersect_counts_sorted.bed
 
 
 
@@ -165,7 +157,7 @@ for i in {1..20}; do
 
   # debug mode on
   # set -x 
-  randomintersectfile="${random_region_path}"/"${SAMPLE}"_${i}_random_intersect_counts.bed
+  randomintersectfile="${random_region_path}"/"${sample}"_${i}_random_intersect_counts.bed
   bedtools intersect\
     -s\
     -wao\

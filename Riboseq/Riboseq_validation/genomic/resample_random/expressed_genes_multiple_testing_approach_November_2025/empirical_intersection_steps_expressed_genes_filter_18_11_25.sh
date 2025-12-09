@@ -69,6 +69,8 @@ echo $out_path
 
 if [[ "$input_file" == *.bed ]]; then
   sorted_bedfile="$input_file"
+  present_chromosomes="$out_path/$(basename $sorted_bedfile _chrom_sort.bed)_chromosomes.txt"
+  samtools view -H "$out_path/$(basename $sorted_bedfile _chrom_sort.bed)_sorted.bam" | grep '@SQ' | cut -f 2 | cut -d ':' -f 2  | sort | uniq > $present_chromosomes
 else
     echo "generating bed file"
     bed_file="$out_path/${sample}.bed"
