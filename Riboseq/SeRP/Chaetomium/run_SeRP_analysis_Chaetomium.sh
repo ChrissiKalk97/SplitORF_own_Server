@@ -5,12 +5,12 @@ conda activate Riboseq
 
 script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1"
 
-INDIR="/projects/serp/work/data/SeRP_April_2025/Chaetomium"
-OUTDIR="/projects/serp/work/Output/April_2025/Chaetomium"
-OUTDIR_FASTQC1=${OUTDIR}"/preprocess/fastqc_unprocessed"
-OUTDIR_CUTADAPT=${OUTDIR}"/preprocess/cutadapt"
-fastpOut=${OUTDIR}"/preprocess/fastp"
-fastpFASTQC=${OUTDIR}"/preprocess/fastp/fastqc"
+indir="/projects/serp/work/data/SeRP_April_2025/Chaetomium"
+outdir="/projects/serp/work/Output/April_2025/Chaetomium"
+outdir_FASTQC1=${outdir}"/preprocess/fastqc_unprocessed"
+outdir_CUTADAPT=${outdir}"/preprocess/cutadapt"
+fastpOut=${outdir}"/preprocess/fastp"
+fastpFASTQC=${outdir}"/preprocess/fastp/fastqc"
 # Bowtie2_ref_fasta="/projects/splitorfs/work/reference_files/own_data_refs/Riboseq/Ignolia/Ignolia_transcriptome_and_contamination.fasta"
 # Bowtie2_base_name="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/index"
 # Bowtie2_out_dir="/projects/serp/work/Output/April_2025/Chaetomium/transcriptome_mapping"
@@ -18,16 +18,16 @@ fastpFASTQC=${OUTDIR}"/preprocess/fastp/fastqc"
 # EnsemblFilteredRef=
 bowtie_outdir="/projects/serp/work/Output/April_2025/Chaetomium/align_transcriptome"
 
-if [ ! -d $OUTDIR/preprocess ]; then
-        mkdir $OUTDIR/preprocess
+if [ ! -d $outdir/preprocess ]; then
+        mkdir $outdir/preprocess
 fi
 
-if [ ! -d $OUTDIR_FASTQC1 ]; then
-        mkdir $OUTDIR_FASTQC1
+if [ ! -d $outdir_FASTQC1 ]; then
+        mkdir $outdir_FASTQC1
 fi
 
-if [ ! -d $OUTDIR_CUTADAPT ]; then
-        mkdir $OUTDIR_CUTADAPT
+if [ ! -d $outdir_CUTADAPT ]; then
+        mkdir $outdir_CUTADAPT
 fi
 
 
@@ -45,9 +45,9 @@ fi
 ################################################################################
 
 # bash ../preprocessing_cutadapt_steps_importins.sh \
-#  $INDIR \
-#   $OUTDIR_FASTQC1 \
-#   $OUTDIR_CUTADAPT \
+#  $indir \
+#   $outdir_FASTQC1 \
+#   $outdir_CUTADAPT \
 #   $fastpOut \
 #   $fastpFASTQC\
 # > "out_reports_of_runs/preprocessing_cutadapt_chaetomium.out" 2>&1
@@ -62,21 +62,32 @@ fi
 ################################################################################
 # TRANSCRIPTOMIC ALIGNMENT                                                     #
 ################################################################################
+# filter transcriptome for the longest transcript per gene
+# first sort how cgat requires it
+
+conda activate pygtftk
+python filter_gtf_for_longest_transcripts.py \
+ /projects/serp/work/references/Supplementary_File_2.gtf \
+ /projects/serp/work/references/Supplementary_File_2_longest_transcript.gtf
+
+
+conda activate Riboseq
 # generate transcriptome
-gffread /projects/serp/work/references/Supplementary_File_2.gtf \
+gffread /projects/serp/work/references/Supplementary_File_2_longest_transcript.gtf \
  -g /projects/serp/work/references/Chaetomium_thermophilum_var_thermophilum_dsm_1495.CTHT_3.0.dna.toplevel.fa \
- -w /projects/serp/work/references/Chaetomium_thermophilum_transcript.fasta
+ -w /projects/serp/work/references/Chaetomium_thermophilum_longest_transcript.fasta
+
 
 
 # align to transcriptome
-# bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie1_align_21_10_25.sh \
-#  ${bowtie_outdir}/index \
-#  /projects/serp/work/references/Chaetomium_thermophilum_transcript.fasta \
-#  ${fastpOut} \
-#  ${bowtie_outdir} \
-#  Chaetomium_transcriptome \
-#  /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/Chaetomium/out_reports_of_runs/Chaetomium_align_bowtie.out \
-#  > /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/Chaetomium/out_reports_of_runs/Chaetomium_align_bowtie.out 2>&1
+bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie1_align_21_10_25.sh \
+ ${bowtie_outdir}/index \
+ /projects/serp/work/references/Chaetomium_thermophilum_longest_transcript.fasta \
+ ${fastpOut} \
+ ${bowtie_outdir} \
+ Chaetomium_transcriptome \
+ /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/Chaetomium/out_reports_of_runs/Chaetomium_align_bowtie.out \
+ > /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/Chaetomium/out_reports_of_runs/Chaetomium_align_bowtie.out 2>&1
 
 
 python get_trna_rrna_tids.py
@@ -122,10 +133,15 @@ Rscript  PCA_conditions_DeSeq2_SeRP_Chaetomium.R \
  ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0.txt \
 > ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0_not_IP_WT_vs_IN.txt
 
-python compare_old_new_results.py #\
-        # /projects/serp/work/Output/April_2025/Chaetomium/align_transcriptome/filtered/q10/DEGs/Analysis_31_10_25_Remus/final_results_SND3_WT_LFC1_padj0.01.csv  \
-        # /projects/serp/work/Output/April_2025/Chaetomium/align_transcriptome/filtered/q10/DEGs/Analysis_31_10_25_Remus/final_results_SND3_WT_LFC1_padj0.01_all.csv \
-        # ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0_not_IP_WT_vs_IN.txt
+
+ grep -Fxvf ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_WT_0_5_0.05.txt \
+ ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0.txt \
+> ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0_not_IP_WT_vs_IN_0.5_andpadj_0.05.txt
+
+python compare_old_new_results.py \
+        /projects/serp/work/Output/April_2025/Chaetomium/align_transcriptome/filtered/q10/DEGs/Analysis_31_10_25_Remus/final_results_SND3_WT_LFC1_padj0.01.csv  \
+        /projects/serp/work/Output/April_2025/Chaetomium/align_transcriptome/filtered/q10/DEGs/Analysis_31_10_25_Remus/final_results_SND3_WT_LFC1_padj0.01_all.csv \
+        ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0_not_IP_WT_vs_IN.txt
 
 # conda activate Riboseq
 # if [ ! -d "${bowtie_outdir}"/filtered/q10/Ribowaltz ]; then
