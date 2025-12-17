@@ -43,20 +43,20 @@ fi
 ################################################################################
 # QC and PREPROCESSING                                                         #
 ################################################################################
+if [ ! -e "out_reports_of_runs/preprocessing_cutadapt_chaetomium.out" ]; then
+        bash ../preprocessing_cutadapt_steps_importins.sh \
+        $indir \
+        $outdir_FASTQC1 \
+        $outdir_CUTADAPT \
+        $fastpOut \
+        $fastpFASTQC\
+        > "out_reports_of_runs/preprocessing_cutadapt_chaetomium.out" 2>&1
 
-# bash ../preprocessing_cutadapt_steps_importins.sh \
-#  $indir \
-#   $outdir_FASTQC1 \
-#   $outdir_CUTADAPT \
-#   $fastpOut \
-#   $fastpFASTQC\
-# > "out_reports_of_runs/preprocessing_cutadapt_chaetomium.out" 2>&1
+        python ${script_dir}/preprocessing/cutadapt_output_parsing.py \
+        "out_reports_of_runs/preprocessing_cutadapt_chaetomium.out" \
+        "/home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/cutadapt_summary.csv"
 
-# python ${script_dir}/preprocessing/cutadapt_output_parsing.py \
-#  "out_reports_of_runs/preprocessing_cutadapt_chaetomium.out" \
-#   "/home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/cutadapt_summary.csv"
-
-
+fi
 
 
 ################################################################################
@@ -65,84 +65,88 @@ fi
 # filter transcriptome for the longest transcript per gene
 # first sort how cgat requires it
 
-conda activate pygtftk
-python filter_gtf_for_longest_transcripts.py \
- /projects/serp/work/references/Supplementary_File_2.gtf \
- /projects/serp/work/references/Supplementary_File_2_longest_transcript.gtf
+if [ ! -e "/projects/serp/work/references/Chaetomium_thermophilum_longest_transcript.fasta" ]; then
+        conda activate pygtftk
+        python filter_gtf_for_longest_transcripts.py \
+        /projects/serp/work/references/Supplementary_File_2.gtf \
+        /projects/serp/work/references/Supplementary_File_2_longest_transcript.gtf
 
 
-conda activate Riboseq
-# generate transcriptome
-gffread /projects/serp/work/references/Supplementary_File_2_longest_transcript.gtf \
- -g /projects/serp/work/references/Chaetomium_thermophilum_var_thermophilum_dsm_1495.CTHT_3.0.dna.toplevel.fa \
- -w /projects/serp/work/references/Chaetomium_thermophilum_longest_transcript.fasta
+        conda activate Riboseq
+        # generate transcriptome
+        gffread /projects/serp/work/references/Supplementary_File_2_longest_transcript.gtf \
+        -g /projects/serp/work/references/Chaetomium_thermophilum_var_thermophilum_dsm_1495.CTHT_3.0.dna.toplevel.fa \
+        -w /projects/serp/work/references/Chaetomium_thermophilum_longest_transcript.fasta
+
+        samtools faidx /projects/serp/work/references/Chaetomium_thermophilum_longest_transcript.fasta \
+        > /projects/serp/work/references/Chaetomium_thermophilum_longest_transcript.fasta.fai
+
+fi
+
+if [ ! -d ${bowtie_outdir} ]; then
+        # align to transcriptome
+        bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie1_align_21_10_25.sh \
+        ${bowtie_outdir}/index \
+        /projects/serp/work/references/Chaetomium_thermophilum_longest_transcript.fasta \
+        ${fastpOut} \
+        ${bowtie_outdir} \
+        Chaetomium_transcriptome \
+        /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/Chaetomium/out_reports_of_runs/Chaetomium_align_bowtie.out \
+        > /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/Chaetomium/out_reports_of_runs/Chaetomium_align_bowtie.out 2>&1
 
 
+        python get_trna_rrna_tids.py
 
-# align to transcriptome
-bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie1_align_21_10_25.sh \
- ${bowtie_outdir}/index \
- /projects/serp/work/references/Chaetomium_thermophilum_longest_transcript.fasta \
- ${fastpOut} \
- ${bowtie_outdir} \
- Chaetomium_transcriptome \
- /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/Chaetomium/out_reports_of_runs/Chaetomium_align_bowtie.out \
- > /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/Chaetomium/out_reports_of_runs/Chaetomium_align_bowtie.out 2>&1
+        python summarize_bowtie2_alns_by_source_chaetomium_noncoding.py \
+        /projects/serp/work/references/Chaetomium_thermophilum_noncoding.fasta,/projects/serp/work/references/Chaetomium_thermophilum_protein_coding.fasta \
+        ${bowtie_outdir}
 
+        python summarize_bowtie2_alns_by_source_chaetomium_noncoding.py \
+        /projects/serp/work/references/Chaetomium_thermophilum_noncoding.fasta,/projects/serp/work/references/Chaetomium_thermophilum_protein_coding.fasta \
+        ${bowtie_outdir}/filtered
 
-python get_trna_rrna_tids.py
-
-python summarize_bowtie2_alns_by_source_chaetomium_noncoding.py \
-    /projects/serp/work/references/Chaetomium_thermophilum_noncoding.fasta,/projects/serp/work/references/Chaetomium_thermophilum_protein_coding.fasta \
-    ${bowtie_outdir}
-
-python summarize_bowtie2_alns_by_source_chaetomium_noncoding.py \
-    /projects/serp/work/references/Chaetomium_thermophilum_noncoding.fasta,/projects/serp/work/references/Chaetomium_thermophilum_protein_coding.fasta \
-    ${bowtie_outdir}/filtered
-
-python summarize_bowtie2_alns_by_source_chaetomium_noncoding.py \
-    /projects/serp/work/references/Chaetomium_thermophilum_noncoding.fasta,/projects/serp/work/references/Chaetomium_thermophilum_protein_coding.fasta \
-    ${bowtie_outdir}/filtered/q10
-
+        python summarize_bowtie2_alns_by_source_chaetomium_noncoding.py \
+        /projects/serp/work/references/Chaetomium_thermophilum_noncoding.fasta,/projects/serp/work/references/Chaetomium_thermophilum_protein_coding.fasta \
+        ${bowtie_outdir}/filtered/q10
+fi
 
 if [ ! -d ${bowtie_outdir}/filtered/q10/DEGs ]; then
         mkdir ${bowtie_outdir}/filtered/q10/DEGs
+
+        samtools faidx "/projects/serp/work/references/Chaetomium_thermophilum_protein_coding.fasta"
+        Rscript  PCA_conditions_DeSeq2_SeRP_Chaetomium.R \
+        "${bowtie_outdir}"/filtered/q10
+
+
+        grep -Fxf ${bowtie_outdir}/filtered/q10/DEGs/E_S_over_E_WT_0_5_0.05.txt \
+        ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_0_5_0.05.txt \
+        > ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_0_5_and_E_S_over_E_WT_0_5.txt
+
+
+        grep -Fxf ${bowtie_outdir}/filtered/q10/DEGs/E_S_over_E_WT_1_0_0.01.txt \
+        ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_0.01.txt \
+        > ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0.txt
+
+        # -v invert match only select lines that do no match
+        grep -Fxvf  ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_WT_0_5_0.05.txt \
+        ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_0_5_and_E_S_over_E_WT_0_5.txt \
+        > ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_0_5_and_E_S_over_E_WT_0_5_not_IP_WT_vs_IN.txt
+
+
+        grep -Fxvf ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_WT_1_0_0.01.txt \
+        ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0.txt \
+        > ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0_not_IP_WT_vs_IN.txt
+
+
+        grep -Fxvf ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_WT_0_5_0.05.txt \
+        ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0.txt \
+        > ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0_not_IP_WT_vs_IN_0.5_andpadj_0.05.txt
+
+        python compare_old_new_results.py \
+                /projects/serp/work/Output/April_2025/Chaetomium/align_transcriptome/filtered/q10/DEGs/Analysis_31_10_25_Remus/final_results_SND3_WT_LFC1_padj0.01.csv  \
+                /projects/serp/work/Output/April_2025/Chaetomium/align_transcriptome/filtered/q10/DEGs/Analysis_31_10_25_Remus/final_results_SND3_WT_LFC1_padj0.01_all.csv \
+                ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0_not_IP_WT_vs_IN.txt
 fi
-
-samtools faidx "/projects/serp/work/references/Chaetomium_thermophilum_protein_coding.fasta"
-Rscript  PCA_conditions_DeSeq2_SeRP_Chaetomium.R \
-"${bowtie_outdir}"/filtered/q10
-
-
- grep -Fxf ${bowtie_outdir}/filtered/q10/DEGs/E_S_over_E_WT_0_5_0.05.txt \
- ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_0_5_0.05.txt \
-> ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_0_5_and_E_S_over_E_WT_0_5.txt
-
-
- grep -Fxf ${bowtie_outdir}/filtered/q10/DEGs/E_S_over_E_WT_1_0_0.01.txt \
- ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_0.01.txt \
-> ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0.txt
-
-# -v invert match only select lines that do no match
- grep -Fxvf  ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_WT_0_5_0.05.txt \
- ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_0_5_and_E_S_over_E_WT_0_5.txt \
-> ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_0_5_and_E_S_over_E_WT_0_5_not_IP_WT_vs_IN.txt
-
-
- grep -Fxvf ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_WT_1_0_0.01.txt \
- ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0.txt \
-> ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0_not_IP_WT_vs_IN.txt
-
-
- grep -Fxvf ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_WT_0_5_0.05.txt \
- ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0.txt \
-> ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0_not_IP_WT_vs_IN_0.5_andpadj_0.05.txt
-
-python compare_old_new_results.py \
-        /projects/serp/work/Output/April_2025/Chaetomium/align_transcriptome/filtered/q10/DEGs/Analysis_31_10_25_Remus/final_results_SND3_WT_LFC1_padj0.01.csv  \
-        /projects/serp/work/Output/April_2025/Chaetomium/align_transcriptome/filtered/q10/DEGs/Analysis_31_10_25_Remus/final_results_SND3_WT_LFC1_padj0.01_all.csv \
-        ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0_not_IP_WT_vs_IN.txt
-
 # conda activate Riboseq
 # if [ ! -d "${bowtie_outdir}"/filtered/q10/Ribowaltz ]; then
 #         "${bowtie_outdir}"/filtered/q10/Ribowaltz
@@ -155,14 +159,11 @@ python compare_old_new_results.py \
 ################################################################################
 # SeRP coverage plots                                                          #
 ################################################################################
-# bash create_coverage_plots_importins_over_mock.sh \
-#  "${Bowtie2_out_dir}"/filtered/q10
-
-# bash ${coverage_script_dir}/create_coverage_plots_codons_whole_transcript.sh \
-#     "${Bowtie2_out_dir}"/filtered/q10 \
-#     ""${Bowtie2_out_dir}"/filtered/q10/enrichment_plots_CDS/CDS_coordinates" \
-#     ${coverage_script_dir} \
-#     $mane_gtf
+coverage_script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/SeRP/Chaetomium"
+bash ${coverage_script_dir}/create_coverage_plots_whole_transcript.sh \
+    "${bowtie_outdir}"/filtered/q10 \
+    ""${bowtie_outdir}"/filtered/q10/enrichment_plots_whole_trans" \
+    ${coverage_script_dir}
 
 ################################################################################
 # Check al counts with bam multicov                                            #
