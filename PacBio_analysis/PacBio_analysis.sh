@@ -4,7 +4,8 @@ eval "$(conda shell.bash hook)"
 conda activate pacbio
 
 genome_fasta_file="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
-ensembl_gtf_filtered="/projects/splitorfs/work/reference_files/clean_Ensembl_ref/Ensembl_equality_and_TSL_filtered.gtf"
+ensembl_gtf_filtered="/projects/splitorfs/work/reference_files/filtered_Ens_reference_correct_29_09_25/Ensembl_110_filtered_equality_and_tsl1_2_correct_29_09_25.gtf"
+ensembl_full_gtf="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.113.chr.gtf"
 
 pacbio_raw_datadir="/projects/splitorfs/work/own_data/PacBio_long_reads/run_23_06_25/objectstorage.uk-london-1.oraclecloud.com/Data-X208SC25032329-Z01-F001"
 pacbio_merged_bamdir="/projects/splitorfs/work/PacBio/merged_bam_files"
@@ -15,6 +16,15 @@ isoseq_outdir=${pacbio_merged_bamdir}/isoseq
 
 primer_fasta=/projects/splitorfs/work/PacBio/merged_bam_files/lima/primer.fasta
 
+
+mando_out_path="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_updated_parameters"
+sqanti_script_dir="/home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3"
+kallisto_dir="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Mandalorion_raw_updated_parameters"
+
+
+#################################################################################
+# ------------------ Pre-process PacBio long reads           ------------------ #
+#################################################################################
 if [[ ! -d "$pacbio_merged_bamdir" ]]; then
     mkdir $pacbio_merged_bamdir
 fi
@@ -35,6 +45,11 @@ files=( "${pacbio_merged_bamdir}"/*merged.bam )
 if (( ${#files[@]} == 0 )); then
     bash merge_pacbio_bams.sh "${pacbio_raw_datadir}" "${pacbio_merged_bamdir}"
 
+    # FASTQC
+    bash run_pacbio_fastqc.sh $pacbio_merged_bamdir $raw_fastqc_dir multiqc
+fi
+
+if [[ ! -e ""${pacbio_merged_bamdir}"/HUVEC_DHYPO_merged.bam" ]];then
     # copy the newly sequenced samples that do not need merging to the respective folder and name accordingly
     cp /projects/splitorfs/work/own_data/PacBio_long_reads/run_21_11_25/HUVEC_DHYPO.hifi_reads.bam \
     "${pacbio_merged_bamdir}"/HUVEC_DHYPO_merged.bam
@@ -45,11 +60,7 @@ if (( ${#files[@]} == 0 )); then
     "${pacbio_merged_bamdir}"/HUVEC_DMSO_merged.bam
     cp /projects/splitorfs/work/own_data/PacBio_long_reads/run_21_11_25/HUVEC_DMSO.hifi_reads.bam.pbi \
     "${pacbio_merged_bamdir}"/HUVEC_DMSO_merged.bam.pbi
-
-    # FASTQC
-    bash run_pacbio_fastqc.sh $pacbio_merged_bamdir $raw_fastqc_dir multiqc
 fi
-
 
 # LongQC
 # bash run_longqc.sh ${pacbio_merged_bamdir} ${raw_longqc_dir}
@@ -68,14 +79,87 @@ if [ ! -e $isoseq_outdir ];then
     $isoseq_outdir/refine
 fi
 
-# run mandalorion
-# bash run_mandalorion_updated_parameters_correct_ref_one_cell_type_26_11_25.sh HUVEC
-# bash run_mandalorion_updated_parameters_correct_ref_one_cell_type_26_11_25.sh CM
+#################################################################################
+# ------------------ Pre-process short reads                 ------------------ #
+#################################################################################
+cd /home/ckalk/scripts/SplitORFs/short_RNA_seq
+
+raw_data_dir_huvec="/projects/splitorfs/work/own_data/Novogene/Michi_Vlado_run_1/X208SC25032334-Z01-F001/01.RawData"
+merged_data_dir_huvec="/projects/splitorfs/work/own_data/Novogene/Michi_Vlado_run_1/merged"
+raw_data_fastqc_dir_huvec="/projects/splitorfs/work/own_data/Novogene/Michi_Vlado_run_1/X208SC25032334-Z01-F001/01.RawData/fastqc"
+outidr_fastp="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/HUVEC_fastp"
+
+
+bash /home/ckalk/scripts/SplitORFs/short_RNA_seq/analyze_short_RNA_seq_cell_type.sh \
+ "${raw_data_dir_huvec}" \
+ "${merged_data_dir_huvec}" \
+ "${raw_data_fastqc_dir_huvec}" \
+ "${outidr_fastp}"
+
+raw_data_dir_cm="/projects/splitorfs/work/own_data/Novogene/Michi_Vlado_run_1/CM_short_reads/X208SC25032333-Z01-F002/01.RawData"
+merged_data_dir_cm="/projects/splitorfs/work/own_data/Novogene/Michi_Vlado_run_1/CM_short_reads/merged"
+raw_data_fastqc_dir_cm="/projects/splitorfs/work/own_data/Novogene/Michi_Vlado_run_1/CM_short_reads/X208SC25032333-Z01-F002/01.RawData/fastqc"
+outdir_fastp_cm="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/CM_fastp"
+
+
+bash /home/ckalk/scripts/SplitORFs/short_RNA_seq/analyze_short_RNA_seq_cell_type.sh \
+ "${raw_data_dir_cm}" \
+ "${merged_data_dir_cm}" \
+ "${raw_data_fastqc_dir_cm}" \
+ "${outdir_fastp_cm}"
+
+cd /home/ckalk/scripts/SplitORFs/PacBio_analysis
+
+
+#################################################################################
+# ------------------ Run Mandalorion                         ------------------ #
+#################################################################################
+huvec_lr_sample_string=/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_50NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_5NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DHYPO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DMSO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DNOR_merged_lima_refined.fastq
+cm_lr_sample_string=//projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_5NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_DHYPO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_DNOR_merged_lima_refined.fastq
+
+bash run_mandalorion_params_04_12_25.sh \
+-b $isoseq_outdir/refine \
+-c HUVEC \
+-e ${ensembl_full_gtf} \
+-f "pacbio_consensus_HUVEC.fofn" \
+-g ${genome_fasta_file} \
+-k ${kallisto_dir} \
+-l ${huvec_lr_sample_string} \
+-o ${mando_out_path} \
+-q ${sqanti_script_dir} \
+-r ${ensembl_gtf_filtered} \
+-s ${outidr_fastp}
+
+
+bash run_mandalorion_params_04_12_25.sh \
+-b $isoseq_outdir/refine \
+-c CM \
+-e ${ensembl_full_gtf} \
+-f "pacbio_consensus_CM.fofn" \
+-g ${genome_fasta_file} \
+-k ${kallisto_dir} \
+-l ${cm_lr_sample_string} \
+-o ${mando_out_path} \
+-q ${sqanti_script_dir} \
+-r ${ensembl_gtf_filtered} \
+-s ${outidr_fastp_cm}
 
 
 
 
-# run stringtie
+#################################################################################
+# ------------------ Run Stringtie3                          ------------------ #
+#################################################################################
 
 # first need to align to the genome
-bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/map_conditions/map_conditions_to_assemblies.sh
+# for Mando fl counts, use the output of tsv form Mando itself
+# bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/map_conditions/map_conditions_to_assemblies.sh
+
+# bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/run_stringtie3_correct_ref_06_10_25.sh
+
+
+#################################################################################
+# ------------------ TAMA merge final annotations            ------------------ #
+#################################################################################
+
+# bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/compare_stringtie_mando/merge_stringtie_mando_correct_ref_06_10_25.sh
