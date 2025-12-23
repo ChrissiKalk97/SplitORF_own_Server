@@ -147,23 +147,26 @@ if [ ! -d ${bowtie_outdir}/filtered/q10/DEGs ]; then
                 /projects/serp/work/Output/April_2025/Chaetomium/align_transcriptome/filtered/q10/DEGs/Analysis_31_10_25_Remus/final_results_SND3_WT_LFC1_padj0.01_all.csv \
                 ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0_not_IP_WT_vs_IN.txt
 fi
-# conda activate Riboseq
-# if [ ! -d "${bowtie_outdir}"/filtered/q10/Ribowaltz ]; then
-#         "${bowtie_outdir}"/filtered/q10/Ribowaltz
-# fi
-# Rscript RiboWaltz_SeRP_Chaetomium_single_samples.R \
-# "${bowtie_outdir}"/filtered/q10
+
+conda activate Riboseq
+if [ ! -d "${bowtie_outdir}"/filtered/q10/Ribowaltz ]; then
+        mkdir "${bowtie_outdir}"/filtered/q10/Ribowaltz
+fi
+Rscript RiboWaltz_SeRP_Chaetomium_single_samples.R \
+"${bowtie_outdir}"/filtered/q10
 
 
 
 ################################################################################
 # SeRP coverage plots                                                          #
 ################################################################################
-coverage_script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/SeRP/Chaetomium"
-bash ${coverage_script_dir}/create_coverage_plots_whole_transcript.sh \
-    "${bowtie_outdir}"/filtered/q10 \
-    ""${bowtie_outdir}"/filtered/q10/enrichment_plots_whole_trans" \
-    ${coverage_script_dir}
+if [ ! -d ""${bowtie_outdir}"/filtered/q10/enrichment_plots_whole_trans" ]; then
+        coverage_script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/SeRP/Chaetomium"
+        bash ${coverage_script_dir}/create_coverage_plots_whole_transcript.sh \
+        "${bowtie_outdir}"/filtered/q10 \
+        ""${bowtie_outdir}"/filtered/q10/enrichment_plots_whole_trans" \
+        ${coverage_script_dir}
+fi
 
 ################################################################################
 # Check al counts with bam multicov                                            #

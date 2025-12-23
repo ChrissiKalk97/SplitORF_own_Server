@@ -54,18 +54,16 @@ def main(bed_file_to_filter, htseq_counts, gtf_path, tpm_threshold):
 
     htseq_counts_df_transposed = htseq_counts_df_transposed.drop('Gene_name')
 
-    fpkm_values = FPKM(gtf=gtf_path).fit_transform(htseq_counts_df_transposed)
-
     tpm_values = TPM(gtf=gtf_path).fit_transform(htseq_counts_df_transposed)
 
-    htseq_counts_df_transposed_fpkm = pd.concat([htseq_counts_df_transposed, pd.DataFrame(
-        [fpkm_values.flatten(), np.log10(fpkm_values.flatten() + 1), tpm_values.flatten(), np.log10(tpm_values.flatten() + 1)], columns=htseq_counts_df_transposed.columns)], ignore_index=True)
+    htseq_counts_df_transposed_tpm = pd.concat([htseq_counts_df_transposed, pd.DataFrame(
+        [tpm_values.flatten(), np.log10(tpm_values.flatten() + 1)], columns=htseq_counts_df_transposed.columns)], ignore_index=True)
 
-    htseq_counts_df_transposed_fpkm.index = [
-        'raw_counts', 'RPKM', 'log10(RPKM + 1)', 'TPM', 'log10(TPM + 1)']
+    htseq_counts_df_transposed_tpm.index = [
+        'raw_counts', 'TPM', 'log10(TPM + 1)']
 
-    tpm_greater_1_df = htseq_counts_df_transposed_fpkm.transpose(
-    )[(htseq_counts_df_transposed_fpkm.transpose()['TPM'] >= 1) & (htseq_counts_df_transposed_fpkm.transpose()['TPM'] < 1000)]
+    tpm_greater_1_df = htseq_counts_df_transposed_tpm.transpose(
+    )[(htseq_counts_df_transposed_tpm.transpose()['TPM'] >= 1) & (htseq_counts_df_transposed_tpm.transpose()['TPM'] < 1000)]
 
     ax = sbn.histplot(
         tpm_greater_1_df, x='TPM', bins=1000)
@@ -77,22 +75,8 @@ def main(bed_file_to_filter, htseq_counts, gtf_path, tpm_threshold):
     fig.savefig(os.path.join(outdir,
                 f'{sample}_TPM_1_200.png'), dpi=300, bbox_inches='tight')  # save as PNG
 
-    print(f'Number of transcripts that have a TPM >= 1 for sample {sample}', sum(
-        htseq_counts_df_transposed_fpkm.transpose()['TPM'] >= 1))
-    print(f'Number of transcripts that have a TPM < 1 for sample {sample}', sum(
-        htseq_counts_df_transposed_fpkm.transpose()['TPM'] < 1))
-    print(f'Number of transcripts that have a TPM of 0 for sample {sample}', sum(
-        htseq_counts_df_transposed_fpkm.transpose()['TPM'] == 0))
-    print(f'Number of transcripts that have less than 3 reads for for sample {sample}', sum(
-        htseq_counts_df_transposed_fpkm.transpose()['raw_counts'] < 3))
-
-    print(f'Number of transcripts that have a TPM >= 2 for sample {sample}', sum(
-        htseq_counts_df_transposed_fpkm.transpose()['TPM'] >= 2))
-    print(f'Number of transcripts that have a TPM < 2 for sample {sample} ', sum(
-        htseq_counts_df_transposed_fpkm.transpose()['TPM'] < 2))
-
     # filter the regions for the genes with TPM above TPM Treshold
-    htseq_counts_df_fpkm = htseq_counts_df_transposed_fpkm.transpose()
+    htseq_counts_df_fpkm = htseq_counts_df_transposed_tpm.transpose()
     genes_to_keep = htseq_counts_df_fpkm.index[htseq_counts_df_fpkm['TPM']
                                                >= tpm_threshold]
 

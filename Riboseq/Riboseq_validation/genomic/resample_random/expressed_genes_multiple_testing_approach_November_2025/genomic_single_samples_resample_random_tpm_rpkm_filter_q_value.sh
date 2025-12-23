@@ -25,6 +25,8 @@ three_primes="/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_prime
 UMI_dedup_outdir="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated"
 umi_dedup_upf10="/projects/splitorfs/work/UPF1_deletion/Output/alignment_genome/STAR/deduplicated"
 
+cds_coordinates="/projects/splitorfs/work/Riboseq/data/region_input/genomic/Ens_110_CDS_coordinates_genomic_protein_coding_tsl_refseq_filtered.bed"
+
 
 if [ ! -d $output_star ];then
 	mkdir $output_star
@@ -38,6 +40,10 @@ fi
 if [ ! -d $output_star/RI_genome ];then
 	mkdir $output_star/RI_genome
 fi
+
+# getting the 3' UTR regions
+bash /home/ckalk/scripts/SplitORFs/Riboseq/preprocess_data/region_handling/three_primes/get_3prime_genomic_coords.sh
+
 
 
 # Create a Logfile for the alignments in the output directory
@@ -78,6 +84,12 @@ for i in "${input_data[@]}"; do
 
 done
 
+# Preparing files for Picard
+if [ ! -e $ensembl_gtf.refflat ]; then
+    gtfToGenePred -genePredExt -geneNameAsName2 -ignoreGroupsWithoutExons $ensembl_gtf /dev/stdout | \
+        awk 'BEGIN { OFS="\t"} {print $12, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10}' > $ensembl_gtf.refflat
+fi
+
 
 
 ################################################################################
@@ -92,49 +104,22 @@ for folder in "$output_star"/NMD_genome/*/; do
 
     if [[ -e "${bams[0]}" ]]; then
         i="${bams[0]}"        
-        
 
         sample_name="$(basename "$i" _NMD_sorted.bam)"
 
-        if [ ! -e  "$output_star"/NMD_genome/${sample_name}/Unique_DNA_Regions_genomic_${sample_name}.bed ]; then
-            if [ ! -e  "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_htseq_counts.tsv ]; then
-              htseq-count -f bam --secondary-alignments ignore \
-                -c  "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_htseq_counts.tsv \
-                --supplementary-alignments ignore $i $ensembl_gtf
-            fi
+        echo $sample_name
 
-            python filter_bed_file_for_expressed_genes_rnanrom.py \
-              $three_primes \
-              "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_htseq_counts.tsv \
-              $ensembl_gtf \
-              5
+        bash filter_intersection_pipeline.sh \
+        -b $i \
+        -c $cds_coordinates \
+        -e $ensembl_gtf\
+        -g $genome_fasta \
+        -i "$output_star/NMD_genome/${sample_name}/${sample_name}_NMD_chrom_sort.bed" \
+        -o $output_star \
+        -s $sample_name \
+        -t $three_primes \
+        -u $unique_region_dir_nmd
 
-            python filter_bed_file_for_expressed_genes_rnanrom.py \
-              $unique_region_dir_nmd/Unique_DNA_Regions_genomic.bed \
-              "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_htseq_counts.tsv \
-              $ensembl_gtf \
-              5
-
-            bedtools coverage -s -F 0.33 -a "$output_star"/NMD_genome/${sample_name}/3_primes_genomic_merged_numbered_${sample_name}.bed \
-            -b $i > "$output_star"/NMD_genome/${sample_name}/3_primes_genomic_merged_numbered_${sample_name}_coverage.tsv
-
-            python filter_tpm_for_3_prime_utrs.py \
-            "$output_star"/NMD_genome/${sample_name}/3_primes_genomic_merged_numbered_${sample_name}_coverage.tsv \
-            ${sample_name} \
-            25
-
-
-            echo $sample_name
-            ./empirical_intersection_steps_expressed_genes_filter_18_11_25.sh  \
-                "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_chrom_sort.bed \
-                "$output_star"/NMD_genome/${sample_name}/Unique_DNA_Regions_genomic_${sample_name}.bed \
-                "$output_star"/NMD_genome/${sample_name}/3_primes_tpm_filtered_${sample_name}.bed \
-                "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD \
-                "$output_star"/NMD_genome/${sample_name} \
-                ${genome_fasta}
-
-            echo "===================       Sample $sample_name intersected"
-        fi
     fi
 
     
@@ -159,43 +144,18 @@ for i in $UMI_dedup_outdir/*_filtered.bam; do
             mkdir "$output_star"/NMD_genome/${sample_name}
         fi
 
-        if [ ! -e  "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_htseq_counts.tsv ]; then
-          htseq-count -f bam --secondary-alignments ignore \
-            -c  "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_htseq_counts.tsv \
-            --supplementary-alignments ignore $i $ensembl_gtf
-        fi
 
-            python filter_bed_file_for_expressed_genes_rnanrom.py \
-              $three_primes \
-              "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_htseq_counts.tsv \
-              $ensembl_gtf \
-              5
+        bash filter_intersection_pipeline.sh \
+        -b $i \
+        -c $cds_coordinates \
+        -e $ensembl_gtf\
+        -g $genome_fasta \
+        -i $i \
+        -o $output_star \
+        -s $sample_name \
+        -t $three_primes \
+        -u $unique_region_dir_nmd
 
-            python filter_bed_file_for_expressed_genes_rnanrom.py \
-              $unique_region_dir_nmd/Unique_DNA_Regions_genomic.bed \
-              "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_htseq_counts.tsv \
-              $ensembl_gtf \
-              5
-
-        bedtools coverage -s -F 0.33 -a "$output_star"/NMD_genome/${sample_name}/3_primes_genomic_merged_numbered_${sample_name}.bed \
-            -b $i > "$output_star"/NMD_genome/${sample_name}/3_primes_genomic_merged_numbered_${sample_name}_coverage.tsv
-
-        python filter_tpm_for_3_prime_utrs.py \
-            "$output_star"/NMD_genome/${sample_name}/3_primes_genomic_merged_numbered_${sample_name}_coverage.tsv \
-            ${sample_name} \
-            25
-
-
-        echo $sample_name
-        ./empirical_intersection_steps_expressed_genes_filter_18_11_25.sh  \
-                $i \
-                "$output_star"/NMD_genome/${sample_name}/Unique_DNA_Regions_genomic_${sample_name}.bed \
-                "$output_star"/NMD_genome/${sample_name}/3_primes_tpm_filtered_${sample_name}.bed \
-                "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD \
-                "$output_star"/NMD_genome/${sample_name} \
-                ${genome_fasta}
-
-        echo "===================       Sample $sample_name intersected"
     fi
 
 done
@@ -215,44 +175,18 @@ for i in $umi_dedup_upf10/*_filtered.bam; do
         if [ ! -d "$output_star"/NMD_genome/${sample_name} ];then
             mkdir "$output_star"/NMD_genome/${sample_name}
         fi
+
+        bash filter_intersection_pipeline.sh \
+        -b $i \
+        -c $cds_coordinates \
+        -e $ensembl_gtf \
+        -g $genome_fasta \
+        -i $i \
+        -o $output_star \
+        -s $sample_name \
+        -t $three_primes \
+        -u $unique_region_dir_nmd
         
-        if [ ! -e  "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_htseq_counts.tsv ]; then
-            htseq-count -f bam --secondary-alignments ignore \
-              -c  "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_htseq_counts.tsv \
-              --supplementary-alignments ignore $i $ensembl_gtf
-        fi
-
-            python filter_bed_file_for_expressed_genes_rnanrom.py \
-              $three_primes \
-              "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_htseq_counts.tsv \
-              $ensembl_gtf \
-              5
-
-            python filter_bed_file_for_expressed_genes_rnanrom.py \
-              $unique_region_dir_nmd/Unique_DNA_Regions_genomic.bed \
-              "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_htseq_counts.tsv \
-              $ensembl_gtf \
-              5
-
-        bedtools coverage -s -F 0.33 -a "$output_star"/NMD_genome/${sample_name}/3_primes_genomic_merged_numbered_${sample_name}.bed \
-            -b $i > "$output_star"/NMD_genome/${sample_name}/3_primes_genomic_merged_numbered_${sample_name}_coverage.tsv
-
-        python filter_tpm_for_3_prime_utrs.py \
-            "$output_star"/NMD_genome/${sample_name}/3_primes_genomic_merged_numbered_${sample_name}_coverage.tsv \
-            ${sample_name} \
-            25
-
-
-        echo $sample_name
-        ./empirical_intersection_steps_expressed_genes_filter_18_11_25.sh  \
-                $i \
-                "$output_star"/NMD_genome/${sample_name}/Unique_DNA_Regions_genomic_${sample_name}.bed \
-                "$output_star"/NMD_genome/${sample_name}/3_primes_tpm_filtered_${sample_name}.bed \
-                "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD \
-                "$output_star"/NMD_genome/${sample_name} \
-                ${genome_fasta}
-
-        echo "===================       Sample $sample_name intersected"
     fi
 
 done
@@ -265,7 +199,7 @@ export MKL_ENABLE_INSTRUCTIONS=SSE4_2
 
 Rscript -e 'if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown", repos="http://cran.us.r-project.org")'
 
-R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration_update_expression_filter_multiple_test_correction.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/Riboseq_report_NMD_tpm_filter_multiple_test_correction_08_12_25.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome", "/home/ckalk/tools/SplitORF_pipeline/Output/run_30.09.2025-11.30.56_NMD_transcripts_correct_TSL_ref", "NMD")))'
+R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration_update_expression_filter_multiple_test_correction.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/Riboseq_report_NMD_tpm_filter_BH_tpm_20_no_3prime_filter_CDS_subtract_12_12_25.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome", "/home/ckalk/tools/SplitORF_pipeline/Output/run_30.09.2025-11.30.56_NMD_transcripts_correct_TSL_ref", "NMD")))'
 
 
 

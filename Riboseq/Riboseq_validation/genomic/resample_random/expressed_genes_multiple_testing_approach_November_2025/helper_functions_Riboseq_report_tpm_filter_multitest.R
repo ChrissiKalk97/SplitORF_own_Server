@@ -398,7 +398,7 @@ calculate_fdr_urs <- function(intersect_frames_list, random_ranked_dfs){
       ##########################################################################
       # Genomic frame handling
       genomic_frame <- intersect_frames_list$genomic_frames[[i]]
-      genomic_frame <- merge(genomic_frame, ur_df[, c("name", "q_value", "significant")],
+      genomic_frame <- merge(genomic_frame, ur_df[, c("name", "q_value", "p_value", "significant")],
                          by = "name", 
                          all.x = TRUE) 
       genomic_frame$ID <- genomic_frame$name
@@ -499,7 +499,7 @@ get_print_ORF_ranks <- function(SO_pipe_path, frames) {
     return_frames <- list()
     for (frame in frames) {
         # filter for significant URs
-        frame <- frame[frame$significant == 1, ]
+        # frame <- frame[frame$significant == 1, ]
         frame$OrfTransID <- str_split_fixed(frame$name, "\\|", 4)[, 2]
         frame$OrfTransID <- str_split_fixed(frame$OrfTransID, ":", 2)[, 1]
         frame$ORF_start <- as.integer(str_split_fixed(frame$name, ":", 4)[, 3])
@@ -541,6 +541,7 @@ write_csv <- function(dataframes_genomic, unique_names_per_sample_genomic, dataf
             "new_name",
             "num_reads",
             "relative_count",
+            "p_value",
             "q_value",
             "significant"
         )]
@@ -555,9 +556,9 @@ write_csv <- function(dataframes_genomic, unique_names_per_sample_genomic, dataf
     frame_number <- 1
     for (frame in dataframes) {
         # colnames(frame) <- c()
-        frame$significant <- ifelse(frame$name %in% unique_names_per_sample[[frame_number]],
-            1, 0
-        )
+        # frame$significant <- ifelse(frame$name %in% unique_names_per_sample[[frame_number]],
+        #     1, 0
+        # )
 
         write_frame <- frame[, c(
             "name",
@@ -569,6 +570,7 @@ write_csv <- function(dataframes_genomic, unique_names_per_sample_genomic, dataf
             "num_reads",
             "relative_count",
             "significant",
+            "p_value",
             "q_value",
             "ORF_ranks"
         )]
@@ -584,13 +586,13 @@ write_csv <- function(dataframes_genomic, unique_names_per_sample_genomic, dataf
 
 Split_ORFs_validation <- function(dataframes, unique_names_per_sample, path) {
     # create empty dataframe to concatenate the dfs
-    df <- data.frame(matrix(ncol = 9, nrow = 0))
+    df <- data.frame(matrix(ncol = 11, nrow = 0))
     # Assign column names
 
     frame_number <- 1
     for (unique_region_frame in dataframes) {
         unique_region_frame <- unique_region_frame[, c("name", "distinct_ribo_count", "len", "chr_unique", 
-                                                       "start", "stop", "new_name", "num_reads", 
+                                                       "start", "stop", "new_name", "num_reads", "p_value",
                                                        "q_value", "relative_count", "significant")]
 
         # print(unique_region_frame)
@@ -614,6 +616,7 @@ Split_ORFs_validation <- function(dataframes, unique_names_per_sample, path) {
             "stop",
             "new_name",
             "num_reads",
+            "p_value",
             "q_value",
             "relative_count"
         )], file.path(path, paste0(names(dataframes)[frame_number], "_two_regions_validated_on_transcript.csv")))
