@@ -96,15 +96,18 @@ for bam in "${isoseq_reads_dir}"/"${cell_type}"*bam; do
 
 
 for bam in $out_path/"${cell_type}"/pbmm2_align/*.bam; do
-    samtools sort -@ 30 -o $(dirname $bam)/$(basename $bam .bam)_sorted.bam $bam
-    samtools index -@ 30 $(dirname $bam)/$(basename $bam .bam)_sorted.bam
-    samtools idxstats -@ 30 $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
-     $(dirname $bam)/$(basename $bam .bam)_idxstats.out
-    samtools flagstat -@ 30 $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
-     $(dirname $bam)/$(basename $bam .bam)_flagstat.out
-    samtools stats -@ 30 $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
-     $(dirname $bam)/$(basename $bam .bam)_stats.out
-    samtools view -@ 30 -q 20 -F 0x904 $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
-    $(dirname $bam)/$(basename $bam .bam)_filtered.bam
+    if [ ! -e $(dirname $bam)/$(basename $bam .bam)_filtered.bam ]; then
+      samtools sort -@ 30 -o $(dirname $bam)/$(basename $bam .bam)_sorted.bam $bam
+      samtools index -@ 30 $(dirname $bam)/$(basename $bam .bam)_sorted.bam
+      samtools idxstats -@ 30 $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
+      $(dirname $bam)/$(basename $bam .bam)_idxstats.out
+      samtools flagstat -@ 30 $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
+      $(dirname $bam)/$(basename $bam .bam)_flagstat.out
+      samtools stats -@ 30 $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
+      $(dirname $bam)/$(basename $bam .bam)_stats.out
+      samtools view -@ 30 -q 20 -F 0x904 -b $(dirname $bam)/$(basename $bam .bam)_sorted.bam | \
+      samtools sort -@ 30 \
+      -o $(dirname $bam)/$(basename $bam .bam)_filtered.bam
+    fi
 done
 
