@@ -87,8 +87,8 @@ fi
             mkdir $outdir_tama/${cell_type}/${sample_name}
         fi
 
-        python ${tama_tool_path}/tama_go/split_files/tama_mapped_sam_splitter.py $bam 10 \
-        $outdir_tama/${cell_type}/${sample_name}/${sample_name}
+        # python ${tama_tool_path}/tama_go/split_files/tama_mapped_sam_splitter.py $bam 10 \
+        # $outdir_tama/${cell_type}/${sample_name}/${sample_name}
 
 
         # 5 bp wobble for exon ends, 50 for TES and TSS
