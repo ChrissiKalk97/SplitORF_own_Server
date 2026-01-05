@@ -60,6 +60,7 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     fig = ax.get_figure()
     fig.savefig(os.path.join(outdir,
                 f'{sample}_CDS_RPK_hist_0_2000.png'), dpi=300, bbox_inches='tight')
+    plt.close(fig)
 
     cds_coverage_file_df['log_RPK'] = np.log10(cds_coverage_file_df['RPK'] + 1)
 
@@ -72,6 +73,7 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     fig = ax.get_figure()
     fig.savefig(os.path.join(outdir,
                 f'{sample}_CDS_log_RPK_box.png'), dpi=300, bbox_inches='tight')
+    plt.close(fig)
 
     # plot RPK distribution CDS hist
     ax = sbn.histplot(
@@ -82,6 +84,7 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     fig = ax.get_figure()
     fig.savefig(os.path.join(outdir,
                 f'{sample}_CDS_log_RPK_hist.png'), dpi=300, bbox_inches='tight')
+    plt.close(fig)
 
     # plot RPK distribution 3primes hist
     ax = sbn.histplot(
@@ -93,6 +96,7 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     fig = ax.get_figure()
     fig.savefig(os.path.join(outdir,
                 f'{sample}_three_primes_RPK_hist_0_200.png'), dpi=300, bbox_inches='tight')
+    plt.close(fig)
 
     three_prime_coverage_file_df['log_RPK'] = np.log10(
         three_prime_coverage_file_df['RPK'] + 1)
@@ -106,6 +110,7 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     fig = ax.get_figure()
     fig.savefig(os.path.join(outdir,
                 f'{sample}_three_primes_log_RPK_box.png'), dpi=300, bbox_inches='tight')
+    plt.close(fig)
 
     print('CDS 25th quantile', cds_coverage_file_df['RPK'].quantile(0.25))
     print('CDS median', cds_coverage_file_df['RPK'].quantile(0.5))
@@ -121,7 +126,7 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     from scipy import stats
     cds_coverage_file_df_filtered = cds_coverage_file_df[cds_coverage_file_df['RPK'] > 0]
     distributions = [stats.skewnorm, stats.weibull_min,
-                     stats.gamma, stats.lognorm, stats.norm, stats.t]
+                     stats.gamma, stats.norm, stats.t]
     fits = {}
 
     for dist in distributions:
@@ -173,6 +178,13 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
         outdir, f'{sample}_t_QQ_plot.png'), dpi=300, bbox_inches='tight')
     plt.close(fig)
 
+    fig = plt.figure()
+    stats.probplot(cds_coverage_file_df_filtered['log_RPK'], dist="weibull_min",
+                   sparams=fits['weibull_min']['params'], plot=plt)
+    plt.savefig(os.path.join(
+        outdir, f'{sample}_weibull_min_QQ_plot.png'), dpi=300, bbox_inches='tight')
+    plt.close(fig)
+
     lowest_BIC = np.inf
     for dist, values in fits.items():
         if values['BIC'] < lowest_BIC:
@@ -202,7 +214,8 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     # Prediction interval
     # only interested in lower
     # PI_lower = loc + t_quantile * scale * np.sqrt(1 + 1/n)
-    PI_lower = stats.skewnorm.ppf(alpha, *fits[best_dist_bic]['params'])
+    dist = getattr(stats, best_dist_bic)
+    PI_lower = dist.ppf(alpha, *fits[best_dist_bic]['params'])
 
     # here we can keep the 0-counts as we anyway want to have them
     # select all the values below the PI_lower

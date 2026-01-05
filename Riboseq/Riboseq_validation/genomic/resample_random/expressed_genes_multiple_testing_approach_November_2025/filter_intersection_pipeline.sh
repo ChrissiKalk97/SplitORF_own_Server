@@ -113,15 +113,15 @@ if [ ! -e  "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_intersect
     # 1000000
 
 
-    # echo $sample_name
-    # ./empirical_intersection_steps_expressed_genes_filter_18_11_25.sh  \
-    #     $intersection_input \
-    #     "$output_star"/NMD_genome/${sample_name}/Unique_DNA_Regions_genomic_CDS_subtraction_${sample_name}.bed \
-    #     "$output_star"/NMD_genome/${sample_name}/3_primes_filtered_for_CDS_distribution_${sample_name}_sorted.bed \
-    #     "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD \
-    #     "$output_star"/NMD_genome/${sample_name} \
-    #     ${genome_fasta}
+    echo $sample_name
+    ./empirical_intersection_steps_expressed_genes_filter_18_11_25.sh  \
+        $intersection_input \
+        "$output_star"/NMD_genome/${sample_name}/Unique_DNA_Regions_genomic_CDS_subtraction_${sample_name}.bed \
+        "$output_star"/NMD_genome/${sample_name}/3_primes_filtered_for_CDS_distribution_${sample_name}_merged.bed \
+        "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD \
+        "$output_star"/NMD_genome/${sample_name} \
+        ${genome_fasta}
 
-    # echo "===================       Sample $sample_name intersected"
+    echo "===================       Sample $sample_name intersected"
 fi
 
