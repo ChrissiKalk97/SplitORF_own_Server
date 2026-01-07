@@ -1,6 +1,7 @@
 #!/bin/bash
 
-#----- This script runs tama merge on 2 assemblies to merge them into one GTF file ----- #
+#----- This script runs tama merge on bed files that come from the split TAMA collapse runs  ----- #
+#----- and merges them by sample ----- #
 
 eval "$(conda shell.bash hook)"
 conda activate pacbio
@@ -11,23 +12,18 @@ usage() {
   echo "Usage: $0 -r <reference_gtf> -g <genome_fasta> -o <outdir_tama>  -c <cell_type> -t <tama_tool_path> [-h for help]"
 }
 
+
 # Process options with silent error mode
-while getopts "b:r:f:o:c:t:h" opt; do
+while getopts "o:c:s:t:h" opt; do
   case $opt in
-    b)
-      bam_file_dir="$OPTARG"
-      ;;
-    r)
-      reference_gtf="$OPTARG"
-      ;;
-    f)
-      genome_fasta="$OPTARG"
-      ;;
     o)
       outdir_tama="$OPTARG"
       ;;
     c)
       cell_type="$OPTARG"
+      ;;
+    s)
+      tama_script_path="$OPTARG"
       ;;
     t)
       tama_tool_path="$OPTARG"
@@ -50,79 +46,51 @@ while getopts "b:r:f:o:c:t:h" opt; do
 done
 
 
-
-
-# reference_gtf="/projects/splitorfs/work/reference_files/clean_Ensembl_ref/Ensembl_equality_and_TSL_filtered.gtf"
-# genome_fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
-
-# bam_file_dir="/projects/splitorfs/work/PacBio/merged_bam_files/genome_alignment/HUVEC/pbmm2_align"
-
-# outdir_tama="/projects/splitorfs/work/PacBio/merged_bam_files/tama_collapse"
-
-# tama_tool_path="/home/ckalk/tools/tama"
-
 #################################################################################
-# ------------------ COLLAPSE WITH TAMA                          -------------- #
+# ------------------ TAMA MERGE                                  -------------- #
 #################################################################################
+shopt -s nullglob 
+# iterate over the different samples
+for dir in  "${outdir_tama}"/"${cell_type}"/*/; do
+    sample_name=$(basename "${dir}")
+    # create list of bed files to merge
+    merge_file_txt=""${tama_script_path}"/file_list_bed_merge_${sample_name}.txt"
 
-cell_type="${cell_type^^}"
-cell_type_small="${cell_type,,}"
+    if [ ! -e "${merge_file_txt}" ]; then
+        # creates new file, overwrites if already present
+        : > "${merge_file_txt}"
 
-outdir_fastp=${outdir_fastp}/${cell_type}_fastp
+        for bed in "${dir}"/*[0-9].bed; do
+        
+            value_col1="no_cap"
+            value_col2="1,1,1"
+            value_col3="${sample_name}"
 
-if [[ ! -d "$outdir_tama" ]]; then
-    mkdir $outdir_tama
-fi
-
-if [[ ! -d "$outdir_tama/${cell_type}" ]]; then
-    mkdir $outdir_tama/${cell_type}
-
-    # run TAMA collapse on each condition separately
-    conda activate tama
-    for bam in "${bam_file_dir}"/*filtered.bam; do
-        echo $bam
-        sample_name=$(basename $bam _pbmm2_aligned_genome_filtered.bam)
-
-        if [[ ! -d "$outdir_tama/${cell_type}/${sample_name}" ]]; then
-            mkdir $outdir_tama/${cell_type}/${sample_name}
-        fi
-
-        python ${tama_tool_path}/tama_go/split_files/tama_mapped_sam_splitter.py $bam 10 \
-        $outdir_tama/${cell_type}/${sample_name}/${sample_name}
-
-
-        # 5 bp wobble for exon ends, 50 for TES and TSS
-        # use the error calculation around the splice sites (20 bp within, 5 as the threshold, from TAMA paper)
-        count=0
-        max_jobs=3
-        for sam in $outdir_tama/${cell_type}/${sample_name}/*.sam; do
-            (
-            sam_name=$(basename $sam .sam)
-            python ${tama_tool_path}/tama_collapse.py \
-            -s ${sam} \
-            -x no_cap \
-            -sj sj_priority \
-            -lde 5 \
-            -sjt 20 \
-            -m 5 \
-            -a 50 \
-            -z 50 \
-            -f ${genome_fasta} \
-            -p ${outdir_tama}/${cell_type}/${sample_name}/${sam_name} \
-            -e common_ends
-            ) &
-
-            
-            ((count++))
-            # Every $max_jobs, wait for the batch to finish
-            if (( count % max_jobs == 0 )); then
-                wait
-            fi
+            printf "%s\t%s\t%s\t%s\n" \
+                "${bed}" "${value_col1}" "${value_col2}" "${value_col3}" >> "${merge_file_txt}"
         done
-        wait
-    done
 
-fi
+        conda activate tama
+
+        python "${tama_tool_path}"/tama_merge.py \
+        -f ""${tama_script_path}"/file_list_bed_merge_${sample_name}.txt" \
+        -p "${dir}""${sample_name}"_merged_tama \
+        -a 0 \
+        -m 0 \
+        -z 0 \
+        -d merge_dup
+    fi
+done
+
+
+
+
+
+
+
+
+
+
   
 # #################################################################################
 # # ------------------ Kallisto for SQANTI QC                   ----------------- #
