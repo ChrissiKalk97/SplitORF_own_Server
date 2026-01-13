@@ -58,8 +58,8 @@ bedtools_coverage_cds_outfile=${output_dir}/$(basename $window_bed_cds_coordinat
 
 
 if [ ! -s ${window_bed_three_primes} ]; then
-    bedtools makewindows -b "${three_primes}" -w 50 -i srcwinnum > ${window_bed_three_primes}
-    bedtools coverage -F 0.33 -a ${window_bed_three_primes} \
+    bedtools makewindows -b "${three_primes}" -w 20 -i srcwinnum > ${window_bed_three_primes}
+    bedtools coverage -F 0.33 -split -a ${window_bed_three_primes} \
     -b $bam > "${bedtools_coverage_three_prime_outfile}"
 fi
 
@@ -67,14 +67,14 @@ fi
 echo "${window_bed_cds_coordinates}"
 # for the CDS all samples may use the same windows, unless we want to filter these as well for the untranslated genes
 if [ ! -s ${window_bed_cds_coordinates} ]; then
-    bedtools makewindows -b "${cds_coordinates}" -w 50 -i srcwinnum > "${window_bed_cds_coordinates}"
-     bedtools coverage -F 0.33 -a "${window_bed_cds_coordinates}" \
+    bedtools makewindows -b "${cds_coordinates}" -w 20 -i srcwinnum > "${window_bed_cds_coordinates}"
+    bedtools coverage -F 0.33 -split -a "${window_bed_cds_coordinates}" \
     -b $bam > "${bedtools_coverage_cds_outfile}"
 fi
 
 
 if [ ! -s ${output_dir}/3_primes_filtered_for_CDS_distribution_${sample_name}.bed ]; then
-    python cds_vs_three_prime_coverage_windows.py \
+    python cds_vs_three_prime_coverage_windows_empirical.py \
     "${bedtools_coverage_three_prime_outfile}" \
     "${bedtools_coverage_cds_outfile}" \
     "${sample_name}" \
@@ -85,7 +85,7 @@ fi
 sort -k1,1 -k2,2n ${output_dir}/3_primes_filtered_for_CDS_distribution_${sample_name}.bed \
 > ${output_dir}/3_primes_filtered_for_CDS_distribution_${sample_name}_sorted.bed
 
-  # merge the overlapping 3'UTR regions to not have duplicates: when smapling the same region can only be selected once
+# merge the overlapping 3'UTR regions to not have duplicates: when smapling the same region can only be selected once
 bedtools merge -i  ${output_dir}/3_primes_filtered_for_CDS_distribution_${sample_name}_sorted.bed -s -c 4,5,6 -o collapse,min,distinct \
   > ${output_dir}/3_primes_filtered_for_CDS_distribution_${sample_name}_merged.bed
  
