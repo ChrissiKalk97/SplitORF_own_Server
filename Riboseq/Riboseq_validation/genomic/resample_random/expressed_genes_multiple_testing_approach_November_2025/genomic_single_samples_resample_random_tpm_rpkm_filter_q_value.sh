@@ -11,8 +11,8 @@ source activate Riboseq
 
 
 output_star="/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter"
-unique_region_dir_nmd="/home/ckalk/tools/SplitORF_pipeline/Output/run_30.09.2025-11.30.56_NMD_transcripts_correct_TSL_ref"
-unique_region_dir_ri="/home/ckalk/tools/SplitORF_pipeline/Output/run_30.09.2025-12.25.38_RI_transcripts_correct_TSL_ref"
+unique_region_dir_nmd="/home/ckalk/tools/SplitORF_pipeline/Output/run_13.01.2026-11.44.16_NMD_CDS_subtraction_minAlignLength_15"
+unique_region_dir_ri="/home/ckalk/tools/SplitORF_pipeline/Output/"
 ensembl_gtf="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.gtf"
 genome_fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
 # The following are the paths to the riboseq reads
@@ -199,7 +199,7 @@ export MKL_ENABLE_INSTRUCTIONS=SSE4_2
 
 Rscript -e 'if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown", repos="http://cran.us.r-project.org")'
 
-R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration_update_expression_filter_multiple_test_correction.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/Riboseq_report_NMD_3prime_CDS_distribution_filter_05_01_25.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome", "/home/ckalk/tools/SplitORF_pipeline/Output/run_30.09.2025-11.30.56_NMD_transcripts_correct_TSL_ref", "NMD")))'
+R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration_update_expression_filter_multiple_test_correction.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/Riboseq_report_NMD_3prime_CDS_quantile_filter_20bp_windows_13_01_26.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome", "/home/ckalk/tools/SplitORF_pipeline/Output/run_30.09.2025-11.30.56_NMD_transcripts_correct_TSL_ref", "NMD")))'
 
 
 

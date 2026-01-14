@@ -34,20 +34,14 @@ def parse_args():
 def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_original_for_strand_info, alpha):
     def plot_hist(x, bins, title, start, stop, outdir, outname, df):
         ax = sbn.histplot(
-        df, x=x, bins=bins)
+            df, x=x, bins=bins)
         ax.set_xlim(start, stop)
         ax.set_title(title)
-        plt.show()
-
         fig = ax.get_figure()
         fig.savefig(os.path.join(outdir,
                     outname), dpi=300, bbox_inches='tight')
         plt.close(fig)
-    
-    
-    
-    
-    
+
     outdir = os.path.dirname(three_prime_coverage_file)
 
     three_prime_coverage_file_df = pd.read_csv(
@@ -71,7 +65,7 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
         (cds_coverage_file_df['length_cds']/1000)
 
     # plot RPK distribution CDS hist
-    plot_hist('RPK', 35000, f'CDS RPK for {sample}', 0, 2000, outdir, 
+    plot_hist('RPK', 50000, f'CDS RPK for {sample}', 0, 3000, outdir,
               f'{sample}_CDS_RPK_hist_0_2000.png', cds_coverage_file_df)
     # ax = sbn.histplot(
     #     cds_coverage_file_df, x='RPK', bins=35000)
@@ -84,10 +78,9 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     #             f'{sample}_CDS_RPK_hist_0_2000.png'), dpi=300, bbox_inches='tight')
     # plt.close(fig)
 
- 
     # plot RPK distribution 3primes hist
-    plot_hist('RPK', 15000, f'3 prime RPK for {sample}', 0, 200, outdir, 
-              f'{sample}_three_primes_RPK_hist_0_200.png',
+    plot_hist('RPK', 100, f'3 prime RPK for {sample}', 0, 1000, outdir,
+              f'{sample}_three_primes_RPK_hist_0_1000.png',
               three_prime_coverage_file_df[three_prime_coverage_file_df['RPK'] < 2000])
     # ax = sbn.histplot(
     #     three_prime_coverage_file_df[three_prime_coverage_file_df['RPK'] < 2000],
@@ -102,9 +95,9 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     #             f'{sample}_three_primes_RPK_hist_0_200.png'), dpi=300, bbox_inches='tight')
     # plt.close(fig)
 
-    plot_hist('RPK', 15000, f'3 prime RPK > 0 for {sample}', 0, 200, outdir, f'{sample}_three_primes_RPK_hist_greater_0_0_200.png',
+    plot_hist('RPK', 100, f'3 prime RPK > 0 for {sample}', 0, 1000, outdir, f'{sample}_three_primes_RPK_hist_greater_0_1000.png',
               three_prime_coverage_file_df[(three_prime_coverage_file_df['RPK'] > 0) &
-                                     (three_prime_coverage_file_df['RPK'] < 2000)])
+                                           (three_prime_coverage_file_df['RPK'] < 2000)])
     # ax = sbn.histplot(
     #     three_prime_coverage_file_df[(three_prime_coverage_file_df['RPK'] > 0) &
     #                                  (three_prime_coverage_file_df['RPK'] < 2000)],
@@ -132,11 +125,9 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     # how does the three prime RPK distribution look like after the filtering?
     print('Fitlering threshold for RPK:', PI_lower)
 
-    plot_hist('RPK', 15000, f'CDS filtered 3 prime RPK for {sample}', 0, 200,
-              outdir, f'{sample}_three_primes_RPK_after_CDS_filter_hist_greater_0_0_200.png',
-              three_prime_coverage_file_df_filtered[
-            (three_prime_coverage_file_df_filtered['RPK'] > 0) &
-            (three_prime_coverage_file_df_filtered['RPK'] < 2000)])
+    plot_hist('RPK', 50, f'CDS filtered 3 prime RPK for {sample}', 0, 300,
+              outdir, f'{sample}_three_primes_RPK_after_CDS_filter_hist_greater_0_300.png',
+              three_prime_coverage_file_df_filtered[three_prime_coverage_file_df_filtered['RPK'] > 0])
     # ax = sbn.histplot(
     #     three_prime_coverage_file_df_filtered[
     #         (three_prime_coverage_file_df_filtered['RPK'] > 0) &
@@ -153,15 +144,15 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     # plt.close(fig)
 
     # need to recover the strand information, based on gene
-    strand_info_df = pd.read_csv(three_prime_original_for_strand_info, sep='\t', 
+    strand_info_df = pd.read_csv(three_prime_original_for_strand_info, sep='\t',
                                  names=[
-                                 'chr', 
-                                 'start',
-                                 'stop', 
-                                 'name', 
-                                 'score', 
-                                 'strand'])
-    
+                                     'chr',
+                                     'start',
+                                     'stop',
+                                     'name',
+                                     'score',
+                                     'strand'])
+
     strand_info_df['Gene'] = strand_info_df['name'].apply(
         lambda x: x.split('|')[0])
     strand_dict = dict(zip(strand_info_df['Gene'], strand_info_df['strand']))
@@ -174,17 +165,17 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
         strand_dict)
     three_prime_coverage_file_df_filtered['score'] = 0
 
-    three_prime_coverage_file_df_filtered.loc[:, 
-                                              ['chr', 
-                                               'start', 
-                                               'stop', 
-                                                '3_prime_name', 
-                                                'score', 
-                                                'strand']
+    three_prime_coverage_file_df_filtered.loc[:,
+                                              ['chr',
+                                               'start',
+                                               'stop',
+                                               '3_prime_name',
+                                               'score',
+                                               'strand']
                                               ].to_csv(os.path.join(
-                                                                    outdir, 
-                                                                    f'3_primes_filtered_for_CDS_distribution_{sample}.bed'),
-                                                                    sep='\t', header=False, index=False)
+                                                  outdir,
+                                                  f'3_primes_filtered_for_CDS_distribution_{sample}.bed'),
+        sep='\t', header=False, index=False)
 
 
 if __name__ == '__main__':
@@ -197,10 +188,10 @@ if __name__ == '__main__':
     three_prime_original_for_strand_info = args.three_prime_original_for_strand_info
     alpha = float(args.alpha)
 
-    # three_prime_coverage_file = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome/ERR3367798/3_primes_genomic_merged_numbered_ERR3367797_windows_coverage.tsv'
-    # cds_coverage_file = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome/ERR3367798/Ens_110_CDS_coordinates_genomic_protein_coding_tsl_refseq_filtered_ERR3367797_windows_coverage.tsv'
+    # three_prime_coverage_file = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome/ERR3367798/3_primes_genomic_merged_numbered_ERR3367798_windows_coverage.tsv'
+    # cds_coverage_file = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome/ERR3367798/Ens_110_CDS_coordinates_genomic_protein_coding_tsl_refseq_filtered_ERR3367798_windows_coverage.tsv'
     # sample = 'ERR3367798'
-    # three_prime_original_for_strand_info = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome/ERR3367798/3_primes_genomic_merged_numbered_ERR3367797.bed'
+    # three_prime_original_for_strand_info = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome/ERR3367798/3_primes_genomic_merged_numbered_ERR3367798.bed'
     # alpha = 0.05
 
     # check ENSG00000144136|ENST00000272542|11291 for ERR8, jhas very high coverage

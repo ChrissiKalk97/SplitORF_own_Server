@@ -76,11 +76,11 @@ if [ ! -e  "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_intersect
     fi
 
     if [ ! -e "$output_star"/NMD_genome/${sample_name}/3_primes_genomic_merged_numbered_${sample_name}.bed ]; then
-    python filter_bed_file_for_expressed_genes_rnanrom.py \
-        $three_primes \
-        "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_htseq_counts.tsv \
-        $ensembl_gtf \
-        20
+        python filter_bed_file_for_expressed_genes_rnanrom.py \
+            $three_primes \
+            "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_htseq_counts.tsv \
+            $ensembl_gtf \
+            20
     fi
 
     if [ ! -e  "$output_star"/NMD_genome/${sample_name}/Unique_DNA_Regions_genomic_CDS_subtraction_${sample_name}.bed ]; then
@@ -94,10 +94,10 @@ if [ ! -e  "$output_star"/NMD_genome/${sample_name}/${sample_name}_NMD_intersect
     cds_coordinates_tpm_filtered="${output_star}/NMD_genome/${sample_name}/"$(basename "${cds_coordinates}" .bed)_${sample_name}.bed
     if [ ! -e ${cds_coordinates_tpm_filtered} ]; then
         python filter_bed_file_for_expressed_genes_rnanrom.py \
-        "${cds_coordinates}" \
-        "${output_star}/NMD_genome/${sample_name}/${sample_name}_NMD_htseq_counts.tsv" \
-        $ensembl_gtf \
-        20
+            "${cds_coordinates}" \
+            "${output_star}/NMD_genome/${sample_name}/${sample_name}_NMD_htseq_counts.tsv" \
+            $ensembl_gtf \
+            20
     fi
 
     bash riboseq_coverage_3UTRs_vs_CDS_16_12_25.sh -b "${bam}" -c "${cds_coordinates_tpm_filtered}" \
