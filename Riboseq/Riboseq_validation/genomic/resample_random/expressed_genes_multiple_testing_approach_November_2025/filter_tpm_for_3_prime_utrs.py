@@ -36,7 +36,7 @@ def main(three_prime_coverage_file, sample, tpm_threshold):
 
     # TPM calculation in the 3' UTRs
     three_prime_coverage_file_df['RPK'] = three_prime_coverage_file_df['nr_overlap_reads'] / \
-        three_prime_coverage_file_df['length_3_prime_UTR']
+        (three_prime_coverage_file_df['length_3_prime_UTR']/1000)
 
     scaling_factor = sum(three_prime_coverage_file_df['RPK'])/1000000
 

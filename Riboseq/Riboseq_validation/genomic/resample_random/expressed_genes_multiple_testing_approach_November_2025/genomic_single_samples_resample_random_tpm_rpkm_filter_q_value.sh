@@ -103,7 +103,8 @@ for folder in "$output_star"/NMD_genome/*/; do
     echo $bams
 
     if [[ -e "${bams[0]}" ]]; then
-        i="${bams[0]}"        
+        i="${bams[0]}"   
+
 
         sample_name="$(basename "$i" _NMD_sorted.bam)"
 
@@ -118,18 +119,25 @@ for folder in "$output_star"/NMD_genome/*/; do
         -o $output_star \
         -s $sample_name \
         -t $three_primes \
-        -u $unique_region_dir_nmd
+        -u $unique_region_dir_nmd \
+        -d
+
+        bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/Riboseq_pipeline.sh \
+        -i "${output_star}/NMD_genome/${sample_name}" \
+        -o "${output_star}/NMD_genome/RiboseQC" \
+        -g "${ensembl_gtf}" \
+        -q
 
     fi
-
-    
-
 done
+
+
+
 
 # the preprocessing and intersection for Vlado's protocol Ribo-seq data
 # run this once in the first run, after that there are the chrom_sort.bed files
 # already in the respective directory, and they are run in the second loop
-for i in $UMI_dedup_outdir/*_filtered.bam; do
+for i in "${UMI_dedup_outdir}"/*_filtered.bam; do
     sample_name=$(basename "$i" _dedup_filtered.bam)
     
     echo $sample_name
@@ -160,9 +168,15 @@ for i in $UMI_dedup_outdir/*_filtered.bam; do
 
 done
 
+# bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/Riboseq_pipeline.sh \
+#     -i  "${UMI_dedup_outdir}" \
+#     -o "${output_star}/NMD_genome/RiboseQC" \
+#     -g "${ensembl_gtf}" \
+#     -q
+
 
 # The preprocessing and intersection for the UPF1 deletion Ribo-seq data
-for i in $umi_dedup_upf10/*_filtered.bam; do
+for i in "${umi_dedup_upf10}"/*_filtered.bam; do
     sample_name=$(basename "$i" _dedup_filtered.bam)
     
     echo $sample_name
@@ -191,16 +205,21 @@ for i in $umi_dedup_upf10/*_filtered.bam; do
 
 done
 
+# bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/Riboseq_pipeline.sh \
+#     -i  "${umi_dedup_upf10}" \
+#     -o "${output_star}/NMD_genome/RiboseQC" \
+#     -g "${ensembl_gtf}" \
+#     -q
 
 
+# if [ ! -e "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/Riboseq_report_NMD_3prime_CDS_quantile_filter_20bp_windows_13_01_26.pdf" ]; then
+    export LD_LIBRARY_PATH=/opt/intel/oneapi/mkl/2022.0.2/lib/intel64:$LD_LIBRARY_PATH
+    export MKL_ENABLE_INSTRUCTIONS=SSE4_2
 
-export LD_LIBRARY_PATH=/opt/intel/oneapi/mkl/2022.0.2/lib/intel64:$LD_LIBRARY_PATH
-export MKL_ENABLE_INSTRUCTIONS=SSE4_2
+    Rscript -e 'if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown", repos="http://cran.us.r-project.org")'
 
-Rscript -e 'if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown", repos="http://cran.us.r-project.org")'
-
-R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration_update_expression_filter_multiple_test_correction.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/Riboseq_report_NMD_3prime_CDS_quantile_filter_20bp_windows_13_01_26.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome", "/home/ckalk/tools/SplitORF_pipeline/Output/run_30.09.2025-11.30.56_NMD_transcripts_correct_TSL_ref", "NMD")))'
-
+    R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration_update_expression_filter_multiple_test_correction.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/Riboseq_report_NMD_filter_sample_7mio_threshold_19_01_26.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome", "/home/ckalk/tools/SplitORF_pipeline/Output/run_30.09.2025-11.30.56_NMD_transcripts_correct_TSL_ref", "NMD")))'
+# fi
 
 
 
@@ -259,7 +278,7 @@ R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iterat
 # # the preprocessing and intersection for Vlado's protocol Ribo-seq data
 # # run this once in the first run, after that there are the chrom_sort.bed files
 # # already in the respective directory, and they are run in the second loop
-# for i in $UMI_dedup_outdir/*_filtered.bam; do
+# for i in "${UMI_dedup_outdir}"/*_filtered.bam; do
 #     sample_name=$(basename "$i" _dedup_filtered.bam)
     
 #     echo $sample_name
@@ -302,7 +321,7 @@ R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iterat
 
 
 # # The preprocessing and intersection for the UPF1 deletion Ribo-seq data
-# for i in $umi_dedup_upf10/*_filtered.bam; do
+# for i in "${umi_dedup_upf10}"/*_filtered.bam; do
 #     sample_name=$(basename "$i" _dedup_filtered.bam)
     
 #     echo $sample_name
@@ -370,7 +389,7 @@ R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iterat
 
 # # done
 
-# # for i in "$UMI_dedup_outdir"/*_filtered.bam; do
+# # for i in ""${UMI_dedup_outdir}""/*_filtered.bam; do
 # #     sample_name=$(basename "$i" _dedup_filtered.bam)
     
 # #     echo $sample_name
@@ -393,7 +412,7 @@ R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iterat
 # # done
 
 
-# # for i in "$umi_dedup_upf10"/*_filtered.bam; do
+# # for i in ""${umi_dedup_upf10}""/*_filtered.bam; do
 # #     sample_name=$(basename "$i" _dedup_filtered.bam)
     
 # #     echo $sample_name

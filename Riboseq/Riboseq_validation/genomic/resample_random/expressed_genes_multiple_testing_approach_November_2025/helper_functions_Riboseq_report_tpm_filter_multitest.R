@@ -10,6 +10,10 @@ if (!requireNamespace("lemon", quietly = TRUE)) {
     install.packages("lemon", repos = "https://cloud.r-project.org/")
 }
 
+if (!requireNamespace("dplyr", quietly = TRUE)) {
+    install.packages("dplyr", repos = "https://cloud.r-project.org/")
+}
+
 if (!requireNamespace("cmapR", quietly = TRUE)) {
     if (!require("BiocManager", quietly = TRUE)) {
         install.packages("BiocManager", repos = "https://cloud.r-project.org/")
@@ -18,10 +22,10 @@ if (!requireNamespace("cmapR", quietly = TRUE)) {
     BiocManager::install("cmapR")
 }
 if (!requireNamespace("data.table", quietly = TRUE)) {
-    install.packages("data.table")
+    install.packages("data.table", repos = "https://cloud.r-project.org/")
 }
 if (!requireNamespace("kableExtra", quietly = TRUE)) {
-    install.packages("kableExtra")
+    install.packages("kableExtra", repos = "https://cloud.r-project.org/")
     # tinytex::reinstall_tinytex(repository = "illinois")
     # tinytex::tlmgr_install('multirow')
 }
@@ -38,28 +42,10 @@ library(cmapR)
 library(data.table)
 library(kableExtra)
 
-
-mean_absolute_deviation <- function(df, min_mad=1e-6){
-  
-  med <- stats::median(df$relative_count)
-  
-  abs_dev <- abs(df$relative_count - med)
-  
-  mean_ad <- mean(df$relative_count) 
-  
-  
-  if (mean_ad == 0) {
-    mean_ad <- max(max(abs_dev), min_mad)
-  }
-  
-  mean_ad <- (df$relative_count - med) / (mean_ad*1.4826)
-  return(mean_ad)
-}
-
 get_random_dataframes <- function(unique_region_type = `?`(character), path){
       # get directory list of subdirectories of the current
       # working directory
-      directories <- list.dirs(path = path, full.names = TRUE, recursive = TRUE)
+      directories <- list.dirs(path = path, full.names = TRUE, recursive = FALSE)
       
       randomfiles <- list()
       background <- list()
@@ -118,8 +104,8 @@ calculate_background_rank_counts <- function(unique_region_type = `?`(character)
     ranked_random_frames <- list()
     for (i in seq_along(randomdataframes)) {
       randomframe <- randomdataframes[[i]]
-      # print(names(randomdataframes)[[i]])
-      
+      print(names(randomdataframes)[[i]])
+
       colnames(randomframe) <- c(
         "chr_background", "start",
         "stop", "name", "phase", "strand", "chr_ribo", "start_ribo",
@@ -208,7 +194,7 @@ calculate_background_rank_counts <- function(unique_region_type = `?`(character)
 get_intersect_files <- function(unique_region_type = `?`(character), path) {
     directories <- list.dirs(path = path, full.names = TRUE, recursive = TRUE)
     files <- list() # Initialize an empty list
-    setnames <- list() # Initialize an empty list
+    basenames <- list() # Initialize an empty list
     for (i in directories) {
         # Use list.files with the correct pattern to find
         # matching files
@@ -220,7 +206,7 @@ get_intersect_files <- function(unique_region_type = `?`(character), path) {
         # If matching files are found, append to the lists
         if (length(matching_files) > 0) {
             files <- append(files, matching_files)
-            setnames <- append(setnames, basename(matching_files))
+            basenames <- append(basenames, basename(matching_files))
             # Use basename to get file names only
         }
     }
@@ -229,8 +215,8 @@ get_intersect_files <- function(unique_region_type = `?`(character), path) {
     # Read the files into a list of data frames
     dataframes <- lapply(files, fread, header = FALSE, sep = "\t")
 
-    # Assign names to the data frames based on the setnames
-    names(dataframes) <- stringr::str_replace(setnames,
+    # Assign names to the data frames based on the basenames
+    names(dataframes) <- stringr::str_replace(basenames,
         pattern = paste0("_", unique_region_type, "_intersect_counts_sorted.bed"),
         replacement = ""
     )
@@ -487,7 +473,7 @@ get_start_positions <- function(pos_string) {
 }
 
 get_print_ORF_ranks <- function(SO_pipe_path, frames) {
-    SO_results <- read.delim(file.path(SO_pipe_path, paste0("UniqueProteinORFPairs.txt")))
+    SO_results <- read.delim(file.path(SO_pipe_path, "UniqueProteinORFPairs.txt"))
     SO_results$ORF_starts <- sapply(SO_results$OrfPos, get_start_positions)
     head(SO_results)
 

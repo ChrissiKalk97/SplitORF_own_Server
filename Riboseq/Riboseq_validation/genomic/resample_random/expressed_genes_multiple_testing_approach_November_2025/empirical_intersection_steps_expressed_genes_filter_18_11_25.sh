@@ -69,8 +69,8 @@ echo $out_path
 
 if [[ "$input_file" == *.bed ]]; then
   sorted_bedfile="$input_file"
-  present_chromosomes="$out_path/$(basename $sorted_bedfile _chrom_sort.bed)_chromosomes.txt"
-  samtools view -H "$out_path/$(basename $sorted_bedfile _chrom_sort.bed)_sorted.bam" | grep '@SQ' | cut -f 2 | cut -d ':' -f 2  | sort | uniq > $present_chromosomes
+  present_chromosomes="$out_path/$(basename $outname)_chromosomes.txt"
+  samtools view -H "$(dirname $input_file)/$(basename $sorted_bedfile _chrom_sort.bed)_sorted.bam" | grep '@SQ' | cut -f 2 | cut -d ':' -f 2  | sort | uniq > $present_chromosomes
 else
     echo "generating bed file"
     bed_file="$out_path/${sample}.bed"
@@ -81,7 +81,7 @@ else
     sort -k1,1 -k2,2n $bed_file > $sorted_bedfile
     rm $bed_file
 
-    present_chromosomes="$out_path/$(basename $sorted_bedfile _chrom_sort.bed)_chromosomes.txt"
+    present_chromosomes="$out_path/$(basename $outname)_chromosomes.txt"
     samtools view -H $input_file | grep '@SQ' | cut -f 2 | cut -d ':' -f 2  | sort | uniq > $present_chromosomes
 fi
 
@@ -111,11 +111,9 @@ fi
 ################################################################################
 # INDEX, SORT, MAKE BED FROM GENOMIC ALIGNMENTS                                #
 ################################################################################
-BED_DIR=$(dirname  $sorted_bedfile)
-
-if [ ! -s  $out_path/genome_chrom_ordering_$(basename $sorted_bedfile _chrom_sort.bed).txt ]; then
-  present_chromosomes="$out_path/$(basename $sorted_bedfile _chrom_sort.bed)_chromosomes.txt"
-  grep -Fwf $present_chromosomes $random_region_path/genome_chrom_ordering.txt | sort -k1,1 -k2,2n > $out_path/genome_chrom_ordering_$(basename $sorted_bedfile _chrom_sort.bed).txt
+if [ ! -s  $out_path/genome_chrom_ordering_$(basename $outname).txt ]; then
+  present_chromosomes="$out_path/$(basename $outname)_chromosomes.txt"
+  grep -Fwf $present_chromosomes $random_region_path/genome_chrom_ordering.txt | sort -k1,1 -k2,2n > $out_path/genome_chrom_ordering_$(basename $outname).txt
 fi
 
 
@@ -134,7 +132,7 @@ bedtools intersect\
    -a $sorted_unique_regions\
    -b $sorted_bedfile\
    -sorted\
-   -g $out_path/genome_chrom_ordering_$(basename $sorted_bedfile _chrom_sort.bed).txt\
+   -g $out_path/genome_chrom_ordering_$(basename $outname).txt\
    | sort -T /scratch/tmp/$USER -nr -k13,13\
    > $intersectBedfile
 
@@ -169,7 +167,7 @@ for i in {1..20}; do
     -s\
     -wao\
     -sorted\
-    -g "$out_path/genome_chrom_ordering_$(basename $sorted_bedfile _chrom_sort.bed).txt"\
+    -g "$out_path/genome_chrom_ordering_$(basename $outname).txt"\
     -a "$sorted_randomfile" \
     -b "$sorted_bedfile"\
     | sort -T /scratch/tmp/"$USER" -nr -k13,13\

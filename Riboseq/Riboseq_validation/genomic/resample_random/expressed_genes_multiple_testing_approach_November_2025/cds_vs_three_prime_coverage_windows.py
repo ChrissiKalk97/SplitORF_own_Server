@@ -36,7 +36,9 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
 
     three_prime_coverage_file_df = pd.read_csv(
         three_prime_coverage_file, sep='\t', header=None,
-        names=['chr', 'start', 'stop', '3_prime_name', 'nr_overlap_reads', 'nr_bases_covered', 'length_3_prime_UTR', 'covered_fraction'])
+        names=['chr', 'start', 'stop', '3_prime_name', 'nr_overlap_reads',
+               'nr_bases_covered', 'length_3_prime_UTR', 'covered_fraction'],
+        low_memory=False)
 
     # length normalization of reads
     three_prime_coverage_file_df['RPK'] = three_prime_coverage_file_df['nr_overlap_reads'] / \
@@ -44,7 +46,9 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
 
     cds_coverage_file_df = pd.read_csv(
         cds_coverage_file, sep='\t', header=None,
-        names=['chr', 'start', 'stop', '3_prime_name', 'nr_overlap_reads', 'nr_bases_covered', 'length_cds', 'covered_fraction'])
+        names=['chr', 'start', 'stop', '3_prime_name', 'nr_overlap_reads',
+               'nr_bases_covered', 'length_cds', 'covered_fraction'],
+        low_memory=False)
 
     # length normalization of reads
     cds_coverage_file_df['RPK'] = cds_coverage_file_df['nr_overlap_reads'] / \
@@ -88,7 +92,9 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
 
     # plot RPK distribution 3primes hist
     ax = sbn.histplot(
-        three_prime_coverage_file_df, x='RPK', bins=15000)
+        three_prime_coverage_file_df[three_prime_coverage_file_df['RPK'] < 2000],
+        x='RPK',
+        bins=15000)
     ax.set_xlim(0, 200)
     ax.set_title(f'3 prime RPK for {sample}')
     plt.show()
@@ -96,6 +102,21 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     fig = ax.get_figure()
     fig.savefig(os.path.join(outdir,
                 f'{sample}_three_primes_RPK_hist_0_200.png'), dpi=300, bbox_inches='tight')
+    plt.close(fig)
+
+    ax = sbn.histplot(
+        three_prime_coverage_file_df[(three_prime_coverage_file_df['RPK'] > 0) &
+                                     (three_prime_coverage_file_df['RPK'] < 2000)],
+        x='RPK',
+        bins=15000)
+    ax.set_xlim(0, 200)
+    ax.set_title(f'filtered 3 prime RPK for {sample}')
+    plt.show()
+
+    fig = ax.get_figure()
+    fig.savefig(os.path.join(outdir,
+                f'{sample}_three_primes_RPK_hist_greater_0_0_200.png'),
+                dpi=300, bbox_inches='tight')
     plt.close(fig)
 
     three_prime_coverage_file_df['log_RPK'] = np.log10(
@@ -112,15 +133,15 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
                 f'{sample}_three_primes_log_RPK_box.png'), dpi=300, bbox_inches='tight')
     plt.close(fig)
 
-    print('CDS 25th quantile', cds_coverage_file_df['RPK'].quantile(0.25))
-    print('CDS median', cds_coverage_file_df['RPK'].quantile(0.5))
+    # print('CDS 25th quantile', cds_coverage_file_df['RPK'].quantile(0.25))
+    # print('CDS median', cds_coverage_file_df['RPK'].quantile(0.5))
 
-    print('three prime 25th quantile',
-          three_prime_coverage_file_df['RPK'].quantile(0.25))
-    print('three prime median',
-          three_prime_coverage_file_df['RPK'].quantile(0.5))
-    print('three prime 75th quantile',
-          three_prime_coverage_file_df['RPK'].quantile(0.75))
+    # print('three prime 25th quantile',
+    #       three_prime_coverage_file_df['RPK'].quantile(0.25))
+    # print('three prime median',
+    #       three_prime_coverage_file_df['RPK'].quantile(0.5))
+    # print('three prime 75th quantile',
+    #       three_prime_coverage_file_df['RPK'].quantile(0.75))
 
     # FILTER OUT VALUES THAT ARE 0
     from scipy import stats
@@ -150,9 +171,26 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
 
         plt.xlabel('Value')
         plt.ylabel('Density')
-        plt.title(f'Histogram with {dist.name} fit')
+        plt.title(f'Histogram with {dist.name} fit - {sample}')
         plt.legend()
         plt.savefig(os.path.join(outdir, f'{sample}_{dist.name}_fit.png'))
+        # plt.show()
+        plt.close(fig)
+
+        fig = plt.figure()
+        plt.hist(cds_coverage_file_df_filtered['log_RPK'],
+                 bins=50, density=True, alpha=0.5, label='Data')
+
+        x = np.linspace(0, max(cds_coverage_file_df_filtered['log_RPK']), 1000)
+        pdf_fitted = dist.pdf(x, *params)
+        plt.plot(x, pdf_fitted, 'r-', lw=2, label=f'{dist.name} fit')
+
+        plt.xlabel('Value')
+        plt.ylabel('Density')
+        plt.title(f'Histogram with {dist.name} fit - {sample}')
+        plt.legend()
+        plt.savefig(os.path.join(
+            outdir, f'{sample}_{dist.name}_50_bins_fit.png'))
         # plt.show()
         plt.close(fig)
     print(fits)
@@ -160,6 +198,7 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     fig = plt.figure()
     stats.probplot(cds_coverage_file_df_filtered['log_RPK'], dist="gamma",
                    sparams=fits['gamma']['params'], plot=plt)
+    plt.title(f"{sample} – Gamma QQ plot")
     plt.savefig(os.path.join(
         outdir, f'{sample}_gamma_QQ_plot.png'), dpi=300, bbox_inches='tight')
     plt.close(fig)
@@ -167,6 +206,7 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     fig = plt.figure()
     stats.probplot(cds_coverage_file_df_filtered['log_RPK'], dist="skewnorm",
                    sparams=fits['skewnorm']['params'], plot=plt)
+    plt.title(f"{sample} – Skew-normal QQ plot")
     plt.savefig(os.path.join(
         outdir, f'{sample}_skewnorm_QQ_plot.png'), dpi=300, bbox_inches='tight')
     plt.close(fig)
@@ -174,6 +214,7 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     fig = plt.figure()
     stats.probplot(cds_coverage_file_df_filtered['log_RPK'], dist="t",
                    sparams=fits['t']['params'], plot=plt)
+    plt.title(f"{sample} – t QQ plot")
     plt.savefig(os.path.join(
         outdir, f'{sample}_t_QQ_plot.png'), dpi=300, bbox_inches='tight')
     plt.close(fig)
@@ -181,6 +222,7 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     fig = plt.figure()
     stats.probplot(cds_coverage_file_df_filtered['log_RPK'], dist="weibull_min",
                    sparams=fits['weibull_min']['params'], plot=plt)
+    plt.title(f"{sample} – Weibull-min QQ plot")
     plt.savefig(os.path.join(
         outdir, f'{sample}_weibull_min_QQ_plot.png'), dpi=300, bbox_inches='tight')
     plt.close(fig)
@@ -222,6 +264,24 @@ def main(three_prime_coverage_file, sample, cds_coverage_file, three_prime_origi
     three_prime_coverage_file_df_filtered = three_prime_coverage_file_df[
         three_prime_coverage_file_df['log_RPK'] < PI_lower].copy()
 
+    # how does the three prime RPK distribution look like after the filtering?
+    print('Fitlering threshold for log RPK:', PI_lower)
+
+    ax = sbn.histplot(
+        three_prime_coverage_file_df_filtered[
+            (three_prime_coverage_file_df_filtered['RPK'] > 0) &
+            (three_prime_coverage_file_df_filtered['RPK'] < 2000)],
+        x='RPK',
+        bins=15000)
+    ax.set_xlim(0, 200)
+    ax.set_title(f'CDS filtered 3 prime RPK for {sample}')
+    plt.show()
+
+    fig = ax.get_figure()
+    fig.savefig(os.path.join(outdir,
+                f'{sample}_three_primes_RPK_after_CDS_filter_hist_greater_0_0_200.png'), dpi=300, bbox_inches='tight')
+    plt.close(fig)
+
     # need to recover the strand information, based on gene
     strand_info_df = pd.read_csv(three_prime_original_for_strand_info, sep='\t', names=[
                                  'chr', 'start', 'stop', 'name', 'score', 'strand'])
@@ -249,11 +309,13 @@ if __name__ == '__main__':
     three_prime_original_for_strand_info = args.three_prime_original_for_strand_info
     alpha = float(args.alpha)
 
-    # three_prime_coverage_file = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome/ERR3367797/3_primes_genomic_merged_numbered_ERR3367797_windows_coverage.tsv'
-    # cds_coverage_file = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome/ERR3367797/Ens_110_CDS_coordinates_genomic_protein_coding_tsl_refseq_filtered_ERR3367797_windows_coverage.tsv'
-    # sample = 'ERR3367797'
-    # three_prime_original_for_strand_info = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome/ERR3367797/3_primes_genomic_merged_numbered_ERR3367797.bed'
+    # three_prime_coverage_file = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome/ERR3367798/3_primes_genomic_merged_numbered_ERR3367797_windows_coverage.tsv'
+    # cds_coverage_file = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome/ERR3367798/Ens_110_CDS_coordinates_genomic_protein_coding_tsl_refseq_filtered_ERR3367797_windows_coverage.tsv'
+    # sample = 'ERR3367798'
+    # three_prime_original_for_strand_info = '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome/ERR3367798/3_primes_genomic_merged_numbered_ERR3367797.bed'
     # alpha = 0.05
+
+    # check ENSG00000144136|ENST00000272542|11291 for ERR8, jhas very high coverage
 
     main(three_prime_coverage_file, sample, cds_coverage_file,
          three_prime_original_for_strand_info, alpha)
