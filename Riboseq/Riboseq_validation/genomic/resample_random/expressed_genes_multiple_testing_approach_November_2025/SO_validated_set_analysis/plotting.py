@@ -1,0 +1,37 @@
+import os
+import os.path
+import matplotlib.pyplot as plt
+
+
+def plot_three_category_pie(cat1, cat2, cat3, nr_total_so, names_list, title, out_dir, figname, region_type, color_order):
+    # plot pie chart with numbers: first, middle, last ORF
+    fig, ax = plt.subplots()
+    ax.pie([cat1, cat2, cat3],
+           labels=names_list,
+           autopct=lambda p: '{:.0f}'.format(p * nr_total_so / 100),
+           colors=color_order)
+    plt.title(f'{title} - {region_type}')
+
+    plt.savefig(
+        os.path.join(out_dir, f'{region_type}_{figname}.svg'), bbox_inches='tight')
+    plt.close()
+
+
+def plot_val_so_sets(nr_orfs_with_UR, nr_validated_so, total_nr_so, outdir, region_type, category_names=['# validated SO', '# SO with UR not validated',
+                                                                                                         '# SO without UR']):
+    nr_so_not_validated = nr_orfs_with_UR - nr_validated_so
+    nr_so_no_UR = total_nr_so - nr_orfs_with_UR
+
+    assert nr_validated_so + nr_so_not_validated + nr_so_no_UR == total_nr_so
+
+    plot_three_category_pie(nr_validated_so,
+                            nr_so_not_validated,
+                            nr_so_no_UR,
+                            total_nr_so,
+                            category_names,
+                            'Split-ORF validation pie chart',
+                            outdir,
+                            'SO_validation_pie_chart',
+                            region_type,
+                            ['#CC79A7', '#FFC500', '#75C1C5']
+                            )
