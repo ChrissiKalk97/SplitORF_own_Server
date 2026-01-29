@@ -233,12 +233,18 @@ if [[ ! -e "${file_dir}/RiboseQC/ORFquant/RiboseQC/$(basename ${i})_04_08_25.htm
 fi
 
 
-# if [ ! -e "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/Riboseq_report_NMD_3prime_CDS_quantile_filter_20bp_windows_13_01_26.pdf" ]; then
+if [ ! -e "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/Riboseq_report_NMD_3prime_CDS_quantile_filter_20bp_windows_13_01_26.pdf" ]; then
     export LD_LIBRARY_PATH=/opt/intel/oneapi/mkl/2022.0.2/lib/intel64:$LD_LIBRARY_PATH
     export MKL_ENABLE_INSTRUCTIONS=SSE4_2
 
     Rscript -e 'if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown", repos="http://cran.us.r-project.org")'
 
     R -e 'library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration_update_expression_filter_multiple_test_correction.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/Riboseq_report_NMD_filter_sample_5mio_threshold_21_01_26.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome", "/home/ckalk/tools/SplitORF_pipeline/Output/run_13.01.2026-11.44.16_NMD_CDS_subtraction_minAlignLength_15", "NMD")))'
-# fi
+fi
+
+# get a summary of the transcripts that have 2 URs or more validated
+python /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random/expressed_genes_multiple_testing_approach_November_2025/downstream_analysis_validated_URs/summarize_transcripts_with_2_val_regions_across_samples.py \
+    --out_name '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome/transcripts_with_2_regions_summarized.csv' \
+    --ribo_coverage_path '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/NMD_genome' \
+    --samples_of_interest_string 'SRR10,SRR85,HCT'
 
