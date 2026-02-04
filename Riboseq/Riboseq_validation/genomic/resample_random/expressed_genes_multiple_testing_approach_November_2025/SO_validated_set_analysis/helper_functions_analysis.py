@@ -49,11 +49,15 @@ def explode_so_df(predicted_so_orfs):
     return all_predicted_so_orfs, predicted_so_orfs, total_nr_so
 
 
-def subset_validated_sos_df(all_predicted_so_orfs):
+def subset_validated_sos_df(all_predicted_so_orfs, outdir, region_type):
     all_predicted_so_orfs['ValidationCount'] = all_predicted_so_orfs.iloc[:, range(
         6, len(all_predicted_so_orfs.columns))].sum(axis=1, numeric_only=True)
-    validated_so_df = all_predicted_so_orfs[all_predicted_so_orfs['ValidationCount'] > 1].copy(
+    validated_so_df = all_predicted_so_orfs[all_predicted_so_orfs['ValidationCount'] > 0].copy(
     )
+
+    # write txt file with genes that have validated SOs
+    pd.Series(validated_so_df['geneID'].unique()).to_csv(os.path.join(
+        outdir, f'SO_validated_genes_{region_type}.txt'), header=False, index=False)
     nr_validated_so = len(validated_so_df.index)
     nr_validated_transcripts = len(validated_so_df['OrfTransID'].unique())
     print('Number of validated SOs:', nr_validated_so)
@@ -61,7 +65,7 @@ def subset_validated_sos_df(all_predicted_so_orfs):
     return validated_so_df, nr_validated_so, nr_validated_transcripts
 
 
-def subset_UR_for_expressed_genes(dna_ur_df, validated_so_df, ribo_coverage_path):
+def subset_UR_for_expressed_genes(dna_ur_df, validated_so_df, ribo_coverage_path, outdir, region_type):
     '''
         subset the URs for the genes that are included by TPM filter
     '''
@@ -72,6 +76,8 @@ def subset_UR_for_expressed_genes(dna_ur_df, validated_so_df, ribo_coverage_path
         lambda x: x.split('|')[1])
 
     genes_to_keep = filter_so_genes(ribo_coverage_path)
+    pd.Series(genes_to_keep).to_csv(os.path.join(
+        outdir, f'all_considered_SO_genes_{region_type}.txt'))
     # subset and count ORFs with URs for expressed genes
     dna_ur_df_subset = dna_ur_df[(dna_ur_df['gene'].isin(genes_to_keep)) | (
         dna_ur_df['tID'].isin(validated_so_df['OrfTransID']))]
@@ -104,7 +110,7 @@ def filter_so_genes(ribo_coverage_path):
     counts_above_20 = Counter(genes_above_20_list)
     genes_to_keep = []
     for gene, count in counts_above_20.items():
-        if count > 1:
+        if count > 0:
             genes_to_keep.append(gene)
     return genes_to_keep
 
@@ -145,7 +151,7 @@ def val_so_by_position(validated_so_df, nr_validated_so, outdir, region_type):
                             outdir,
                             'positions_of_validated_SO_pie_chart',
                             region_type,
-                            ['#75C1C5', '#CC79A7', '#FFC500']
+                            ['#75C1C5', '#FFC500', '#CC79A7']
                             )
     return nr_first_orfs, nr_middle_orfs, nr_last_orfs
 
@@ -168,7 +174,7 @@ def all_URs_by_position(dna_ur_df, all_predicted_so_orfs, outdir, region_type):
                             outdir,
                             'positions_of_SO_with_UR_pie_chart',
                             region_type,
-                            ['#75C1C5', '#CC79A7', '#FFC500']
+                            ['#75C1C5', '#FFC500', '#CC79A7']
                             )
     return nr_first_orfs, nr_middle_orfs, nr_last_orfs
 
@@ -302,5 +308,7 @@ def identify_overlapping_unique_regions(validated_so_df, dna_ur_df, outdir):
 
     val_dna_overlapping_ur_df['OrfPosition'].value_counts(
     ).reset_index().to_csv(os.path.join(outdir, 'distinct_URs_per_position.csv'))
+
+    validated_so_df.to_csv(os.path.join(outdir, 'validated_so_df.csv'))
 
     return val_dna_overlapping_ur_df

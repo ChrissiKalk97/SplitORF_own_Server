@@ -47,7 +47,7 @@ def main(so_results, ribo_coverage_path, region_type, ur_path, outdir):
         ribo_coverage_path, all_predicted_so_orfs)
 
     validated_so_df, nr_validated_so, nr_validated_transcripts = subset_validated_sos_df(
-        all_predicted_so_orfs)
+        all_predicted_so_orfs, outdir, region_type)
 
     # ------------------ LOAD DNA UNIQUE REGIONS ------------------ #
     dna_ur_df, nr_orfs_with_UR, nr_transcripts_with_UR = load_dna_ur_df(
@@ -55,7 +55,7 @@ def main(so_results, ribo_coverage_path, region_type, ur_path, outdir):
 
     # ------------------ LOAD DNA UNIQUE REGIONS ------------------ #
     nr_orfs_with_UR, dna_ur_df = subset_UR_for_expressed_genes(
-        dna_ur_df, validated_so_df, ribo_coverage_path)
+        dna_ur_df, validated_so_df, ribo_coverage_path, outdir, region_type)
 
     # define category_names
     # define nr_orfs_with_UR as nr_orfs_with_UR minus the ones that are not expressed
@@ -67,6 +67,9 @@ def main(so_results, ribo_coverage_path, region_type, ur_path, outdir):
     # ------------------ PLOT VALIDATED TRANSCRIPT PROPORTIONS ------------------ #
     plot_val_so_sets(nr_orfs_with_UR, nr_validated_so,
                      total_nr_so, os.path.join(outdir, 'plots'), region_type, category_names=category_names)
+
+    print(f'Validation percentage for {region_type}:',
+          nr_validated_so/nr_orfs_with_UR)
 
     # ------------------ PLOT VALIDATED SO POSITIONS ------------------ #
     nr_val_first_orfs, nr_val_middle_orfs, nr_val_last_orfs = val_so_by_position(
@@ -101,7 +104,7 @@ def main(so_results, ribo_coverage_path, region_type, ur_path, outdir):
                             os.path.join(outdir, 'plots'),
                             'positions_of_distinct_UR_validated_pie_chart',
                             region_type,
-                            ['#75C1C5', '#CC79A7', '#FFC500']
+                            ['#75C1C5', '#FFC500', '#CC79A7']
                             )
 
 
