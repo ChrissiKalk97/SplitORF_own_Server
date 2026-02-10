@@ -160,13 +160,13 @@ if (coarse) {
 
 svg(file.path(nmd_path, nmd_out), width = 14, height = 6)
     upset(fromList(upsetlist_genomic_nmd), order.by = "freq", nsets = nsets, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
-        set_size.scale_max = set_size.scale_max_nmd, nintersects=16, 
+        set_size.scale_max = set_size.scale_max_nmd, nintersects=30, 
         mainbar.y.label = "NMD Unique Region Intersections", sets.x.label = "Matching NMD unique regions per cell type",
         text.scale = 1.7)
 dev.off()
 svg(file.path(ri_path, ri_out), width = 14, height = 6)
     upset(fromList(upsetlist_genomic_ri), order.by = "freq", nsets = nsets, point.size = 2.25, line.size = 1.5, set_size.show = TRUE,
-        set_size.scale_max = set_size.scale_max_ri, sets = sorted_samples_ri, nintersects = 19,
+        set_size.scale_max = set_size.scale_max_ri, sets = sorted_samples_ri, nintersects = 30,
         mainbar.y.label = "RI Unique Region Intersections", sets.x.label = "Matching RI unique regions per cell type",
         text.scale = 1.7)
 dev.off()
