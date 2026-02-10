@@ -9,7 +9,8 @@ from helper_functions_analysis import explode_so_df, \
     subset_UR_for_expressed_genes, subset_validated_sos_df, \
     val_so_by_position, all_URs_by_position, \
     val_perc_first_middle_last_orfs_csv, count_orfs_by_position, \
-    identify_overlapping_unique_regions, validated_so_per_sample_analysis
+    identify_overlapping_unique_regions, validated_so_per_sample_analysis, \
+    add_sample_info_ur_df
 from plotting import plot_val_so_sets, plot_three_category_pie
 
 
@@ -91,6 +92,9 @@ def main(so_results, ribo_coverage_path, region_type, ur_path, outdir):
     val_dna_overlapping_ur_df = identify_overlapping_unique_regions(
         validated_so_df, dna_ur_df, outdir)
 
+    # need to combine both dfs: val_dna_overlapping_ur_df for UR overlap info and
+    # validated_so_df for sample information
+
     total_nr_val_distinct_orfs = len(val_dna_overlapping_ur_df.index)
 
     nr_first_orfs, nr_middle_orfs, nr_last_orfs = count_orfs_by_position(
@@ -106,6 +110,9 @@ def main(so_results, ribo_coverage_path, region_type, ur_path, outdir):
                             region_type,
                             ['#75C1C5', '#FFC500', '#CC79A7']
                             )
+
+    val_dna_overlapping_ur_df = add_sample_info_ur_df(
+        validated_so_df, val_dna_overlapping_ur_df, outdir)
 
 
 if __name__ == "__main__":

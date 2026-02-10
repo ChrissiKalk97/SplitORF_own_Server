@@ -218,7 +218,7 @@ def get_max_overlap_of_regions_in_df(chr_df, threshold=0.7):
                 end2 = float(chr_df.iloc[index2]['stop'])
                 overlap = calculate_overlapping_region_percentage(
                     start1, end1, start2, end2)
-                if overlap > threshold:
+                if overlap >= threshold:
                     chr_df.iloc[index2]['OrfPositionsOverlapping'].add(
                         chr_df.iloc[index1]['OrfPosition'])
                     chr_df.iloc[index2]['OrfIDsOverlapping'].add(
@@ -227,11 +227,35 @@ def get_max_overlap_of_regions_in_df(chr_df, threshold=0.7):
                         chr_df.iloc[index2]['OrfPosition'])
                     chr_df.iloc[index1]['OrfIDsOverlapping'].add(
                         chr_df.iloc[index2]['OrfID'])
-                if overlap > float(chr_df.iloc[index1]['OverlapPercentage']):
+                if overlap >= float(chr_df.iloc[index1]['OverlapPercentage']):
                     chr_df.loc[index1, 'OverlapPercentage'] = overlap
-                if overlap > float(chr_df.iloc[index2]['OverlapPercentage']):
+                if overlap >= float(chr_df.iloc[index2]['OverlapPercentage']):
                     chr_df.loc[index2, 'OverlapPercentage'] = overlap
     return chr_df
+
+
+def summarize_overlapping_urs(gene_df):
+    if len(gene_df.index) > 1:
+        gene_df_return = gene_df.copy()
+        # search for pairwise overlaps of the OrfIDsOverlapping
+        for index1 in gene_df.index:
+            # compare 0-1, 0-2, 0-3, 1-2, 1-3, 2-3
+            index2 = index1
+            while index2 < len(gene_df.index) - 1:
+                index2 = index2 + 1
+                orf_id_overlap_1 = gene_df.iloc[index1, 6]
+                orf_id_overlap_2 = gene_df.iloc[index2, 6]
+                # if ORF IDs do overlap
+                if len(orf_id_overlap_1 & orf_id_overlap_2) > 0:
+                    # check if index still exists or is already removed
+                    if index2 in gene_df_return.index:
+                        # always keep index1: ensure that one region of the overlapping
+                        # ones is kept in the end!
+                        gene_df_return = gene_df_return.drop(index=index2)
+        return gene_df_return
+    else:
+        # return gene df if not several URs per gene
+        return gene_df
 
 
 def get_transcript_with_2_distinct_val_URs(val_dna_overlapping_ur_df):
@@ -273,7 +297,7 @@ def identify_overlapping_unique_regions(validated_so_df, dna_ur_df, outdir):
     val_dna_ur_df['OrfIDsOverlapping'] = val_dna_ur_df['OrfID'].apply(
         lambda x: set([x]))
 
-    # get > 70% overlapping URs
+    # get completely overlapping URs
     chr_dfs = {chr: chr_df.reset_index(drop=True).copy(
     ) for chr, chr_df in val_dna_ur_df.groupby('chr')}
     chr_dfs = {chr: get_max_overlap_of_regions_in_df(
@@ -287,9 +311,10 @@ def identify_overlapping_unique_regions(validated_so_df, dna_ur_df, outdir):
         lambda x: len(x))
 
     # subset for single ORF having the UR or ORFs from the same position (first, middle last)
-    val_dna_overlapping_ur_df = val_dna_overlapping_ur_df[(val_dna_overlapping_ur_df['ORFs_sharing_region'] == 1) | (
-        val_dna_overlapping_ur_df['shared_region_type'] == 1)]
+    # val_dna_overlapping_ur_df = val_dna_overlapping_ur_df[(val_dna_overlapping_ur_df['ORFs_sharing_region'] == 1) | (
+    #     val_dna_overlapping_ur_df['shared_region_type'] == 1)]
 
+    # frozenset: order within the set does not matter!
     val_dna_overlapping_ur_df.loc[:, 'OrfIDsOverlapping'] = val_dna_overlapping_ur_df['OrfIDsOverlapping'].apply(
         lambda x: frozenset(x))
 
@@ -304,11 +329,44 @@ def identify_overlapping_unique_regions(validated_so_df, dna_ur_df, outdir):
             'OverlapPercentage': 'max',
          }).reset_index(drop=True)
 
+    val_dna_overlapping_ur_df['geneID'] = val_dna_overlapping_ur_df['ID'].apply(
+        lambda x: x.split('|')[0])
+    gene_dfs = {gene: gene_df.reset_index(drop=True).copy(
+    ) for gene, gene_df in val_dna_overlapping_ur_df.groupby('geneID')}
+    gene_dfs = {gene: summarize_overlapping_urs(
+        gene_df) for gene, gene_df in gene_dfs.items()}
+    val_dna_overlapping_ur_df = pd.concat(
+        gene_dfs.values()).reset_index(drop=True).copy()
+
     get_transcript_with_2_distinct_val_URs(val_dna_overlapping_ur_df)
 
     val_dna_overlapping_ur_df['OrfPosition'].value_counts(
     ).reset_index().to_csv(os.path.join(outdir, 'distinct_URs_per_position.csv'))
 
     validated_so_df.to_csv(os.path.join(outdir, 'validated_so_df.csv'))
+
+    return val_dna_overlapping_ur_df
+
+
+def add_sample_info_ur_df(validated_so_df, val_dna_overlapping_ur_df, outdir):
+    # add sample columns to UR frame
+    for col in validated_so_df.columns[6:37]:
+        val_dna_overlapping_ur_df[col] = False
+
+    for index, row in validated_so_df.iterrows():
+        # get row in ur df with the same ORF, this can only be one row!
+        ORF_row = val_dna_overlapping_ur_df['OrfIDsOverlapping'].apply(
+            lambda x: row['OrfID'] in x)
+        # row index
+        row_index = ORF_row.index[ORF_row == True]
+        # same ORF may never appear twice, few ORFs are removed
+        assert len(row_index) <= 1
+        if len(row_index) == 1:
+            for column in validated_so_df.columns[6:37]:
+                val_dna_overlapping_ur_df.loc[row_index[0], column] = max(
+                    val_dna_overlapping_ur_df.loc[row_index[0], column], row[column])
+
+    val_dna_overlapping_ur_df.to_csv(os.path.join(
+        outdir, "val_dna_overlapping_ur_df.csv"))
 
     return val_dna_overlapping_ur_df
