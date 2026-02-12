@@ -17,8 +17,8 @@ conda activate Riboseq
 indir=$1
 outdir_fastqc1=$2
 
-cd /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1
-
+echo $indir
+echo $outdir_fastqc1
 # ################################################################################
 # # RUN FASTQC                                                                   #
 # ################################################################################
@@ -32,6 +32,7 @@ outdir_cutadapt=$3
 
 for fq in "${indir}"/*R1.fastq.gz
 do
+echo $fq
 sample=$(basename "$fq" .R1.fastq.gz)
 cutadapt \
     -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC \
@@ -66,11 +67,10 @@ source preprocessing/fastqc_multiqc.sh ${outdir_cutadapt} ${outdir_cutadapt} cut
 # EXTRACT UMIS CUSTOM                                                          #
 ################################################################################
 umi_adpt_trimmed_path=$4
-python preprocessing/extract_umi/extract_compare_umis.py \
+python preprocessing/extract_umi/extract_compare_umis_v2.py \
  ${outdir_cutadapt} \
  ${umi_adpt_trimmed_path}
-# this is not optimal, think I prefer to to have the output in the same .out as the rest
-# > preprocessing/extract_umi/extract_compare_umis_cutadapt.out 2>&1
+
 
 
 

@@ -41,8 +41,8 @@ RED='\033[0;31m' #Red colour for error messages
 NC='\033[0m'	 #No colour for normal messages
 
 
-#available options for the programm
-while getopts 'i:o:g:hbcdqr:stp' option; do
+# available options for the programm
+while getopts 'i:o:g:l:hbc:df:qr:stpu' option; do
   case "$option" in
     i)
         indir="$OPTARG"
@@ -59,9 +59,14 @@ while getopts 'i:o:g:hbcdqr:stp' option; do
       ;;
     c) 
         cutadapt=true
+        adapter_sequence="$OPTARG"
       ;;
     d)
         dedup=true
+      ;;
+    f)
+        trim_tail=true
+        cutadapt_trim="$OPTARG"
       ;;
     g)
         genomic=true
@@ -82,6 +87,9 @@ while getopts 'i:o:g:hbcdqr:stp' option; do
       ;;
     t)
         transcriptomic=true
+      ;;
+    u)
+        umi_type_2=true
       ;;
     p)
         paired_reads=true
@@ -136,38 +144,50 @@ if [[ $cutadapt == true && $dedup == true && $paired_reads == true ]]; then
     fastp_dir="${outdir_preprocess}/cutadapt/fastp_filter_after_UMI_trim"
     fastp_fastqc=$fastp_dir/fastqc
 
-    if [[ -d $outdir_preprocess ]]; then
+    if [[ ! -d $outdir_preprocess ]]; then
         mkdir $outdir_preprocess
     fi
 
-    if [[ -d  ${outdir_fastqc1} ]]; then
+    if [[ ! -d  ${outdir_fastqc1} ]]; then
         mkdir $outdir_fastqc1
     fi
 
-    if [[ -d  ${outdir_cutadapt} ]]; then
+    if [[ ! -d  ${outdir_cutadapt} ]]; then
         mkdir $outdir_cutadapt
     fi
 
-    if [[ -d  ${umi_adpt_trimmed_path} ]]; then
+    if [[ ! -d  ${umi_adpt_trimmed_path} ]]; then
         mkdir $umi_adpt_trimmed_path
     fi
 
-    if [[ -d  ${fastp_dir} ]]; then
+    if [[ ! -d  ${fastp_dir} ]]; then
         mkdir $fastp_dir
     fi
 
-    if [[ -d  ${fastp_fastqc} ]]; then
+    if [[ ! -d  ${fastp_fastqc} ]]; then
         mkdir $fastp_fastqc
     fi
 
+    # change directory to script directory
+    cd /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1
     
-    bash preprocessing_cutadapt_steps.sh \
-    $indir \
-    $outdir_fastqc1 \
-    $outdir_cutadapt \
-    $umi_adpt_trimmed_path \
-    $fastp_dir \
-    $fastp_fastqc > "${report_dir}/preprocessing_cutadapt_steps.out" 2>&1
+    if [[ $umi_type_2 == true ]]; then
+        bash preprocessing_cutadapt_steps_umi2.sh \
+        $indir \
+        $outdir_fastqc1 \
+        $outdir_cutadapt \
+        $umi_adpt_trimmed_path \
+        $fastp_dir \
+        $fastp_fastqc > "${report_dir}/preprocessing_cutadapt_steps.out" 2>&1
+    else
+        bash preprocessing_cutadapt_steps.sh \
+        $indir \
+        $outdir_fastqc1 \
+        $outdir_cutadapt \
+        $umi_adpt_trimmed_path \
+        $fastp_dir \
+        $fastp_fastqc > "${report_dir}/preprocessing_cutadapt_steps.out" 2>&1
+    fi
 
     python preprocessing/cutadapt_output_parsing.py \
     "${report_dir}/preprocessing_cutadapt_steps.out" \
@@ -181,15 +201,26 @@ elif [[ "$cutadapt" == true ]]; then
     fastp_dir_single_samps="${outdir}/fastp/fastp_single_samples"
     if [[ "${set_length}" == true ]];then
         bash /home/ckalk/scripts/SplitORFs/Riboseq/preprocess_data/preprocessing_steps_general.sh \
-        ${indir} \
-        ${fastqc_dir} \
-        ${fastp_dir_single_samps} \
-        ${max_length}
+        -d ${indir} \
+        -r ${fastqc_dir} \
+        -p ${fastp_dir_single_samps} \
+        -a ${adapter_sequence} \
+        -m ${max_length}
+        
+    elif [[ "${trim_tail}" == true ]];then
+        bash /home/ckalk/scripts/SplitORFs/Riboseq/preprocess_data/preprocessing_steps_general.sh \
+        -d ${indir} \
+        -r ${fastqc_dir} \
+        -p ${fastp_dir_single_samps} \
+        -a ${adapter_sequence} \
+        -t ${cutadapt_trim}
+
     else
         bash /home/ckalk/scripts/SplitORFs/Riboseq/preprocess_data/preprocessing_steps_general.sh \
-        ${indir} \
-        ${fastqc_dir} \
-        ${fastp_dir_single_samps}
+        -d ${indir} \
+        -r ${fastqc_dir} \
+        -p ${fastp_dir_single_samps} \
+        -a ${adapter_sequence}
     fi
 
     indir=${fastp_dir_single_samps}
@@ -214,6 +245,8 @@ if [[ $transcriptomic == true && $soft_clip == true ]]; then
 
     # count soft clipping in transcriptomic alignments
     python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_soft_clipping.py ${bowtie2_out_dir}
+elif [[ $transcriptomic == true ]]; then
+    bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie1_align_21_10_25.sh
 fi
 
 
@@ -239,16 +272,6 @@ if [[ $transcriptomic == true && $dedup == true ]]; then
     python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_soft_clipping.py $umi_dedup_outdir_transcriptomic
 fi
 
-
-################################################################################
-# Ribowaltz                                                                    #
-################################################################################
-
-# if [ ! -d ${UMI_indir_transcriptomic}/Ribowaltz ]; then
-#     mkdir ${UMI_indir_transcriptomic}/Ribowaltz
-# fi
-
-# Rscript Ribowaltz/RiboWaltz_Michi_Vlado_1_Ignolia_single_samples.R 
 
 ################################################################################
 # GENOMIC ALIGNMENT                                                            #
@@ -332,10 +355,12 @@ if [[ $genomic == true && $riboseqc == true ]]; then
         mkdir $riboseqc_outdir
     fi
 
+
+    # keep indir as indir in case that STAR was run previously
     if [[ $dedup == true ]]; then    
-        indir=${umi_dedup_outdir}
-    else
-        indir=${output_star}
+        indir="${umi_dedup_outdir}"
+    elif [[ -n "${output_star}" ]]; then
+        indir="${output_star}"
     fi
 
     echo $indir
@@ -353,70 +378,3 @@ if [[ $genomic == true && $riboseqc == true ]]; then
         $genome_fasta \
         $indir
 fi
-
-
-
-################################################################################
-# THIS SHOULD NOT BE NECESSARY AS THE SO PIPELINE IS CHANGED to accomodate also 
-# for dup reads, so it would be Riboseq pipeline, then SO pipeline:
-# would maybe only do transcriptomic mapping and Ribowaltz for all
-# but for the non-dedup samples can use the SO pipeline scripts for the SO analysis...
-################################################################################
-# SO ANALYSIS OF GENOMIC ALIGNMENTS                                            #
-################################################################################
-# bash Riboseq_SO_empirical_intersection/wrapper_empirical_intersection_random_resample.sh
-
-
-
-# if [[ $genomic == true ]]; then
-#     genome_align_dir="${outdir}/alignment_genome"
-#     output_star="${genome_align_dir}/STAR"
-
-#     if [ ! -d $genome_align_dir ]; then
-#         mkdir $genome_align_dir
-#     fi
-
-#     if [ ! -d $output_star ]; then
-#         mkdir $output_star
-#         bash /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random/STAR_Align_genomic_23_09_25.sh \
-#         -i 50 "$output_star"/index \
-#         $genome_fasta \
-#         $gtf
-#     fi
-
-
-#     echo "Starting alignment against genome"
-
-#     shopt -s nullglob
-#     files=("${indir}"/*_fastp.fastq)
-
-#     if [[ ${#files[@]} -eq 0 ]]; then
-#         files=("${indir}"/*.fastq)
-#     fi
-
-#     for i in "${files[@]}"; do
-#         if [[ $i == *fastp* ]]; then
-#             sample_name=$(basename "$i" _fastp.fastq)
-#         else
-#             sample_name=$(basename "$i" .fastq)
-#         fi
-#         echo $i
-
-#         bash /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random/STAR_Align_genomic_23_09_25.sh \
-#         -a 16 "$output_star"/index $i \
-#         "$output_star"/${sample_name} \
-#         EndToEnd
-
-#         rm "$output_star"/${sample_name}*Aligned.sortedByCoord.out.bam
-#         rm "$output_star"/${sample_name}*_filtered.bam
-#         rm "$output_star"/*${sample_name}.bed
-
-#         echo "===================       Sample $sample_name mapped"
-
-#     done
-
-#     # # deduplicate UMIs
-#     # source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/deduplication/deduplicate_umi_tools.sh \
-#     #  $output_star \
-#     #  $umi_dedup_outdir
-# fi

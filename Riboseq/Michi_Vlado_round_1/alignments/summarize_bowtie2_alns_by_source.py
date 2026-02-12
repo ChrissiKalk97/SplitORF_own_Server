@@ -155,7 +155,20 @@ def summarize_mapping_statistics(reference_dict, idx_stats, out_dir, raw=False):
                             'uf_muellermcnicoll_2025_05_39_RR_M_CHX_E1': 16836171,
                             'uf_muellermcnicoll_2025_05_40_RR_M_CHX_E2': 21822278,
                             'uf_muellermcnicoll_2025_05_41_RR_M_CHX_E3': 12929426,
-                            'uf_muellermcnicoll_2025_05_42_RR_M_CHX_E4': 30557025
+                            'uf_muellermcnicoll_2025_05_42_RR_M_CHX_E4': 30557025,
+                            # Round2 Ribo-seq CM and HUVEC
+                            'uf_muellermcnicoll_2026_02_07_CM_DNOR_rep1': 30687836,
+                            'uf_muellermcnicoll_2026_02_08_CM_DNOR_rep2': 30437477,
+                            'uf_muellermcnicoll_2026_02_09_CM_DNOR_rep3': 40926938,
+                            'uf_muellermcnicoll_2026_02_10_CM_DHYPO_rep1': 37291760,
+                            'uf_muellermcnicoll_2026_02_11_CM_DHYPO_rep2': 29582408,
+                            'uf_muellermcnicoll_2026_02_12_CM_DHYPO_rep3': 29062070,
+                            'uf_muellermcnicoll_2026_02_01_HUVEC_DNOR_rep2': 34803717,
+                            'uf_muellermcnicoll_2026_02_02_HUVEC_DNOR_rep3': 40340905,
+                            'uf_muellermcnicoll_2026_02_03_HUVEC_DNOR_rep4': 35205297,
+                            'uf_muellermcnicoll_2026_02_04_HUVEC_DHYPO_rep2': 27179465,
+                            'uf_muellermcnicoll_2026_02_05_HUVEC_DHYPO_rep3': 39484389,
+                            'uf_muellermcnicoll_2026_02_06_HUVEC_DHYPO_rep4': 28885363
                             }
 
     summary_mapping_stats_df = None
