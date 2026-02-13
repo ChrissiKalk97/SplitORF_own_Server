@@ -101,3 +101,14 @@ python disgenet_analysis.py \
     --region_type 'RI' \
     --gtf '/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.gtf'\
     --result_dir /projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/SO_validated_set_analysis/DISGENET_analysis/Ribo_seq_intersection_results
+
+
+################################ get union of NMD and RI transcripts for enrichment ###########################################
+python get_union_of_val_genes.py \
+    --nmd_val_genes "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/SO_validated_set_analysis/SO_valdiation/NMD/SO_validated_genes_NMD.txt" \
+    --ri_val_genes "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/SO_validated_set_analysis/SO_valdiation/RI/SO_validated_genes_RI.txt" \
+    --nmd_so_genes "/home/ckalk/tools/SplitORF_pipeline/Output/run_26.01.2026-13.07.17_NMD_for_paper/SplitOrfGeneFile.txt" \
+    --ri_so_genes "/home/ckalk/tools/SplitORF_pipeline/Output/run_26.01.2026-14.09.13_RI_for_paper/SplitOrfGeneFile.txt" \
+    --nmd_all_genes "/home/ckalk/tools/SplitORF_pipeline/Output/run_26.01.2026-13.07.17_NMD_for_paper/BackgroundGeneFile.txt" \
+    --ri_all_genes "/home/ckalk/tools/SplitORF_pipeline/Output/run_26.01.2026-14.09.13_RI_for_paper/BackgroundGeneFile.txt" \
+    --outdir "/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/SO_validated_set_analysis/SO_valdiation/union_intersection"
