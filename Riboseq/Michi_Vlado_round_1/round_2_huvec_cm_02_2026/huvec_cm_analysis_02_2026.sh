@@ -49,7 +49,7 @@ echo "$data_dir"
 echo "$out_dir"
 
 
-######### Preprocessing: cutadapt, UMI trim, fastp
+######### Preprocessing: cutadapt, UMI trim, fastp #################################
 # -d : dedup
 # -c : cutadapt
 # -p : paired end
@@ -61,6 +61,29 @@ echo "$out_dir"
 #  -d -p -u -c AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -i "$cm_dir" -o "$out_dir_cm" \
 #  -r "$report_dir_cm"
 
+######### Align to transcriptome with bowtie1 #######################################
+# bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/Riboseq_pipeline.sh \
+#  -t -d -i "$huvec_dir" -o "$out_dir_huvec" \
+#  -r "$report_dir_huvec"
+
+# bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/Riboseq_pipeline.sh \
+#  -t -d -i "$cm_dir" -o "$out_dir_cm" \
+#  -r "$report_dir_cm"
 
 
+######### Had wrong naming for deduplication bams, correct naming ####################
+bash rename_dedup_bam_files.sh \
+"${out_dir}/CM/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup"
 
+bash rename_dedup_bam_files.sh \
+"${out_dir}/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup"
+
+conda activate r-env
+
+Rscript /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/Ribowaltz/RiboWaltz_Michi_Vlado_2_Ingolia_HUVEC_CM_Feb2026.R \
+"${out_dir}/CM/alignment_concat_transcriptome_Ignolia/Ribowaltz" \
+"${out_dir}/CM/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup"
+
+Rscript /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/Ribowaltz/RiboWaltz_Michi_Vlado_2_Ingolia_HUVEC_CM_Feb2026.R \
+"${out_dir}/HUVEC/alignment_concat_transcriptome_Ignolia/Ribowaltz" \
+"${out_dir}/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup"

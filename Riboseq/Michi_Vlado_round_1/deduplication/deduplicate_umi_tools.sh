@@ -33,10 +33,14 @@ do
         elif [[ "$filename" == *_Aligned.sortedByCoord.out.bam ]]; then
             sample=${filename%_Aligned.sortedByCoord.out.bam}
         else
-            if [[ "$filename" == *"q10"* ]]; then
+            if [[ "$filename" == *"q10"*"bowtie2"* ]]; then
                 sample=${filename%.cutadapt_umi_fastp.bowtie2_concat_transcriptome_k1_R1_sorted_filtered_q10.bam}  
+            elif [[ "$filename" == *"bowtie2"* ]]; then
+                sample=${filename%.cutadapt_umi_fastp.bowtie2_concat_transcriptome_k1_R1_sorted_filtered.bam} 
+            elif [[ "$filename" == *"q10"*"bowtie1"* ]]; then
+                sample=${filename%.cutadapt_umi_fastp.bowtie1_concat_transcriptome_k1_R1_sorted_filtered_q10.bam}  
             else
-                sample=${filename%.cutadapt_umi_fastp.bowtie2_concat_transcriptome_k1_R1_sorted_filtered.bam}  
+                sample=${filename%.cutadapt_umi_fastp.bowtie1_concat_transcriptome_k1_R1_sorted_filtered.bam}  
             fi
         fi
         

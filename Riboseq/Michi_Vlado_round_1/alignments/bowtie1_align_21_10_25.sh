@@ -15,7 +15,7 @@ if [ ! -d $bowtie1_out_dir ]; then
 fi
 
 if [[ ${bowtie1_ref_fasta} != "no_index" ]]; then
-    # bowtie-build ${bowtie1_ref_fasta} ${bowtie1_base_name} --threads 32
+    bowtie-build ${bowtie1_ref_fasta} ${bowtie1_base_name} --threads 32
     echo "done indexing"
 fi
 
@@ -35,71 +35,70 @@ fi
 # Align files and filter alignments                                            #
 ################################################################################
 echo "start alignment"
-# for FQ in "${files[@]}"
-# do
-#     sample=$(basename "$FQ")
-#     sample=${sample%%R1*}          # remove R1 and everything after
+for FQ in "${files[@]}"
+do
+    sample=$(basename "$FQ")
+    sample=${sample%%R1*}          # remove R1 and everything after
 
-#     outname="${bowtie1_out_dir}"/"${sample}"bowtie1_${aligned_name}
-#     echo ${sample}
-#     echo ${FQ}
-#     echo ${outname}
+    outname="${bowtie1_out_dir}"/"${sample}"bowtie1_${aligned_name}
+    echo ${sample}
+    echo ${FQ}
+    echo ${outname}
 
-#     # inspired from the ignolia paper
-# bowtie \
-#     -v 2 \
-#     -m 200 \
-#     --norc \
-#     --best \
-#     -k 1 \
-#     -S \
-#     -q \
-#     --un ${outname}_unaligned.fastq \
-#     -x ${bowtie1_base_name} \
-#     ${FQ} \
-#     ${outname}_k1_R1.sam
-
-
-#     samtools view -@ 32 -bS ${outname}_k1_R1.sam \
-#      > ${outname}_k1_R1.bam
-
-#     samtools sort -@ 32 -o ${outname}_k1_R1_sorted.bam \
-#     ${outname}_k1_R1.bam
-
-#     samtools index -@ 32 ${outname}_k1_R1_sorted.bam
-
-#     samtools idxstats ${outname}_k1_R1_sorted.bam > \
-#     ${outname}_idxstats.out
-
-#     if [ ! -d $bowtie1_out_dir/filtered ]; then
-#         mkdir $bowtie1_out_dir/filtered
-#     fi
-#     filtered_name="${bowtie1_out_dir}"/filtered/"${sample}"bowtie1_${aligned_name}
+    # inspired from the ignolia paper
+    bowtie \
+        -v 2 \
+        -m 200 \
+        --norc \
+        --best \
+        -k 1 \
+        -S \
+        -q \
+        --un ${outname}_unaligned.fastq \
+        -x ${bowtie1_base_name} \
+        ${FQ} \
+        ${outname}_k1_R1.sam
 
 
-# # remove secondary and supplementary alignments
-#     samtools view -F 256 -F 2048 -F 0x4 -b ${outname}_k1_R1_sorted.bam > ${filtered_name}_k1_R1_sorted_filtered.bam
+    samtools view -@ 32 -bS ${outname}_k1_R1.sam \
+     > ${outname}_k1_R1.bam
+
+    samtools sort -@ 32 -o ${outname}_k1_R1_sorted.bam \
+    ${outname}_k1_R1.bam
+
+    samtools index -@ 32 ${outname}_k1_R1_sorted.bam
+
+    samtools idxstats ${outname}_k1_R1_sorted.bam > \
+    ${outname}_idxstats.out
+
+    if [ ! -d $bowtie1_out_dir/filtered ]; then
+        mkdir $bowtie1_out_dir/filtered
+    fi
+    filtered_name="${bowtie1_out_dir}"/filtered/"${sample}"bowtie1_${aligned_name}
+
+
+    # remove secondary and supplementary alignments and unmapped
+    samtools view -F 256 -F 2048 -F 0x4 -b ${outname}_k1_R1_sorted.bam > ${filtered_name}_k1_R1_sorted_filtered.bam
    
 
-#     samtools index -@ 32 ${filtered_name}_k1_R1_sorted_filtered.bam
+    samtools index -@ 32 ${filtered_name}_k1_R1_sorted_filtered.bam
 
-#     samtools idxstats ${filtered_name}_k1_R1_sorted_filtered.bam > \
-#     ${filtered_name}_idxstats.out
+    samtools idxstats ${filtered_name}_k1_R1_sorted_filtered.bam > \
+    ${filtered_name}_idxstats.out
 
-#     samtools stats ${filtered_name}_k1_R1_sorted_filtered.bam > \
-#     ${filtered_name}_stats.out
+    samtools stats ${filtered_name}_k1_R1_sorted_filtered.bam > \
+    ${filtered_name}_stats.out
 
-#     # rm ${outname}_k1_R1.sam
+    rm ${outname}_k1_R1.sam
 
-# done
+done
 # # report only 1 alignment (-k 1 is the default)
 # # high penalty for mismatching bases in the seed
-# # -N 1 \ allow for one mismatch in the seed alignment, because of the polyA
-# # -L 20 \   # 20 is actually the default in local mode
+# # -m 200: allow up to 200 mapping positions
 
 
 
- python  /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_mappings/analyze_bowtie2_mappings.py \
+ python  /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_mappings/analyze_bowtie1_mappings.py \
  $log_file \
  ${bowtie1_out_dir}/summarized_bowtie_mapping_precents.csv
 
@@ -113,20 +112,21 @@ if [ ! -d $bowtie1_out_dir/filtered/q10 ]; then
     mkdir $bowtie1_out_dir/filtered/q10
 fi
 
-# bam_files=("${bowtie1_out_dir}"/filtered/*.bam)
-# for bam in "${bam_files[@]}"
-# do
-#     sample=$(basename "$bam" .bam)
+bam_files=("${bowtie1_out_dir}"/filtered/*.bam)
+for bam in "${bam_files[@]}"
+do
+    sample=$(basename "$bam" .bam)
 
-#     samtools view -q 10 -b $bam > \
-#      $bowtie1_out_dir/filtered/q10/${sample}_q10.bam
+    # bowtie assigns 255 to uniquely mapping reads
+    samtools view -q 255 -b $bam > \
+     $bowtie1_out_dir/filtered/q10/${sample}_q10.bam
 
-#     samtools index $bowtie1_out_dir/filtered/q10/${sample}_q10.bam
+    samtools index $bowtie1_out_dir/filtered/q10/${sample}_q10.bam
 
-#     samtools idxstats $bowtie1_out_dir/filtered/q10/${sample}_q10.bam > \
-#     $bowtie1_out_dir/filtered/q10/${sample}_q10_idxstats.out
+    samtools idxstats $bowtie1_out_dir/filtered/q10/${sample}_q10.bam > \
+    $bowtie1_out_dir/filtered/q10/${sample}_q10_idxstats.out
 
-# done
+done
 
 
 if [[ "$bowtie1_out_dir" != *Chae* ]]; then

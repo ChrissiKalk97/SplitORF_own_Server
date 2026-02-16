@@ -117,7 +117,7 @@ echo "All required options provided: -i=$indir -o=$outdir"
 ################################################################################
 
 genome_fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
-bowtie2_ref_fasta="/projects/splitorfs/work/reference_files/own_data_refs/Riboseq/Ignolia/Ignolia_transcriptome_and_contamination.fasta"
+bowtie_ref_fasta="/projects/splitorfs/work/reference_files/own_data_refs/Riboseq/Ignolia/Ignolia_transcriptome_and_contamination.fasta"
 bowtie2_base_name="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/index"
 
 # bowtie2_out_dir="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia"
@@ -232,21 +232,51 @@ fi
 
 if [[ $transcriptomic == true && $soft_clip == true ]]; then
     bowtie2_out_dir="${outdir}/alignment_concat_transcriptome_Ignolia"
-    
+    fastp_dir="${outdir}/preprocess/cutadapt/fastp_filter_after_UMI_trim"
+
+    if [[ ! -d "${bowtie2_out_dir}" ]]; then
+        mkdir "${bowtie2_out_dir}"
+    fi
+
+
     source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie2_align_k1_only_R1.sh \
      ${bowtie2_base_name} \
-     no_index \
+     "${bowtie_ref_fasta}" \
      ${fastp_dir} \
      ${bowtie2_out_dir} \
      concat_transcriptome \
-     out_reports_of_runs/transcriptomic_mapping_k1_R1_norc.out \
-     > out_reports_of_runs/transcriptomic_mapping_k1_R1_norc.out 2>&1
+     "${report_dir}"/transcriptomic_mapping_k1_R1_norc.out \
+     > "${report_dir}"/transcriptomic_mapping_k1_R1_norc.out 2>&1
 
 
     # count soft clipping in transcriptomic alignments
     python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_soft_clipping.py ${bowtie2_out_dir}
+
+    mapping_dir="${bowtie2_out_dir}"
+
 elif [[ $transcriptomic == true ]]; then
-    bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie1_align_21_10_25.sh
+    bowtie1_out_dir="${outdir}/alignment_concat_transcriptome_Ignolia"
+    fastp_dir="${outdir}/preprocess/cutadapt/fastp_filter_after_UMI_trim"
+
+    if [[ ! -d "${bowtie1_out_dir}" ]]; then
+        mkdir "${bowtie1_out_dir}"
+    fi
+
+    if [[ ! -d "${bowtie1_out_dir}/bowtie1_index" ]]; then
+        mkdir "${bowtie1_out_dir}/bowtie1_index"
+    fi
+
+
+    bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie1_align_21_10_25.sh \
+    "${bowtie1_out_dir}/bowtie1_index/index" \
+     "${bowtie_ref_fasta}" \
+     "${fastp_dir}" \
+     "${bowtie1_out_dir}" \
+     concat_transcriptome \
+     "${report_dir}"/transcriptomic_mapping_k1_R1_norc.out \
+     > "${report_dir}"/transcriptomic_mapping_k1_R1_norc.out 2>&1
+
+    mapping_dir="${bowtie1_out_dir}"
 fi
 
 
@@ -257,19 +287,14 @@ if [[ $transcriptomic == true && $dedup == true ]]; then
 
     # deduplicate UMIs
     bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/deduplication/deduplicate_umi_tools.sh \
-     ${UMI_indir_transcriptomic}/filtered/q10 \
-     ${UMI_indir_transcriptomic}/filtered/q10/dedup \
+     ${mapping_dir}/filtered/q10 \
+     ${mapping_dir}/filtered/q10/dedup \
      transcriptomic
 
-
-    bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/deduplication/deduplicate_umi_tools.sh \
-     ${UMI_indir_transcriptomic}/filtered \
-     $umi_dedup_outdir_transcriptomic/ \
-     transcriptomic
-
-
-    # count soft clipping in transcriptomic alignments
-    python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_soft_clipping.py $umi_dedup_outdir_transcriptomic
+    if [[ $soft_clip == true ]]; then 
+        # count soft clipping in transcriptomic alignments
+        python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_soft_clipping.py ${mapping_dir}/filtered/q10/dedup
+    fi
 fi
 
 
