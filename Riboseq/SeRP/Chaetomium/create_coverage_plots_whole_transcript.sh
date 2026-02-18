@@ -12,7 +12,7 @@ eval "$(conda shell.bash hook)"
 conda activate Riboseq
 export TMPDIR=/scratch/tmp/$USER
 if [ ! -d "$outdir" ]; then
-         mkdir $outdir
+    mkdir $outdir
     # E S over In S
     bash ${coverage_script_dir}/BamCompare_Chaetomium.sh \
         $bam_dir \
@@ -80,15 +80,15 @@ for i in "${!transcripts_to_plot_txts[@]}"; do
         # color = '#1eb0e6'
         # window_size = 63
         ############## Buffer 1's ####################################################
-        # python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer_Chaetomium.py \
-        # "${bam_dir}/enrichment_plots_whole_trans" \
-        # "/projects/serp/work/references/Chaetomium_thermophilum_longest_transcript.fasta.fai" \
-        # ${to_plot_txt} \
-        # ${outdir_plot} \
-        # --numerator "S_E" \
-        # --background "S_In" \
-        # --color "#1eb0e6" \
-        # --window_size 63
+        python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer_Chaetomium.py \
+        "${bam_dir}/enrichment_plots_whole_trans" \
+        "/projects/serp/work/references/Chaetomium_thermophilum_longest_transcript.fasta.fai" \
+        ${to_plot_txt} \
+        ${outdir_plot} \
+        --numerator "S_E" \
+        --background "S_In" \
+        --color "#1eb0e6" \
+        --window_size 63
 
         python ${coverage_script_dir}/pyBigWig_for_plotting_with_errors_one_buffer_Chaetomium.py \
         "${bam_dir}/enrichment_plots_whole_trans" \

@@ -7,7 +7,7 @@ from Bio import SeqIO
 # transcript_fasta = sys.argv[2]
 # out_file_name = sys.argv[3]
 
-transcript_fasta = '/projects/serp/work/references/Chaetomium_thermophilum_transcript.fasta'
+transcript_fasta = '/projects/serp/work/references/Chaetomium_thermophilum_longest_transcript.fasta'
 chae_gtf_path = '/projects/serp/work/references/Supplementary_File_2.gtf'
 out_name = '/projects/serp/work/references/Chaetomium_thermophilum_'
 

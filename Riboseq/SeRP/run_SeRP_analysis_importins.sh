@@ -3,7 +3,7 @@
 eval "$(conda shell.bash hook)"
 conda activate Riboseq
 
-script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1"
+script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_analysis_pipeline"
 
 INDIR="/projects/serp/work/data/SeRP_April_2025/importins"
 OUTDIR_FASTQC1="/projects/serp/work/Output/April_2025/importins/preprocess/fastqc_unprocessed"
@@ -32,6 +32,7 @@ mane_gtf="/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA
 #   $OUTDIR_CUTADAPT \
 #   $fastpOut \
 #   $fastpFASTQC\
+#  "${script_dir}" \
 # > "out_reports_of_runs/preprocessing_cutadapt_importins.out" 2>&1
 
 # python ${script_dir}/preprocessing/cutadapt_output_parsing.py \
@@ -51,6 +52,7 @@ mane_gtf="/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA
 #  ${Bowtie2_out_dir} \
 #  concat_transcriptome \
 #  /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out \
+#  "${script_dir}" \
 #  > /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie2.out 2>&1
 
 # source ${script_dir}/alignments/bowtie1_align_21_10_25.sh \
@@ -60,6 +62,7 @@ mane_gtf="/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA
 #  ${Bowtie1_out_dir} \
 #  concat_transcriptome \
 #  /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie1.out \
+#  "${script_dir}" \
 #  > /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/out_reports_of_runs/run_SeRP_analysis_bowtie1.out 2>&1
 
 
@@ -76,8 +79,8 @@ if [ ! -d ${Bowtie1_out_dir}/filtered/q10/DEGs ]; then
     mkdir ${Bowtie1_out_dir}/filtered/q10/DEGs
 fi
 
-# Rscript  PCA_conditions_DeSeq2_SeRP_importins.R \
-# "${Bowtie1_out_dir}"/filtered/q10
+Rscript  PCA_conditions_DeSeq2_SeRP_importins.R \
+"${Bowtie1_out_dir}"/filtered/q10
 
 
 # bash map_DEG_tID_to_gID.sh "${Bowtie1_out_dir}"
@@ -100,15 +103,15 @@ fi
 # # bash create_coverage_plots_importins_over_mock.sh \
 # #  "${Bowtie2_out_dir}"/filtered/q10
 
-if [[ ! -d "${Bowtie1_out_dir}"/filtered/q10/enrichment_plots_CDS ]]; then
-    mkdir "${Bowtie1_out_dir}"/filtered/q10/enrichment_plots_CDS
-fi 
+# if [[ ! -d "${Bowtie1_out_dir}"/filtered/q10/enrichment_plots_CDS ]]; then
+#     mkdir "${Bowtie1_out_dir}"/filtered/q10/enrichment_plots_CDS
+# fi 
 
-bash ${coverage_script_dir}/create_coverage_plots_codons_CDS_different_buffer_transcript.sh \
-    "${Bowtie1_out_dir}"/filtered/q10 \
-    ""${Bowtie1_out_dir}"/filtered/q10/enrichment_plots_CDS/CDS_coordinates" \
-    ${coverage_script_dir} \
-    $mane_gtf
+# bash ${coverage_script_dir}/create_coverage_plots_codons_CDS_different_buffer_transcript.sh \
+#     "${Bowtie1_out_dir}"/filtered/q10 \
+#     ""${Bowtie1_out_dir}"/filtered/q10/enrichment_plots_CDS/CDS_coordinates" \
+#     ${coverage_script_dir} \
+#     $mane_gtf
 
 ################################################################################
 # Check al counts with bam multicov                                            #

@@ -65,5 +65,5 @@ if __name__ == '__main__':
     in_gtf = args.in_gtf
     out_gtf = args.out_gtf
 
-    in_gtf = "/projects/serp/work/references/Supplementary_File_2.gtf"
+    # in_gtf = "/projects/serp/work/references/Supplementary_File_2.gtf"
     main(in_gtf, out_gtf)

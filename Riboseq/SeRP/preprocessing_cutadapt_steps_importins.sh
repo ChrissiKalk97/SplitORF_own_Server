@@ -14,26 +14,30 @@ conda activate Riboseq
 ################################################################################
 # RUN FASTQ                                                                    #
 ################################################################################
-INDIR=$1
-OUTDIR_FASTQC1=$2
+indir=$1
+outdir_fastqc1=$2
+outdir_cutadapt=$3
+fastp_dir=$4
+fastp_fastqc_dir=$5
+module_dir=$6
 
 # ################################################################################
 # # RUN FASTQC                                                                   #
 # ################################################################################
-if [ ! -d ${OUTDIR_FASTQC1} ]; then
-        mkdir ${OUTDIR_FASTQC1}
+if [ ! -d ${outdir_fastqc1} ]; then
+        mkdir ${outdir_fastqc1}
 fi
 
-source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/preprocessing/fastqc_multiqc.sh \
- ${INDIR} ${OUTDIR_FASTQC1} fastqc_unprocessed_multiqc
+source "${module_dir}"/preprocessing/fastqc_multiqc.sh \
+ ${indir} ${outdir_fastqc1} fastqc_unprocessed_multiqc
 
 
 ################################################################################
 # RUN CUTADAPT TO TRIM ADAPTERS                                                #
 ################################################################################
-OUTDIR_CUTADAPT=$3
 
-for FQ in "${INDIR}"/*R1.fastq.gz
+
+for FQ in "${indir}"/*R1.fastq.gz
 do
 SAMPLE=$(basename "$FQ" .R1.fastq.gz)
  cutadapt \
@@ -42,11 +46,11 @@ SAMPLE=$(basename "$FQ" .R1.fastq.gz)
     --quality-cutoff 20 \
     --adapter TGGAATTCTCGGGTGCCAAGG \
     -A AGATCGGAAGAGCGTCGTGTAGGGAAAGA \
-    --output ${OUTDIR_CUTADAPT}/${SAMPLE}.cut.R1.fastq.gz \
-    --paired-output ${OUTDIR_CUTADAPT}/${SAMPLE}.cut.R2.fastq.gz \
+    --output ${outdir_cutadapt}/${SAMPLE}.cut.R1.fastq.gz \
+    --paired-output ${outdir_cutadapt}/${SAMPLE}.cut.R2.fastq.gz \
     --minimum-length 16 \
     ${FQ} \
-    ${INDIR}/${SAMPLE}.R2.fastq.gz
+    ${indir}/${SAMPLE}.R2.fastq.gz
 done
 
 # Parameters: as specified in the NEXTFLEX Small RNA-Seq Kit v4 instructions
@@ -57,17 +61,17 @@ done
 # ################################################################################
 # # RUN FASTQC AFTER CUTADAPT                                                    #
 # ################################################################################
-if [ ! -d ${OUTDIR_CUTADAPT} ]; then
-        mkdir ${OUTDIR_CUTADAPT}  
+if [ ! -d ${outdir_cutadapt} ]; then
+        mkdir ${outdir_cutadapt}  
 fi
 
 
-if [ ! -d ${OUTDIR_CUTADAPT}/fastqc ]; then
-        mkdir ${OUTDIR_CUTADAPT}/fastqc
+if [ ! -d ${outdir_cutadapt}/fastqc ]; then
+        mkdir ${outdir_cutadapt}/fastqc
 fi
 
-source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/preprocessing/fastqc_multiqc.sh \
- ${OUTDIR_CUTADAPT} ${OUTDIR_CUTADAPT}/fastqc cutadapt_multiqc
+source "${module_dir}"/preprocessing/fastqc_multiqc.sh \
+ ${outdir_cutadapt} ${outdir_cutadapt}/fastqc cutadapt_multiqc
 
 
 
@@ -76,21 +80,20 @@ source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/preprocessing/f
 ################################################################################
 # FILTERING ETC FASTP                                                          #
 ################################################################################
-fastpOut=$4
-fastpFASTQC=$5
-if [ ! -d ${fastpOut} ]; then
-        mkdir ${fastpOut}
+
+if [ ! -d ${fastp_dir} ]; then
+        mkdir ${fastp_dir}
 fi
 
-if [ ! -d ${fastpFASTQC}  ]; then
-        mkdir ${fastpFASTQC} 
+if [ ! -d ${fastp_fastqc_dir}  ]; then
+        mkdir ${fastp_fastqc_dir} 
 fi
 
-source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/preprocessing/filter_fastp.sh \
- ${OUTDIR_CUTADAPT} ${fastpOut} fastp
-source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/preprocessing/fastqc_multiqc.sh \
- ${fastpOut} ${fastpFASTQC} fastqc_fastp_multiqc
-multiqc --force --filename ${fastpOut}/fastp_multiqc ${fastpOut}
+source "${module_dir}"/preprocessing/filter_fastp.sh \
+ ${outdir_cutadapt} ${fastp_dir} fastp
+source "${module_dir}"/preprocessing/fastqc_multiqc.sh \
+ ${fastp_dir} ${fastp_fastqc_dir} fastqc_fastp_multiqc
+multiqc --force --filename ${fastp_dir}/fastp_multiqc ${fastp_dir}
 
 
 

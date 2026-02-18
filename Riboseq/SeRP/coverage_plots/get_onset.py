@@ -45,7 +45,7 @@ def main(path_to_coordinate_csv, enrichment_length, enrichment_threshold):
                         nr_consecutive += 1
                     else:
                         if i < len(coordinate_above_threshold_df.index) - 1:
-                            consecutive_start = coordinate_above_threshold_df.iloc[i + 1, 1]
+                            consecutive_start = coordinate_above_threshold_df.iloc[i, 1]
                             i += 1
                             nr_consecutive = 1
                     if nr_consecutive == enrichment_length:
@@ -66,6 +66,6 @@ if __name__ == "__main__":
 
     path_to_coordinate_csv = args.path_to_coordinate_csv
     enrichment_length = int(args.enrichment_length)
-    enrichment_threshold = int(args.enrichment_threshold)
+    enrichment_threshold = float(args.enrichment_threshold)
 
     main(path_to_coordinate_csv, enrichment_length, enrichment_threshold)

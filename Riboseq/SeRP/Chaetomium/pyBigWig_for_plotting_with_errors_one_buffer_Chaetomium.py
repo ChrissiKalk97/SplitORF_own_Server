@@ -161,7 +161,9 @@ def main(path_to_bw_files, transcript_fai, transcripts_to_plot_txt,
                     print(numerator, background)
 
                 if len(observed_values[0]) > 0:
-
+                    print(len(bw_values_smoothed))
+                    print(length)
+                    # assert len(bw_values_smoothed) == length
                     transcript_df = pd.DataFrame({'transcript_position': range(0, len(bw_values_smoothed)),
                                                   'average_ratio': observed_values_averaged_np,
                                                   'stddev_ratio': observed_std_np,

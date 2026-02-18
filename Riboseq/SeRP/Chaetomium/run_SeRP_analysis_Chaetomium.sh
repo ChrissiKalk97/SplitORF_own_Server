@@ -3,7 +3,7 @@
 eval "$(conda shell.bash hook)"
 conda activate Riboseq
 
-script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1"
+script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_analysis_pipeline"
 
 indir="/projects/serp/work/data/SeRP_April_2025/Chaetomium"
 outdir="/projects/serp/work/Output/April_2025/Chaetomium"
@@ -50,6 +50,7 @@ if [ ! -e "out_reports_of_runs/preprocessing_cutadapt_chaetomium.out" ]; then
         $outdir_CUTADAPT \
         $fastpOut \
         $fastpFASTQC\
+        "${script_dir}" \
         > "out_reports_of_runs/preprocessing_cutadapt_chaetomium.out" 2>&1
 
         python ${script_dir}/preprocessing/cutadapt_output_parsing.py \
@@ -85,13 +86,14 @@ fi
 
 if [ ! -d ${bowtie_outdir} ]; then
         # align to transcriptome
-        bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie1_align_21_10_25.sh \
+        bash "${script_dir}"/alignments/bowtie1_align_21_10_25.sh \
         ${bowtie_outdir}/index \
         /projects/serp/work/references/Chaetomium_thermophilum_longest_transcript.fasta \
         ${fastpOut} \
         ${bowtie_outdir} \
         Chaetomium_transcriptome \
         /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/Chaetomium/out_reports_of_runs/Chaetomium_align_bowtie.out \
+        "${script_dir}" \
         > /home/ckalk/scripts/SplitORFs/Riboseq/SeRP/Chaetomium/out_reports_of_runs/Chaetomium_align_bowtie.out 2>&1
 
 
@@ -148,25 +150,26 @@ if [ ! -d ${bowtie_outdir}/filtered/q10/DEGs ]; then
                 ${bowtie_outdir}/filtered/q10/DEGs/E_over_In_S_1_0_and_E_S_over_E_WT_1_0_not_IP_WT_vs_IN.txt
 fi
 
-conda activate Riboseq
-if [ ! -d "${bowtie_outdir}"/filtered/q10/Ribowaltz ]; then
-        mkdir "${bowtie_outdir}"/filtered/q10/Ribowaltz
-fi
-Rscript RiboWaltz_SeRP_Chaetomium_single_samples.R \
-"${bowtie_outdir}"/filtered/q10
+# conda activate Riboseq
+# if [ ! -d "${bowtie_outdir}"/filtered/q10/Ribowaltz ]; then
+#         mkdir "${bowtie_outdir}"/filtered/q10/Ribowaltz
+#         Rscript RiboWaltz_SeRP_Chaetomium_single_samples.R \
+#         "${bowtie_outdir}"/filtered/q10
+# fi
+
 
 
 
 ################################################################################
 # SeRP coverage plots                                                          #
 ################################################################################
-if [ ! -d ""${bowtie_outdir}"/filtered/q10/enrichment_plots_whole_trans" ]; then
+# if [ ! -d ""${bowtie_outdir}"/filtered/q10/enrichment_plots_whole_trans" ]; then
         coverage_script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/SeRP/Chaetomium"
         bash ${coverage_script_dir}/create_coverage_plots_whole_transcript.sh \
         "${bowtie_outdir}"/filtered/q10 \
         ""${bowtie_outdir}"/filtered/q10/enrichment_plots_whole_trans" \
         ${coverage_script_dir}
-fi
+# fi
 
 ################################################################################
 # Check al counts with bam multicov                                            #
