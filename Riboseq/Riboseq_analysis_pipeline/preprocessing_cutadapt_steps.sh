@@ -16,8 +16,13 @@ conda activate Riboseq
 ################################################################################
 indir=$1
 outdir_fastqc1=$2
+outdir_cutadapt=$3
+umi_adpt_trimmed_path=$4
+fastp_out=$5
+fastp_fastqc=$6
+module_dir=$7
 
-cd /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1
+cd "${module_dir}"
 
 # ################################################################################
 # # RUN FASTQC                                                                   #
@@ -28,8 +33,6 @@ source preprocessing/fastqc_multiqc.sh ${indir} ${outdir_fastqc1} fastqc_unproce
 ################################################################################
 # RUN CUTADAPT TO TRIM ADAPTERS                                                #
 ################################################################################
-outdir_cutadapt=$3
-
 for fq in "${indir}"/*R1.fastq.gz
 do
 sample=$(basename "$fq" .R1.fastq.gz)
@@ -65,7 +68,6 @@ source preprocessing/fastqc_multiqc.sh ${outdir_cutadapt} ${outdir_cutadapt} cut
 ################################################################################
 # EXTRACT UMIS CUSTOM                                                          #
 ################################################################################
-umi_adpt_trimmed_path=$4
 python preprocessing/extract_umi/extract_compare_umis.py \
  ${outdir_cutadapt} \
  ${umi_adpt_trimmed_path}
@@ -85,8 +87,6 @@ cd -
 ################################################################################
 # FILTERING ETC FASTP                                                          #
 ################################################################################
-fastp_out=$5
-fastp_fastqc=$6
 source preprocessing/filter_fastp.sh ${umi_adpt_trimmed_path} ${fastp_out} cutadapt_umi_fastp
 source preprocessing/fastqc_multiqc.sh ${fastp_out} ${fastp_fastqc} fastqc_fastp_trim_after_umi_trim_multiqc
 multiqc --force --filename ${fastp_out}/fastp_filter_after_umi_trim_multiqc ${fastp_out}

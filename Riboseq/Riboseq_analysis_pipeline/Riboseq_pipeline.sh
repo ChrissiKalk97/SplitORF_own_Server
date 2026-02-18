@@ -42,7 +42,7 @@ NC='\033[0m'	 #No colour for normal messages
 
 
 # available options for the programm
-while getopts 'bc:df:g:hi:l:o:pqr:st:uv:' option; do
+while getopts 'bc:df:g:hi:l:m:o:pqr:st:uv:' option; do
   case "$option" in
     b)
         start_bam=true
@@ -73,6 +73,9 @@ while getopts 'bc:df:g:hi:l:o:pqr:st:uv:' option; do
         set_length=true
         max_length="$OPTARG"
       ;;
+    m)
+        module_dir="$OPTARG"
+      ;;
     o)
         outdir="$OPTARG"
         ;;
@@ -81,6 +84,7 @@ while getopts 'bc:df:g:hi:l:o:pqr:st:uv:' option; do
       ;;
     q)
         riboseqc=true
+        riboseqc_dir="$OPTARG"
       ;;
     r)
         report_dir="$OPTARG"
@@ -135,7 +139,7 @@ bowtie2_base_name="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/a
 ################################################################################
 
 if [[ $start_bam == true ]]; then
-    bash /home/ckalk/scripts/SplitORFs/UPF1_deletion/data_download/get_fastq.sh $indir
+    bash "${module_dir}"/data_download/get_fastq.sh $indir
     indir="${indir}/fastq"
 fi
 
@@ -172,7 +176,7 @@ if [[ $cutadapt == true && $dedup == true && $paired_reads == true ]]; then
     fi
 
     # change directory to script directory
-    cd /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1
+    cd "${module_dir}"
     
     if [[ $umi_type_2 == true ]]; then
         bash preprocessing_cutadapt_steps_umi2.sh \
@@ -181,7 +185,8 @@ if [[ $cutadapt == true && $dedup == true && $paired_reads == true ]]; then
         $outdir_cutadapt \
         $umi_adpt_trimmed_path \
         $fastp_dir \
-        $fastp_fastqc > "${report_dir}/preprocessing_cutadapt_steps.out" 2>&1
+        $fastp_fastqc \
+        "${module_dir}" > "${report_dir}/preprocessing_cutadapt_steps.out" 2>&1
     else
         bash preprocessing_cutadapt_steps.sh \
         $indir \
@@ -189,7 +194,8 @@ if [[ $cutadapt == true && $dedup == true && $paired_reads == true ]]; then
         $outdir_cutadapt \
         $umi_adpt_trimmed_path \
         $fastp_dir \
-        $fastp_fastqc > "${report_dir}/preprocessing_cutadapt_steps.out" 2>&1
+        $fastp_fastqc \
+        "${module_dir}" > "${report_dir}/preprocessing_cutadapt_steps.out" 2>&1
     fi
 
     python preprocessing/cutadapt_output_parsing.py \
@@ -203,37 +209,40 @@ elif [[ "$cutadapt" == true ]]; then
     fastp_dir="${outdir}/fastp"
     fastp_dir_single_samps="${outdir}/fastp/fastp_single_samples"
     if [[ "${set_length}" == true ]];then
-        bash /home/ckalk/scripts/SplitORFs/Riboseq/preprocess_data/preprocessing_steps_general.sh \
-        -d ${indir} \
-        -r ${fastqc_dir} \
-        -p ${fastp_dir_single_samps} \
-        -a ${adapter_sequence} \
-        -m ${max_length}
+        bash "${module_dir}"/preprocessing/preprocessing_steps_general.sh \
+        -d "${indir}" \
+        -r "${fastqc_dir}" \
+        -p "${fastp_dir_single_samps}" \
+        -a "${adapter_sequence}" \
+        -m "${max_length}" \
+        -s "${module_dir}"
         
     elif [[ "${trim_tail}" == true ]];then
-        bash /home/ckalk/scripts/SplitORFs/Riboseq/preprocess_data/preprocessing_steps_general.sh \
-        -d ${indir} \
-        -r ${fastqc_dir} \
-        -p ${fastp_dir_single_samps} \
-        -a ${adapter_sequence} \
-        -t ${cutadapt_trim}
+        bash "${module_dir}"/preprocessing/preprocessing_steps_general.sh \
+        -d "${indir}" \
+        -r "${fastqc_dir}" \
+        -p "${fastp_dir_single_samps}" \
+        -a "${adapter_sequence}" \
+        -t "${cutadapt_trim}" \
+        -s "${module_dir}"
 
     else
-        bash /home/ckalk/scripts/SplitORFs/Riboseq/preprocess_data/preprocessing_steps_general.sh \
-        -d ${indir} \
-        -r ${fastqc_dir} \
-        -p ${fastp_dir_single_samps} \
-        -a ${adapter_sequence}
+        bash "${module_dir}"/preprocessing/preprocessing_steps_general.sh \
+        -d "${indir}" \
+        -r "${fastqc_dir}" \
+        -p "${fastp_dir_single_samps}" \
+        -a "${adapter_sequence}" \
+        -s "${module_dir}"
     fi
 
-    indir=${fastp_dir_single_samps}
+    indir="${fastp_dir_single_samps}"
 fi
 
 ################################################################################
 # TRANSCRIPTOMIC ALIGNMENT                                                     #
 ################################################################################
 
-if [[ $transcriptomic == true && $soft_clip == true ]]; then
+if [[ "$transcriptomic" == true && "$soft_clip" == true ]]; then
     bowtie2_out_dir="${outdir}/alignment_concat_transcriptome_Ignolia"
     fastp_dir="${outdir}/preprocess/cutadapt/fastp_filter_after_UMI_trim"
 
@@ -242,18 +251,18 @@ if [[ $transcriptomic == true && $soft_clip == true ]]; then
     fi
 
 
-    source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie2_align_k1_only_R1.sh \
-     ${bowtie2_base_name} \
+    source "${module_dir}"/alignments/bowtie2_align_k1_only_R1.sh \
+     "${bowtie2_base_name}" \
      "${bowtie_ref_fasta}" \
-     ${fastp_dir} \
-     ${bowtie2_out_dir} \
+     "${fastp_dir}" \
+     "${bowtie2_out_dir}" \
      concat_transcriptome \
      "${report_dir}"/transcriptomic_mapping_k1_R1_norc.out \
      > "${report_dir}"/transcriptomic_mapping_k1_R1_norc.out 2>&1
 
 
     # count soft clipping in transcriptomic alignments
-    python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_soft_clipping.py ${bowtie2_out_dir}
+    python "${module_dir}"/alignments/analyze_soft_clipping.py "${bowtie2_out_dir}"
 
     mapping_dir="${bowtie2_out_dir}"
 
@@ -270,7 +279,7 @@ elif [[ $transcriptomic == true ]]; then
     fi
 
 
-    bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/bowtie1_align_21_10_25.sh \
+    bash "${module_dir}"/alignments/bowtie1_align_21_10_25.sh \
     "${bowtie1_out_dir}/bowtie1_index/index" \
      "${bowtie_ref_fasta}" \
      "${fastp_dir}" \
@@ -289,14 +298,15 @@ fi
 if [[ $transcriptomic == true && $dedup == true ]]; then
 
     # deduplicate UMIs
-    bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/deduplication/deduplicate_umi_tools.sh \
+    bash "${module_dir}"/deduplication/deduplicate_umi_tools.sh \
      ${mapping_dir}/filtered/q10 \
      ${mapping_dir}/filtered/q10/dedup \
-     transcriptomic
+     transcriptomic \
+     "${module_dir}"
 
     if [[ $soft_clip == true ]]; then 
         # count soft clipping in transcriptomic alignments
-        python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_soft_clipping.py ${mapping_dir}/filtered/q10/dedup
+        python "${module_dir}"/alignments/analyze_soft_clipping.py ${mapping_dir}/filtered/q10/dedup
     fi
 fi
 
@@ -309,11 +319,11 @@ if [[ $genomic == true && $dedup == true && $soft_clip == true && $paired_reads 
 
     genome_align_dir="${outdir}/alignment_genome"
     output_star="${genome_align_dir}/STAR/only_R1"
-    bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/genome_alignment_star.sh -o ${output_star} -f ${indir} -s ${star_index} \
+    bash "${module_dir}"/alignments/genome_alignment_star.sh -o ${output_star} -f ${indir} -s ${star_index} \
     -a $gtf -g $genome_fasta -i -m Extend5pOfRead1 -e only_R1_
 
 
-    python /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random/analyze_mappings/analyze_STAR_alignments.py \
+    python "${module_dir}"/analyze_mappings/alignments/analyze_STAR_alignments.py \
         ${output_star} \
         STAR_align_Ribo_genome.csv
 
@@ -321,10 +331,10 @@ elif [[ $genomic == true && $dedup == true ]]; then
     genome_align_dir="${outdir}/alignment_genome"
     output_star="${genome_align_dir}/STAR"
     # echo $gtf $indir $genome_fasta $output_star $star_index
-    # bash /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/genome_alignment_star.sh -a $gtf -e "Ens_110_" -f ${indir} \
+    # bash "${module_dir}"/alignments/genome_alignment_star.sh -a $gtf -e "Ens_110_" -f ${indir} \
     # -g $genome_fasta -m EndToEnd -o ${output_star} -s ${star_index} # -i
 
-    python /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random/analyze_mappings/analyze_STAR_alignments.py \
+    python "${module_dir}"/analyze_mappings/alignments/analyze_STAR_alignments.py \
     ${output_star} \
     STAR_align_Ribo_genome.csv
      
@@ -335,9 +345,10 @@ if [[ $genomic == true && $dedup == true ]]; then
     umi_dedup_outdir="${output_star}/deduplicated"
 
     # # deduplicate UMIs
-    # source /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/deduplication/deduplicate_umi_tools.sh \
+    # source "${module_dir}"/deduplication/deduplicate_umi_tools.sh \
     #  $output_star \
-    #  $umi_dedup_outdir
+    #  $umi_dedup_outdir \
+    #  "${module_dir}"
 
     # # filter out secondary and suppl alignments
     # FILES=("${umi_dedup_outdir}"/*_dedup.bam)
@@ -365,11 +376,11 @@ if [[ $genomic == true && $dedup == true ]]; then
 
 
     # # # analyze soft clipping of genomic deduplciated reads
-    # python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_soft_clipping.py $umi_dedup_outdir
+    # python "${module_dir}"/alignments/analyze_soft_clipping.py $umi_dedup_outdir
 
 
     # run FeatureCounts to get mapping percentages
-    Rscript /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/analyze_mappings/genome_aligned_reads_biotype_counting.R \
+    Rscript "${module_dir}"/alignments/analyze_mappings/genome_aligned_reads_biotype_counting.R \
     $umi_dedup_outdir
 
 fi
@@ -393,13 +404,13 @@ if [[ $genomic == true && $riboseqc == true ]]; then
 
     echo $indir
     conda activate riboseq_qc 
-    Rscript /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/ORFquant/ORFquant_prepare_annotation.R \
+    Rscript "${module_dir}"/periodicity_qc/ORFquant_prepare_annotation.R \
         $twobit_file \
         $gtf_file \
         $riboseqc_outdir \
         $genome_fasta 
 
-    Rscript /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/ORFquant/RiboseQC.R \
+    Rscript "${module_dir}"/periodicity_qc/RiboseQC.R \
         $twobit_file \
         $gtf_file \
         $riboseqc_outdir \

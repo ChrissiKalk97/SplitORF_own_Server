@@ -31,7 +31,7 @@ script_dir="/home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_analysis_pipeline"
 GENOME_FASTA="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
 Ens_110_gtf="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.gtf"
 
-INDIR="/projects/splitorfs/work/own_data/Riboseq/Michi_Vlado_round_1"
+indir="/projects/splitorfs/work/own_data/Riboseq/Michi_Vlado_round_1"
 OUTDIR_FASTQC1="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/fastqc_unprocessed"
 OUTDIR_CUTADAPT="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt"
 Umi_adpt_trimmed_path="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/UMI_trimmed_custom"
@@ -53,7 +53,7 @@ UMI_dedup_outdir_transcriptomic="/projects/splitorfs/work/Riboseq/Output/Michi_V
 ################################################################################
 
 # bash preprocessing_cutadapt_steps.sh \
-#  $INDIR \
+#  $indir \
 #   $OUTDIR_FASTQC1 \
 #   $OUTDIR_CUTADAPT \
 #   $Umi_adpt_trimmed_path \
@@ -105,6 +105,12 @@ UMI_dedup_outdir_transcriptomic="/projects/splitorfs/work/Riboseq/Output/Michi_V
 
 # count soft clipping in transcriptomic alignments
 # python alignments/analyze_soft_clipping.py $UMI_dedup_outdir_transcriptomic
+
+# count adapter dimers
+# bash preprocessing/count_adapter_dimers.sh \
+#  "${indir}" \
+#  "/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/adapter_dimer/adapter_dimer_counts.csv"
+
 
 # if [ ! -d ${UMI_Indir_transcriptomic}/filtered/q10/dedup/DEGs ]; then
 #     mkdir ${UMI_Indir_transcriptomic}/filtered/q10/dedup/DEGs

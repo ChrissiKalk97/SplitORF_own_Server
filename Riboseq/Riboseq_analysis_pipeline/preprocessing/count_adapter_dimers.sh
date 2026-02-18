@@ -1,6 +1,7 @@
 #!/bin/bash
 
 raw_file_directory="/projects/splitorfs/work/own_data/Riboseq/Michi_Vlado_round_1"
+output_file="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/adapter_dimer/adapter_dimer_counts.csv"
 
 for fastq in $raw_file_directory/uf*R1.fastq.gz
 do
@@ -12,4 +13,4 @@ do
     echo $nr_9N_beginning
 done
 
-python analyze_adapter_dimers.py $raw_file_directory
+python analyze_adapter_dimers.py "$raw_file_directory" "$output_file" 

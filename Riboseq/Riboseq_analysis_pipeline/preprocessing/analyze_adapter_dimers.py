@@ -6,6 +6,7 @@ import gzip
 import pandas as pd
 
 fastq_dir = sys.argv[1]
+output_file = sys.argv[2]
 adapter_dimer_df = pd.DataFrame(
     columns=['nr dimers', 'nr reads', 'dimer percentage'])
 
@@ -25,5 +26,4 @@ for fastq in os.listdir(fastq_dir):
                 dimer_counter, nr_reads, dimer_perc]
 
 
-adapter_dimer_df.to_csv(
-    '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/adapter_dimer/adapter_dimer_counts.csv')
+adapter_dimer_df.to_csv(output_file)

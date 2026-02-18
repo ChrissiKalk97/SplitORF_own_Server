@@ -5,6 +5,7 @@ conda activate Riboseq
 umi_indir=$1
 umi_dedup_outdir=$2
 align_type=$3
+module_dir=$4
 
 
 if [ ! -d ${umi_dedup_outdir} ]; then
@@ -64,7 +65,7 @@ done
 wait
 
 if [[ "$align_type" == "transcriptomic" ]]; then
-    python /home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py \
+    python "${module_dir}"/alignments/summarize_bowtie2_alns_by_source.py \
     /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mtDNA/Homo_sapiens.GRCh38.dna.chromosome.MT.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/rRNA/redownload/rRNA_ref_NCBI_Ens.fasta,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/tRNA/hg38-tRNAs/hg38-tRNAs.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/ncRNA/redownload/Ens_Gencode_lncRNA_ncRNA.fasta \
     $umi_dedup_outdir
 fi
