@@ -42,8 +42,11 @@ NC='\033[0m'	 #No colour for normal messages
 
 
 # available options for the programm
-while getopts 'bc:df:g:hi:l:m:o:pqr:st:uv:' option; do
+while getopts 'a:bc:df:g:hi:l:m:o:pqr:st:uv:' option; do
   case "$option" in
+    a)
+        alignment_index_star="$OPTARG"
+      ;;
     b)
         start_bam=true
       ;;
@@ -314,27 +317,28 @@ fi
 ################################################################################
 # GENOMIC ALIGNMENT                                                            #
 ################################################################################
-star_index="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index"
+# star_index="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index"
 if [[ $genomic == true && $dedup == true && $soft_clip == true && $paired_reads == true ]]; then
-
     genome_align_dir="${outdir}/alignment_genome"
+    mkdir -p "${genome_align_dir}"
     output_star="${genome_align_dir}/STAR/only_R1"
-    bash "${module_dir}"/alignments/genome_alignment_star.sh -o ${output_star} -f ${indir} -s ${star_index} \
+    bash "${module_dir}"/alignments/genome_alignment_star.sh -o ${output_star} -f ${indir} -s "${alignment_index_star}" \
     -a $gtf -g $genome_fasta -i -m Extend5pOfRead1 -e only_R1_
 
 
-    python "${module_dir}"/analyze_mappings/alignments/analyze_STAR_alignments.py \
+    python "${module_dir}"/alignments/analyze_mappings/analyze_STAR_alignments.py \
         ${output_star} \
         STAR_align_Ribo_genome.csv
 
 elif [[ $genomic == true && $dedup == true ]]; then
     genome_align_dir="${outdir}/alignment_genome"
+    mkdir -p "${genome_align_dir}"
     output_star="${genome_align_dir}/STAR"
-    # echo $gtf $indir $genome_fasta $output_star $star_index
-    # bash "${module_dir}"/alignments/genome_alignment_star.sh -a $gtf -e "Ens_110_" -f ${indir} \
-    # -g $genome_fasta -m EndToEnd -o ${output_star} -s ${star_index} # -i
+    echo $gtf $indir $genome_fasta $output_star "${alignment_index_star}"
+    bash "${module_dir}"/alignments/genome_alignment_star.sh -a $gtf -e "Ens_110_" -f ${indir} \
+    -g $genome_fasta -m EndToEnd -o ${output_star} -s "${alignment_index_star}" # -i
 
-    python "${module_dir}"/analyze_mappings/alignments/analyze_STAR_alignments.py \
+    python "${module_dir}"/alignments/analyze_mappings/analyze_STAR_alignments.py \
     ${output_star} \
     STAR_align_Ribo_genome.csv
      
@@ -344,39 +348,39 @@ fi
 if [[ $genomic == true && $dedup == true ]]; then
     umi_dedup_outdir="${output_star}/deduplicated"
 
-    # # deduplicate UMIs
-    # source "${module_dir}"/deduplication/deduplicate_umi_tools.sh \
-    #  $output_star \
-    #  $umi_dedup_outdir \
-    #  "${module_dir}"
+    # deduplicate UMIs
+    source "${module_dir}"/deduplication/deduplicate_umi_tools.sh \
+     $output_star \
+     $umi_dedup_outdir \
+     "${module_dir}"
 
-    # # filter out secondary and suppl alignments
-    # FILES=("${umi_dedup_outdir}"/*_dedup.bam)
+    # filter out secondary and suppl alignments
+    FILES=("${umi_dedup_outdir}"/*_dedup.bam)
 
-    # for BAM in "${FILES[@]}"
-    # do
-    #     samtools view -F 256 -F 2048 -q 10 -b ${BAM} > \
-    #      "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam
+    for BAM in "${FILES[@]}"
+    do
+        samtools view -F 256 -F 2048 -q 10 -b ${BAM} > \
+         "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam
 
-    #      samtools index "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam
+         samtools index "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam
 
-    #      samtools idxstats "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam > \
-    #     "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered_idxstats.out
+         samtools idxstats "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam > \
+        "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered_idxstats.out
 
-    #     samtools stats "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam > \
-    #     "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered_stats.out
+        samtools stats "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam > \
+        "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered_stats.out
 
-    #     samtools flagstat "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam > \
-    #     "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered_flagstat.out
+        samtools flagstat "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam > \
+        "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered_flagstat.out
 
-    # done
+    done
 
-    # # remove all unfiltered .bam files
-    # rm "${umi_dedup_outdir}"/*dedup.bam
+    # remove all unfiltered .bam files
+    rm "${umi_dedup_outdir}"/*dedup.bam
 
 
-    # # # analyze soft clipping of genomic deduplciated reads
-    # python "${module_dir}"/alignments/analyze_soft_clipping.py $umi_dedup_outdir
+    # # analyze soft clipping of genomic deduplciated reads
+    python "${module_dir}"/alignments/analyze_soft_clipping.py $umi_dedup_outdir
 
 
     # run FeatureCounts to get mapping percentages

@@ -78,9 +78,9 @@ if [[ "$index" == true ]]; then
 fi
 
 shopt -s nullglob  # Prevents literal pattern if no match
-files=(*.fastq)
+files=($fastq_dir/*.fastq)
 
-if [ ${#files[@]} -gt 0 ]; then
+if [ ${#files[@]} -eq 0 ]; then
     cd $fastq_dir
     gunzip *.gz
     cd -
