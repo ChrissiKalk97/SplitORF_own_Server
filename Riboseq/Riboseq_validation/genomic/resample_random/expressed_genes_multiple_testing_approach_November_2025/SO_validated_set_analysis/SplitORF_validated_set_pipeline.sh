@@ -12,6 +12,7 @@ conda activate Riboseq
 
 disgenet=false
 rbpdb=true
+pfam=true
 
 outdir="/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/SO_validated_set_analysis/SO_valdiation"
 if [[ ! -d "${outdir}/NMD" ]]; then
@@ -40,3 +41,6 @@ if [[ "${rbpdb}" == true ]]; then
     bash ../downstream_analysis_validated_URs/run_rbpdb_analysis.sh > ../downstream_analysis_validated_URs/outreports_of_runs/run_rbpdb_analysis.out 2>&1
 fi
 
+if [[ "${pfam}" == true ]]; then 
+    bash ../downstream_analysis_validated_URs/check_validated_pfam_domains.sh > ../downstream_analysis_validated_URs/outreports_of_runs/check_validated_pfam_domains.out 2>&1
+fi
