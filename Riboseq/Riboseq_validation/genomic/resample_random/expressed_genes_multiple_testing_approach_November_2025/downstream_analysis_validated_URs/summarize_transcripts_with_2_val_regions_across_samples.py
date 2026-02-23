@@ -52,13 +52,15 @@ def main(ribo_coverage_path, out_name, samples_of_interest_string):
                 end1 = ribo_results_df_transcript.iloc[0, 5]
                 start2 = ribo_results_df_transcript.iloc[1, 4]
                 end2 = ribo_results_df_transcript.iloc[1, 5]
-                if len(ribo_results_df_transcript.index) == 2:
+                ribo_results_df['ORF'] = ribo_results_df['new_name'].apply(
+                    lambda x: x.split(':')[1])
+                if len(ribo_results_df_transcript.index) == 2 and len(ribo_results_df['ORF'].unique()) > 1:
                     overlap = calculate_overlapping_region_percentage(
                         start1, end1, start2, end2)
                     if overlap == 0:
                         transcripts_with_two_urs_dfs.append(
                             ribo_results_df_transcript)
-                elif len(ribo_results_df_transcript.index) > 2 and len(ribo_results_df_transcript.index) < 5:
+                elif len(ribo_results_df_transcript.index) > 2 and len(ribo_results_df_transcript.index) < 5 and len(ribo_results_df['ORF'].unique()) > 1:
                     start3 = ribo_results_df_transcript.iloc[2, 4]
                     end3 = ribo_results_df_transcript.iloc[2, 5]
                     overlap1 = calculate_overlapping_region_percentage(

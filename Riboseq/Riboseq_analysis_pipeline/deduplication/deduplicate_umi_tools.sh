@@ -16,24 +16,21 @@ shopt -s nullglob
 if [[ "$align_type" == "transcriptomic" ]]; then
     echo $align_type
     files=("${umi_indir}"/*filtered*.bam)
+    parallel=true
 else
     echo $align_type
     files=("${umi_indir}"/*.bam)
+    parallel=false
 fi
 
 
-
-for bam in "${files[@]}"
-do
-    (
-        filename=$(basename "$bam")
-        # are the bamfiles genome or transcriptome aligned
-        # remove respective suffix to get the sample name
-        if [[ "$filename" == *.cutadapt_umi_fastp.only_R1_Aligned.sortedByCoord.out.bam ]]; then
-            sample=${filename%.cutadapt_umi_fastp.only_R1_Aligned.sortedByCoord.out.bam}
-        elif [[ "$filename" == *_Aligned.sortedByCoord.out.bam ]]; then
-            sample=${filename%_Aligned.sortedByCoord.out.bam}
-        else
+if [[ "${parallel}" == true ]]; then
+    for bam in "${files[@]}"
+    do
+        (
+            filename=$(basename "$bam")
+            # are the bamfiles genome or transcriptome aligned
+            # remove respective suffix to get the sample name
             if [[ "$filename" == *"q10"*"bowtie2"* ]]; then
                 sample=${filename%.cutadapt_umi_fastp.bowtie2_concat_transcriptome_k1_R1_sorted_filtered_q10.bam}  
             elif [[ "$filename" == *"bowtie2"* ]]; then
@@ -43,26 +40,55 @@ do
             else
                 sample=${filename%.cutadapt_umi_fastp.bowtie1_concat_transcriptome_k1_R1_sorted_filtered.bam}  
             fi
-        fi
-        
-        echo $sample
-        umi_tools dedup \
-        --stdin=${bam} \
-        --log="${umi_dedup_outdir}"/${sample}_LOGFILE \
-        --output-stats="${umi_dedup_outdir}"/${sample}_outstats \
-            > "${umi_dedup_outdir}"/${sample}_dedup.bam
 
-        samtools index "${umi_dedup_outdir}"/${sample}_dedup.bam
+            
+            echo $sample
+            umi_tools dedup \
+            --stdin=${bam} \
+            --log="${umi_dedup_outdir}"/${sample}_LOGFILE \
+            --output-stats="${umi_dedup_outdir}"/${sample}_outstats \
+                > "${umi_dedup_outdir}"/${sample}_dedup.bam
 
-        samtools flagstat "${umi_dedup_outdir}"/${sample}_dedup.bam > \
-        "${umi_dedup_outdir}"/"${sample}"_dedup_flagstat.out
+            samtools index "${umi_dedup_outdir}"/${sample}_dedup.bam
 
-        samtools idxstats  "${umi_dedup_outdir}"/${sample}_dedup.bam > \
-        "${umi_dedup_outdir}"/"${sample}".dedup_idxstats.out
-    ) &
-done
+            samtools flagstat "${umi_dedup_outdir}"/${sample}_dedup.bam > \
+            "${umi_dedup_outdir}"/"${sample}"_dedup_flagstat.out
 
-wait
+            samtools idxstats  "${umi_dedup_outdir}"/${sample}_dedup.bam > \
+            "${umi_dedup_outdir}"/"${sample}".dedup_idxstats.out
+        ) &
+    done
+
+    wait
+else
+    for bam in "${files[@]}"
+    do
+
+            filename=$(basename "$bam")
+            # are the bamfiles genome or transcriptome aligned
+            # remove respective suffix to get the sample name
+            if [[ "$filename" == *.cutadapt_umi_fastp.only_R1_Aligned.sortedByCoord.out.bam ]]; then
+                sample=${filename%.cutadapt_umi_fastp.only_R1_Aligned.sortedByCoord.out.bam}
+            elif [[ "$filename" == *_Aligned.sortedByCoord.out.bam ]]; then
+                sample=${filename%_Aligned.sortedByCoord.out.bam}
+            fi
+            
+            echo $sample
+            umi_tools dedup \
+            --stdin=${bam} \
+            --log="${umi_dedup_outdir}"/${sample}_LOGFILE \
+            --output-stats="${umi_dedup_outdir}"/${sample}_outstats \
+                > "${umi_dedup_outdir}"/${sample}_dedup.bam
+
+            samtools index "${umi_dedup_outdir}"/${sample}_dedup.bam
+
+            samtools flagstat "${umi_dedup_outdir}"/${sample}_dedup.bam > \
+            "${umi_dedup_outdir}"/"${sample}"_dedup_flagstat.out
+
+            samtools idxstats  "${umi_dedup_outdir}"/${sample}_dedup.bam > \
+            "${umi_dedup_outdir}"/"${sample}".dedup_idxstats.out
+    done
+fi
 
 if [[ "$align_type" == "transcriptomic" ]]; then
     python "${module_dir}"/alignments/summarize_bowtie2_alns_by_source.py \
