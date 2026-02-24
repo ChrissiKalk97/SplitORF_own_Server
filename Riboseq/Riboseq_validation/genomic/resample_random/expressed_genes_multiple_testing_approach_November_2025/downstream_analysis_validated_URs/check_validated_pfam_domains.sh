@@ -8,7 +8,8 @@ python /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample
     --annotated_pfam_file '/home/ckalk/tools/SplitORF_pipeline/Output/run_26.01.2026-13.07.17_NMD_for_paper/UniqueProteinORFPairs_annotated.txt' \
     --validation_file '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/SO_validated_set_analysis/SO_valdiation/NMD/validated_so_df.csv' \
     --region_type 'NMD' \
-    --rbp_file '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/SO_validated_set_analysis/RBP_analysis/proteins.php'
+    --rbp_file '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/SO_validated_set_analysis/RBP_analysis/proteins.php' \
+    --pfam_annotation /projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/SO_validated_set_analysis/PFAM_analysis/Pfam-A.clans.tsv
 
 
 ################################ RI ###########################################
@@ -16,4 +17,5 @@ python /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample
     --annotated_pfam_file '/home/ckalk/tools/SplitORF_pipeline/Output/run_26.01.2026-14.09.13_RI_for_paper/UniqueProteinORFPairs_annotated.txt' \
     --validation_file '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/SO_validated_set_analysis/SO_valdiation/RI/validated_so_df.csv' \
     --region_type 'RI' \
-    --rbp_file '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/SO_validated_set_analysis/RBP_analysis/proteins.php'
+    --rbp_file '/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/SO_validated_set_analysis/RBP_analysis/proteins.php' \
+    --pfam_annotation /projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10_expression_filter/SO_validated_set_analysis/PFAM_analysis/Pfam-A.clans.tsv
