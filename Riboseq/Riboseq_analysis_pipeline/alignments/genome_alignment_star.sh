@@ -71,6 +71,10 @@ if [ ! -d ${output_star} ]; then
     mkdir ${output_star}
 fi
 
+if [ ! -d "${output_star}/filtered_q10" ]; then
+    mkdir "${output_star}/filtered_q10"
+fi
+
 if [[ "$index" == true ]]; then
     STAR --runThreadN 50 --runMode genomeGenerate --genomeDir $star_index --genomeFastaFiles ${genome_fasta}\
     --sjdbGTFfile $annotation_gtf --sjdbOverhang 49
@@ -99,7 +103,7 @@ fi
 
 
 for FQ in "${files[@]}"
-do
+do  
     sample=$(basename "$FQ")       # remove path
     if [[ ${sample} == *"R1"* ]]; then
         sample=${sample%%R1*}          # remove R1 and everything after
@@ -108,29 +112,46 @@ do
     fi
     echo ${sample}
     echo ${FQ}
+    if [[ ! -e "${output_star}/${sample}${ending}Aligned.sortedByCoord.out.bam" ]]; then
+        STAR\
+        --runThreadN 16\
+        --alignEndsType ${align_mode}\
+        --outSAMstrandField intronMotif\
+        --alignIntronMin 20\
+        --alignIntronMax 1000000\
+        --genomeDir $star_index\
+        --readFilesIn ${FQ}\
+        --twopassMode Basic\
+        --seedSearchStartLmax 20\
+        --outFilterMatchNminOverLread 0.9\
+        --outSAMattributes All\
+        --outSAMtype BAM SortedByCoordinate\
+        --outFileNamePrefix "${output_star}"/"${sample}"${ending}
 
-    STAR\
-    --runThreadN 16\
-    --alignEndsType ${align_mode}\
-    --outSAMstrandField intronMotif\
-    --alignIntronMin 20\
-    --alignIntronMax 1000000\
-    --genomeDir $star_index\
-    --readFilesIn ${FQ}\
-    --twopassMode Basic\
-    --seedSearchStartLmax 20\
-    --outFilterMatchNminOverLread 0.9\
-    --outSAMattributes All\
-    --outSAMtype BAM SortedByCoordinate\
-    --outFileNamePrefix "${output_star}"/"${sample}"${ending}
+        samtools index --threads 32 "${output_star}"/"${sample}"${ending}Aligned.sortedByCoord.out.bam
 
-    samtools index --threads 32 "${output_star}"/"${sample}"${ending}Aligned.sortedByCoord.out.bam
+        samtools idxstats "${output_star}"/"${sample}"${ending}Aligned.sortedByCoord.out.bam > \
+        "${output_star}"/"${sample}"${ending}idxstats.out
 
-    samtools idxstats "${output_star}"/"${sample}"${ending}Aligned.sortedByCoord.out.bam > \
-    "${output_star}"/"${sample}"${ending}idxstats.out
+        samtools stats "${output_star}"/"${sample}"${ending}Aligned.sortedByCoord.out.bam > \
+        "${output_star}"/"${sample}"${ending}stats.out
+    fi
+    # if [[ ! -e "${output_star}/filtered_q10/${sample}${ending}_filtered.bam" ]]; then
+    #     sample="${sample}"
+    #     samtools view -F 256 -F 2048 -q 10 -b ${BAM} > \
+    #         "${UMI_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam
 
-    samtools stats "${output_star}"/"${sample}"${ending}Aligned.sortedByCoord.out.bam > \
-    "${output_star}"/"${sample}"${ending}stats.out
+    #         samtools index "${UMI_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam
+
+    #         samtools idxstats "${UMI_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam > \
+    #     "${UMI_dedup_outdir}"/$(basename $BAM .bam)_filtered_idxstats.out
+
+    #     samtools stats "${UMI_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam > \
+    #     "${UMI_dedup_outdir}"/$(basename $BAM .bam)_filtered_stats.out
+
+    #     samtools flagstat "${UMI_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam > \
+    #     "${UMI_dedup_outdir}"/$(basename $BAM .bam)_filtered_flagstat.out
+    # fi
 done
 
 # --alignMatesGapMax 20\# maximal genomic distance between mates, would like to set this to a small values as RPFs should fully overlap

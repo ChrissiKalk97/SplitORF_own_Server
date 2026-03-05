@@ -17,7 +17,7 @@
 #                        s: soft-clip
 #                        t: transcriptomic alignment
 #                        g: genomic alignment
-#               The pipeline needs to be run once per dataset
+#              The pipeline needs to be run once per dataset
 # Usage:       bash Riboseq_pipeline.sh args...
 # Author:      Christina Kalk
 # Date:        2025-10-10
@@ -332,26 +332,50 @@ if [[ $genomic == true && $dedup == true && $soft_clip == true && $paired_reads 
 
 elif [[ $genomic == true && $dedup == true ]]; then
     genome_align_dir="${outdir}/alignment_genome"
-    mkdir -p "${genome_align_dir}"
     output_star="${genome_align_dir}/STAR"
-    echo $gtf $indir $genome_fasta $output_star "${alignment_index_star}"
-    bash "${module_dir}"/alignments/genome_alignment_star.sh -a $gtf -e "Ens_110_" -f ${indir} \
-    -g $genome_fasta -m EndToEnd -o ${output_star} -s "${alignment_index_star}" # -i
+    genome_align_dir_filtered="${output_star}/filtered"
+    mkdir -p "${genome_align_dir}"
+    mkdir -p "${output_star}"
+    mkdir -p "${genome_align_dir_filtered}"
 
-    python "${module_dir}"/alignments/analyze_mappings/analyze_STAR_alignments.py \
-    ${output_star} \
-    STAR_align_Ribo_genome.csv
+    
+    # echo $gtf $indir $genome_fasta $output_star "${alignment_index_star}"
+    # bash "${module_dir}"/alignments/genome_alignment_star.sh -a $gtf -e "Ens_110_" -f ${indir} \
+    # -g $genome_fasta -m EndToEnd -o ${output_star} -s "${alignment_index_star}" # -i
+
+    # python "${module_dir}"/alignments/analyze_mappings/analyze_STAR_alignments.py \
+    # ${output_star} \
+    # STAR_align_Ribo_genome.csv
+
+    # filter out secondary and suppl alignments
+    # files=("${output_star}"/*.bam)
+
+    # for bam in "${files[@]}"
+    # do
+    #     samtools view -F 256 -F 2048 -b ${bam} > \
+    #         "${genome_align_dir_filtered}"/$(basename $bam .bam)_filtered.bam
+
+
+    #     samtools sort "${genome_align_dir_filtered}"/$(basename $bam .bam)_filtered.bam \
+    #     -o "${genome_align_dir_filtered}"/$(basename $bam .bam)_sorted.bam
+
+    #     samtools index "${genome_align_dir_filtered}"/$(basename $bam .bam)_sorted.bam
+
+    #     rm  "${genome_align_dir_filtered}"/*_filtered.bam
+        
+    # done
      
 fi
 
 
 if [[ $genomic == true && $dedup == true ]]; then
-    umi_dedup_outdir="${output_star}/deduplicated"
+    umi_dedup_outdir="${genome_align_dir_filtered}/deduplicated"
 
     # deduplicate UMIs
     source "${module_dir}"/deduplication/deduplicate_umi_tools.sh \
-     $output_star \
+     "${genome_align_dir_filtered}" \
      $umi_dedup_outdir \
+     "genomic" \
      "${module_dir}"
 
     # filter out secondary and suppl alignments
@@ -362,7 +386,7 @@ if [[ $genomic == true && $dedup == true ]]; then
         samtools view -F 256 -F 2048 -q 10 -b ${BAM} > \
          "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam
 
-         samtools index "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam
+        samtools index "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam
 
          samtools idxstats "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered.bam > \
         "${umi_dedup_outdir}"/$(basename $BAM .bam)_filtered_idxstats.out
@@ -392,18 +416,21 @@ fi
 if [[ $genomic == true && $riboseqc == true ]]; then
     twobit_file="/projects/splitorfs/work/reference_files/Homo_sapiens.Ensembl110.2bit"
     gtf_file="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.no.comment.gtf"
-    riboseqc_outdir="${outdir}/ORFquant"
-
-    if [[ ! -d $riboseqc_outdir ]]; then
-        mkdir $riboseqc_outdir
-    fi
+    
 
 
     # keep indir as indir in case that STAR was run previously
     if [[ $dedup == true ]]; then    
         indir="${umi_dedup_outdir}"
-    elif [[ -n "${output_star}" ]]; then
-        indir="${output_star}"
+        riboseqc_outdir="${umi_dedup_outdir}/ORFquant"
+    elif [[ -n "${outdir}/alignment_genome/STAR/filtered" ]]; then
+        indir="${outdir}/alignment_genome/STAR/filtered"
+        riboseqc_outdir="${outdir}/alignment_genome/STAR/filtered/ORFquant"
+    fi
+
+
+    if [[ ! -d $riboseqc_outdir ]]; then
+        mkdir $riboseqc_outdir
     fi
 
     echo $indir
