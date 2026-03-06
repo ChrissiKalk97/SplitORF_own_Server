@@ -127,38 +127,58 @@ echo "$out_dir"
 
 # wait
 
-python pyBigWig_metagene_plots.py \
+
+python pyBigWig_coefficient_of_variation.py \
     --path_to_bw_files '/projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files' \
     --transcript_fai '/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna.fai' \
     --mane_transcripts_cds_bed '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
     --condition 'DNOR' \
-    --out_path '/projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files/metagene_plots' \
-    --color '#1eb0e6'\
-    --region_type 'transcript'
-
-python pyBigWig_metagene_plots.py \
-    --path_to_bw_files '/projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files' \
-    --transcript_fai '/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna.fai' \
-    --mane_transcripts_cds_bed '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
-    --condition 'DHYPO' \
-    --out_path '/projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files/metagene_plots' \
-    --color '#1eb0e6' \
-    --region_type 'transcript'
-
-python pyBigWig_metagene_plots.py \
-    --path_to_bw_files '/projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files' \
-    --transcript_fai '/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna.fai' \
-    --mane_transcripts_cds_bed '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
-    --condition 'DNOR' \
-    --out_path '/projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files/metagene_plots' \
+    --out_path '/projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files/cv_plots' \
     --color '#1eb0e6'\
     --region_type 'cds'
 
-python pyBigWig_metagene_plots.py \
+python pyBigWig_coefficient_of_variation.py \
     --path_to_bw_files '/projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files' \
     --transcript_fai '/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna.fai' \
     --mane_transcripts_cds_bed '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
     --condition 'DHYPO' \
-    --out_path '/projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files/metagene_plots' \
-    --color '#1eb0e6' \
+    --out_path '/projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files/cv_plots' \
+    --color '#8B0000' \
+    --region_type 'cds'
+
+
+
+# for the old run
+
+dedup_dir="/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup"
+mkdir -p "${dedup_dir}/coverage_bw_files"
+for bam in ${dedup_dir}/*.bam; do
+    (
+    sample_name=$(basename "$bam" _dedup.bam)
+
+    bamCoverage \
+    -b "${bam}" \
+    -o "${dedup_dir}/coverage_bw_files/${sample_name}.bw" \
+    --normalizeUsing CPM \
+    --binSize 1
+    )&
+done
+
+wait
+python pyBigWig_coefficient_of_variation.py \
+    --path_to_bw_files "${dedup_dir}/coverage_bw_files" \
+    --transcript_fai '/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna.fai' \
+    --mane_transcripts_cds_bed '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
+    --condition 'DNOR' \
+    --out_path "${dedup_dir}/coverage_bw_files/cv_plots" \
+    --color '#1eb0e6'\
+    --region_type 'cds'
+
+python pyBigWig_coefficient_of_variation.py \
+    --path_to_bw_files "${dedup_dir}/coverage_bw_files" \
+    --transcript_fai '/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna.fai' \
+    --mane_transcripts_cds_bed '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
+    --condition 'DHYPO' \
+    --out_path "${dedup_dir}/coverage_bw_files/cv_plots" \
+    --color '#8B0000' \
     --region_type 'cds'
