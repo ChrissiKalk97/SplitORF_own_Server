@@ -35,7 +35,9 @@ source "${module_dir}"/preprocessing/fastqc_multiqc.sh \
 ################################################################################
 # RUN CUTADAPT TO TRIM ADAPTERS                                                #
 ################################################################################
-
+if [ ! -d ${outdir_cutadapt} ]; then
+        mkdir ${outdir_cutadapt}  
+fi
 
 for FQ in "${indir}"/*R1.fastq.gz
 do
@@ -61,9 +63,7 @@ done
 # ################################################################################
 # # RUN FASTQC AFTER CUTADAPT                                                    #
 # ################################################################################
-if [ ! -d ${outdir_cutadapt} ]; then
-        mkdir ${outdir_cutadapt}  
-fi
+
 
 
 if [ ! -d ${outdir_cutadapt}/fastqc ]; then

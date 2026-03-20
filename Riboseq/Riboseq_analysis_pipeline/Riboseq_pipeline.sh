@@ -365,16 +365,13 @@ elif [[ $genomic == true && $dedup == true ]]; then
         
     # done
      
-fi
-
-
-if [[ $genomic == true && $dedup == true ]]; then
     umi_dedup_outdir="${genome_align_dir_filtered}/deduplicated"
+    mkdir -p "${umi_dedup_outdir}"
 
     # deduplicate UMIs
     source "${module_dir}"/deduplication/deduplicate_umi_tools.sh \
      "${genome_align_dir_filtered}" \
-     $umi_dedup_outdir \
+     "$umi_dedup_outdir" \
      "genomic" \
      "${module_dir}"
 
@@ -402,14 +399,9 @@ if [[ $genomic == true && $dedup == true ]]; then
     # remove all unfiltered .bam files
     rm "${umi_dedup_outdir}"/*dedup.bam
 
-
-    # # analyze soft clipping of genomic deduplciated reads
-    python "${module_dir}"/alignments/analyze_soft_clipping.py $umi_dedup_outdir
-
-
     # run FeatureCounts to get mapping percentages
     Rscript "${module_dir}"/alignments/analyze_mappings/genome_aligned_reads_biotype_counting.R \
-    $umi_dedup_outdir
+    "$umi_dedup_outdir"
 
 fi
 
