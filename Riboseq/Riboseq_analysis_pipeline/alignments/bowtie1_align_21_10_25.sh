@@ -20,8 +20,12 @@ aligned_name=$5
 log_file=$6
 script_dir=$7
 
-if [ ! -d $bowtie1_out_dir ]; then
-    mkdir $bowtie1_out_dir
+if [ "$#" -eq 8 ]; then
+    raw_read_path=$8
+fi
+
+if [ ! -d "$bowtie1_out_dir" ]; then
+    mkdir "$bowtie1_out_dir"
 fi
 
 if [[ ${bowtie1_ref_fasta} != "no_index" ]]; then
@@ -48,58 +52,58 @@ echo "start alignment"
 for FQ in "${files[@]}"
 do
     sample=$(basename "$FQ")
-    sample=${sample%%R1*}          # remove R1 and everything after
+    sample="${sample%%R1*}"          # remove R1 and everything after
 
     outname="${bowtie1_out_dir}"/"${sample}"bowtie1_${aligned_name}
-    echo ${sample}
-    echo ${FQ}
-    echo ${outname}
-
-    # inspired from the ignolia paper
-    bowtie \
-        -v 2 \
-        -m 200 \
-        --norc \
-        --best \
-        -k 1 \
-        -S \
-        -q \
-        --un ${outname}_unaligned.fastq \
-        -x ${bowtie1_base_name} \
-        ${FQ} \
-        ${outname}_k1_R1.sam
-
-
-    samtools view -@ 32 -bS ${outname}_k1_R1.sam \
-     > ${outname}_k1_R1.bam
-
-    samtools sort -@ 32 -o ${outname}_k1_R1_sorted.bam \
-    ${outname}_k1_R1.bam
-
-    samtools index -@ 32 ${outname}_k1_R1_sorted.bam
-
-    samtools idxstats ${outname}_k1_R1_sorted.bam > \
-    ${outname}_idxstats.out
-
-    if [ ! -d $bowtie1_out_dir/filtered ]; then
-        mkdir $bowtie1_out_dir/filtered
-    fi
     filtered_name="${bowtie1_out_dir}"/filtered/"${sample}"bowtie1_${aligned_name}
+    echo "${sample}"
+    echo "${FQ}"
+    echo "${outname}"
+    if [[ ! -e "${filtered_name}_k1_R1_sorted_filtered.bam" ]];then
+        # inspired from the ignolia paper
+        bowtie \
+            -v 2 \
+            -m 200 \
+            --norc \
+            --best \
+            -k 1 \
+            -S \
+            -q \
+            --un "${outname}"_unaligned.fastq \
+            -x "${bowtie1_base_name}" \
+            "${FQ}" \
+            "${outname}"_k1_R1.sam
 
 
-    # remove secondary and supplementary alignments and unmapped
-    samtools view -F 256 -F 2048 -F 0x4 -b ${outname}_k1_R1_sorted.bam > ${filtered_name}_k1_R1_sorted_filtered.bam
-   
+        samtools view -@ 32 -bS "${outname}"_k1_R1.sam \
+        > "${outname}"_k1_R1.bam
 
-    samtools index -@ 32 ${filtered_name}_k1_R1_sorted_filtered.bam
+        samtools sort -@ 32 -o "${outname}"_k1_R1_sorted.bam \
+        "${outname}"_k1_R1.bam
 
-    samtools idxstats ${filtered_name}_k1_R1_sorted_filtered.bam > \
-    ${filtered_name}_idxstats.out
+        samtools index -@ 32 "${outname}"_k1_R1_sorted.bam
 
-    samtools stats ${filtered_name}_k1_R1_sorted_filtered.bam > \
-    ${filtered_name}_stats.out
+        samtools idxstats "${outname}"_k1_R1_sorted.bam > \
+        "${outname}"_idxstats.out
 
-    rm ${outname}_k1_R1.sam
+        if [ ! -d "$bowtie1_out_dir"/filtered ]; then
+            mkdir "$bowtie1_out_dir"/filtered
+        fi
+
+        # remove secondary and supplementary alignments and unmapped
+        samtools view -F 256 -F 2048 -F 0x4 -b "${outname}"_k1_R1_sorted.bam > "${filtered_name}"_k1_R1_sorted_filtered.bam
+    
+
+        samtools index -@ 32 "${filtered_name}"_k1_R1_sorted_filtered.bam
+
+        samtools idxstats "${filtered_name}"_k1_R1_sorted_filtered.bam > \
+        "${filtered_name}"_idxstats.out
+
+        samtools stats "${filtered_name}"_k1_R1_sorted_filtered.bam > \
+        "${filtered_name}"_stats.out
+
+        rm "${outname}"_k1_R1.sam
+    fi
 
 done
 # # report only 1 alignment (-k 1 is the default)
@@ -107,48 +111,65 @@ done
 # # -m 200: allow up to 200 mapping positions
 
 
-
- python  "${script_dir}"/alignments/analyze_mappings/analyze_bowtie1_mappings.py \
- $log_file \
- ${bowtie1_out_dir}/summarized_bowtie_mapping_precents.csv
-
+# if [[ ! -e "${bowtie1_out_dir}/summarized_bowtie_mapping_precents.csv" ]]; then
+#     python  "${script_dir}"/alignments/analyze_mappings/analyze_bowtie1_mappings.py \
+#     "$log_file" \
+#     "${bowtie1_out_dir}"/summarized_bowtie_mapping_precents.csv
+# fi
 
 # ################################################################################
 # # Filter for q10 alignments: filters rRNA and tRNA contmaination               #
 # ################################################################################
 
 # filter for quality of 10, this wil remove multi-mappers, hence contaminants
-if [ ! -d $bowtie1_out_dir/filtered/q10 ]; then
-    mkdir $bowtie1_out_dir/filtered/q10
+if [ ! -d "$bowtie1_out_dir"/filtered/q10 ]; then
+    mkdir "$bowtie1_out_dir"/filtered/q10
 fi
 
 bam_files=("${bowtie1_out_dir}"/filtered/*.bam)
 for bam in "${bam_files[@]}"
 do
     sample=$(basename "$bam" .bam)
+    if [[ ! -e "$bowtie1_out_dir/filtered/q10/${sample}_q10.bam" ]];then
+        # bowtie assigns 255 to uniquely mapping reads
+        samtools view -q 255 -b $bam > \
+        "$bowtie1_out_dir"/filtered/q10/"${sample}"_q10.bam
 
-    # bowtie assigns 255 to uniquely mapping reads
-    samtools view -q 255 -b $bam > \
-     $bowtie1_out_dir/filtered/q10/${sample}_q10.bam
+        samtools index "$bowtie1_out_dir"/filtered/q10/"${sample}"_q10.bam
 
-    samtools index $bowtie1_out_dir/filtered/q10/${sample}_q10.bam
-
-    samtools idxstats $bowtie1_out_dir/filtered/q10/${sample}_q10.bam > \
-    $bowtie1_out_dir/filtered/q10/${sample}_q10_idxstats.out
-
+        samtools idxstats "$bowtie1_out_dir"/filtered/q10/"${sample}"_q10.bam > \
+        "$bowtie1_out_dir"/filtered/q10/"${sample}"_q10_idxstats.out
+    fi
 done
 
 
 if [[ "$bowtie1_out_dir" != *Chae* ]]; then
-    python  "${script_dir}"/alignments/summarize_bowtie2_alns_by_source.py \
-    /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mtDNA/Homo_sapiens.GRCh38.dna.chromosome.MT.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/rRNA/redownload/rRNA_ref_NCBI_Ens.fasta,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/tRNA/hg38-tRNAs/hg38-tRNAs.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/ncRNA/redownload/Ens_Gencode_lncRNA_ncRNA.fasta \
-    $bowtie1_out_dir/filtered
+    if [[ "$#" -eq 8 ]]; then
+        python  "${script_dir}"/alignments/summarize_bowtie_alns_by_source_raw_read_dict.py \
+        /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mtDNA/Homo_sapiens.GRCh38.dna.chromosome.MT.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/rRNA/redownload/rRNA_ref_NCBI_Ens.fasta,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/tRNA/hg38-tRNAs/hg38-tRNAs.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/ncRNA/redownload/Ens_Gencode_lncRNA_ncRNA.fasta \
+        "$bowtie1_out_dir"/filtered \
+        "$raw_read_path"
 
-    python  "${script_dir}"/alignments/summarize_bowtie2_alns_by_source.py \
-    /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mtDNA/Homo_sapiens.GRCh38.dna.chromosome.MT.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/rRNA/redownload/rRNA_ref_NCBI_Ens.fasta,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/tRNA/hg38-tRNAs/hg38-tRNAs.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/ncRNA/redownload/Ens_Gencode_lncRNA_ncRNA.fasta \
-    $bowtie1_out_dir
+        python  "${script_dir}"/alignments/summarize_bowtie_alns_by_source_raw_read_dict.py \
+        /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mtDNA/Homo_sapiens.GRCh38.dna.chromosome.MT.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/rRNA/redownload/rRNA_ref_NCBI_Ens.fasta,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/tRNA/hg38-tRNAs/hg38-tRNAs.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/ncRNA/redownload/Ens_Gencode_lncRNA_ncRNA.fasta \
+        "$bowtie1_out_dir" \
+        "$raw_read_path"
 
-    python  "${script_dir}"/alignments/summarize_bowtie2_alns_by_source.py \
-    /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mtDNA/Homo_sapiens.GRCh38.dna.chromosome.MT.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/rRNA/redownload/rRNA_ref_NCBI_Ens.fasta,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/tRNA/hg38-tRNAs/hg38-tRNAs.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/ncRNA/redownload/Ens_Gencode_lncRNA_ncRNA.fasta \
-    $bowtie1_out_dir/filtered/q10
+        python  "${script_dir}"/alignments/summarize_bowtie_alns_by_source_raw_read_dict.py \
+        /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mtDNA/Homo_sapiens.GRCh38.dna.chromosome.MT.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/rRNA/redownload/rRNA_ref_NCBI_Ens.fasta,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/tRNA/hg38-tRNAs/hg38-tRNAs.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/ncRNA/redownload/Ens_Gencode_lncRNA_ncRNA.fasta \
+        "$bowtie1_out_dir"/filtered/q10 \
+        "$raw_read_path"
+    else
+        python  "${script_dir}"/alignments/summarize_bowtie2_alns_by_source.py \
+        /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mtDNA/Homo_sapiens.GRCh38.dna.chromosome.MT.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/rRNA/redownload/rRNA_ref_NCBI_Ens.fasta,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/tRNA/hg38-tRNAs/hg38-tRNAs.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/ncRNA/redownload/Ens_Gencode_lncRNA_ncRNA.fasta \
+        "$bowtie1_out_dir"/filtered
+
+        python  "${script_dir}"/alignments/summarize_bowtie2_alns_by_source.py \
+        /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mtDNA/Homo_sapiens.GRCh38.dna.chromosome.MT.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/rRNA/redownload/rRNA_ref_NCBI_Ens.fasta,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/tRNA/hg38-tRNAs/hg38-tRNAs.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/ncRNA/redownload/Ens_Gencode_lncRNA_ncRNA.fasta \
+        "$bowtie1_out_dir"
+
+        python  "${script_dir}"/alignments/summarize_bowtie2_alns_by_source.py \
+        /projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mtDNA/Homo_sapiens.GRCh38.dna.chromosome.MT.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/rRNA/redownload/rRNA_ref_NCBI_Ens.fasta,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/tRNA/hg38-tRNAs/hg38-tRNAs.fa,/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/ncRNA/redownload/Ens_Gencode_lncRNA_ncRNA.fasta \
+        "$bowtie1_out_dir"/filtered/q10
+    fi
  fi

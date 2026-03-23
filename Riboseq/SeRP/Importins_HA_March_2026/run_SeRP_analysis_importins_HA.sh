@@ -51,26 +51,27 @@ mkdir -p "${outdir}/transcriptome_mapping"
 ################################################################################
 # TRANSCRIPTOMIC ALIGNMENT                                                     #
 ################################################################################
-# source "${preprocess_script_dir}"/alignments/bowtie1_align_21_10_25.sh \
-#  "${Bowtie1_base_name}" \
-#  "${transcriptome_fasta}" \
-#  "${fastp_out}" \
-#  "${Bowtie1_out_dir}" \
-#  concat_transcriptome \
-#  "${report_dir}"/run_SeRP_analysis_bowtie1.out \
-#  "${preprocess_script_dir}" \
+source "${preprocess_script_dir}"/alignments/bowtie1_align_21_10_25.sh \
+ "$Bowtie1_base_name" \
+ no_index \
+ "$fastp_out" \
+ "$Bowtie1_out_dir" \
+ concat_transcriptome \
+ "${report_dir}"/run_SeRP_analysis_bowtie1.out \
+ "$preprocess_script_dir" \
+ "$indir" #\
 #  > "${report_dir}"/run_SeRP_analysis_bowtie1.out 2>&1
+# "$transcriptome_fasta" \
 
 
+# if [ ! -d ${Bowtie1_out_dir}/filtered/q10/DEGs ]; then
+#     mkdir ${Bowtie1_out_dir}/filtered/q10/DEGs
+# fi
 
-if [ ! -d ${Bowtie1_out_dir}/filtered/q10/DEGs ]; then
-    mkdir ${Bowtie1_out_dir}/filtered/q10/DEGs
-fi
+# conda activate r-env
 
-conda activate r-env
-
-Rscript  "${analysis_script_dir}"/Importins_HA_March_2026/PCA_conditions_DeSeq2_SeRP_importins_HA.R \
-"${Bowtie1_out_dir}"/filtered/q10
+# Rscript  "${analysis_script_dir}"/Importins_HA_March_2026/PCA_conditions_DeSeq2_SeRP_importins_HA.R \
+# "${Bowtie1_out_dir}"/filtered/q10
 
 
 # bash map_DEG_tID_to_gID.sh "${Bowtie1_out_dir}"
