@@ -93,12 +93,12 @@ def main(path_to_bw_files, transcript_fai, mane_transcripts_cds_bed,
                 cv: coefficient of variation for the respective transcript
             """
             signal = np.asarray(signal)
-            if signal .mean() > 0:
+            if signal.mean() > 0.0:
                 cv = np.std(signal) / np.mean(signal)
             return cv
 
         # aggregate length normalized CPM signal for all transcripts per replicate
-        transcript_coords['cv'] = 0
+        transcript_coords['cv'] = 0.0
         for transcript in transcript_coords.index:
             observed_values = []
             for bw_object in bw_files:
