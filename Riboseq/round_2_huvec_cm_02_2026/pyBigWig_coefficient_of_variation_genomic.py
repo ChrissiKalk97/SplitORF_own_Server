@@ -74,16 +74,12 @@ def main(path_to_bw_files,  mane_gtf,
         return cds_df
 
     def get_transcript_intervals(cds_df):
+        # I do not care about the orientation, as the CV is only about neighboring bases
         transcript_cds_coords = defaultdict(list)
         for _, row in cds_df.iterrows():
             transcript_cds_coords[row['transcript_id']].append(
                 (row['chrom'], row['start'], row['end'], row['strand'])
             )
-        # For negative strand, you may want to reverse the order of intervals
-        for tx, intervals in transcript_cds_coords.items():
-            strand = intervals[0][3]
-            if strand == '-':
-                transcript_cds_coords[tx] = list(reversed(intervals))
         return transcript_cds_coords
 
     def plot_histogram(transcript_coords, out_path, condition, color, region_type):
