@@ -285,14 +285,22 @@ mkdir -p "${dedup_dir}/coverage_bw_files"
 # done
 # wait
 
-# bw_dir_upf="/projects/splitorfs/work/UPF1_deletion/Output/alignment_genome/STAR/deduplicated/coverage_bw_files"
+bw_dir_upf="/projects/splitorfs/work/UPF1_deletion/Output/alignment_genome/STAR/deduplicated/coverage_bw_files"
 
 
-# python pyBigWig_coefficient_of_variation.py \
-#     --path_to_bw_files "${bw_dir_upf}" \
-#     --transcript_fai '/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_rna.fna.fai' \
-#     --mane_transcripts_cds_bed '/projects/serp/work/Output/April_2025/importins/transcriptome_mapping/filtered/q10/enrichment_plots_CDS/CDS_coordinates/MANE_CDS_coordinates.bed' \
-#     --condition 'dhypo' \
-#     --out_path "${bw_dir_upf}/cv_plots" \
-#     --color '#8B0000' \
-#     --region_type 'cds'
+python pyBigWig_coefficient_of_variation_genomic.py \
+    --path_to_bw_files "${bw_dir_upf}" \
+    --mane_gtf '/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf' \
+    --condition '0h' \
+    --out_path "${bw_dir_upf}/cv_plots" \
+    --color '#8B0000' \
+    --region_type 'cds'
+
+
+python pyBigWig_coefficient_of_variation_genomic.py \
+    --path_to_bw_files "${bw_dir_upf}" \
+    --mane_gtf '/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf' \
+    --condition '12h' \
+    --out_path "${bw_dir_upf}/cv_plots" \
+    --color '#8B0000' \
+    --region_type 'cds'
