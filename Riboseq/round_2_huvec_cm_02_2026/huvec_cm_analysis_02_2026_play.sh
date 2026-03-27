@@ -288,19 +288,55 @@ mkdir -p "${dedup_dir}/coverage_bw_files"
 bw_dir_upf="/projects/splitorfs/work/UPF1_deletion/Output/alignment_genome/STAR/deduplicated/coverage_bw_files"
 
 
-python pyBigWig_coefficient_of_variation_genomic.py \
-    --path_to_bw_files "${bw_dir_upf}" \
-    --mane_gtf '/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf' \
-    --condition '0h' \
-    --out_path "${bw_dir_upf}/cv_plots" \
-    --color '#8B0000' \
-    --region_type 'cds'
+# python pyBigWig_coefficient_of_variation_genomic.py \
+#     --path_to_bw_files "${bw_dir_upf}" \
+#     --mane_gtf '/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf' \
+#     --condition '0h' \
+#     --out_path "${bw_dir_upf}/cv_plots" \
+#     --color '#8B0000' \
+#     --region_type 'cds'
 
 
-python pyBigWig_coefficient_of_variation_genomic.py \
-    --path_to_bw_files "${bw_dir_upf}" \
-    --mane_gtf '/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf' \
-    --condition '12h' \
-    --out_path "${bw_dir_upf}/cv_plots" \
-    --color '#8B0000' \
-    --region_type 'cds'
+# python pyBigWig_coefficient_of_variation_genomic.py \
+#     --path_to_bw_files "${bw_dir_upf}" \
+#     --mane_gtf '/projects/splitorfs/work/Riboseq/data/contamination/Ignolia_paper/mRNA/MANE.GRCh38.v0.95.select_ensembl_genomic.gtf' \
+#     --condition '12h' \
+#     --out_path "${bw_dir_upf}/cv_plots" \
+#     --color '#8B0000' \
+#     --region_type 'cds'
+
+
+python scatter_coefficient_of_variation_different_conditions.py \
+ --path_to_cv_csvs_1 "${bw_dir_upf}/trans_cv_dfs" \
+ --path_to_cv_csvs_2 '/projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files/trans_cv_dfs' \
+ --condition1 "12H" \
+ --condition2 'DNOR' \
+ --out_path /projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files/cv_plots \
+ --color '#1eb0e6' 
+
+
+ python scatter_coefficient_of_variation_different_conditions.py \
+ --path_to_cv_csvs_1 "${bw_dir_upf}/trans_cv_dfs" \
+ --path_to_cv_csvs_2 '/projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files/trans_cv_dfs' \
+ --condition1 "12H" \
+ --condition2 'DHYPO' \
+ --out_path /projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files/cv_plots \
+ --color '#1eb0e6'
+
+
+ python scatter_coefficient_of_variation_different_conditions.py \
+ --path_to_cv_csvs_1 "${bw_dir_upf}/trans_cv_dfs" \
+ --path_to_cv_csvs_2 '/projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files/trans_cv_dfs' \
+ --condition1 "0H" \
+ --condition2 'DNOR' \
+ --out_path /projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files/cv_plots \
+ --color '#1eb0e6' 
+
+
+ python scatter_coefficient_of_variation_different_conditions.py \
+ --path_to_cv_csvs_1 "${bw_dir_upf}/trans_cv_dfs" \
+ --path_to_cv_csvs_2 '/projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files/trans_cv_dfs' \
+ --condition1 "0H" \
+ --condition2 'DHYPO' \
+ --out_path /projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2/HUVEC/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/coverage_bw_files/cv_plots \
+ --color '#1eb0e6'
