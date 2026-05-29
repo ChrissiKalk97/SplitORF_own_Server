@@ -24,7 +24,7 @@ short_read_dir="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_
 
 bash stringtie3_correct_ref_filtered_LRs_05_01_26.sh \
     -b "${bam_dir}" \
-    -c "$cell_type" \
+    -c "${cell_type}" \
     -e "${ensembl_full_gtf}" \
     -f "${genome_fasta}" \
     -l "${long_read_dir}" \

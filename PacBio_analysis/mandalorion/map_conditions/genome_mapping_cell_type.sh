@@ -77,37 +77,37 @@ fi
 # ------------------ ALIGN TO GENOME                         ------------------ #
 #################################################################################
 if [ ! -e "$out_path/"${cell_type}"/pbmm2_align/genome_index/genome_index.mmi" ]; then 
-    pbmm2 index ${genome_fasta_file} $out_path/"${cell_type}"/pbmm2_align/genome_index/genome_index.mmi --preset ISOSEQ
+    pbmm2 index ${genome_fasta_file} "${out_path}"/"${cell_type}"/pbmm2_align/genome_index/genome_index.mmi --preset ISOSEQ
 fi
 
 
 for bam in "${isoseq_reads_dir}"/"${cell_type}"*bam; do
-    sample=$(basename $bam)
+    sample=$(basename "$bam")
     sample="${sample%_merged_lima_refined.bam}"
-    if [ ! -e $out_path/"${cell_type}"/pbmm2_align/${sample}_pbmm2_aligned_genome.bam ]; then
-        echo $out_path/"${cell_type}"/pbmm2_align/${sample}_pbmm2_aligned_genome.bam
-        pbmm2 align $out_path/"${cell_type}"/pbmm2_align/genome_index/genome_index.mmi \
-        $bam \
-        $out_path/"${cell_type}"/pbmm2_align/${sample}_pbmm2_aligned_genome.bam \
+    if [ ! -e "${out_path}"/"${cell_type}"/pbmm2_align/"${sample}"_pbmm2_aligned_genome.bam ]; then
+        echo "${out_path}"/"${cell_type}"/pbmm2_align/"${sample}"_pbmm2_aligned_genome.bam
+        pbmm2 align "${out_path}"/"${cell_type}"/pbmm2_align/genome_index/genome_index.mmi \
+        "$bam" \
+        "${out_path}"/"${cell_type}"/pbmm2_align/"${sample}"_pbmm2_aligned_genome.bam \
         --preset ISOSEQ
     fi
  done
 
 
 
-for bam in $out_path/"${cell_type}"/pbmm2_align/*.bam; do
-    if [ ! -e $(dirname $bam)/$(basename $bam .bam)_filtered.bam ]; then
-      samtools sort -@ 30 -o $(dirname $bam)/$(basename $bam .bam)_sorted.bam $bam
-      samtools index -@ 30 $(dirname $bam)/$(basename $bam .bam)_sorted.bam
-      samtools idxstats -@ 30 $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
-      $(dirname $bam)/$(basename $bam .bam)_idxstats.out
-      samtools flagstat -@ 30 $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
-      $(dirname $bam)/$(basename $bam .bam)_flagstat.out
-      samtools stats -@ 30 $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
-      $(dirname $bam)/$(basename $bam .bam)_stats.out
-      samtools view -@ 30 -q 20 -F 0x904 -b $(dirname $bam)/$(basename $bam .bam)_sorted.bam | \
+for bam in "${out_path}"/"${cell_type}"/pbmm2_align/*aligned_genome.bam; do
+    if [ ! -e $(dirname "$bam")/$(basename "$bam" .bam)_filtered.bam ]; then
+      samtools sort -@ 30 -o $(dirname "$bam")/$(basename "$bam" .bam)_sorted.bam "$bam"
+      samtools index -@ 30 $(dirname "$bam")/$(basename "$bam" .bam)_sorted.bam
+      samtools idxstats -@ 30 $(dirname "$bam")/$(basename "$bam" .bam)_sorted.bam > \
+      $(dirname "$bam")/$(basename "$bam" .bam)_idxstats.out
+      samtools flagstat -@ 30 $(dirname "$bam")/$(basename "$bam" .bam)_sorted.bam > \
+      $(dirname "$bam")/$(basename "$bam" .bam)_flagstat.out
+      samtools stats -@ 30 $(dirname "$bam")/$(basename "$bam" .bam)_sorted.bam > \
+      $(dirname "$bam")/$(basename "$bam" .bam)_stats.out
+      samtools view -@ 30 -q 20 -F 0x904 -b $(dirname "$bam")/$(basename "$bam" .bam)_sorted.bam | \
       samtools sort -@ 30 \
-      -o $(dirname $bam)/$(basename $bam .bam)_filtered.bam
+      -o $(dirname "$bam")/$(basename "$bam" .bam)_filtered.bam
     fi
 done
 

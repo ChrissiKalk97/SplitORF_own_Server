@@ -80,8 +80,10 @@ for bam in $out_path/HUVEC/pbmm2_align/*.bam; do
     samtools index $(dirname $bam)/$(basename $bam .bam)_sorted.bam
     samtools idxstats $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
      $(dirname $bam)/$(basename $bam .bam)_idxstats.out
-     samtools flagstat $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
+    samtools flagstat $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
      $(dirname $bam)/$(basename $bam .bam)_flagstat.out
+    samtools stats $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
+     $(dirname $bam)/$(basename $bam .bam)_stats.out
 done 
 
 for bam in $out_path/CM/pbmm2_align/*.bam; do
@@ -89,8 +91,10 @@ for bam in $out_path/CM/pbmm2_align/*.bam; do
     samtools index $(dirname $bam)/$(basename $bam .bam)_sorted.bam
     samtools idxstats $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
      $(dirname $bam)/$(basename $bam .bam)_idxstats.out
-     samtools flagstat $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
+    samtools flagstat $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
      $(dirname $bam)/$(basename $bam .bam)_flagstat.out
+    samtools stats $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
+     $(dirname $bam)/$(basename $bam .bam)_stats.out
 done 
 
 #  Rscript featureCounts_L_mode.R \

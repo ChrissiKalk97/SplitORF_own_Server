@@ -104,9 +104,9 @@ if [[ ! -d "$outdir_tama/${cell_type}" ]]; then
             -sj sj_priority \
             -lde 5 \
             -sjt 20 \
-            -m 5 \
-            -a 50 \
-            -z 50 \
+            -m 10 \
+            -a 500 \
+            -z 100 \
             -f ${genome_fasta} \
             -p ${outdir_tama}/${cell_type}/${sample_name}/${sam_name} \
             -e common_ends

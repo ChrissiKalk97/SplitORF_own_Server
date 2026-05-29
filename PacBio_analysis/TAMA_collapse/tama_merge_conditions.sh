@@ -78,11 +78,16 @@ if [ ! -e "${merge_file_txt}" ]; then
     python "${tama_tool_path}"/tama_merge.py \
     -f "${merge_file_txt}" \
     -p "${outdir_tama}"/"${cell_type}"/"${cell_type}"_merged_tama \
-    -a 50 \
-    -m 5 \
-    -z 50 \
+    -a 500 \
+    -m 10 \
+    -z 100 \
     -d merge_dup
 fi
+
+conda activate tama
+python ${tama_tool_path}/tama_go/format_converter/tama_convert_bed_gtf_ensembl_no_cds.py \
+  "${outdir_tama}"/"${cell_type}"/"${cell_type}"_merged_tama.bed \
+  "${outdir_tama}"/"${cell_type}"/"${cell_type}"_merged_tama.gtf
 
 
 
