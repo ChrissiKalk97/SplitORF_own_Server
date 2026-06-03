@@ -75,8 +75,8 @@ fi
 # KALLISTO ON RAW MANDO HUVEC ASSEMBLY                                         #
 ################################################################################
 
-if [ ! -d "${mando_dir_raw}"/kallisto/index ]; then
-    mkdir "${mando_dir_raw}"/kallisto/index
+if [[ ! -f "${kallisto_index_path}.idx" ]]; then
+    mkdir -p "${mando_dir_raw}"/kallisto/index
 
     bash ${script_dir}/kallisto/kallisto_index.sh \
     ${gtf_file} \
@@ -115,7 +115,7 @@ done
 if [ ! -d "${sqanti_qc_outdir}"/${cell_type} ]; then
     mkdir "${sqanti_qc_outdir}"/${cell_type}
     bash ${script_dir}/sqanti3/sqanti3_qc_mando_huvec.sh \
-    /home/ckalk/tools/sqanti3 \
+    /home/ckalk/tools/sqanti3.6 \
     ${gtf_file} \
     ${reference_gtf} \
     ${genome_fasta} \
@@ -134,10 +134,10 @@ fi
 if [ ! -d "${sqanti_dir}"/SQANTI3_Filter/${cell_type} ]; then
     mkdir "${sqanti_dir}"/SQANTI3_Filter/${cell_type}
     bash ${script_dir}/sqanti3/sqanti_rules/sqanti3_rules_06_08_25.sh \
-    /home/ckalk/tools/sqanti3 \
+    /home/ckalk/tools/sqanti3.6 \
     ${sqanti_qc_outdir}/${cell_type}/isoforms \
     ${sqanti_dir}/SQANTI3_Filter/${cell_type} \
-    ${script_dir}/sqanti3/sqanti_rules/logic_filter_v5_02_09_25.json 
+    ${script_dir}/sqanti3/sqanti_rules/logic_filter_v6_01_06_26.json 
 fi
 
 
@@ -229,7 +229,7 @@ if [ ! -d "${sqanti_qc_outdir}/Ens_110_filtered_QC/${cell_type}" ]; then
     mkdir ${sqanti_qc_outdir}/Ens_110_filtered_QC/${cell_type}
 
     bash ${script_dir}/sqanti3/sqanti3_qc_mando_huvec.sh \
-    /home/ckalk/tools/sqanti3 \
+    /home/ckalk/tools/sqanti3.6 \
     ${reference_gtf} \
     ${reference_gtf} \
     ${genome_fasta} \
@@ -250,7 +250,7 @@ fi
 if [ ! -d "${sqanti_dir}"/SQANTI3_Rescue/${cell_type} ]; then
     mkdir "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}
     bash ${script_dir}/sqanti3/sqanti_rescue/sqanti_rescue.sh \
-        /home/ckalk/tools/sqanti3 \
+        /home/ckalk/tools/sqanti3.6 \
         ${sqanti_dir}/SQANTI3_Filter/${cell_type}/isoforms_classification_TPM.tx.filtered.gtf \
         /projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_updated_parameters/SQANTI3/SQANTI3_QC/Ens_110_filtered_QC/${cell_type}/isoforms_corrected.gtf \
         ${genome_fasta} \
@@ -265,7 +265,7 @@ fi
 if [ ! -d "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}/QC ]; then
     mkdir "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}/QC
     bash ${script_dir}/sqanti3/sqanti3_qc_mando_cm.sh \
-    /home/ckalk/tools/sqanti3 \
+    /home/ckalk/tools/sqanti3.6 \
     "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}/${cell_type}_rescue_rules_filter_rescued.gtf \
     ${reference_gtf} \
     ${genome_fasta} \

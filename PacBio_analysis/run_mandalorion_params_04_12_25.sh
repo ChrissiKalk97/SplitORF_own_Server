@@ -80,26 +80,13 @@ while getopts "b:c:e:f:g:k:l:o:p:q:r:s:h" opt; do
 done
 
 
-
-
-
-
-
-
-
-
-
 if [[ ! -d "$out_path" ]]; then
     mkdir $out_path
 fi
 
-
 if [[ ! -d "$bam_dir/fastq" ]]; then
     mkdir $bam_dir/fastq
 fi
-
-
-
 
 shopt -s nullglob
 bam_files=("${bam_dir}"/*bam)
@@ -178,9 +165,6 @@ if [ ! -e "$out_path/${cell_type}/${cell_type}_mando_gene_id.gtf" ]; then
         -g $genome_fasta -w $out_path/${cell_type}/${cell_type}_mando_gene_id.fasta
 fi
 
-
-
-
 ################################################################################
 # ------------------ LR support/expression of isoforms       ------------------ #
 ################################################################################
@@ -207,15 +191,13 @@ fi
 conda activate pacbio
 bash mandalorion/assess_mando_sqanti3/run_sqanti3_on_mando_one_cell_type_20_10_25.sh \
  ${cell_type} \
- $genome_fasta \
- $reference_gtf \
- $out_path \
- ${kallisto_dir} \
- $short_read_dir \
- ${sqanti_script_dir} \
- $bam_dir
-
-
+ "$genome_fasta" \
+ "$reference_gtf" \
+ "$out_path" \
+ "${kallisto_dir}" \
+ "$short_read_dir" \
+ "${sqanti_script_dir}" \
+ "$bam_dir"
 
 
 

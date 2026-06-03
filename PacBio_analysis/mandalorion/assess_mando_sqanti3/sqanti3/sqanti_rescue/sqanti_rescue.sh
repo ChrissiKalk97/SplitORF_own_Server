@@ -1,6 +1,6 @@
 #!/bin/bash 
 eval "$(conda shell.bash hook)"
-source activate sqanti3
+source activate sqanti3.6
 
 sqanti_path=$1
 gtf_filtered=$2
@@ -15,8 +15,8 @@ sqanti_rescue_outdir=${10}
 
 echo $sqanti_rescue_outdir
 
-
-export LD_LIBRARY_PATH="$CONDA_PREFIX/lib/gcc/x86_64-conda-linux-gnu/15.1.0:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
+echo "LD_LIBRARY_PATH is: $LD_LIBRARY_PATH"
 
 
 if [ ! -d "${sqanti_rescue_outdir}" ]; then
