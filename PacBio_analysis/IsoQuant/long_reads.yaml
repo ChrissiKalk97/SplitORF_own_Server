@@ -1,0 +1,33 @@
+[
+  data format: "fastq",
+  {
+    name: "HUVEC",
+    long read files: [
+      "/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_50NMD_merged_lima_refined.fastq",
+      "/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_5NMD_merged_lima_refined.fastq",
+      "/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DHYPO_merged_lima_refined.fastq",
+      "/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DMSO_merged_lima_refined.fastq",
+      "/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DNOR_merged_lima_refined.fastq"
+    ],
+    labels: [
+      "HUVEC_50NMD",
+      "HUVEC_5NMD",
+      "HUVEC_DHYPO",
+      "HUVEC_DMSO",
+      "HUVEC_DNOR"
+    ]
+  },
+  {
+    name: "CM",
+    long read files: [
+      "/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_5NMD_merged_lima_refined.fastq",
+      "/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_DHYPO_merged_lima_refined.fastq",
+      "/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_DNOR_merged_lima_refined.fastq"
+    ],
+    labels: [
+      "CM_5NMD",
+      "CM_DHYPO",
+      "CM_DNOR"
+    ]
+  }
+]
