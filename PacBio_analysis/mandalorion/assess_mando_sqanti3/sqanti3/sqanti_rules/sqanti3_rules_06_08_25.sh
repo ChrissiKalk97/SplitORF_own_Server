@@ -19,10 +19,10 @@ echo "LD_LIBRARY_PATH is: $LD_LIBRARY_PATH"
 python ${sqanti_path}/sqanti3_filter.py rules \
 --sqanti_class ${sqanti_qc_outname}_classification_TPM.txt \
 --filter_gtf ${sqanti_qc_outname}_corrected.gtf  \
---filter_faa ${sqanti_qc_outname}_corrected.faa \
 --filter_isoforms ${sqanti_qc_outname}_corrected.fasta \
 -d ${sqanti_filter_outdir} \
 --json ${filter_json}
 
 
 
+# --filter_faa ${sqanti_qc_outname}_corrected.faa \

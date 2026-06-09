@@ -22,9 +22,9 @@ if [ -n "${6:-}" ]; then
  --refGTF ${reference_gtf} \
  --refFasta ${genome_fasta}\
  -d ${sqanti_qc_outdir} \
- --force_id_ignore \
   -fl $fl_counts \
  --polyA_motif_list ${sqanti_path}/data/polyA_motifs/mouse_and_human.polyA_motif.txt
+ # --force_id_ignore \
 
 
 else
@@ -34,8 +34,8 @@ else
  --refGTF ${reference_gtf} \
  --refFasta ${genome_fasta}\
  -d ${sqanti_qc_outdir} \
- --force_id_ignore \
  --polyA_motif_list ${sqanti_path}/data/polyA_motifs/mouse_and_human.polyA_motif.txt
+ # --force_id_ignore \
   
 fi
 

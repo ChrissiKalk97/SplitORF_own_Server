@@ -23,15 +23,15 @@ if [ ! -d "${sqanti_rescue_outdir}" ]; then
     mkdir "${sqanti_rescue_outdir}"
 fi
 
-python ${sqanti_path}/sqanti3_rescue.py rules \
+python ${sqanti_path}/sqanti3_rescue.py -s rules \
 --filter_class $classification_file \
 --mode full \
---refFasta ${genome_fasta} \
+-rf ${genome_fasta} \
 --output ${output_name} \
---rescue_isoforms ${isoforms_qc} \
---rescue_gtf ${gtf_filtered} \
---refGTF ${reference_gtf} \
---refClassif ${ref_classification} \
+--corrected_isoforms_fasta ${isoforms_qc} \
+--filtered_isoforms_gtf ${gtf_filtered} \
+-rg ${reference_gtf} \
+-k ${ref_classification} \
 -d ${sqanti_rescue_outdir} \
 -j ${filter} \
 -c 16

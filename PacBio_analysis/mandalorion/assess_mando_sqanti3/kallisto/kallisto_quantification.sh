@@ -8,9 +8,18 @@ kallisto_index=$1
 fastp_indir=$2
 kallisto_outdir=$3
 
+echo "kallisto params"
+echo $kallisto_index
+echo $fastp_indir
+echo $kallisto_outdir
+
 for reads in ${fastp_indir}/*R1.fastp.fastq.gz; do
 
-     sample=$(basename $reads _merged_fastp.R1.fastp.fastq.gz)
+     echo $reads
+
+     sample=$(basename "$reads" _merged_fastp.R1.fastp.fastq.gz)
+
+     echo $sample
 
      kallisto quant -i ${kallisto_index}\
      -o $kallisto_outdir/${sample}\

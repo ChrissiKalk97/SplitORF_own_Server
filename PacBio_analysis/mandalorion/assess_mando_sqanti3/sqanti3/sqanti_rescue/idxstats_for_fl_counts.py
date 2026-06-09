@@ -44,7 +44,7 @@ def main(idx_path):
     idx_summary_df = idx_summary_df.rename(
         columns={idx_summary_df.columns[0]: "superPBID"}).copy()
     idx_summary_df.to_csv(os.path.join(
-        idx_path, f'{sample}_idx_fl_counts.txt'), sep='\t', index=False)
+        idx_path, f'{sample}_idx_fl_counts.tsv'), sep='\t', index=False)
 
 
 if __name__ == "__main__":
