@@ -17,9 +17,13 @@ isoseq_outdir=${pacbio_merged_bamdir}/isoseq
 primer_fasta=/projects/splitorfs/work/PacBio/merged_bam_files/lima/primer.fasta
 
 
-mando_out_path="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_29_05_26"
+# mando_out_path="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_29_05_26"
+# sqanti_script_dir="/home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3"
+# kallisto_dir="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Mandalorion_raw_29_05_26"
+
+mando_out_path="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_50_upstream_17_06_2026"
 sqanti_script_dir="/home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3"
-kallisto_dir="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Mandalorion_raw_29_05_26"
+kallisto_dir="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Mandalorion_raw_50_upstream_17_06_2026"
 
 
 #################################################################################
@@ -117,6 +121,36 @@ cd /home/ckalk/scripts/SplitORFs/PacBio_analysis
 huvec_lr_sample_string=/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_50NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_5NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DHYPO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DMSO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DNOR_merged_lima_refined.fastq
 cm_lr_sample_string=/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_5NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_DHYPO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_DNOR_merged_lima_refined.fastq
 
+# bash run_mandalorion_params_04_12_25.sh \
+# -b $isoseq_outdir/refine \
+# -c HUVEC \
+# -e ${ensembl_full_gtf} \
+# -f "pacbio_consensus_HUVEC.fofn" \
+# -g ${genome_fasta_file} \
+# -k ${kallisto_dir} \
+# -l ${huvec_lr_sample_string} \
+# -o ${mando_out_path} \
+# -q ${sqanti_script_dir} \
+# -r ${ensembl_gtf_filtered} \
+# -s ${outidr_fastp} \
+# -p "0.005;3;2;10;50"
+
+
+# bash run_mandalorion_params_04_12_25.sh \
+# -b $isoseq_outdir/refine \
+# -c CM \
+# -e ${ensembl_full_gtf} \
+# -f "pacbio_consensus_CM.fofn" \
+# -g ${genome_fasta_file} \
+# -k ${kallisto_dir} \
+# -l ${cm_lr_sample_string} \
+# -o ${mando_out_path} \
+# -q ${sqanti_script_dir} \
+# -r ${ensembl_gtf_filtered} \
+# -s ${outdir_fastp_cm} \
+# -p "0.005;3;2;10;50"
+
+
 bash run_mandalorion_params_04_12_25.sh \
 -b $isoseq_outdir/refine \
 -c HUVEC \
@@ -129,7 +163,7 @@ bash run_mandalorion_params_04_12_25.sh \
 -q ${sqanti_script_dir} \
 -r ${ensembl_gtf_filtered} \
 -s ${outidr_fastp} \
--p "0.005;3;2;10;50"
+-p "0.005;3;2;50;50"
 
 
 bash run_mandalorion_params_04_12_25.sh \
@@ -144,8 +178,7 @@ bash run_mandalorion_params_04_12_25.sh \
 -q ${sqanti_script_dir} \
 -r ${ensembl_gtf_filtered} \
 -s ${outdir_fastp_cm} \
--p "0.005;3;2;10;50"
-
+-p "0.005;3;2;50;50"
 
 
 
