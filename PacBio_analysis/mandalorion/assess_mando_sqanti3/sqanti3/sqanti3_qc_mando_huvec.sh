@@ -17,6 +17,8 @@ echo "LD_LIBRARY_PATH is: $LD_LIBRARY_PATH"
 # comma separated list of kallisto quant tsv abundance files
 kallisto_quant_files=$(find $kallisto_quant_mando_raw -type f -name "*.tsv" | paste -sd,)
 
+echo $kallisto_quant_files
+
 
 if [ -n "${9:-}" ]; then
     fl_counts=$8
@@ -28,7 +30,6 @@ if [ -n "${9:-}" ]; then
     --refFasta ${genome_fasta}\
     -d ${sqanti_qc_outdir} \
     --SR_bam ${SR_bam} \
-    --short_reads ${short_read_file} \
     -t 32 \
     --expression $kallisto_quant_files \
     -fl $fl_counts \

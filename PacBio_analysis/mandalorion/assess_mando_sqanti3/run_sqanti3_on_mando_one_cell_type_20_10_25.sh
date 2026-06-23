@@ -33,9 +33,9 @@ if [ -n "${9}" ]; then
         lr_count_tsv="${mando_out_dir}/${cell_type}/${cell_type}.discovered_transcript_grouped_file_name_counts.tsv"
 
     elif [[ $assembly == "stringtie" ]]; then
-        gtf_file=${mando_out_dir}"/${cell_type}/TBD"
-        transcript_fasta=${mando_out_dir}"/${cell_type}/TBD"
-        lr_count_tsv=${mando_out_dir}/${cell_type}/TBD
+        gtf_file="${mando_out_dir}"/"${cell_type}"/"${cell_type}"_strigntie3_assembly_filtered.gtf
+        transcript_fasta="${mando_dir_raw}/kallisto/${cell_type}"_strigntie3_assembly_transcriptome.fa
+        lr_count_tsv=${mando_out_dir}/${cell_type}/${cell_type}_stringtie_quant/${cell_type}/${cell_type}.transcript_grouped_file_name_counts.tsv
     
     fi
 else
@@ -46,7 +46,7 @@ fi
 
 
 decoys="/projects/splitorfs/work/reference_files/decoys.txt"
-kallisto_quant_mando_raw=${mando_dir_raw}"/kallisto/quant_${cell_type}"
+kallisto_quant_mando_raw="${mando_dir_raw}/kallisto/quant_${cell_type}"
 kallisto_index_path="${mando_dir_raw}"/kallisto/index/${cell_type}
 sqanti_qc_outdir="${sqanti_dir}"/SQANTI3_QC
 
@@ -97,8 +97,8 @@ if [[ ! -f "${kallisto_index_path}.idx" ]]; then
     ${kallisto_index_path}
 fi
 
-if [ ! -d "${mando_dir_raw}"/kallisto/quant_${cell_type} ]; then
-    mkdir "${mando_dir_raw}"/kallisto/quant_${cell_type}
+if [ ! -d "${kallisto_quant_mando_raw}" ]; then
+    mkdir "${kallisto_quant_mando_raw}"
     bash ${script_dir}/kallisto/kallisto_quantification.sh \
     ${kallisto_index_path}.idx \
     ${outdir_fastp} \
@@ -142,62 +142,62 @@ fi
 # ################################################################################
 # # SQANTI3 RULES FILTER on HUVEC assembly                                       #
 # ################################################################################
-
-# if [ ! -d "${sqanti_dir}"/SQANTI3_Filter/${cell_type} ]; then
-#     mkdir "${sqanti_dir}"/SQANTI3_Filter/${cell_type}
-#     bash ${script_dir}/sqanti3/sqanti_rules/sqanti3_rules_06_08_25.sh \
-#     /home/ckalk/tools/sqanti3.6 \
-#     ${sqanti_qc_outdir}/${cell_type}/isoforms \
-#     ${sqanti_dir}/SQANTI3_Filter/${cell_type} \
-#     ${script_dir}/sqanti3/sqanti_rules/logic_filter_v7_17_06_26.json 
-# fi
-
-
+# accidentially overwrite the old logic filter
+if [ ! -d "${sqanti_dir}"/SQANTI3_Filter/${cell_type} ]; then
+    mkdir "${sqanti_dir}"/SQANTI3_Filter/${cell_type}
+    bash ${script_dir}/sqanti3/sqanti_rules/sqanti3_rules_06_08_25.sh \
+    /home/ckalk/tools/sqanti3.6 \
+    ${sqanti_qc_outdir}/${cell_type}/isoforms \
+    ${sqanti_dir}/SQANTI3_Filter/${cell_type} \
+    ${script_dir}/sqanti3/sqanti_rules/logic_filter_v6_01_06_26.json 
+fi
 
 
-# ################################################################################
-# # SQANTI3 RESCUE FILTER on HUVEC assembly                                      #
-# ################################################################################
-# reference_dir="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Ens_110_filtered"
-
-# if [ ! -d "${reference_dir}" ]; then
-#     mkdir "${reference_dir}"
-# fi
-
-# if [ ! -d "${reference_dir}"/kallisto ]; then
-#     mkdir "${reference_dir}"/kallisto
-# fi
-
-
-# kallisto_quant_mando_raw_reference="${reference_dir}"/kallisto
 
 
 ################################################################################
+# SQANTI3 RESCUE FILTER on HUVEC assembly                                      #
+################################################################################
+reference_dir="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Ens_110_filtered"
+
+if [ ! -d "${reference_dir}" ]; then
+    mkdir "${reference_dir}"
+fi
+
+if [ ! -d "${reference_dir}"/kallisto ]; then
+    mkdir "${reference_dir}"/kallisto
+fi
+
+
+kallisto_quant_mando_raw_reference="${reference_dir}"/kallisto
+
+
+# ###############################################################################
 # KALLISTO ON RAW ENSEMBL FILTERED REFERENCE                                   #
+# ###############################################################################
+
+if [[ ! -f "${kallisto_quant_mando_raw_reference}"/index.idx ]]; then
+    bash ${script_dir}/kallisto/kallisto_index.sh \
+    ${reference_gtf} \
+    ${genome_fasta} \
+    "${kallisto_quant_mando_raw_reference}"/Ens_110_filtered_transcriptome.fa \
+    "${kallisto_quant_mando_raw_reference}"/index
+fi
+
+
+if [[ ! -d "${kallisto_quant_mando_raw_reference}"/quant_${cell_type} ]]; then
+    mkdir "${kallisto_quant_mando_raw_reference}"/quant_${cell_type}
+    bash "${script_dir}"/kallisto/kallisto_quantification.sh \
+    "${kallisto_quant_mando_raw_reference}"/index.idx \
+    "${outdir_fastp}" \
+    "${kallisto_quant_mando_raw_reference}"/quant_${cell_type}
+fi
+
+
+
 ################################################################################
-
-# if [[ ! -f "${kallisto_quant_mando_raw_reference}"/index.idx ]]; then
-#     bash ${script_dir}/kallisto/kallisto_index.sh \
-#     ${reference_gtf} \
-#     ${genome_fasta} \
-#     "${kallisto_quant_mando_raw_reference}"/Ens_110_filtered_transcriptome.fa \
-#     "${kallisto_quant_mando_raw_reference}"/index
-# fi
-
-
-# if [[ ! -d "${kallisto_quant_mando_raw_reference}"/quant_${cell_type} ]]; then
-#     mkdir "${kallisto_quant_mando_raw_reference}"/quant_${cell_type}
-#     bash "${script_dir}"/kallisto/kallisto_quantification.sh \
-#     "${kallisto_quant_mando_raw_reference}"/index.idx \
-#     "${outdir_fastp}" \
-#     "${kallisto_quant_mando_raw_reference}"/quant_${cell_type}
-# fi
-
-
-
-# ################################################################################
-# # GET FL COUNTS FOR REFERENCE                                                  #
-# ################################################################################
+# GET FL COUNTS FOR REFERENCE                                                  #
+################################################################################
 # if [ ! -d "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered ]; then
 #     mkdir "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered
 #     pbmm2 index ${kallisto_quant_mando_raw_reference}/Ens_110_filtered_transcriptome.fa \
@@ -229,59 +229,81 @@ fi
 #     "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/${cell_type}
 # fi
 
+# idea: more consistent to quantify with isoquant
+shopt -s nullglob
+isoseq_reads_dir="/projects/splitorfs/work/PacBio/merged_bam_files/genome_alignment/${cell_type}/minimap2_align"
+ref_qc_out_path="/projects/splitorfs/work/PacBio/merged_bam_files/stringtie3_June_2026_minimap2/SQANTI3/SQANTI3_QC/Ens_110_filtered_QC/${cell_type}"
+bams=("${isoseq_reads_dir}"/*sorted.bam)
+echo "${bams[@]}"
+
+# order important for the Stringtie run!
+mkdir -p ${sqanti_qc_outdir}/Ens_110_filtered_QC/
+mkdir -p ${sqanti_qc_outdir}/Ens_110_filtered_QC/${cell_type}
+mkdir -p "${ref_qc_out_path}"
+mkdir -p "${ref_qc_out_path}"/quant_"${cell_type}"
+
+echo "${ref_qc_out_path}"/quant_"${cell_type}"/"${cell_type}"/"${cell_type}".transcript_grouped_file_name_counts.tsv
+
+if [[ ! -e "${ref_qc_out_path}"/quant_"${cell_type}"/"${cell_type}"/"${cell_type}".transcript_grouped_file_name_counts.tsv ]]; then
+  conda activate isoquant
+  isoquant \
+      --reference "$genome_fasta" \
+      --genedb "${reference_gtf}" \
+      --no_model_construction \
+      --data_type pacbio_ccs \
+      --polya_trimmed stranded \
+      --bam  "${bams[@]}" \
+      --output "${ref_qc_out_path}"/quant_"${cell_type}" \
+      --prefix "${cell_type}"
+fi
+
+echo "${kallisto_quant_mando_raw_reference}"
+
+echo "${ref_qc_out_path}"/quant_"${cell_type}"/"${cell_type}"/"${cell_type}".transcript_grouped_file_name_counts.tsv
+if [ ! -e "${ref_qc_out_path}"/isoforms_classification.txt ]; then
+    bash ${script_dir}/sqanti3/sqanti3_qc_mando_huvec.sh \
+    /home/ckalk/tools/sqanti3.6 \
+    ${reference_gtf} \
+    ${reference_gtf} \
+    ${genome_fasta} \
+    "${ref_qc_out_path}"\
+    ${short_read_file} \
+    ${kallisto_quant_mando_raw_reference}/quant_${cell_type} \
+    "${ref_qc_out_path}"/quant_"${cell_type}"/"${cell_type}"/"${cell_type}".transcript_grouped_file_name_counts.tsv
+fi
 
 
 
-# if [ ! -d "${sqanti_qc_outdir}/Ens_110_filtered_QC/" ]; then
-#     mkdir ${sqanti_qc_outdir}/Ens_110_filtered_QC/
-# fi
-
-# if [ ! -d "${sqanti_qc_outdir}/Ens_110_filtered_QC/${cell_type}" ]; then
-#     mkdir ${sqanti_qc_outdir}/Ens_110_filtered_QC/${cell_type}
-
-#     bash ${script_dir}/sqanti3/sqanti3_qc_mando_huvec.sh \
-#     /home/ckalk/tools/sqanti3.6 \
-#     ${reference_gtf} \
-#     ${reference_gtf} \
-#     ${genome_fasta} \
-#     ${sqanti_qc_outdir}/Ens_110_filtered_QC/${cell_type} \
-#     ${short_read_file} \
-#     ${kallisto_quant_mando_raw_reference} \
-#     "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/${cell_type}/${cell_type}_idx_fl_counts.tsv
-# fi
 
 
+################################################################################
+# RUN THE RESCUE                                                               #
+################################################################################
 
+if [ ! -d "${sqanti_dir}"/SQANTI3_Rescue/${cell_type} ]; then
+    mkdir "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}
+    bash ${script_dir}/sqanti3/sqanti_rescue/sqanti_rescue.sh \
+        /home/ckalk/tools/sqanti3.6 \
+        ${sqanti_dir}/SQANTI3_Filter/${cell_type}/isoforms_classification_TPM.tx.filtered.gtf \
+        ${ref_qc_out_path}/isoforms_corrected.gtf \
+        ${genome_fasta} \
+        ${sqanti_dir}/SQANTI3_Filter/${cell_type}/isoforms_classification_TPM.tx_RulesFilter_classification.txt \
+        ${script_dir}/sqanti3/sqanti_rules/logic_filter_v6_01_06_26.json \
+        ${cell_type}_rescue_rules_filter \
+        ${ref_qc_out_path}/isoforms_classification_TPM.txt \
+        ${sqanti_qc_outdir}/${cell_type}/isoforms_corrected.fasta \
+        "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}
+fi
 
-
-# ################################################################################
-# # RUN THE RESCUE                                                               #
-# ################################################################################
-
-# if [ ! -d "${sqanti_dir}"/SQANTI3_Rescue/${cell_type} ]; then
-#     mkdir "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}
-#     bash ${script_dir}/sqanti3/sqanti_rescue/sqanti_rescue.sh \
-#         /home/ckalk/tools/sqanti3.6 \
-#         ${sqanti_dir}/SQANTI3_Filter/${cell_type}/isoforms_classification_TPM.tx.filtered.gtf \
-#         ${sqanti_qc_outdir}/Ens_110_filtered_QC/${cell_type}/isoforms_corrected.gtf \
-#         ${genome_fasta} \
-#         ${sqanti_dir}/SQANTI3_Filter/${cell_type}/isoforms_classification_TPM.tx_RulesFilter_classification.txt \
-#         ${script_dir}/sqanti3/sqanti_rules/logic_filter_v5_02_09_25.json \
-#         ${cell_type}_rescue_rules_filter \
-#         ${sqanti_qc_outdir}/Ens_110_filtered_QC/${cell_type}/isoforms_classification_TPM.txt \
-#         ${sqanti_qc_outdir}/${cell_type}/isoforms_corrected.fasta \
-#         "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}
-# fi
-
-# if [ ! -d "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}/QC ]; then
-#     mkdir "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}/QC
-#     bash ${script_dir}/sqanti3/sqanti3_qc_mando_cm.sh \
-#     /home/ckalk/tools/sqanti3.6 \
-#     "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}/${cell_type}_rescue_rules_filter_rescued.gtf \
-#     ${reference_gtf} \
-#     ${genome_fasta} \
-#     "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}/QC
-# fi
+if [ ! -d "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}/QC ]; then
+    mkdir "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}/QC
+    bash ${script_dir}/sqanti3/sqanti3_qc_mando_cm.sh \
+    /home/ckalk/tools/sqanti3.6 \
+    "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}/${cell_type}_rescue_rules_filter_rescued.gtf \
+    ${reference_gtf} \
+    ${genome_fasta} \
+    "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}/QC
+fi
 
 
 
