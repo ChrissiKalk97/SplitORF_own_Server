@@ -91,14 +91,14 @@ cd /home/ckalk/scripts/SplitORFs/short_RNA_seq
 raw_data_dir_huvec="/projects/splitorfs/work/own_data/Novogene/Michi_Vlado_run_1/X208SC25032334-Z01-F001/01.RawData"
 merged_data_dir_huvec="/projects/splitorfs/work/own_data/Novogene/Michi_Vlado_run_1/merged"
 raw_data_fastqc_dir_huvec="/projects/splitorfs/work/own_data/Novogene/Michi_Vlado_run_1/X208SC25032334-Z01-F001/01.RawData/fastqc"
-outidr_fastp="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/HUVEC_fastp"
+outdir_fastp="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/HUVEC_fastp"
 
 
 bash /home/ckalk/scripts/SplitORFs/short_RNA_seq/analyze_short_RNA_seq_cell_type.sh \
  "${raw_data_dir_huvec}" \
  "${merged_data_dir_huvec}" \
  "${raw_data_fastqc_dir_huvec}" \
- "${outidr_fastp}"
+ "${outdir_fastp}"
 
 raw_data_dir_cm="/projects/splitorfs/work/own_data/Novogene/Michi_Vlado_run_1/CM_short_reads/X208SC25032333-Z01-F002/01.RawData"
 merged_data_dir_cm="/projects/splitorfs/work/own_data/Novogene/Michi_Vlado_run_1/CM_short_reads/merged"
@@ -132,7 +132,7 @@ cm_lr_sample_string=/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refi
 # -o ${mando_out_path} \
 # -q ${sqanti_script_dir} \
 # -r ${ensembl_gtf_filtered} \
-# -s ${outidr_fastp} \
+# -s ${outdir_fastp} \
 # -p "0.005;3;2;10;50"
 
 
@@ -162,23 +162,23 @@ bash run_mandalorion_params_04_12_25.sh \
 -o ${mando_out_path} \
 -q ${sqanti_script_dir} \
 -r ${ensembl_gtf_filtered} \
--s ${outidr_fastp} \
+-s ${outdir_fastp} \
 -p "0.005;3;2;50;50"
 
 
-bash run_mandalorion_params_04_12_25.sh \
--b $isoseq_outdir/refine \
--c CM \
--e ${ensembl_full_gtf} \
--f "pacbio_consensus_CM.fofn" \
--g ${genome_fasta_file} \
--k ${kallisto_dir} \
--l ${cm_lr_sample_string} \
--o ${mando_out_path} \
--q ${sqanti_script_dir} \
--r ${ensembl_gtf_filtered} \
--s ${outdir_fastp_cm} \
--p "0.005;3;2;50;50"
+# bash run_mandalorion_params_04_12_25.sh \
+# -b $isoseq_outdir/refine \
+# -c CM \
+# -e ${ensembl_full_gtf} \
+# -f "pacbio_consensus_CM.fofn" \
+# -g ${genome_fasta_file} \
+# -k ${kallisto_dir} \
+# -l ${cm_lr_sample_string} \
+# -o ${mando_out_path} \
+# -q ${sqanti_script_dir} \
+# -r ${ensembl_gtf_filtered} \
+# -s ${outdir_fastp_cm} \
+# -p "0.005;3;2;50;50"
 
 
 
