@@ -119,11 +119,6 @@
             "bite": [
                 "FALSE",
                 "nan"
-            ],
-            "subcategory": [
-                "combination_of_known_splicesites",
-                "intron_retention",
-                "combination_of_known_junctions"
             ]
         },
         {
@@ -136,11 +131,6 @@
             "bite": [
                 "FALSE",
                 "nan"
-            ],
-            "subcategory": [
-                "combination_of_known_splicesites",
-                "intron_retention",
-                "combination_of_known_junctions"
             ]
         },
         {
@@ -150,23 +140,13 @@
             ],
             "ratio_TSS": 1.5,
             "min_cov": 3,
-            "FL": 5,
-            "subcategory": [
-                "combination_of_known_splicesites",
-                "intron_retention",
-                "combination_of_known_junctions"
-            ]
+            "FL": 5
         },
         {
             "polyA_motif_found": "TRUE",
             "ratio_TSS": 1.5,
             "min_cov": 3,
-            "FL": 5,
-            "subcategory": [
-                "combination_of_known_splicesites",
-                "intron_retention",
-                "combination_of_known_junctions"
-            ]
+            "FL": 5
         },
         {
             "perc_A_downstream_TTS": [
@@ -182,11 +162,6 @@
             "bite": [
                 "FALSE",
                 "nan"
-            ],
-            "subcategory": [
-                "combination_of_known_splicesites",
-                "intron_retention",
-                "combination_of_known_junctions"
             ]
         },
         {
@@ -200,11 +175,6 @@
             "bite": [
                 "FALSE",
                 "nan"
-            ],
-            "subcategory": [
-                "combination_of_known_splicesites",
-                "intron_retention",
-                "combination_of_known_junctions"
             ]
         }
     ],
