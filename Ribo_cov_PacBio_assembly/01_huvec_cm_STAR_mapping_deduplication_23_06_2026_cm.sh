@@ -84,14 +84,14 @@ echo "$out_dir"
 # alignment
  
  #-q 
-bash "${module_dir}"/Riboseq_pipeline.sh \
- -a "${star_index_huvec}" -i "$fastp_huvec_dir" -o "$out_dir_huvec" -g $huvec_gtf -m "${module_dir}" -d \
-  > "$report_dir_huvec"/Riboseq_pipeline_HUVEC_Mando_Iso_Stringtie_rescue_Assembly_23_06_2026.out 2>&1
+# bash "${module_dir}"/Riboseq_pipeline.sh \
+#  -a "${star_index_huvec}" -i "$fastp_huvec_dir" -o "$out_dir_huvec" -g $huvec_gtf -m "${module_dir}" -d \
+#   > "$report_dir_huvec"/Riboseq_pipeline_HUVEC_Mando_Iso_Stringtie_rescue_Assembly_23_06_2026.out 2>&1
 
 
-#   bash "${module_dir}"/Riboseq_pipeline.sh \
-#  -a "${star_index_cm}" -i "$fastp_cm_dir" -o "$out_dir_cm" -g $cm_gtf -m "${module_dir}" -d \
-#  > "$report_dir_cm"/Riboseq_pipeline_deduplication_CM_Mando_Iso_Stringtie_rescue_Assembly_23_06_2026.out 2>&1
+  bash "${module_dir}"/Riboseq_pipeline.sh \
+ -a "${star_index_cm}" -i "$fastp_cm_dir" -o "$out_dir_cm" -g $cm_gtf -m "${module_dir}" -d \
+ > "$report_dir_cm"/Riboseq_pipeline_deduplication_CM_Mando_Iso_Stringtie_rescue_Assembly_23_06_2026.out 2>&1
 
 
 
