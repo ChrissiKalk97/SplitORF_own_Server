@@ -64,23 +64,6 @@ for cell_type in CM HUVEC; do
     echo $cell_type
     short_read_dir="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/${cell_type}_fastp"
 
-    # if [ ! -d "${stringtie3_dir_raw}"/kallisto/"${cell_type}"_quant ]; then
-    #     mkdir "${stringtie3_dir_raw}"/kallisto/"${cell_type}"_quant
-
-    #     echo "$output_dir"/"${cell_type}"/"${cell_type}".transcript_models.gtf
-
-    #     bash ${script_dir}/kallisto/kallisto_index.sh \
-    #     "$output_dir"/"${cell_type}"/"${cell_type}".transcript_models.gtf \
-    #     ${genome_fasta} \
-    #     "${stringtie3_dir_raw}"/kallisto/"${cell_type}"_isoquant_assembly_transcriptome.fa \
-    #     "${stringtie3_dir_raw}"/kallisto/index/"${cell_type}"
-
-    #     bash ${script_dir}/kallisto/kallisto_quantification.sh \
-    #     "${stringtie3_dir_raw}"/kallisto/index/"${cell_type}".idx \
-    #     "${short_read_dir}" \
-    #     "${stringtie3_dir_raw}"/kallisto/"${cell_type}"_quant
-    # fi
-
 
     if [ ! -d "${sqanti_dir}" ]; then
         mkdir "${sqanti_dir}"
@@ -92,20 +75,6 @@ for cell_type in CM HUVEC; do
     fi
 
 
-    # if [ ! -d "${sqanti_dir}"/SQANTI3_QC/"${cell_type}" ]; then
-        
-        
-        #mkdir -p "${sqanti_dir}"/SQANTI3_QC/"${cell_type}"
-        # bash ${script_dir}/sqanti3/sqanti3_qc_mando_huvec.sh \
-        # /home/ckalk/tools/sqanti3.6 \
-        # "$output_dir"/"${cell_type}"/"${cell_type}".transcript_models.gtf \
-        # ${ensembl_gtf_filtered} \
-        # ${genome_fasta} \
-        # "${sqanti_dir}"/SQANTI3_QC/"${cell_type}" \
-        # ${script_dir}/sqanti3/"${cell_type}"_short_reads.txt \
-        # "${stringtie3_dir_raw}"/kallisto/"${cell_type}"_quant \
-        # "$output_dir"/"$cell_type"/"$cell_type"_isoquant_fl_for_sqanti.tsv
-
     bash "${script_dir}"/run_sqanti3_on_mando_one_cell_type_20_10_25.sh \
     ${cell_type} \
     "$genome_fasta" \
@@ -116,5 +85,5 @@ for cell_type in CM HUVEC; do
     "${sqanti_script_dir}" \
     "$bam_dir" \
     "isoquant"
-    # fi
+
 done

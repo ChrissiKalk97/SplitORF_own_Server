@@ -124,8 +124,8 @@ for r1 in $outdir_fastp/*_merged_fastp.R1.fastp.fastq.gz; do
     fi
 done
 
-if [ ! -d "${sqanti_qc_outdir}"/${cell_type} ]; then
-    mkdir "${sqanti_qc_outdir}"/${cell_type}
+if [ ! -e "${sqanti_qc_outdir}"/${cell_type}/isoforms_classification.txt ]; then
+    mkdir -p "${sqanti_qc_outdir}"/${cell_type}
     bash ${script_dir}/sqanti3/sqanti3_qc_mando_huvec.sh \
     /home/ckalk/tools/sqanti3.6 \
     ${gtf_file} \
@@ -149,7 +149,7 @@ if [ ! -d "${sqanti_dir}"/SQANTI3_Filter/${cell_type} ]; then
     /home/ckalk/tools/sqanti3.6 \
     ${sqanti_qc_outdir}/${cell_type}/isoforms \
     ${sqanti_dir}/SQANTI3_Filter/${cell_type} \
-    ${script_dir}/sqanti3/sqanti_rules/logic_filter_v6_01_06_26.json 
+    ${script_dir}/sqanti3/sqanti_rules/logic_filter_v6.1_23_06_26.json 
 fi
 
 
@@ -198,37 +198,6 @@ fi
 ################################################################################
 # GET FL COUNTS FOR REFERENCE                                                  #
 ################################################################################
-# if [ ! -d "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered ]; then
-#     mkdir "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered
-#     pbmm2 index ${kallisto_quant_mando_raw_reference}/Ens_110_filtered_transcriptome.fa \
-#     "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/Ens_index.mmi --preset ISOSEQ
-# fi
-
-# if [ ! -d "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/${cell_type} ]; then
-#     mkdir "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/${cell_type}
-
-#      for bam in "${isoseq_reads_dir}"/${cell_type}*bam; do
-#         sample=$(basename $bam)
-#         sample="${sample%_merged_lima_refined.bam}"
-#         pbmm2 align "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/Ens_index.mmi \
-#         $bam \
-#         "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/${cell_type}/${sample}_pbmm2_aligned.bam \
-#         --preset ISOSEQ \
-#         --log-level INFO
-
-#         bam="${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/${cell_type}/${sample}_pbmm2_aligned.bam
-#         samtools sort -o $(dirname $bam)/$(basename $bam .bam)_sorted.bam $bam
-#         samtools index $(dirname $bam)/$(basename $bam .bam)_sorted.bam
-#         samtools idxstats $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
-#         $(dirname $bam)/$(basename $bam .bam)_idxstats.out
-#         samtools flagstat $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
-#         $(dirname $bam)/$(basename $bam .bam)_flagstat.out
-#     done
-
-#     python ${script_dir}/sqanti3/sqanti_rescue/idxstats_for_fl_counts.py \
-#     "${sqanti_dir}"/SQANTI3_Rescue/pbmm2_Ens_filtered/${cell_type}
-# fi
-
 # idea: more consistent to quantify with isoquant
 shopt -s nullglob
 isoseq_reads_dir="/projects/splitorfs/work/PacBio/merged_bam_files/genome_alignment/${cell_type}/minimap2_align"
@@ -284,13 +253,13 @@ if [ ! -d "${sqanti_dir}"/SQANTI3_Rescue/${cell_type} ]; then
     mkdir "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}
     bash ${script_dir}/sqanti3/sqanti_rescue/sqanti_rescue.sh \
         /home/ckalk/tools/sqanti3.6 \
-        ${sqanti_dir}/SQANTI3_Filter/${cell_type}/isoforms_classification_TPM.tx.filtered.gtf \
+        ${sqanti_dir}/SQANTI3_Filter/${cell_type}/isoforms.filtered.gtf \
         ${ref_qc_out_path}/isoforms_corrected.gtf \
         ${genome_fasta} \
-        ${sqanti_dir}/SQANTI3_Filter/${cell_type}/isoforms_classification_TPM.tx_RulesFilter_classification.txt \
-        ${script_dir}/sqanti3/sqanti_rules/logic_filter_v6_01_06_26.json \
+        ${sqanti_dir}/SQANTI3_Filter/${cell_type}/isoforms_RulesFilter_classification.txt \
+        ${script_dir}/sqanti3/sqanti_rules/logic_filter_v6.1_23_06_26.json \
         ${cell_type}_rescue_rules_filter \
-        ${ref_qc_out_path}/isoforms_classification_TPM.txt \
+        ${ref_qc_out_path}/isoforms_classification.txt \
         ${sqanti_qc_outdir}/${cell_type}/isoforms_corrected.fasta \
         "${sqanti_dir}"/SQANTI3_Rescue/${cell_type}
 fi

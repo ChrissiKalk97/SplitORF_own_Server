@@ -166,19 +166,19 @@ bash run_mandalorion_params_04_12_25.sh \
 -p "0.005;3;2;50;50"
 
 
-# bash run_mandalorion_params_04_12_25.sh \
-# -b $isoseq_outdir/refine \
-# -c CM \
-# -e ${ensembl_full_gtf} \
-# -f "pacbio_consensus_CM.fofn" \
-# -g ${genome_fasta_file} \
-# -k ${kallisto_dir} \
-# -l ${cm_lr_sample_string} \
-# -o ${mando_out_path} \
-# -q ${sqanti_script_dir} \
-# -r ${ensembl_gtf_filtered} \
-# -s ${outdir_fastp_cm} \
-# -p "0.005;3;2;50;50"
+bash run_mandalorion_params_04_12_25.sh \
+-b $isoseq_outdir/refine \
+-c CM \
+-e ${ensembl_full_gtf} \
+-f "pacbio_consensus_CM.fofn" \
+-g ${genome_fasta_file} \
+-k ${kallisto_dir} \
+-l ${cm_lr_sample_string} \
+-o ${mando_out_path} \
+-q ${sqanti_script_dir} \
+-r ${ensembl_gtf_filtered} \
+-s ${outdir_fastp_cm} \
+-p "0.005;3;2;50;50"
 
 
 
