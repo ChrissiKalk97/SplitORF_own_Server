@@ -72,7 +72,7 @@ cell_type_small="${cell_type,,}"
 outdir_fastp=${outdir_fastp}/${cell_type}_fastp
 
 if [[ ! -d "$outdir_tama" ]]; then
-    mkdir $outdir_tama
+    mkdir "$outdir_tama"
 fi
 
 if [[ ! -d "$outdir_tama/${cell_type}" ]]; then
@@ -88,6 +88,15 @@ if [[ ! -d "$outdir_tama/${cell_type}" ]]; then
     "$mando_gtf" \
     "$mando_tama_gtf"
 
+    isoquant_dir=$(dirname "$isoquant_gtf")
+    isoquant_base=$(basename "$isoquant_gtf" .gtf)
+    isoquant_tama_gtf="${isoquant_dir}"/${isoquant_dir_base}_for_tama.gtf
+
+    python "${script_dir}"/change_order_gene_id_transcript_id_sqanti_gtf.py \
+    "$isoquant_gtf" \
+    "$isoquant_tama_gtf"
+
+
 
     # Need bed12 format for tama, convert with tama scripts Mando and Stringtie3
     conda activate tama
@@ -98,10 +107,8 @@ if [[ ! -d "$outdir_tama/${cell_type}" ]]; then
     "$mando_dir"/"$mando_base".bed12
 
     # convert Isoquant assembly to BED12
-    isoquant_dir=$(dirname "$isoquant_gtf")
-    isoquant_base=$(basename "$isoquant_gtf" .gtf)
     python "${tama_tool_path}"/tama_go/format_converter/tama_format_gtf_to_bed12_stringtie.py \
-    "$isoquant_gtf" \
+    "$isoquant_tama_gtf" \
     "$isoquant_dir"/"$isoquant_base".bed12
 
 
@@ -114,94 +121,95 @@ if [[ ! -d "$outdir_tama/${cell_type}" ]]; then
 
     # create TXT file of Input GTFs for TAMA merge
     printf "%s\t%s\t%s\t%s\n" ""$stringtie_dir"/"$stringtie_base".bed12" "capped"   "1,1,1" "stringtie" >  file_list_${cell_type_small}.txt
-    printf "%s\t%s\t%s\t%s\n" ""$mando_dir"/"$mando_base".bed12"   "1,1,1" "mandalorion" >> file_list_${cell_type_small}.txt
+    printf "%s\t%s\t%s\t%s\n" ""$mando_dir"/"$mando_base".bed12" "capped"  "1,1,1" "mandalorion" >> file_list_${cell_type_small}.txt
     printf "%s\t%s\t%s\t%s\n" ""$isoquant_dir"/"$isoquant_base".bed12" "capped"   "1,1,1" "isoquant" >> file_list_${cell_type_small}.txt
     
     
     
-#     # 
-#     python "${tama_tool_path}"/tama_merge.py \
-#     -f file_list_${cell_type_small}.txt \
-#     -p $outdir_tama/${cell_type}/${cell_type}_merged_tama \
-#     -s mandalorion \
-#     -a 50 \
-#     -m 5 \
-#     -z 50
+    # merge the three assemblies
+    python "${tama_tool_path}"/tama_merge.py \
+    -f file_list_${cell_type_small}.txt \
+    -p "$outdir_tama"/${cell_type}/${cell_type}_merged_tama \
+    -s mandalorion \
+    -a 50 \
+    -m 5 \
+    -z 50
 
 
 
-#     python "${tama_tool_path}"/tama_go/format_converter/tama_convert_bed_gtf_ensembl_no_cds.py \
-#     $outdir_tama/${cell_type}/${cell_type}_merged_tama.bed \
-#     $outdir_tama/${cell_type}/${cell_type}_merged_tama.gtf
+    python "${tama_tool_path}"/tama_go/format_converter/tama_convert_bed_gtf_ensembl_no_cds.py \
+    "$outdir_tama"/${cell_type}/${cell_type}_merged_tama.bed \
+    "$outdir_tama"/${cell_type}/${cell_type}_merged_tama.gtf
 
 fi
   
-# #################################################################################
-# # ------------------ Kallisto for SQANTI QC                   ----------------- #
-# #################################################################################
+#################################################################################
+# ------------------ Kallisto for SQANTI QC                   ----------------- #
+#################################################################################
 
 
-# if [ ! -d "$outdir_tama"/kallisto ]; then
-#     mkdir "$outdir_tama"/kallisto
-# fi
+if [ ! -d "$outdir_tama"/kallisto ]; then
+    mkdir "$outdir_tama"/kallisto
+fi
 
-# if [ ! -d "$outdir_tama"/kallisto/index ]; then
-#     mkdir "$outdir_tama"/kallisto/index
-# fi
+if [ ! -d "$outdir_tama"/kallisto/index ]; then
+    mkdir "$outdir_tama"/kallisto/index
+fi
 
-# if [ ! -e "$outdir_tama"/kallisto/index/${cell_type}.idx ]; then
+if [ ! -e "$outdir_tama"/kallisto/index/${cell_type}.idx ]; then
     
 
-#     bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/kallisto/kallisto_index.sh \
-#     $outdir_tama/${cell_type}/${cell_type}_merged_tama.gtf \
-#     ${genome_fasta} \
-#     "$outdir_tama"/kallisto/${cell_type}_tama_merged_assembly_transcriptome.fa \
-#     "$outdir_tama"/kallisto/index/${cell_type}
-# fi
+    bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/kallisto/kallisto_index.sh \
+    "$outdir_tama"/${cell_type}/${cell_type}_merged_tama.gtf \
+    ${genome_fasta} \
+    "$outdir_tama"/kallisto/${cell_type}_tama_merged_assembly_transcriptome.fa \
+    "$outdir_tama"/kallisto/index/${cell_type}
+fi
 
 
-# if [ ! -d "$outdir_tama/kallisto/${cell_type}_quant" ]; then
-#     mkdir "$outdir_tama/kallisto/${cell_type}_quant"
+if [ ! -d "$outdir_tama/kallisto/${cell_type}_quant" ]; then
+    mkdir "$outdir_tama/kallisto/${cell_type}_quant"
 
 
-#     bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/kallisto/kallisto_quantification.sh \
-#     "$outdir_tama/kallisto/index/${cell_type}.idx" \
-#     ${outdir_fastp} \
-#     "$outdir_tama/kallisto/${cell_type}_quant"
-# fi
+    bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/kallisto/kallisto_quantification.sh \
+    "$outdir_tama/kallisto/index/${cell_type}.idx" \
+    ${outdir_fastp} \
+    "$outdir_tama/kallisto/${cell_type}_quant"
+fi
 
 
 
-# #################################################################################
-# # ------------------              SQANTI QC                   ----------------- #
-# #################################################################################
-# if [ ! -d "${outdir_tama}"/SQANTI3_QC ]; then
-#     mkdir "${outdir_tama}"/SQANTI3_QC
-# fi
+#################################################################################
+# ------------------              SQANTI QC                   ----------------- #
+#################################################################################
+if [ ! -d "${outdir_tama}"/SQANTI3_QC ]; then
+    mkdir "${outdir_tama}"/SQANTI3_QC
+fi
 
-# if [ ! -d "${outdir_tama}"/SQANTI3_QC/${cell_type} ]; then
-#     mkdir "${outdir_tama}"/SQANTI3_QC/${cell_type}
+if [ ! -d "${outdir_tama}"/SQANTI3_QC/${cell_type} ]; then
+    mkdir "${outdir_tama}"/SQANTI3_QC/${cell_type}
 
-#     conda activate sqanti3.6
+    conda activate sqanti3.6
 
-#     bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/sqanti3/sqanti3_qc_mando_huvec.sh \
-#     /home/ckalk/tools/sqanti3.6 \
-#     $outdir_tama/${cell_type}/${cell_type}_merged_tama.gtf \
-#     ${reference_gtf} \
-#     ${genome_fasta} \
-#     "${outdir_tama}"/SQANTI3_QC/${cell_type} \
-#     /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/sqanti3/${cell_type}_short_reads.txt \
-#     "$outdir_tama/kallisto/${cell_type}_quant"
+    bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/sqanti3/sqanti3_qc_mando_huvec.sh \
+    /home/ckalk/tools/sqanti3.6 \
+    "$outdir_tama"/${cell_type}/${cell_type}_merged_tama.gtf \
+    ${reference_gtf} \
+    ${genome_fasta} \
+    "${outdir_tama}"/SQANTI3_QC/${cell_type} \
+    /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/sqanti3/${cell_type}_short_reads.txt \
+    "$outdir_tama/kallisto/${cell_type}_quant"
     
+    conda activate pacbio
 
-#     python "${script_dir}"/get_gene_id_tama_gtf.py \
-#     $outdir_tama/${cell_type}/${cell_type}_merged_tama.gtf \
-#     $outdir_tama/SQANTI3_QC/${cell_type}/isoforms_classification.txt  \
-#     $outdir_tama/${cell_type}/${cell_type}_merged_tama_gene_id.gtf
+    python "${script_dir}"/get_gene_id_tama_gtf.py \
+    "$outdir_tama"/${cell_type}/${cell_type}_merged_tama.gtf \
+    "$outdir_tama"/SQANTI3_QC/${cell_type}/isoforms_classification.txt  \
+    "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id.gtf
 
-#     python "${script_dir}"/add_source_to_tama_gtf.py \
-#     $outdir_tama/${cell_type}/${cell_type}_merged_tama_gene_id.gtf \
-#     $outdir_tama/${cell_type}/${cell_type}_merged_tama_trans_report.txt
+    python "${script_dir}"/add_source_to_tama_gtf.py \
+    "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id.gtf \
+    "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_trans_report.txt
 
-# fi
+fi
 
