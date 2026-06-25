@@ -32,13 +32,14 @@ mkdir -p "$output_dir"
 # ------------------ Run IsoQuant                            ------------------ #
 #################################################################################
 
-# isoquant -d pacbio_ccs \
-#  --polya_trimmed stranded \
-#  --sqanti_output \
-#  --yaml /home/ckalk/scripts/SplitORFs/PacBio_analysis/IsoQuant/long_reads.yaml  \
-#  --complete_genedb --genedb "${ensembl_gtf_filtered}" \
-#   --reference "$genome_fasta" --output "$output_dir"
-
+if [[ ! -e "$output_dir/combined_transcript_counts.tsv" ]]; then
+    isoquant -d pacbio_ccs \
+    --polya_trimmed stranded \
+    --sqanti_output \
+    --yaml /home/ckalk/scripts/SplitORFs/PacBio_analysis/IsoQuant/long_reads.yaml  \
+    --complete_genedb --genedb "${ensembl_gtf_filtered}" \
+    --reference "$genome_fasta" --output "$output_dir"
+fi
 
  # --fl_data \
  # this option means that both ends of the reads are reliable, which is not the case

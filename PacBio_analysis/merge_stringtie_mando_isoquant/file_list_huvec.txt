@@ -1,0 +1,3 @@
+/projects/splitorfs/work/PacBio/merged_bam_files/stringtie3_June_2026_minimap2/SQANTI3/SQANTI3_Rescue/HUVEC/HUVEC_rescue_rules_filter_rescued_stringtie.bed12	capped	1,1,1	stringtie
+/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_50_upstream_17_06_2026/SQANTI3/SQANTI3_Rescue/HUVEC/HUVEC_rescue_rules_filter_rescued_mando.bed12	capped	1,1,1	mandalorion
+/projects/splitorfs/work/PacBio/merged_bam_files/IsoQuant/SQANTI3/SQANTI3_Rescue/HUVEC/HUVEC_rescue_rules_filter_rescued_iso.bed12	capped	1,1,1	isoquant

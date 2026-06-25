@@ -121,36 +121,6 @@ cd /home/ckalk/scripts/SplitORFs/PacBio_analysis
 huvec_lr_sample_string=/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_50NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_5NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DHYPO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DMSO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DNOR_merged_lima_refined.fastq
 cm_lr_sample_string=/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_5NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_DHYPO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_DNOR_merged_lima_refined.fastq
 
-# bash run_mandalorion_params_04_12_25.sh \
-# -b $isoseq_outdir/refine \
-# -c HUVEC \
-# -e ${ensembl_full_gtf} \
-# -f "pacbio_consensus_HUVEC.fofn" \
-# -g ${genome_fasta_file} \
-# -k ${kallisto_dir} \
-# -l ${huvec_lr_sample_string} \
-# -o ${mando_out_path} \
-# -q ${sqanti_script_dir} \
-# -r ${ensembl_gtf_filtered} \
-# -s ${outdir_fastp} \
-# -p "0.005;3;2;10;50"
-
-
-# bash run_mandalorion_params_04_12_25.sh \
-# -b $isoseq_outdir/refine \
-# -c CM \
-# -e ${ensembl_full_gtf} \
-# -f "pacbio_consensus_CM.fofn" \
-# -g ${genome_fasta_file} \
-# -k ${kallisto_dir} \
-# -l ${cm_lr_sample_string} \
-# -o ${mando_out_path} \
-# -q ${sqanti_script_dir} \
-# -r ${ensembl_gtf_filtered} \
-# -s ${outdir_fastp_cm} \
-# -p "0.005;3;2;10;50"
-
-
 bash run_mandalorion_params_04_12_25.sh \
 -b $isoseq_outdir/refine \
 -c HUVEC \
@@ -186,16 +156,16 @@ bash run_mandalorion_params_04_12_25.sh \
 # ------------------ Run Stringtie3                          ------------------ #
 #################################################################################
 
-# first need to align to the genome
-# for Mando fl counts, use the output of tsv form Mando itself
-# bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/map_conditions/map_conditions_to_assemblies.sh
+bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/run_stringtie3_new_version_LRs_minimap2_16_06_26.sh
 
-# prepare already for stringtie run
-# bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/run_stringtie3_correct_ref_filtered_LRs_05_01_26.sh
 
+#################################################################################
+# ------------------ Run Isoquant                            ------------------ #
+#################################################################################
+bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/IsoQuant/IsoQuant_analysis_June_26.sh
 
 #################################################################################
 # ------------------ TAMA merge final annotations            ------------------ #
 #################################################################################
 
-# bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/compare_stringtie_mando/merge_stringtie_mando_correct_ref_06_10_25.sh
+bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/merge_stringtie_mando_isoquant_filter_and_rescue_23_06_2026.sh

@@ -44,108 +44,105 @@ bash tama_steps_with_isoquant_rescue.sh \
  -s "$stringtie_huvec_gtf" \
  -t "/home/ckalk/tools/tama"
 
-# bash tama_steps_with_isoquant_rescue.sh \
-#  -c CM \
-#  -d "$script_dir" \
-#  -f "$genome_fasta" \
-#  -i "$isoquant_cm_gtf" \
-#  -o "$outdir_tama" \
-#  -p "$outdir_fastp" \
-#  -r "$reference_gtf" \
-#  -s "$stringtie_cm_gtf" \
-#  -m "$mando_rescued_cm_gtf" \
-#  -t "/home/ckalk/tools/tama"
+bash tama_steps_with_isoquant_rescue.sh \
+ -c CM \
+ -d "$script_dir" \
+ -f "$genome_fasta" \
+ -i "$isoquant_cm_gtf" \
+ -o "$outdir_tama" \
+ -p "$outdir_fastp" \
+ -r "$reference_gtf" \
+ -s "$stringtie_cm_gtf" \
+ -m "$mando_rescued_cm_gtf" \
+ -t "/home/ckalk/tools/tama"
 
 #################################################################################
 # ------------------ RUN SPLIT-ORFs PIPELINE                 ------------------ #
 #################################################################################
 # use the conda package and the prediction module, need to create a json file for this!
-conda activate pygtftk # "CM"
-for cell_type in "HUVEC"; do
-    python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Input_scripts/change_fasta_header_custom_isoforms.py \
-        "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id.gtf \
-        "$outdir_tama"/kallisto/${cell_type}_tama_merged_assembly_transcriptome.fa \
-        ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_tama_merged_assembly_transcriptome_gID_tID.fa
+conda activate pygtftk # 
+for cell_type in "HUVEC" "CM"; do
+    if [[ ! -d ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_merged_tama_ExonCoordsOfTranscriptsForSO.txt ]]; then
+        python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Input_scripts/change_fasta_header_custom_isoforms.py \
+            "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id.gtf \
+            "$outdir_tama"/kallisto/${cell_type}_tama_merged_assembly_transcriptome.fa \
+            ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_tama_merged_assembly_transcriptome_gID_tID.fa
 
-    python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Genomic_scripts_18_10_24/get_exon_coords_from_gtf.py \
-        "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id.gtf \
-        ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_merged_tama_ExonCoordsOfTranscriptsForSO.txt
+        python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Genomic_scripts_18_10_24/get_exon_coords_from_gtf.py \
+            "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id.gtf \
+            ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_merged_tama_ExonCoordsOfTranscriptsForSO.txt
+    fi
 done
 
 
 
 conda activate test-splitorf 
-#split-orf-prediction /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/split_orf_pipeline_input_CM.json
-#split-orf-prediction /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/split_orf_pipeline_input_HUVEC.json
+split-orf-prediction /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/split_orf_pipeline_input_CM.json
+split-orf-prediction /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/split_orf_pipeline_input_HUVEC.json
 
 #################################################################################
 # ------------------ RUN FIFTYNT PIPELINE                    ------------------ #
 #################################################################################
-# bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_fiftynt_on_assembly.sh \
-#     $outdir_tama/CM/CM_merged_tama_gene_id.gtf \
-#     /home/ckalk/tools/NMD_fetaure_composition \
-#     $genome_fasta \
-#     $ensembl_full_gtf \
-#     CM_merged_tama_50nt.csv
+if [[ ! -d /home/ckalk/tools/NMD_fetaure_composition/Output/CM_merged_tama_iso_mando_stringtie_50nt ]]; then
+    bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_fiftynt_on_assembly.sh \
+        $outdir_tama/CM/CM_merged_tama_gene_id.gtf \
+        /home/ckalk/tools/NMD_fetaure_composition \
+        $genome_fasta \
+        $ensembl_full_gtf \
+        CM_merged_tama_iso_mando_stringtie_50nt.csv
+fi
 
-
-# bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_fiftynt_on_assembly.sh \
-#     $outdir_tama/HUVEC/HUVEC_merged_tama_gene_id.gtf \
-#     /home/ckalk/tools/NMD_fetaure_composition \
-#     $genome_fasta \
-#     $ensembl_full_gtf \
-#     HUVEC_merged_tama_50nt.csv
-
-
-
-
-
+if [[ ! -d /home/ckalk/tools/NMD_fetaure_composition/Output/HUVEC_merged_tama_iso_mando_stringtie_50nt ]]; then
+    bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_fiftynt_on_assembly.sh \
+        $outdir_tama/HUVEC/HUVEC_merged_tama_gene_id.gtf \
+        /home/ckalk/tools/NMD_fetaure_composition \
+        $genome_fasta \
+        $ensembl_full_gtf \
+        HUVEC_merged_tama_iso_mando_stringtie_50nt.csv
+fi
 
 #################################################################################
 # ------------------ COMPARE TO ENSEMBL FULL  ASSEMBLY       ------------------ #
 #################################################################################
 
 
-# if [[ ! -d "$outdir_tama/HUVEC/compare_Ens_full_ref" ]]; then
-#     mkdir $outdir_tama/HUVEC/compare_Ens_full_ref
-# fi
+if [[ ! -d "$outdir_tama/HUVEC/compare_Ens_full_ref" ]]; then
+    mkdir $outdir_tama/HUVEC/compare_Ens_full_ref
+    gffcompare -o $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_compare_full_GTF\
+    -r $ensembl_full_gtf\
+    $outdir_tama/HUVEC/HUVEC_merged_tama_gene_id.gtf
 
-# if [[ ! -d "$outdir_tama/CM/compare_Ens_full_ref" ]]; then
-#     mkdir $outdir_tama/CM/compare_Ens_full_ref
-# fi
+    mv $outdir_tama/HUVEC/HUVEC_compare_full_GTF* $outdir_tama/HUVEC/compare_Ens_full_ref
 
+    # which isoforms have non ejcs?
+    python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/get_equal_ejc_isoforms.py \
+    $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_compare_full_GTF.HUVEC_merged_tama_gene_id.gtf.tmap
+fi
 
-# gffcompare -o $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_compare_full_GTF\
-#  -r $ensembl_full_gtf\
-#   $outdir_tama/HUVEC/HUVEC_merged_tama_gene_id.gtf
+if [[ ! -d "$outdir_tama/CM/compare_Ens_full_ref" ]]; then
+    mkdir $outdir_tama/CM/compare_Ens_full_ref
+    gffcompare -o $outdir_tama/CM/compare_Ens_full_ref/CM_compare_full_GTF\
+    -r $ensembl_full_gtf\
+    $outdir_tama/CM/CM_merged_tama_gene_id.gtf
 
-# mv $outdir_tama/HUVEC/HUVEC_compare_full_GTF* $outdir_tama/HUVEC/compare_Ens_full_ref
+    mv $outdir_tama/CM/CM_compare_full_GTF* $outdir_tama/CM/compare_Ens_full_ref
 
-
-# gffcompare -o $outdir_tama/CM/compare_Ens_full_ref/CM_compare_full_GTF\
-#  -r $ensembl_full_gtf\
-#   $outdir_tama/CM/CM_merged_tama_gene_id.gtf
-
-# mv $outdir_tama/CM/CM_compare_full_GTF* $outdir_tama/CM/compare_Ens_full_ref
-
-# # # which isoforms have non ejcs?
-# python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/get_equal_ejc_isoforms.py \
-#  $outdir_tama/CM/compare_Ens_full_ref/CM_compare_full_GTF.CM_merged_tama_gene_id.gtf.tmap
-
-# python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/get_equal_ejc_isoforms.py \
-#  $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_compare_full_GTF.HUVEC_merged_tama_gene_id.gtf.tmap
+    # which isoforms have non ejcs?
+    python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/get_equal_ejc_isoforms.py \
+    $outdir_tama/CM/compare_Ens_full_ref/CM_compare_full_GTF.CM_merged_tama_gene_id.gtf.tmap
+fi
 
 
-# # which isoforms are novel nmd transcripts?
-#  python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/count_nr_novel_nmd_transcripts.py \
-#  /home/ckalk/tools/NMD_fetaure_composition/Output/CM_merged_tama_50nt/CM_merged_tama_50nt.csv \
-#  $outdir_tama/CM/compare_Ens_full_ref/CM_merged_tama_gene_id_novel_isoforms.txt \
-#  --assembly_type full
+# which isoforms are novel nmd transcripts?
+ python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/count_nr_novel_nmd_transcripts.py \
+ /home/ckalk/tools/NMD_fetaure_composition/Output/CM_merged_tama_iso_mando_stringtie_50nt/CM_merged_tama_iso_mando_stringtie_50nt.csv \
+ $outdir_tama/CM/compare_Ens_full_ref/CM_merged_tama_iso_mando_stringtie_gene_id_novel_isoforms.txt \
+ --assembly_type full
 
-#  python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/count_nr_novel_nmd_transcripts.py \
-#  /home/ckalk/tools/NMD_fetaure_composition/Output/HUVEC_merged_tama_50nt/HUVEC_merged_tama_50nt.csv \
-#  $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_merged_tama_gene_id_novel_isoforms.txt \
-#  --assembly_type full
+ python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/count_nr_novel_nmd_transcripts.py \
+ /home/ckalk/tools/NMD_fetaure_composition/Output/HUVEC_merged_tama_iso_mando_stringtie_50nt/HUVEC_merged_tama_iso_mando_stringtie_50nt.csv \
+ $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_merged_tama_iso_mando_stringtie_gene_id_novel_isoforms.txt \
+ --assembly_type full
 
 #################################################################################
 # This can only be run when the name of the SO output folder is known   ------- #
