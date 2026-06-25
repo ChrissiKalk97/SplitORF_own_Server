@@ -1,0 +1,101 @@
+uf_muellermcnicoll_2025_04_01_huvec_dnor_2.cutadapt_umi_fastp.
+24296502 reads; of these:
+  24296502 (100.00%) were paired; of these:
+    19511809 (80.31%) aligned concordantly 0 times
+    119200 (0.49%) aligned concordantly exactly 1 time
+    4665493 (19.20%) aligned concordantly >1 times
+    ----
+    19511809 pairs aligned 0 times concordantly or discordantly; of these:
+      39023618 mates make up the pairs; of these:
+        39009273 (99.96%) aligned 0 times
+        1015 (0.00%) aligned exactly 1 time
+        13330 (0.03%) aligned >1 times
+19.72% overall alignment rate
+uf_muellermcnicoll_2025_04_02_huvec_dnor_3.cutadapt_umi_fastp.
+23068844 reads; of these:
+  23068844 (100.00%) were paired; of these:
+    19623883 (85.07%) aligned concordantly 0 times
+    103839 (0.45%) aligned concordantly exactly 1 time
+    3341122 (14.48%) aligned concordantly >1 times
+    ----
+    19623883 pairs aligned 0 times concordantly or discordantly; of these:
+      39247766 mates make up the pairs; of these:
+        39237137 (99.97%) aligned 0 times
+        894 (0.00%) aligned exactly 1 time
+        9735 (0.02%) aligned >1 times
+14.96% overall alignment rate
+uf_muellermcnicoll_2025_04_03_huvec_dnor_4.cutadapt_umi_fastp.
+28822547 reads; of these:
+  28822547 (100.00%) were paired; of these:
+    23166138 (80.38%) aligned concordantly 0 times
+    156770 (0.54%) aligned concordantly exactly 1 time
+    5499639 (19.08%) aligned concordantly >1 times
+    ----
+    23166138 pairs aligned 0 times concordantly or discordantly; of these:
+      46332276 mates make up the pairs; of these:
+        46310385 (99.95%) aligned 0 times
+        1568 (0.00%) aligned exactly 1 time
+        20323 (0.04%) aligned >1 times
+19.66% overall alignment rate
+uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.cutadapt_umi_fastp.
+25778809 reads; of these:
+  25778809 (100.00%) were paired; of these:
+    20327974 (78.86%) aligned concordantly 0 times
+    125433 (0.49%) aligned concordantly exactly 1 time
+    5325402 (20.66%) aligned concordantly >1 times
+    ----
+    20327974 pairs aligned 0 times concordantly or discordantly; of these:
+      40655948 mates make up the pairs; of these:
+        40637158 (99.95%) aligned 0 times
+        1293 (0.00%) aligned exactly 1 time
+        17497 (0.04%) aligned >1 times
+21.18% overall alignment rate
+uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.cutadapt_umi_fastp.
+28105628 reads; of these:
+  28105628 (100.00%) were paired; of these:
+    25166495 (89.54%) aligned concordantly 0 times
+    80403 (0.29%) aligned concordantly exactly 1 time
+    2858730 (10.17%) aligned concordantly >1 times
+    ----
+    25166495 pairs aligned 0 times concordantly or discordantly; of these:
+      50332990 mates make up the pairs; of these:
+        50324092 (99.98%) aligned 0 times
+        701 (0.00%) aligned exactly 1 time
+        8197 (0.02%) aligned >1 times
+10.47% overall alignment rate
+uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.cutadapt_umi_fastp.
+28250958 reads; of these:
+  28250958 (100.00%) were paired; of these:
+    23365146 (82.71%) aligned concordantly 0 times
+    112191 (0.40%) aligned concordantly exactly 1 time
+    4773621 (16.90%) aligned concordantly >1 times
+    ----
+    23365146 pairs aligned 0 times concordantly or discordantly; of these:
+      46730292 mates make up the pairs; of these:
+        46713357 (99.96%) aligned 0 times
+        1196 (0.00%) aligned exactly 1 time
+        15739 (0.03%) aligned >1 times
+17.32% overall alignment rate
+	/home/ckalk/miniforge-pypy3/envs/Riboseq/bin/STAR-avx2 --runThreadN 50 --runMode genomeGenerate --genomeDir /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index --genomeFastaFiles /projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa --sjdbGTFfile /projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.gtf --sjdbOverhang 49
+	STAR version: 2.7.11b   compiled: 2025-01-09T12:32:06+0000 :/opt/conda/conda-bld/star_1736425784849/work/source
+Apr 16 16:14:36 ..... started STAR run
+!!!!! WARNING: Could not move Log.out file from ./Log.out into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index/Log.out. Will keep ./Log.out
+
+Apr 16 16:14:36 ... starting to generate Genome files
+Apr 16 16:15:26 ..... processing annotations GTF
+Apr 16 16:16:00 ... starting to sort Suffix Array. This may take a long time...
+Apr 16 16:16:19 ... sorting Suffix Array chunks and saving them to disk...
+Apr 16 16:34:56 ... loading chunks from disk, packing SA...
+Apr 16 16:36:30 ... finished generating suffix array
+Apr 16 16:36:30 ... generating Suffix Array index
+Apr 16 16:41:00 ... completed Suffix Array index
+Apr 16 16:41:01 ..... inserting junctions into the genome indices
+Apr 16 16:42:57 ... writing Genome to disk ...
+Apr 16 16:43:04 ... writing Suffix Array to disk ...
+Apr 16 16:43:56 ... writing SAindex to disk
+Apr 16 16:44:00 ..... finished successfully
+Log.out bowtie2_align.sh genome_alignment_star.sh out_reports_of_runs preprocessing preprocessing_cutadapt_steps.sh preprocessing_steps.sh
+
+EXITING because of fatal input ERROR: could not open readFilesIn=/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/tRNA_aligned_bowtie2/*R1*.fastq
+
+Apr 16 16:44:01 ...... FATAL ERROR, exiting

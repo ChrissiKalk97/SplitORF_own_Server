@@ -1,0 +1,295 @@
+Starting empirical Riboseq validation
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_01_huvec_dnor_2_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_01_huvec_dnor_2_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_NMD_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/NMD_genome/uf_muellermcnicoll_2025_04_01_huvec_dnor_2_NMD
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/NMD_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/NMD_genome
+[bam_sort_core] merging from 1 files and 1 in-memory blocks...
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_01_huvec_dnor_2 NMD finished
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_02_huvec_dnor_3_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_02_huvec_dnor_3_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_NMD_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/NMD_genome/uf_muellermcnicoll_2025_04_02_huvec_dnor_3_NMD
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/NMD_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/NMD_genome
+[bam_sort_core] merging from 1 files and 1 in-memory blocks...
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_02_huvec_dnor_3 NMD finished
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_03_huvec_dnor_4_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_03_huvec_dnor_4_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_NMD_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/NMD_genome/uf_muellermcnicoll_2025_04_03_huvec_dnor_4_NMD
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/NMD_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/NMD_genome
+[bam_sort_core] merging from 1 files and 1 in-memory blocks...
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_03_huvec_dnor_4 NMD finished
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_NMD_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/NMD_genome/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_NMD
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/NMD_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/NMD_genome
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_04_huvec_dhypo_2 NMD finished
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_NMD_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/NMD_genome/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_NMD
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/NMD_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/NMD_genome
+[bam_sort_core] merging from 1 files and 1 in-memory blocks...
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_05_huvec_dhypo_3 NMD finished
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_NMD_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/NMD_genome/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_NMD
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/NMD_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/NMD_genome
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_06_huvec_dhypo_4 NMD finished
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_01_huvec_dnor_2_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_01_huvec_dnor_2_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_RI_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome/uf_muellermcnicoll_2025_04_01_huvec_dnor_2_RI
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome
+[bam_sort_core] merging from 1 files and 1 in-memory blocks...
+intersecting with unique regions
+Random regions generated for iteration 1
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_1_sorted_1.bed
+Random regions generated for iteration 2
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_2_sorted_2.bed
+Random regions generated for iteration 3
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_3_sorted_3.bed
+Random regions generated for iteration 4
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_4_sorted_4.bed
+Random regions generated for iteration 5
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_5_sorted_5.bed
+Random regions generated for iteration 6
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_6_sorted_6.bed
+Random regions generated for iteration 7
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_7_sorted_7.bed
+Random regions generated for iteration 8
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_8_sorted_8.bed
+Random regions generated for iteration 9
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_9_sorted_9.bed
+Random regions generated for iteration 10
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_10_sorted_10.bed
+Random regions generated for iteration 11
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_11_sorted_11.bed
+Random regions generated for iteration 12
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_12_sorted_12.bed
+Random regions generated for iteration 13
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_13_sorted_13.bed
+Random regions generated for iteration 14
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_14_sorted_14.bed
+Random regions generated for iteration 15
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_15_sorted_15.bed
+Random regions generated for iteration 16
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_16_sorted_16.bed
+Random regions generated for iteration 17
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_17_sorted_17.bed
+Random regions generated for iteration 18
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_18_sorted_18.bed
+Random regions generated for iteration 19
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_19_sorted_19.bed
+Random regions generated for iteration 20
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome/Random_background_regions_20_sorted_20.bed
+===================       Sample uf_muellermcnicoll_2025_04_01_huvec_dnor_2 RI finished
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_02_huvec_dnor_3_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_02_huvec_dnor_3_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_RI_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome/uf_muellermcnicoll_2025_04_02_huvec_dnor_3_RI
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome
+[bam_sort_core] merging from 1 files and 1 in-memory blocks...
+converting bam to bed
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_02_huvec_dnor_3 RI finished
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_03_huvec_dnor_4_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_03_huvec_dnor_4_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_RI_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome/uf_muellermcnicoll_2025_04_03_huvec_dnor_4_RI
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome
+[bam_sort_core] merging from 1 files and 1 in-memory blocks...
+converting bam to bed
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_03_huvec_dnor_4 RI finished
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_RI_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_RI
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome
+converting bam to bed
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_04_huvec_dhypo_2 RI finished
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_RI_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_RI
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome
+[bam_sort_core] merging from 1 files and 1 in-memory blocks...
+converting bam to bed
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_05_huvec_dhypo_3 RI finished
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_RI_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_RI
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/RI_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome
+converting bam to bed
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_06_huvec_dhypo_4 RI finished
+
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/Riboseq_emp_val_report_hypo_q10_16_06_15.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/", "/projects/splitorfs/work/LLMs/TIS_transformer/Input/SO_pipeline_results")))
+
+
+processing file: RiboSeqReportGenomic_iteration.Rmd
+1/53                   
+2/53 [libraries]       
+Warning: program compiled against libxml 212 using older 209
+3/53                   
+4/53 [unnamed-chunk-1] 
+5/53                   
+6/53 [unnamed-chunk-2] 
+7/53                   
+8/53 [unnamed-chunk-3] 
+9/53                   
+10/53 [unnamed-chunk-4] 
+11/53                   
+12/53 [unnamed-chunk-5] 
+13/53                   
+14/53 [unnamed-chunk-6] 
+15/53                   
+16/53 [unnamed-chunk-7] 
+17/53                   
+18/53 [unnamed-chunk-8] 
+19/53                   
+20/53 [unnamed-chunk-9] 
+21/53                   
+22/53 [unnamed-chunk-10]
+23/53                   
+24/53 [unnamed-chunk-11]
+25/53                   
+26/53 [unnamed-chunk-12]
+27/53                   
+28/53 [unnamed-chunk-13]
+29/53                   
+30/53 [unnamed-chunk-14]
+31/53                   
+32/53 [unnamed-chunk-15]
+33/53                   
+34/53 [unnamed-chunk-16]
+35/53                   
+36/53 [unnamed-chunk-17]
+37/53                   
+38/53 [unnamed-chunk-18]
+39/53                   
+40/53 [unnamed-chunk-19]
+41/53                   
+42/53 [unnamed-chunk-20]
+43/53                   
+44/53 [unnamed-chunk-21]
+45/53                   
+46/53 [unnamed-chunk-22]
+47/53                   
+48/53 [unnamed-chunk-23]
+49/53                   
+50/53 [unnamed-chunk-24]
+51/53                   
+52/53 [unnamed-chunk-25]
+53/53                   
+output file: RiboSeqReportGenomic_iteration.knit.md
+
+/usr/bin/pandoc +RTS -K512m -RTS RiboSeqReportGenomic_iteration.knit.md --to latex --from markdown+autolink_bare_uris+tex_math_single_backslash --output /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/Riboseq_emp_val_report_hypo_q10_16_06_15.tex --lua-filter /home/ckalk/R/x86_64-pc-linux-gnu-library/4.1/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/ckalk/R/x86_64-pc-linux-gnu-library/4.1/rmarkdown/rmarkdown/lua/latex-div.lua --self-contained --highlight-style tango --pdf-engine pdflatex --variable graphics --variable 'geometry:margin=1in' --include-in-header /tmp/Rtmp4bMBMB/rmarkdown-str475564544b305.html 
+Warning: Package xcolor Warning: Incompatible color definition on input line 142.
+Warning: Package xcolor Warning: Incompatible color definition on input line 152.
+Warning: Package xcolor Warning: Incompatible color definition on input line 152.
+Warning: Package xcolor Warning: Incompatible color definition on input line 160.
+Warning: Package xcolor Warning: Incompatible color definition on input line 166.
+Warning: Package xcolor Warning: Incompatible color definition on input line 166.
+Warning: Package xcolor Warning: Incompatible color definition on input line 183.
+Warning: Package xcolor Warning: Incompatible color definition on input line 187.
+Warning: Package xcolor Warning: Incompatible color definition on input line 187.
+Warning: Package xcolor Warning: Incompatible color definition on input line 191.
+Warning: Package xcolor Warning: Incompatible color definition on input line 195.
+Warning: Package xcolor Warning: Incompatible color definition on input line 195.
+Warning: Package xcolor Warning: Incompatible color definition on input line 200.
+Warning: Package xcolor Warning: Incompatible color definition on input line 205.
+Warning: Package xcolor Warning: Incompatible color definition on input line 205.
+Warning: Package xcolor Warning: Incompatible color definition on input line 228.
+Warning: Package xcolor Warning: Incompatible color definition on input line 232.
+Warning: Package xcolor Warning: Incompatible color definition on input line 232.
+Warning: Package xcolor Warning: Incompatible color definition on input line 255.
+Warning: Package xcolor Warning: Incompatible color definition on input line 259.
+Warning: Package xcolor Warning: Incompatible color definition on input line 259.
+Warning: Package xcolor Warning: Incompatible color definition on input line 287.
+Warning: Package xcolor Warning: Incompatible color definition on input line 294.
+Warning: Package xcolor Warning: Incompatible color definition on input line 294.
+Warning: Package xcolor Warning: Incompatible color definition on input line 299.
+Warning: Package xcolor Warning: Incompatible color definition on input line 303.
+Warning: Package xcolor Warning: Incompatible color definition on input line 303.
+Warning: Package xcolor Warning: Incompatible color definition on input line 309.
+Warning: Package xcolor Warning: Incompatible color definition on input line 314.
+Warning: Package xcolor Warning: Incompatible color definition on input line 314.
+Warning: Package xcolor Warning: Incompatible color definition on input line 340.
+Warning: Package xcolor Warning: Incompatible color definition on input line 344.
+Warning: Package xcolor Warning: Incompatible color definition on input line 344.
+Warning: Package xcolor Warning: Incompatible color definition on input line 348.
+Warning: Package xcolor Warning: Incompatible color definition on input line 352.
+Warning: Package xcolor Warning: Incompatible color definition on input line 352.
+Warning: Package xcolor Warning: Incompatible color definition on input line 357.
+Warning: Package xcolor Warning: Incompatible color definition on input line 362.
+Warning: Package xcolor Warning: Incompatible color definition on input line 362.
+Warning: Package xcolor Warning: Incompatible color definition on input line 391.
+Warning: Package xcolor Warning: Incompatible color definition on input line 395.
+Warning: Package xcolor Warning: Incompatible color definition on input line 395.
+Warning: Package xcolor Warning: Incompatible color definition on input line 424.
+Warning: Package xcolor Warning: Incompatible color definition on input line 428.
+Warning: Package xcolor Warning: Incompatible color definition on input line 428.
+Warning: Package xcolor Warning: Incompatible color definition on input line 456.
+Warning: Package xcolor Warning: Incompatible color definition on input line 466.
+Warning: Package xcolor Warning: Incompatible color definition on input line 466.
+Warning: Package xcolor Warning: Incompatible color definition on input line 471.
+Warning: Package xcolor Warning: Incompatible color definition on input line 475.
+Warning: Package xcolor Warning: Incompatible color definition on input line 475.
+
+Output created: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/Riboseq_emp_val_report_hypo_q10_16_06_15.pdf
+> 
+> 

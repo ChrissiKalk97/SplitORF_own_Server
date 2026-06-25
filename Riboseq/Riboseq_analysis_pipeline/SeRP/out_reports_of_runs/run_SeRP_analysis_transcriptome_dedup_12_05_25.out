@@ -1,0 +1,16 @@
+uf_muellermcnicoll_2025_04_08_In_Puro_3
+uf_muellermcnicoll_2025_04_07_In_Puro_1
+uf_muellermcnicoll_2025_04_10_In_CHX_1
+uf_muellermcnicoll_2025_04_09_In_Puro_4
+uf_muellermcnicoll_2025_04_11_In_CHX_2
+uf_muellermcnicoll_2025_04_13_IP_Puro_1
+uf_muellermcnicoll_2025_04_12_In_CHX_4
+uf_muellermcnicoll_2025_04_17_IP_CHX_2
+uf_muellermcnicoll_2025_04_14_IP_Puro_3
+uf_muellermcnicoll_2025_04_15_IP_Puro_4
+uf_muellermcnicoll_2025_04_16_IP_CHX_1
+uf_muellermcnicoll_2025_04_18_IP_CHX_4
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:37: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2 + bottom[i], round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:40: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2, round(y[i], 2), ha='center')

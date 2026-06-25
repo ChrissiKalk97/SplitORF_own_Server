@@ -1,0 +1,196 @@
+uf_muellermcnicoll_2025_04_07_In_Puro_1.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_07_In_Puro_1.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_07_In_Puro_1.cutadapt_umi_fastp.R2.fastp.fastq.gz
+20703834 reads; of these:
+  20703834 (100.00%) were paired; of these:
+    2543664 (12.29%) aligned concordantly 0 times
+    6527530 (31.53%) aligned concordantly exactly 1 time
+    11632640 (56.19%) aligned concordantly >1 times
+    ----
+    2543664 pairs aligned 0 times concordantly or discordantly; of these:
+      5087328 mates make up the pairs; of these:
+        4859101 (95.51%) aligned 0 times
+        69186 (1.36%) aligned exactly 1 time
+        159041 (3.13%) aligned >1 times
+88.27% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+uf_muellermcnicoll_2025_04_08_In_Puro_3.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_08_In_Puro_3.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_08_In_Puro_3.cutadapt_umi_fastp.R2.fastp.fastq.gz
+26787125 reads; of these:
+  26787125 (100.00%) were paired; of these:
+    2799663 (10.45%) aligned concordantly 0 times
+    8237764 (30.75%) aligned concordantly exactly 1 time
+    15749698 (58.80%) aligned concordantly >1 times
+    ----
+    2799663 pairs aligned 0 times concordantly or discordantly; of these:
+      5599326 mates make up the pairs; of these:
+        5315099 (94.92%) aligned 0 times
+        89791 (1.60%) aligned exactly 1 time
+        194436 (3.47%) aligned >1 times
+90.08% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+uf_muellermcnicoll_2025_04_09_In_Puro_4.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_09_In_Puro_4.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_09_In_Puro_4.cutadapt_umi_fastp.R2.fastp.fastq.gz
+24124147 reads; of these:
+  24124147 (100.00%) were paired; of these:
+    2720060 (11.28%) aligned concordantly 0 times
+    8457461 (35.06%) aligned concordantly exactly 1 time
+    12946626 (53.67%) aligned concordantly >1 times
+    ----
+    2720060 pairs aligned 0 times concordantly or discordantly; of these:
+      5440120 mates make up the pairs; of these:
+        5169759 (95.03%) aligned 0 times
+        94634 (1.74%) aligned exactly 1 time
+        175727 (3.23%) aligned >1 times
+89.29% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+uf_muellermcnicoll_2025_04_10_In_CHX_1.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_10_In_CHX_1.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_10_In_CHX_1.cutadapt_umi_fastp.R2.fastp.fastq.gz
+25062319 reads; of these:
+  25062319 (100.00%) were paired; of these:
+    2557820 (10.21%) aligned concordantly 0 times
+    11780414 (47.00%) aligned concordantly exactly 1 time
+    10724085 (42.79%) aligned concordantly >1 times
+    ----
+    2557820 pairs aligned 0 times concordantly or discordantly; of these:
+      5115640 mates make up the pairs; of these:
+        4845723 (94.72%) aligned 0 times
+        129984 (2.54%) aligned exactly 1 time
+        139933 (2.74%) aligned >1 times
+90.33% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+uf_muellermcnicoll_2025_04_11_In_CHX_2.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_11_In_CHX_2.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_11_In_CHX_2.cutadapt_umi_fastp.R2.fastp.fastq.gz
+26116895 reads; of these:
+  26116895 (100.00%) were paired; of these:
+    2108355 (8.07%) aligned concordantly 0 times
+    17783625 (68.09%) aligned concordantly exactly 1 time
+    6224915 (23.83%) aligned concordantly >1 times
+    ----
+    2108355 pairs aligned 0 times concordantly or discordantly; of these:
+      4216710 mates make up the pairs; of these:
+        3947420 (93.61%) aligned 0 times
+        188645 (4.47%) aligned exactly 1 time
+        80645 (1.91%) aligned >1 times
+92.44% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+uf_muellermcnicoll_2025_04_12_In_CHX_4.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_12_In_CHX_4.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_12_In_CHX_4.cutadapt_umi_fastp.R2.fastp.fastq.gz
+25644169 reads; of these:
+  25644169 (100.00%) were paired; of these:
+    2164907 (8.44%) aligned concordantly 0 times
+    17444108 (68.02%) aligned concordantly exactly 1 time
+    6035154 (23.53%) aligned concordantly >1 times
+    ----
+    2164907 pairs aligned 0 times concordantly or discordantly; of these:
+      4329814 mates make up the pairs; of these:
+        4064147 (93.86%) aligned 0 times
+        187041 (4.32%) aligned exactly 1 time
+        78626 (1.82%) aligned >1 times
+92.08% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+uf_muellermcnicoll_2025_04_13_IP_Puro_1.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_13_IP_Puro_1.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_13_IP_Puro_1.cutadapt_umi_fastp.R2.fastp.fastq.gz
+21351447 reads; of these:
+  21351447 (100.00%) were paired; of these:
+    2580829 (12.09%) aligned concordantly 0 times
+    7453650 (34.91%) aligned concordantly exactly 1 time
+    11316968 (53.00%) aligned concordantly >1 times
+    ----
+    2580829 pairs aligned 0 times concordantly or discordantly; of these:
+      5161658 mates make up the pairs; of these:
+        4909669 (95.12%) aligned 0 times
+        73308 (1.42%) aligned exactly 1 time
+        178681 (3.46%) aligned >1 times
+88.50% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+uf_muellermcnicoll_2025_04_14_IP_Puro_3.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_14_IP_Puro_3.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_14_IP_Puro_3.cutadapt_umi_fastp.R2.fastp.fastq.gz
+21749105 reads; of these:
+  21749105 (100.00%) were paired; of these:
+    2933945 (13.49%) aligned concordantly 0 times
+    7190381 (33.06%) aligned concordantly exactly 1 time
+    11624779 (53.45%) aligned concordantly >1 times
+    ----
+    2933945 pairs aligned 0 times concordantly or discordantly; of these:
+      5867890 mates make up the pairs; of these:
+        5641688 (96.15%) aligned 0 times
+        79624 (1.36%) aligned exactly 1 time
+        146578 (2.50%) aligned >1 times
+87.03% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+uf_muellermcnicoll_2025_04_15_IP_Puro_4.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_15_IP_Puro_4.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_15_IP_Puro_4.cutadapt_umi_fastp.R2.fastp.fastq.gz
+21569066 reads; of these:
+  21569066 (100.00%) were paired; of these:
+    2680489 (12.43%) aligned concordantly 0 times
+    6224726 (28.86%) aligned concordantly exactly 1 time
+    12663851 (58.71%) aligned concordantly >1 times
+    ----
+    2680489 pairs aligned 0 times concordantly or discordantly; of these:
+      5360978 mates make up the pairs; of these:
+        5125706 (95.61%) aligned 0 times
+        68388 (1.28%) aligned exactly 1 time
+        166884 (3.11%) aligned >1 times
+88.12% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+uf_muellermcnicoll_2025_04_16_IP_CHX_1.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_16_IP_CHX_1.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_16_IP_CHX_1.cutadapt_umi_fastp.R2.fastp.fastq.gz
+22234453 reads; of these:
+  22234453 (100.00%) were paired; of these:
+    2563492 (11.53%) aligned concordantly 0 times
+    13949111 (62.74%) aligned concordantly exactly 1 time
+    5721850 (25.73%) aligned concordantly >1 times
+    ----
+    2563492 pairs aligned 0 times concordantly or discordantly; of these:
+      5126984 mates make up the pairs; of these:
+        4894556 (95.47%) aligned 0 times
+        159480 (3.11%) aligned exactly 1 time
+        72948 (1.42%) aligned >1 times
+88.99% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+uf_muellermcnicoll_2025_04_17_IP_CHX_2.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_17_IP_CHX_2.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_17_IP_CHX_2.cutadapt_umi_fastp.R2.fastp.fastq.gz
+19204082 reads; of these:
+  19204082 (100.00%) were paired; of these:
+    1830428 (9.53%) aligned concordantly 0 times
+    12867144 (67.00%) aligned concordantly exactly 1 time
+    4506510 (23.47%) aligned concordantly >1 times
+    ----
+    1830428 pairs aligned 0 times concordantly or discordantly; of these:
+      3660856 mates make up the pairs; of these:
+        3483241 (95.15%) aligned 0 times
+        116790 (3.19%) aligned exactly 1 time
+        60825 (1.66%) aligned >1 times
+90.93% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+uf_muellermcnicoll_2025_04_18_IP_CHX_4.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_18_IP_CHX_4.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_18_IP_CHX_4.cutadapt_umi_fastp.R2.fastp.fastq.gz
+25732861 reads; of these:
+  25732861 (100.00%) were paired; of these:
+    2509756 (9.75%) aligned concordantly 0 times
+    15687306 (60.96%) aligned concordantly exactly 1 time
+    7535799 (29.28%) aligned concordantly >1 times
+    ----
+    2509756 pairs aligned 0 times concordantly or discordantly; of these:
+      5019512 mates make up the pairs; of these:
+        4757767 (94.79%) aligned 0 times
+        166103 (3.31%) aligned exactly 1 time
+        95642 (1.91%) aligned >1 times
+90.76% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:37: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2 + bottom[i], round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:40: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2, round(y[i], 2), ha='center')

@@ -1,0 +1,495 @@
+transcriptomic
+uf_muellermcnicoll_2025_04_01_huvec_dnor_2
+uf_muellermcnicoll_2025_04_02_huvec_dnor_3
+uf_muellermcnicoll_2025_04_03_huvec_dnor_4
+uf_muellermcnicoll_2025_04_04_huvec_dhypo_2
+uf_muellermcnicoll_2025_04_05_huvec_dhypo_3
+uf_muellermcnicoll_2025_04_06_huvec_dhypo_4
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:37: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2 + bottom[i], round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:40: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2, round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:37: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2 + bottom[i], round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:40: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2, round(y[i], 2), ha='center')
+transcriptomic
+uf_muellermcnicoll_2025_04_01_huvec_dnor_2
+uf_muellermcnicoll_2025_04_02_huvec_dnor_3
+uf_muellermcnicoll_2025_04_03_huvec_dnor_4
+uf_muellermcnicoll_2025_04_04_huvec_dhypo_2
+uf_muellermcnicoll_2025_04_06_huvec_dhypo_4
+uf_muellermcnicoll_2025_04_05_huvec_dhypo_3
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:37: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2 + bottom[i], round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:40: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2, round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:37: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2 + bottom[i], round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:40: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2, round(y[i], 2), ha='center')
+Loading required package: S4Vectors
+Loading required package: stats4
+Loading required package: BiocGenerics
+
+Attaching package: ‘BiocGenerics’
+
+The following objects are masked from ‘package:stats’:
+
+    IQR, mad, sd, var, xtabs
+
+The following objects are masked from ‘package:base’:
+
+    anyDuplicated, append, as.data.frame, basename, cbind, colnames,
+    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
+    union, unique, unsplit, which.max, which.min
+
+
+Attaching package: ‘S4Vectors’
+
+The following objects are masked from ‘package:base’:
+
+    expand.grid, I, unname
+
+Loading required package: IRanges
+Loading required package: GenomicRanges
+Loading required package: GenomeInfoDb
+Loading required package: SummarizedExperiment
+Loading required package: MatrixGenerics
+Loading required package: matrixStats
+
+Attaching package: ‘MatrixGenerics’
+
+The following objects are masked from ‘package:matrixStats’:
+
+    colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
+    colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
+    colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
+    colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
+    colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
+    colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
+    colWeightedMeans, colWeightedMedians, colWeightedSds,
+    colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
+    rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
+    rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
+    rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
+    rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
+    rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
+    rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
+    rowWeightedSds, rowWeightedVars
+
+Loading required package: Biobase
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.
+
+
+Attaching package: ‘Biobase’
+
+The following object is masked from ‘package:MatrixGenerics’:
+
+    rowMedians
+
+The following objects are masked from ‘package:matrixStats’:
+
+    anyMissing, rowMedians
+
+Warning message:
+In DESeqDataSet(se, design = design, ignoreRank) :
+  some variables in design formula are characters, converting to factors
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+null device 
+          1 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.6827  0.8396  0.9180  1.0681  1.1868  1.8003 
+named integer(0)
+[1] "correlation rid"
+                         2025_04_01_huvec_dnor_2. 2025_04_02_huvec_dnor_3.
+2025_04_01_huvec_dnor_2.                1.0000000                0.9989997
+2025_04_02_huvec_dnor_3.                0.9989997                1.0000000
+2025_04_03_huvec_dnor_4.                0.9982892                0.9986754
+2025_04_04_huvec_dhypo_2                0.9963497                0.9958128
+2025_04_05_huvec_dhypo_3                0.9960062                0.9964098
+2025_04_06_huvec_dhypo_4                0.9937852                0.9936269
+                         2025_04_03_huvec_dnor_4. 2025_04_04_huvec_dhypo_2
+2025_04_01_huvec_dnor_2.                0.9982892                0.9963497
+2025_04_02_huvec_dnor_3.                0.9986754                0.9958128
+2025_04_03_huvec_dnor_4.                1.0000000                0.9950976
+2025_04_04_huvec_dhypo_2                0.9950976                1.0000000
+2025_04_05_huvec_dhypo_3                0.9954761                0.9984279
+2025_04_06_huvec_dhypo_4                0.9946490                0.9966792
+                         2025_04_05_huvec_dhypo_3 2025_04_06_huvec_dhypo_4
+2025_04_01_huvec_dnor_2.                0.9960062                0.9937852
+2025_04_02_huvec_dnor_3.                0.9964098                0.9936269
+2025_04_03_huvec_dnor_4.                0.9954761                0.9946490
+2025_04_04_huvec_dhypo_2                0.9984279                0.9966792
+2025_04_05_huvec_dhypo_3                1.0000000                0.9975417
+2025_04_06_huvec_dhypo_4                0.9975417                1.0000000
+null device 
+          1 
+null device 
+          1 
+using pre-existing size factors
+estimating dispersions
+found already estimated dispersions, replacing these
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+NULL
+null device 
+          1 
+[1] "DESeqDataSet object of length 36405 with 22 metadata columns"
+[1] "Intercept"              "condition_norm_vs_hypo"
+using 'apeglm' for LFC shrinkage. If used in published research, please cite:
+    Zhu, A., Ibrahim, J.G., Love, M.I. (2018) Heavy-tailed prior distributions for
+    sequence count data: removing the noise and preserving large differences.
+    Bioinformatics. https://doi.org/10.1093/bioinformatics/bty895
+NULL
+null device 
+          1 
+[1] "2025_04_01_huvec_dnor_2." "2025_04_02_huvec_dnor_3."
+[3] "2025_04_03_huvec_dnor_4."
+[1] "2025_04_04_huvec_dhypo_2" "2025_04_05_huvec_dhypo_3"
+[3] "2025_04_06_huvec_dhypo_4"
+null device 
+          1 
+Warning message:
+In DESeqDataSet(se, design = design, ignoreRank) :
+  some variables in design formula are characters, converting to factors
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+null device 
+          1 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.6756  0.8039  0.8985  1.0747  1.2162  1.8813 
+named integer(0)
+[1] "correlation rid"
+                         2025_04_01_huvec_dnor_2. 2025_04_02_huvec_dnor_3.
+2025_04_01_huvec_dnor_2.                1.0000000                0.9984184
+2025_04_02_huvec_dnor_3.                0.9984184                1.0000000
+2025_04_03_huvec_dnor_4.                0.9966450                0.9971902
+2025_04_04_huvec_dhypo_2                0.9913099                0.9911655
+2025_04_05_huvec_dhypo_3                0.9902877                0.9916329
+2025_04_06_huvec_dhypo_4                0.9852290                0.9860878
+                         2025_04_03_huvec_dnor_4. 2025_04_04_huvec_dhypo_2
+2025_04_01_huvec_dnor_2.                0.9966450                0.9913099
+2025_04_02_huvec_dnor_3.                0.9971902                0.9911655
+2025_04_03_huvec_dnor_4.                1.0000000                0.9892284
+2025_04_04_huvec_dhypo_2                0.9892284                1.0000000
+2025_04_05_huvec_dhypo_3                0.9893751                0.9978637
+2025_04_06_huvec_dhypo_4                0.9882457                0.9937955
+                         2025_04_05_huvec_dhypo_3 2025_04_06_huvec_dhypo_4
+2025_04_01_huvec_dnor_2.                0.9902877                0.9852290
+2025_04_02_huvec_dnor_3.                0.9916329                0.9860878
+2025_04_03_huvec_dnor_4.                0.9893751                0.9882457
+2025_04_04_huvec_dhypo_2                0.9978637                0.9937955
+2025_04_05_huvec_dhypo_3                1.0000000                0.9949804
+2025_04_06_huvec_dhypo_4                0.9949804                1.0000000
+null device 
+          1 
+null device 
+          1 
+using pre-existing size factors
+estimating dispersions
+found already estimated dispersions, replacing these
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+NULL
+null device 
+          1 
+[1] "DESeqDataSet object of length 14597 with 22 metadata columns"
+[1] "Intercept"              "condition_norm_vs_hypo"
+using 'apeglm' for LFC shrinkage. If used in published research, please cite:
+    Zhu, A., Ibrahim, J.G., Love, M.I. (2018) Heavy-tailed prior distributions for
+    sequence count data: removing the noise and preserving large differences.
+    Bioinformatics. https://doi.org/10.1093/bioinformatics/bty895
+NULL
+null device 
+          1 
+[1] "2025_04_01_huvec_dnor_2." "2025_04_02_huvec_dnor_3."
+[3] "2025_04_03_huvec_dnor_4."
+[1] "2025_04_04_huvec_dhypo_2" "2025_04_05_huvec_dhypo_3"
+[3] "2025_04_06_huvec_dhypo_4"
+null device 
+          1 
+Traceback (most recent call last):
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 69, in <module>
+    main()
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 59, in main
+    plt.savefig(os.path.join(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/pyplot.py", line 1134, in savefig
+    res = fig.savefig(*args, **kwargs)  # type: ignore[func-returns-value]
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/figure.py", line 3390, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2193, in print_figure
+    result = print_method(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2043, in <lambda>
+    print_method = functools.wraps(meth)(lambda *args, **kwargs: meth(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 497, in print_png
+    self._print_pil(filename_or_obj, "png", pil_kwargs, metadata)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 446, in _print_pil
+    mpl.image.imsave(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/image.py", line 1656, in imsave
+    image.save(fname, **pil_kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/PIL/Image.py", line 2563, in save
+    fp = builtins.open(filename, "w+b")
+FileNotFoundError: [Errno 2] No such file or directory: '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/correlation_plots/scatterplot_spearman_uf_muellermcnicoll_2025_04_01_huvec_dnor_2_huvec_dnor_3.png'
+Traceback (most recent call last):
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 69, in <module>
+    main()
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 59, in main
+    plt.savefig(os.path.join(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/pyplot.py", line 1134, in savefig
+    res = fig.savefig(*args, **kwargs)  # type: ignore[func-returns-value]
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/figure.py", line 3390, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2193, in print_figure
+    result = print_method(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2043, in <lambda>
+    print_method = functools.wraps(meth)(lambda *args, **kwargs: meth(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 497, in print_png
+    self._print_pil(filename_or_obj, "png", pil_kwargs, metadata)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 446, in _print_pil
+    mpl.image.imsave(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/image.py", line 1656, in imsave
+    image.save(fname, **pil_kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/PIL/Image.py", line 2563, in save
+    fp = builtins.open(filename, "w+b")
+FileNotFoundError: [Errno 2] No such file or directory: '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/correlation_plots/scatterplot_spearman_uf_muellermcnicoll_2025_04_01_huvec_dnor_2_huvec_dnor_4.png'
+Traceback (most recent call last):
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 69, in <module>
+    main()
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 59, in main
+    plt.savefig(os.path.join(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/pyplot.py", line 1134, in savefig
+    res = fig.savefig(*args, **kwargs)  # type: ignore[func-returns-value]
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/figure.py", line 3390, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2193, in print_figure
+    result = print_method(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2043, in <lambda>
+    print_method = functools.wraps(meth)(lambda *args, **kwargs: meth(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 497, in print_png
+    self._print_pil(filename_or_obj, "png", pil_kwargs, metadata)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 446, in _print_pil
+    mpl.image.imsave(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/image.py", line 1656, in imsave
+    image.save(fname, **pil_kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/PIL/Image.py", line 2563, in save
+    fp = builtins.open(filename, "w+b")
+FileNotFoundError: [Errno 2] No such file or directory: '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/correlation_plots/scatterplot_spearman_uf_muellermcnicoll_2025_04_02_huvec_dnor_3_huvec_dnor_4.png'
+Traceback (most recent call last):
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 69, in <module>
+    main()
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 59, in main
+    plt.savefig(os.path.join(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/pyplot.py", line 1134, in savefig
+    res = fig.savefig(*args, **kwargs)  # type: ignore[func-returns-value]
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/figure.py", line 3390, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2193, in print_figure
+    result = print_method(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2043, in <lambda>
+    print_method = functools.wraps(meth)(lambda *args, **kwargs: meth(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 497, in print_png
+    self._print_pil(filename_or_obj, "png", pil_kwargs, metadata)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 446, in _print_pil
+    mpl.image.imsave(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/image.py", line 1656, in imsave
+    image.save(fname, **pil_kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/PIL/Image.py", line 2563, in save
+    fp = builtins.open(filename, "w+b")
+FileNotFoundError: [Errno 2] No such file or directory: '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/correlation_plots/scatterplot_spearman_uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_huvec_dhypo_3.png'
+Traceback (most recent call last):
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 69, in <module>
+    main()
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 59, in main
+    plt.savefig(os.path.join(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/pyplot.py", line 1134, in savefig
+    res = fig.savefig(*args, **kwargs)  # type: ignore[func-returns-value]
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/figure.py", line 3390, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2193, in print_figure
+    result = print_method(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2043, in <lambda>
+    print_method = functools.wraps(meth)(lambda *args, **kwargs: meth(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 497, in print_png
+    self._print_pil(filename_or_obj, "png", pil_kwargs, metadata)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 446, in _print_pil
+    mpl.image.imsave(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/image.py", line 1656, in imsave
+    image.save(fname, **pil_kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/PIL/Image.py", line 2563, in save
+    fp = builtins.open(filename, "w+b")
+FileNotFoundError: [Errno 2] No such file or directory: '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/correlation_plots/scatterplot_spearman_uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_huvec_dhypo_4.png'
+Traceback (most recent call last):
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 69, in <module>
+    main()
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 59, in main
+    plt.savefig(os.path.join(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/pyplot.py", line 1134, in savefig
+    res = fig.savefig(*args, **kwargs)  # type: ignore[func-returns-value]
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/figure.py", line 3390, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2193, in print_figure
+    result = print_method(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2043, in <lambda>
+    print_method = functools.wraps(meth)(lambda *args, **kwargs: meth(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 497, in print_png
+    self._print_pil(filename_or_obj, "png", pil_kwargs, metadata)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 446, in _print_pil
+    mpl.image.imsave(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/image.py", line 1656, in imsave
+    image.save(fname, **pil_kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/PIL/Image.py", line 2563, in save
+    fp = builtins.open(filename, "w+b")
+FileNotFoundError: [Errno 2] No such file or directory: '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/correlation_plots/scatterplot_spearman_uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_huvec_dhypo_3.png'
+Traceback (most recent call last):
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 69, in <module>
+    main()
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 59, in main
+    plt.savefig(os.path.join(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/pyplot.py", line 1134, in savefig
+    res = fig.savefig(*args, **kwargs)  # type: ignore[func-returns-value]
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/figure.py", line 3390, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2193, in print_figure
+    result = print_method(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2043, in <lambda>
+    print_method = functools.wraps(meth)(lambda *args, **kwargs: meth(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 497, in print_png
+    self._print_pil(filename_or_obj, "png", pil_kwargs, metadata)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 446, in _print_pil
+    mpl.image.imsave(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/image.py", line 1656, in imsave
+    image.save(fname, **pil_kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/PIL/Image.py", line 2563, in save
+    fp = builtins.open(filename, "w+b")
+FileNotFoundError: [Errno 2] No such file or directory: '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/correlation_plots_condition/scatterplot_spearman_uf_muellermcnicoll_2025_04_01_huvec_dnor_2_huvec_dhypo_2.png'
+Traceback (most recent call last):
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 69, in <module>
+    main()
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 59, in main
+    plt.savefig(os.path.join(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/pyplot.py", line 1134, in savefig
+    res = fig.savefig(*args, **kwargs)  # type: ignore[func-returns-value]
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/figure.py", line 3390, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2193, in print_figure
+    result = print_method(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2043, in <lambda>
+    print_method = functools.wraps(meth)(lambda *args, **kwargs: meth(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 497, in print_png
+    self._print_pil(filename_or_obj, "png", pil_kwargs, metadata)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 446, in _print_pil
+    mpl.image.imsave(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/image.py", line 1656, in imsave
+    image.save(fname, **pil_kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/PIL/Image.py", line 2563, in save
+    fp = builtins.open(filename, "w+b")
+FileNotFoundError: [Errno 2] No such file or directory: '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/correlation_plots_condition/scatterplot_spearman_uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_huvec_dnor_4.png'
+Traceback (most recent call last):
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 69, in <module>
+    main()
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 59, in main
+    plt.savefig(os.path.join(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/pyplot.py", line 1134, in savefig
+    res = fig.savefig(*args, **kwargs)  # type: ignore[func-returns-value]
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/figure.py", line 3390, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2193, in print_figure
+    result = print_method(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2043, in <lambda>
+    print_method = functools.wraps(meth)(lambda *args, **kwargs: meth(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 497, in print_png
+    self._print_pil(filename_or_obj, "png", pil_kwargs, metadata)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 446, in _print_pil
+    mpl.image.imsave(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/image.py", line 1656, in imsave
+    image.save(fname, **pil_kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/PIL/Image.py", line 2563, in save
+    fp = builtins.open(filename, "w+b")
+FileNotFoundError: [Errno 2] No such file or directory: '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/correlation_plots_condition/scatterplot_spearman_uf_muellermcnicoll_2025_04_02_huvec_dnor_3_huvec_dhypo_3.png'
+Traceback (most recent call last):
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 69, in <module>
+    main()
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 59, in main
+    plt.savefig(os.path.join(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/pyplot.py", line 1134, in savefig
+    res = fig.savefig(*args, **kwargs)  # type: ignore[func-returns-value]
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/figure.py", line 3390, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2193, in print_figure
+    result = print_method(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2043, in <lambda>
+    print_method = functools.wraps(meth)(lambda *args, **kwargs: meth(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 497, in print_png
+    self._print_pil(filename_or_obj, "png", pil_kwargs, metadata)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 446, in _print_pil
+    mpl.image.imsave(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/image.py", line 1656, in imsave
+    image.save(fname, **pil_kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/PIL/Image.py", line 2563, in save
+    fp = builtins.open(filename, "w+b")
+FileNotFoundError: [Errno 2] No such file or directory: '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/correlation_plots_condition/scatterplot_spearman_uf_muellermcnicoll_2025_04_01_huvec_dnor_2_huvec_dhypo_3.png'
+Traceback (most recent call last):
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 69, in <module>
+    main()
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 59, in main
+    plt.savefig(os.path.join(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/pyplot.py", line 1134, in savefig
+    res = fig.savefig(*args, **kwargs)  # type: ignore[func-returns-value]
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/figure.py", line 3390, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2193, in print_figure
+    result = print_method(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2043, in <lambda>
+    print_method = functools.wraps(meth)(lambda *args, **kwargs: meth(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 497, in print_png
+    self._print_pil(filename_or_obj, "png", pil_kwargs, metadata)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 446, in _print_pil
+    mpl.image.imsave(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/image.py", line 1656, in imsave
+    image.save(fname, **pil_kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/PIL/Image.py", line 2563, in save
+    fp = builtins.open(filename, "w+b")
+FileNotFoundError: [Errno 2] No such file or directory: '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/correlation_plots_condition/scatterplot_spearman_uf_muellermcnicoll_2025_04_01_huvec_dnor_2_huvec_dhypo_4.png'
+Traceback (most recent call last):
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 69, in <module>
+    main()
+  File "/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/correlation_plots_transcriptomic.py", line 59, in main
+    plt.savefig(os.path.join(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/pyplot.py", line 1134, in savefig
+    res = fig.savefig(*args, **kwargs)  # type: ignore[func-returns-value]
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/figure.py", line 3390, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2193, in print_figure
+    result = print_method(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2043, in <lambda>
+    print_method = functools.wraps(meth)(lambda *args, **kwargs: meth(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 497, in print_png
+    self._print_pil(filename_or_obj, "png", pil_kwargs, metadata)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 446, in _print_pil
+    mpl.image.imsave(
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/matplotlib/image.py", line 1656, in imsave
+    image.save(fname, **pil_kwargs)
+  File "/home/ckalk/miniforge-pypy3/envs/Riboseq/lib/python3.9/site-packages/PIL/Image.py", line 2563, in save
+    fp = builtins.open(filename, "w+b")
+FileNotFoundError: [Errno 2] No such file or directory: '/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/q10/dedup/correlation_plots_condition/scatterplot_spearman_uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_huvec_dnor_4.png'

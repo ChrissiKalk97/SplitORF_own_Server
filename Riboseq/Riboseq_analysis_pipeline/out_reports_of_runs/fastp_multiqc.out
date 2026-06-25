@@ -1,0 +1,268 @@
+WARNING: fastp uses up to 16 threads although you specified 32
+Read1 before filtering:
+total reads: 24685876
+total bases: 985809348
+Q20 bases: 979514816(99.3615%)
+Q30 bases: 954740065(96.8483%)
+
+Read2 before filtering:
+total reads: 24685876
+total bases: 985970833
+Q20 bases: 979802585(99.3744%)
+Q30 bases: 955529842(96.9126%)
+
+Read1 after filtering:
+total reads: 24296502
+total bases: 967624182
+Q20 bases: 962326695(99.4525%)
+Q30 bases: 938446347(96.9846%)
+
+Read2 after filtering:
+total reads: 24296502
+total bases: 967554276
+Q20 bases: 962318798(99.4589%)
+Q30 bases: 938940346(97.0427%)
+
+Filtering result:
+reads passed filter: 48593004
+reads failed due to low quality: 364
+reads failed due to too many N: 0
+reads failed due to too short: 82374
+reads failed due to too long: 696010
+reads corrected by overlap analysis: 985258
+bases corrected by overlap analysis: 1207786
+
+Duplication rate: 83.8625%
+
+Insert size peak (evaluated by paired-end reads): 39
+
+JSON report: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_01_huvec_dnor_2.fastp.json
+HTML report: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_01_huvec_dnor_2.fastp.html
+
+fastp --in1 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/UMI_trimmed_custom/uf_muellermcnicoll_2025_04_01_huvec_dnor_2.R1.UMI_adapter_trimmed.fastq --in2 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/UMI_trimmed_custom/uf_muellermcnicoll_2025_04_01_huvec_dnor_2.R2.UMI_adapter_trimmed.fastq --out1 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_01_huvec_dnor_2.cutadapt_umi_fastp.R1.fastp.fastq.gz --out2 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_01_huvec_dnor_2.cutadapt_umi_fastp.R2.fastp.fastq.gz --json /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_01_huvec_dnor_2.fastp.json -h /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_01_huvec_dnor_2.fastp.html --disable_adapter_trimming --overrepresentation_analysis --thread 32 --length_required 25 --length_limit 50 --correction --overlap_len_require 20 
+fastp v0.24.0, time used: 35 seconds
+WARNING: fastp uses up to 16 threads although you specified 32
+Read1 before filtering:
+total reads: 23622343
+total bases: 952953815
+Q20 bases: 947771187(99.4562%)
+Q30 bases: 925322152(97.1004%)
+
+Read2 before filtering:
+total reads: 23622343
+total bases: 953111137
+Q20 bases: 946046992(99.2588%)
+Q30 bases: 918623586(96.3816%)
+
+Read1 after filtering:
+total reads: 23068844
+total bases: 925897152
+Q20 bases: 921484304(99.5234%)
+Q30 bases: 900020028(97.2052%)
+
+Read2 after filtering:
+total reads: 23068844
+total bases: 925831353
+Q20 bases: 919799635(99.3485%)
+Q30 bases: 893575567(96.516%)
+
+Filtering result:
+reads passed filter: 46137688
+reads failed due to low quality: 296
+reads failed due to too many N: 0
+reads failed due to too short: 69538
+reads failed due to too long: 1037164
+reads corrected by overlap analysis: 906149
+bases corrected by overlap analysis: 1083865
+
+Duplication rate: 78.393%
+
+Insert size peak (evaluated by paired-end reads): 39
+
+JSON report: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_02_huvec_dnor_3.fastp.json
+HTML report: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_02_huvec_dnor_3.fastp.html
+
+fastp --in1 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/UMI_trimmed_custom/uf_muellermcnicoll_2025_04_02_huvec_dnor_3.R1.UMI_adapter_trimmed.fastq --in2 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/UMI_trimmed_custom/uf_muellermcnicoll_2025_04_02_huvec_dnor_3.R2.UMI_adapter_trimmed.fastq --out1 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_02_huvec_dnor_3.cutadapt_umi_fastp.R1.fastp.fastq.gz --out2 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_02_huvec_dnor_3.cutadapt_umi_fastp.R2.fastp.fastq.gz --json /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_02_huvec_dnor_3.fastp.json -h /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_02_huvec_dnor_3.fastp.html --disable_adapter_trimming --overrepresentation_analysis --thread 32 --length_required 25 --length_limit 50 --correction --overlap_len_require 20 
+fastp v0.24.0, time used: 34 seconds
+WARNING: fastp uses up to 16 threads although you specified 32
+Read1 before filtering:
+total reads: 29394084
+total bases: 1175744583
+Q20 bases: 1168927246(99.4202%)
+Q30 bases: 1141931434(97.1241%)
+
+Read2 before filtering:
+total reads: 29394084
+total bases: 1175792427
+Q20 bases: 1167193992(99.2687%)
+Q30 bases: 1134177000(96.4606%)
+
+Read1 after filtering:
+total reads: 28822547
+total bases: 1148349310
+Q20 bases: 1142753669(99.5127%)
+Q30 bases: 1116977839(97.2681%)
+
+Read2 after filtering:
+total reads: 28822547
+total bases: 1148260419
+Q20 bases: 1140882574(99.3575%)
+Q30 bases: 1109138260(96.5929%)
+
+Filtering result:
+reads passed filter: 57645094
+reads failed due to low quality: 448
+reads failed due to too many N: 0
+reads failed due to too short: 89512
+reads failed due to too long: 1053114
+reads corrected by overlap analysis: 1163519
+bases corrected by overlap analysis: 1462445
+
+Duplication rate: 77.8859%
+
+Insert size peak (evaluated by paired-end reads): 39
+
+JSON report: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_03_huvec_dnor_4.fastp.json
+HTML report: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_03_huvec_dnor_4.fastp.html
+
+fastp --in1 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/UMI_trimmed_custom/uf_muellermcnicoll_2025_04_03_huvec_dnor_4.R1.UMI_adapter_trimmed.fastq --in2 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/UMI_trimmed_custom/uf_muellermcnicoll_2025_04_03_huvec_dnor_4.R2.UMI_adapter_trimmed.fastq --out1 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_03_huvec_dnor_4.cutadapt_umi_fastp.R1.fastp.fastq.gz --out2 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_03_huvec_dnor_4.cutadapt_umi_fastp.R2.fastp.fastq.gz --json /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_03_huvec_dnor_4.fastp.json -h /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_03_huvec_dnor_4.fastp.html --disable_adapter_trimming --overrepresentation_analysis --thread 32 --length_required 25 --length_limit 50 --correction --overlap_len_require 20 
+fastp v0.24.0, time used: 42 seconds
+WARNING: fastp uses up to 16 threads although you specified 32
+Read1 before filtering:
+total reads: 26406511
+total bases: 1078605080
+Q20 bases: 1072487077(99.4328%)
+Q30 bases: 1046646716(97.0371%)
+
+Read2 before filtering:
+total reads: 26406511
+total bases: 1078705846
+Q20 bases: 1070706664(99.2584%)
+Q30 bases: 1039459256(96.3617%)
+
+Read1 after filtering:
+total reads: 25778809
+total bases: 1047828353
+Q20 bases: 1042702778(99.5108%)
+Q30 bases: 1018096122(97.1625%)
+
+Read2 after filtering:
+total reads: 25778809
+total bases: 1047752577
+Q20 bases: 1040912100(99.3471%)
+Q30 bases: 1011065006(96.4985%)
+
+Filtering result:
+reads passed filter: 51557618
+reads failed due to low quality: 380
+reads failed due to too many N: 0
+reads failed due to too short: 71990
+reads failed due to too long: 1183034
+reads corrected by overlap analysis: 1043772
+bases corrected by overlap analysis: 1246663
+
+Duplication rate: 86.3163%
+
+Insert size peak (evaluated by paired-end reads): 40
+
+JSON report: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.fastp.json
+HTML report: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.fastp.html
+
+fastp --in1 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/UMI_trimmed_custom/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.R1.UMI_adapter_trimmed.fastq --in2 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/UMI_trimmed_custom/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.R2.UMI_adapter_trimmed.fastq --out1 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.cutadapt_umi_fastp.R1.fastp.fastq.gz --out2 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.cutadapt_umi_fastp.R2.fastp.fastq.gz --json /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.fastp.json -h /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.fastp.html --disable_adapter_trimming --overrepresentation_analysis --thread 32 --length_required 25 --length_limit 50 --correction --overlap_len_require 20 
+fastp v0.24.0, time used: 36 seconds
+WARNING: fastp uses up to 16 threads although you specified 32
+Read1 before filtering:
+total reads: 28729014
+total bases: 1158769450
+Q20 bases: 1152816014(99.4862%)
+Q30 bases: 1126792126(97.2404%)
+
+Read2 before filtering:
+total reads: 28729014
+total bases: 1159275081
+Q20 bases: 1150429526(99.237%)
+Q30 bases: 1116510365(96.3111%)
+
+Read1 after filtering:
+total reads: 28105628
+total bases: 1129353239
+Q20 bases: 1124244009(99.5476%)
+Q30 bases: 1099312396(97.34%)
+
+Read2 after filtering:
+total reads: 28105628
+total bases: 1129276396
+Q20 bases: 1121679474(99.3273%)
+Q30 bases: 1089176091(96.449%)
+
+Filtering result:
+reads passed filter: 56211256
+reads failed due to low quality: 462
+reads failed due to too many N: 0
+reads failed due to too short: 130862
+reads failed due to too long: 1115448
+reads corrected by overlap analysis: 1077736
+bases corrected by overlap analysis: 1257724
+
+Duplication rate: 85.876%
+
+Insert size peak (evaluated by paired-end reads): 39
+
+JSON report: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.fastp.json
+HTML report: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.fastp.html
+
+fastp --in1 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/UMI_trimmed_custom/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.R1.UMI_adapter_trimmed.fastq --in2 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/UMI_trimmed_custom/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.R2.UMI_adapter_trimmed.fastq --out1 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.cutadapt_umi_fastp.R1.fastp.fastq.gz --out2 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.cutadapt_umi_fastp.R2.fastp.fastq.gz --json /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.fastp.json -h /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.fastp.html --disable_adapter_trimming --overrepresentation_analysis --thread 32 --length_required 25 --length_limit 50 --correction --overlap_len_require 20 
+fastp v0.24.0, time used: 39 seconds
+WARNING: fastp uses up to 16 threads although you specified 32
+Read1 before filtering:
+total reads: 28919918
+total bases: 1153281060
+Q20 bases: 1146389727(99.4025%)
+Q30 bases: 1117688561(96.9138%)
+
+Read2 before filtering:
+total reads: 28919918
+total bases: 1153630373
+Q20 bases: 1145170328(99.2667%)
+Q30 bases: 1113021593(96.4799%)
+
+Read1 after filtering:
+total reads: 28250958
+total bases: 1122541177
+Q20 bases: 1116738660(99.4831%)
+Q30 bases: 1089346407(97.0429%)
+
+Read2 after filtering:
+total reads: 28250958
+total bases: 1122459534
+Q20 bases: 1115281003(99.3605%)
+Q30 bases: 1084520031(96.62%)
+
+Filtering result:
+reads passed filter: 56501916
+reads failed due to low quality: 612
+reads failed due to too many N: 0
+reads failed due to too short: 196768
+reads failed due to too long: 1140540
+reads corrected by overlap analysis: 1140380
+bases corrected by overlap analysis: 1406950
+
+Duplication rate: 86.7203%
+
+Insert size peak (evaluated by paired-end reads): 40
+
+JSON report: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.fastp.json
+HTML report: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.fastp.html
+
+fastp --in1 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/UMI_trimmed_custom/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.R1.UMI_adapter_trimmed.fastq --in2 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/UMI_trimmed_custom/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.R2.UMI_adapter_trimmed.fastq --out1 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.cutadapt_umi_fastp.R1.fastp.fastq.gz --out2 /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.cutadapt_umi_fastp.R2.fastp.fastq.gz --json /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.fastp.json -h /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.fastp.html --disable_adapter_trimming --overrepresentation_analysis --thread 32 --length_required 25 --length_limit 50 --correction --overlap_len_require 20 
+fastp v0.24.0, time used: 38 seconds
+
+/// MultiQC 🔍 v1.28
+
+       file_search | Search path: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim
+
+             fastp | Found 6 reports
+
+     write_results | Data        : /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/fastp_filter_after_umi_trim_multiqc_data   (overwritten)
+     write_results | Report      : /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/fastp_filter_after_umi_trim_multiqc.html   (overwritten)
+           multiqc | MultiQC complete

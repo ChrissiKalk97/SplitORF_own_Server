@@ -1,0 +1,69 @@
+uf_muellermcnicoll_2025_04_01_huvec_dnor_2.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_01_huvec_dnor_2.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_01_huvec_dnor_2.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+24296502 reads; of these:
+  24296502 (100.00%) were unpaired; of these:
+    3218823 (13.25%) aligned 0 times
+    7046950 (29.00%) aligned exactly 1 time
+    14030729 (57.75%) aligned >1 times
+86.75% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+uf_muellermcnicoll_2025_04_02_huvec_dnor_3.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_02_huvec_dnor_3.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_02_huvec_dnor_3.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+23068844 reads; of these:
+  23068844 (100.00%) were unpaired; of these:
+    2539224 (11.01%) aligned 0 times
+    8718593 (37.79%) aligned exactly 1 time
+    11811027 (51.20%) aligned >1 times
+88.99% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+uf_muellermcnicoll_2025_04_03_huvec_dnor_4.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_03_huvec_dnor_4.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_03_huvec_dnor_4.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+28822547 reads; of these:
+  28822547 (100.00%) were unpaired; of these:
+    4163446 (14.45%) aligned 0 times
+    10622421 (36.85%) aligned exactly 1 time
+    14036680 (48.70%) aligned >1 times
+85.55% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+25778809 reads; of these:
+  25778809 (100.00%) were unpaired; of these:
+    3252202 (12.62%) aligned 0 times
+    4936569 (19.15%) aligned exactly 1 time
+    17590038 (68.23%) aligned >1 times
+87.38% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+28105628 reads; of these:
+  28105628 (100.00%) were unpaired; of these:
+    2114313 (7.52%) aligned 0 times
+    8881476 (31.60%) aligned exactly 1 time
+    17109839 (60.88%) aligned >1 times
+92.48% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+28250958 reads; of these:
+  28250958 (100.00%) were unpaired; of these:
+    3161527 (11.19%) aligned 0 times
+    7169787 (25.38%) aligned exactly 1 time
+    17919644 (63.43%) aligned >1 times
+88.81% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:37: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2 + bottom[i], round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:40: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2, round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:37: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2 + bottom[i], round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:40: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2, round(y[i], 2), ha='center')
+Summary written to /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/summarized_bowtie_mapping_precents.csv

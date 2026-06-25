@@ -1,0 +1,174 @@
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:37: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2 + bottom[i], round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:40: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2, round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1
+uf_muellermcnicoll_2025_04_07_In_Puro_1.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_07_In_Puro_1.cutadapt_umi_fastp.R1.fastp.fastq
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_07_In_Puro_1.cutadapt_umi_fastp.R2.fastp.fastq
+	/home/ckalk/miniforge-pypy3/envs/Riboseq/bin/STAR-avx2 --runThreadN 16 --alignEndsType Extend5pOfRead1 --outSAMstrandField intronMotif --alignIntronMin 20 --alignIntronMax 1000000 --genomeDir /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index --readFilesIn /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_07_In_Puro_1.cutadapt_umi_fastp.R1.fastp.fastq --twopassMode Basic --seedSearchStartLmax 20 --outSAMattributes All --outSAMtype BAM SortedByCoordinate --outFileNamePrefix /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/uf_muellermcnicoll_2025_04_07_In_Puro_1.cutadapt_umi_fastp.only_R1_
+	STAR version: 2.7.11b   compiled: 2025-01-09T12:32:06+0000 :/opt/conda/conda-bld/star_1736425784849/work/source
+May 07 10:57:21 ..... started STAR run
+May 07 10:57:21 ..... loading genome
+May 07 10:57:39 ..... started 1st pass mapping
+May 07 10:58:32 ..... finished 1st pass mapping
+May 07 10:58:33 ..... inserting junctions into the genome indices
+May 07 10:59:54 ..... started mapping
+May 07 11:01:05 ..... finished mapping
+May 07 11:01:07 ..... started sorting BAM
+May 07 11:01:32 ..... finished successfully
+uf_muellermcnicoll_2025_04_08_In_Puro_3.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_08_In_Puro_3.cutadapt_umi_fastp.R1.fastp.fastq
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_08_In_Puro_3.cutadapt_umi_fastp.R2.fastp.fastq
+	/home/ckalk/miniforge-pypy3/envs/Riboseq/bin/STAR-avx2 --runThreadN 16 --alignEndsType Extend5pOfRead1 --outSAMstrandField intronMotif --alignIntronMin 20 --alignIntronMax 1000000 --genomeDir /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index --readFilesIn /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_08_In_Puro_3.cutadapt_umi_fastp.R1.fastp.fastq --twopassMode Basic --seedSearchStartLmax 20 --outSAMattributes All --outSAMtype BAM SortedByCoordinate --outFileNamePrefix /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/uf_muellermcnicoll_2025_04_08_In_Puro_3.cutadapt_umi_fastp.only_R1_
+	STAR version: 2.7.11b   compiled: 2025-01-09T12:32:06+0000 :/opt/conda/conda-bld/star_1736425784849/work/source
+May 07 11:02:17 ..... started STAR run
+May 07 11:02:17 ..... loading genome
+May 07 11:02:33 ..... started 1st pass mapping
+May 07 11:03:40 ..... finished 1st pass mapping
+May 07 11:03:41 ..... inserting junctions into the genome indices
+May 07 11:05:01 ..... started mapping
+May 07 11:06:31 ..... finished mapping
+May 07 11:06:33 ..... started sorting BAM
+May 07 11:07:10 ..... finished successfully
+uf_muellermcnicoll_2025_04_09_In_Puro_4.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_09_In_Puro_4.cutadapt_umi_fastp.R1.fastp.fastq
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_09_In_Puro_4.cutadapt_umi_fastp.R2.fastp.fastq
+	/home/ckalk/miniforge-pypy3/envs/Riboseq/bin/STAR-avx2 --runThreadN 16 --alignEndsType Extend5pOfRead1 --outSAMstrandField intronMotif --alignIntronMin 20 --alignIntronMax 1000000 --genomeDir /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index --readFilesIn /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_09_In_Puro_4.cutadapt_umi_fastp.R1.fastp.fastq --twopassMode Basic --seedSearchStartLmax 20 --outSAMattributes All --outSAMtype BAM SortedByCoordinate --outFileNamePrefix /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/uf_muellermcnicoll_2025_04_09_In_Puro_4.cutadapt_umi_fastp.only_R1_
+	STAR version: 2.7.11b   compiled: 2025-01-09T12:32:06+0000 :/opt/conda/conda-bld/star_1736425784849/work/source
+May 07 11:08:10 ..... started STAR run
+May 07 11:08:10 ..... loading genome
+May 07 11:08:27 ..... started 1st pass mapping
+May 07 11:09:27 ..... finished 1st pass mapping
+May 07 11:09:29 ..... inserting junctions into the genome indices
+May 07 11:10:52 ..... started mapping
+May 07 11:12:14 ..... finished mapping
+May 07 11:12:16 ..... started sorting BAM
+May 07 11:12:46 ..... finished successfully
+uf_muellermcnicoll_2025_04_10_In_CHX_1.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_10_In_CHX_1.cutadapt_umi_fastp.R1.fastp.fastq
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_10_In_CHX_1.cutadapt_umi_fastp.R2.fastp.fastq
+	/home/ckalk/miniforge-pypy3/envs/Riboseq/bin/STAR-avx2 --runThreadN 16 --alignEndsType Extend5pOfRead1 --outSAMstrandField intronMotif --alignIntronMin 20 --alignIntronMax 1000000 --genomeDir /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index --readFilesIn /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_10_In_CHX_1.cutadapt_umi_fastp.R1.fastp.fastq --twopassMode Basic --seedSearchStartLmax 20 --outSAMattributes All --outSAMtype BAM SortedByCoordinate --outFileNamePrefix /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/uf_muellermcnicoll_2025_04_10_In_CHX_1.cutadapt_umi_fastp.only_R1_
+	STAR version: 2.7.11b   compiled: 2025-01-09T12:32:06+0000 :/opt/conda/conda-bld/star_1736425784849/work/source
+May 07 11:13:37 ..... started STAR run
+May 07 11:13:37 ..... loading genome
+May 07 11:13:54 ..... started 1st pass mapping
+May 07 11:14:53 ..... finished 1st pass mapping
+May 07 11:14:54 ..... inserting junctions into the genome indices
+May 07 11:16:15 ..... started mapping
+May 07 11:17:32 ..... finished mapping
+May 07 11:17:34 ..... started sorting BAM
+May 07 11:18:04 ..... finished successfully
+uf_muellermcnicoll_2025_04_11_In_CHX_2.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_11_In_CHX_2.cutadapt_umi_fastp.R1.fastp.fastq
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_11_In_CHX_2.cutadapt_umi_fastp.R2.fastp.fastq
+	/home/ckalk/miniforge-pypy3/envs/Riboseq/bin/STAR-avx2 --runThreadN 16 --alignEndsType Extend5pOfRead1 --outSAMstrandField intronMotif --alignIntronMin 20 --alignIntronMax 1000000 --genomeDir /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index --readFilesIn /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_11_In_CHX_2.cutadapt_umi_fastp.R1.fastp.fastq --twopassMode Basic --seedSearchStartLmax 20 --outSAMattributes All --outSAMtype BAM SortedByCoordinate --outFileNamePrefix /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/uf_muellermcnicoll_2025_04_11_In_CHX_2.cutadapt_umi_fastp.only_R1_
+	STAR version: 2.7.11b   compiled: 2025-01-09T12:32:06+0000 :/opt/conda/conda-bld/star_1736425784849/work/source
+May 07 11:18:53 ..... started STAR run
+May 07 11:18:53 ..... loading genome
+May 07 11:19:10 ..... started 1st pass mapping
+May 07 11:20:16 ..... finished 1st pass mapping
+May 07 11:20:17 ..... inserting junctions into the genome indices
+May 07 11:21:40 ..... started mapping
+May 07 11:22:55 ..... finished mapping
+May 07 11:22:57 ..... started sorting BAM
+May 07 11:23:15 ..... finished successfully
+uf_muellermcnicoll_2025_04_12_In_CHX_4.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_12_In_CHX_4.cutadapt_umi_fastp.R1.fastp.fastq
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_12_In_CHX_4.cutadapt_umi_fastp.R2.fastp.fastq
+	/home/ckalk/miniforge-pypy3/envs/Riboseq/bin/STAR-avx2 --runThreadN 16 --alignEndsType Extend5pOfRead1 --outSAMstrandField intronMotif --alignIntronMin 20 --alignIntronMax 1000000 --genomeDir /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index --readFilesIn /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_12_In_CHX_4.cutadapt_umi_fastp.R1.fastp.fastq --twopassMode Basic --seedSearchStartLmax 20 --outSAMattributes All --outSAMtype BAM SortedByCoordinate --outFileNamePrefix /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/uf_muellermcnicoll_2025_04_12_In_CHX_4.cutadapt_umi_fastp.only_R1_
+	STAR version: 2.7.11b   compiled: 2025-01-09T12:32:06+0000 :/opt/conda/conda-bld/star_1736425784849/work/source
+May 07 11:23:52 ..... started STAR run
+May 07 11:23:52 ..... loading genome
+May 07 11:24:09 ..... started 1st pass mapping
+May 07 11:25:12 ..... finished 1st pass mapping
+May 07 11:25:13 ..... inserting junctions into the genome indices
+May 07 11:26:35 ..... started mapping
+May 07 11:27:45 ..... finished mapping
+May 07 11:27:47 ..... started sorting BAM
+May 07 11:28:03 ..... finished successfully
+uf_muellermcnicoll_2025_04_13_IP_Puro_1.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_13_IP_Puro_1.cutadapt_umi_fastp.R1.fastp.fastq
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_13_IP_Puro_1.cutadapt_umi_fastp.R2.fastp.fastq
+	/home/ckalk/miniforge-pypy3/envs/Riboseq/bin/STAR-avx2 --runThreadN 16 --alignEndsType Extend5pOfRead1 --outSAMstrandField intronMotif --alignIntronMin 20 --alignIntronMax 1000000 --genomeDir /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index --readFilesIn /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_13_IP_Puro_1.cutadapt_umi_fastp.R1.fastp.fastq --twopassMode Basic --seedSearchStartLmax 20 --outSAMattributes All --outSAMtype BAM SortedByCoordinate --outFileNamePrefix /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/uf_muellermcnicoll_2025_04_13_IP_Puro_1.cutadapt_umi_fastp.only_R1_
+	STAR version: 2.7.11b   compiled: 2025-01-09T12:32:06+0000 :/opt/conda/conda-bld/star_1736425784849/work/source
+May 07 11:28:39 ..... started STAR run
+May 07 11:28:39 ..... loading genome
+May 07 11:28:56 ..... started 1st pass mapping
+May 07 11:29:48 ..... finished 1st pass mapping
+May 07 11:29:49 ..... inserting junctions into the genome indices
+May 07 11:31:10 ..... started mapping
+May 07 11:32:17 ..... finished mapping
+May 07 11:32:19 ..... started sorting BAM
+May 07 11:32:46 ..... finished successfully
+uf_muellermcnicoll_2025_04_14_IP_Puro_3.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_14_IP_Puro_3.cutadapt_umi_fastp.R1.fastp.fastq
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_14_IP_Puro_3.cutadapt_umi_fastp.R2.fastp.fastq
+	/home/ckalk/miniforge-pypy3/envs/Riboseq/bin/STAR-avx2 --runThreadN 16 --alignEndsType Extend5pOfRead1 --outSAMstrandField intronMotif --alignIntronMin 20 --alignIntronMax 1000000 --genomeDir /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index --readFilesIn /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_14_IP_Puro_3.cutadapt_umi_fastp.R1.fastp.fastq --twopassMode Basic --seedSearchStartLmax 20 --outSAMattributes All --outSAMtype BAM SortedByCoordinate --outFileNamePrefix /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/uf_muellermcnicoll_2025_04_14_IP_Puro_3.cutadapt_umi_fastp.only_R1_
+	STAR version: 2.7.11b   compiled: 2025-01-09T12:32:06+0000 :/opt/conda/conda-bld/star_1736425784849/work/source
+May 07 11:33:28 ..... started STAR run
+May 07 11:33:28 ..... loading genome
+May 07 11:33:45 ..... started 1st pass mapping
+May 07 11:34:39 ..... finished 1st pass mapping
+May 07 11:34:40 ..... inserting junctions into the genome indices
+May 07 11:36:01 ..... started mapping
+May 07 11:37:14 ..... finished mapping
+May 07 11:37:15 ..... started sorting BAM
+May 07 11:37:45 ..... finished successfully
+uf_muellermcnicoll_2025_04_15_IP_Puro_4.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_15_IP_Puro_4.cutadapt_umi_fastp.R1.fastp.fastq
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_15_IP_Puro_4.cutadapt_umi_fastp.R2.fastp.fastq
+	/home/ckalk/miniforge-pypy3/envs/Riboseq/bin/STAR-avx2 --runThreadN 16 --alignEndsType Extend5pOfRead1 --outSAMstrandField intronMotif --alignIntronMin 20 --alignIntronMax 1000000 --genomeDir /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index --readFilesIn /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_15_IP_Puro_4.cutadapt_umi_fastp.R1.fastp.fastq --twopassMode Basic --seedSearchStartLmax 20 --outSAMattributes All --outSAMtype BAM SortedByCoordinate --outFileNamePrefix /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/uf_muellermcnicoll_2025_04_15_IP_Puro_4.cutadapt_umi_fastp.only_R1_
+	STAR version: 2.7.11b   compiled: 2025-01-09T12:32:06+0000 :/opt/conda/conda-bld/star_1736425784849/work/source
+May 07 11:38:28 ..... started STAR run
+May 07 11:38:28 ..... loading genome
+May 07 11:38:46 ..... started 1st pass mapping
+May 07 11:39:38 ..... finished 1st pass mapping
+May 07 11:39:39 ..... inserting junctions into the genome indices
+May 07 11:41:04 ..... started mapping
+May 07 11:42:15 ..... finished mapping
+May 07 11:42:16 ..... started sorting BAM
+May 07 11:42:46 ..... finished successfully
+uf_muellermcnicoll_2025_04_16_IP_CHX_1.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_16_IP_CHX_1.cutadapt_umi_fastp.R1.fastp.fastq
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_16_IP_CHX_1.cutadapt_umi_fastp.R2.fastp.fastq
+	/home/ckalk/miniforge-pypy3/envs/Riboseq/bin/STAR-avx2 --runThreadN 16 --alignEndsType Extend5pOfRead1 --outSAMstrandField intronMotif --alignIntronMin 20 --alignIntronMax 1000000 --genomeDir /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index --readFilesIn /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_16_IP_CHX_1.cutadapt_umi_fastp.R1.fastp.fastq --twopassMode Basic --seedSearchStartLmax 20 --outSAMattributes All --outSAMtype BAM SortedByCoordinate --outFileNamePrefix /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/uf_muellermcnicoll_2025_04_16_IP_CHX_1.cutadapt_umi_fastp.only_R1_
+	STAR version: 2.7.11b   compiled: 2025-01-09T12:32:06+0000 :/opt/conda/conda-bld/star_1736425784849/work/source
+May 07 11:43:32 ..... started STAR run
+May 07 11:43:32 ..... loading genome
+May 07 11:43:50 ..... started 1st pass mapping
+May 07 11:44:46 ..... finished 1st pass mapping
+May 07 11:44:47 ..... inserting junctions into the genome indices
+May 07 11:46:05 ..... started mapping
+May 07 11:47:08 ..... finished mapping
+May 07 11:47:10 ..... started sorting BAM
+May 07 11:47:28 ..... finished successfully
+uf_muellermcnicoll_2025_04_17_IP_CHX_2.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_17_IP_CHX_2.cutadapt_umi_fastp.R1.fastp.fastq
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_17_IP_CHX_2.cutadapt_umi_fastp.R2.fastp.fastq
+	/home/ckalk/miniforge-pypy3/envs/Riboseq/bin/STAR-avx2 --runThreadN 16 --alignEndsType Extend5pOfRead1 --outSAMstrandField intronMotif --alignIntronMin 20 --alignIntronMax 1000000 --genomeDir /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index --readFilesIn /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_17_IP_CHX_2.cutadapt_umi_fastp.R1.fastp.fastq --twopassMode Basic --seedSearchStartLmax 20 --outSAMattributes All --outSAMtype BAM SortedByCoordinate --outFileNamePrefix /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/uf_muellermcnicoll_2025_04_17_IP_CHX_2.cutadapt_umi_fastp.only_R1_
+	STAR version: 2.7.11b   compiled: 2025-01-09T12:32:06+0000 :/opt/conda/conda-bld/star_1736425784849/work/source
+May 07 11:48:00 ..... started STAR run
+May 07 11:48:00 ..... loading genome
+May 07 11:48:18 ..... started 1st pass mapping
+May 07 11:49:03 ..... finished 1st pass mapping
+May 07 11:49:04 ..... inserting junctions into the genome indices
+May 07 11:50:24 ..... started mapping
+May 07 11:51:16 ..... finished mapping
+May 07 11:51:18 ..... started sorting BAM
+May 07 11:51:30 ..... finished successfully
+uf_muellermcnicoll_2025_04_18_IP_CHX_4.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_18_IP_CHX_4.cutadapt_umi_fastp.R1.fastp.fastq
+/projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_18_IP_CHX_4.cutadapt_umi_fastp.R2.fastp.fastq
+	/home/ckalk/miniforge-pypy3/envs/Riboseq/bin/STAR-avx2 --runThreadN 16 --alignEndsType Extend5pOfRead1 --outSAMstrandField intronMotif --alignIntronMin 20 --alignIntronMax 1000000 --genomeDir /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index --readFilesIn /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_18_IP_CHX_4.cutadapt_umi_fastp.R1.fastp.fastq --twopassMode Basic --seedSearchStartLmax 20 --outSAMattributes All --outSAMtype BAM SortedByCoordinate --outFileNamePrefix /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/uf_muellermcnicoll_2025_04_18_IP_CHX_4.cutadapt_umi_fastp.only_R1_
+	STAR version: 2.7.11b   compiled: 2025-01-09T12:32:06+0000 :/opt/conda/conda-bld/star_1736425784849/work/source
+May 07 11:51:55 ..... started STAR run
+May 07 11:51:55 ..... loading genome
+May 07 11:52:13 ..... started 1st pass mapping
+May 07 11:53:18 ..... finished 1st pass mapping
+May 07 11:53:19 ..... inserting junctions into the genome indices
+May 07 11:54:39 ..... started mapping
+May 07 11:55:48 ..... finished mapping
+May 07 11:55:50 ..... started sorting BAM
+May 07 11:56:15 ..... finished successfully
+Summary written to /projects/splitorfs/work/Riboseq/Output/SeRP/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/STAR_align_Ribo_genome.csv

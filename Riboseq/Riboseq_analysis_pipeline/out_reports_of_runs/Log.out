@@ -1,0 +1,667 @@
+STAR version=2.7.11b
+STAR compilation time,server,dir=2025-01-09T12:32:06+0000 :/opt/conda/conda-bld/star_1736425784849/work/source
+##### Command Line:
+/home/ckalk/miniforge-pypy3/envs/Riboseq/bin/STAR-avx2 --runThreadN 50 --runMode genomeGenerate --genomeDir /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index --genomeFastaFiles /projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa --sjdbGTFfile /projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.gtf --sjdbOverhang 49
+##### Initial USER parameters from Command Line:
+###### All USER parameters from Command Line:
+runThreadN                    50     ~RE-DEFINED
+runMode                       genomeGenerate        ~RE-DEFINED
+genomeDir                     /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index     ~RE-DEFINED
+genomeFastaFiles              /projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa        ~RE-DEFINED
+sjdbGTFfile                   /projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.gtf     ~RE-DEFINED
+sjdbOverhang                  49     ~RE-DEFINED
+##### Finished reading parameters from all sources
+
+##### Final user re-defined parameters-----------------:
+runMode                           genomeGenerate   
+runThreadN                        50
+genomeDir                         /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index
+genomeFastaFiles                  /projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa   
+sjdbGTFfile                       /projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.gtf
+sjdbOverhang                      49
+
+-------------------------------
+##### Final effective command line:
+/home/ckalk/miniforge-pypy3/envs/Riboseq/bin/STAR-avx2   --runMode genomeGenerate      --runThreadN 50   --genomeDir /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index   --genomeFastaFiles /projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa      --sjdbGTFfile /projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.gtf   --sjdbOverhang 49
+----------------------------------------
+
+Number of fastq files for each mate = 1
+ParametersSolo: --soloCellFilterType CellRanger2.2 filtering parameters:  3000 0.99 10
+Finished loading and checking parameters
+--genomeDir directory exists and will be overwritten: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index/
+!!!!! WARNING: Could not move Log.out file from ./Log.out into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index/Log.out. Will keep ./Log.out
+
+Apr 16 16:14:36 ... starting to generate Genome files
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 0  "1" chrStart: 0
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 1  "10" chrStart: 249036800
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 2  "11" chrStart: 382992384
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 3  "12" chrStart: 518258688
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 4  "13" chrStart: 651689984
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 5  "14" chrStart: 766246912
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 6  "15" chrStart: 873463808
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 7  "16" chrStart: 975699968
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 8  "17" chrStart: 1066139648
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 9  "18" chrStart: 1149501440
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 10  "19" chrStart: 1229979648
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 11  "2" chrStart: 1288699904
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 12  "20" chrStart: 1530920960
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 13  "21" chrStart: 1595408384
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 14  "22" chrStart: 1642332160
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 15  "3" chrStart: 1693188096
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 16  "4" chrStart: 1891631104
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 17  "5" chrStart: 2081947648
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 18  "6" chrStart: 2263613440
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 19  "7" chrStart: 2434531328
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 20  "8" chrStart: 2593914880
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 21  "9" chrStart: 2739142656
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 22  "MT" chrStart: 2877554688
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 23  "X" chrStart: 2877816832
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 24  "Y" chrStart: 3034054656
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 25  "KI270728.1" chrStart: 3091464192
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 26  "KI270727.1" chrStart: 3093561344
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 27  "KI270442.1" chrStart: 3094085632
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 28  "KI270729.1" chrStart: 3094609920
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 29  "GL000225.1" chrStart: 3095134208
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 30  "KI270743.1" chrStart: 3095396352
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 31  "GL000008.2" chrStart: 3095658496
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 32  "GL000009.2" chrStart: 3095920640
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 33  "KI270747.1" chrStart: 3096182784
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 34  "KI270722.1" chrStart: 3096444928
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 35  "GL000194.1" chrStart: 3096707072
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 36  "KI270742.1" chrStart: 3096969216
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 37  "GL000205.2" chrStart: 3097231360
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 38  "GL000195.1" chrStart: 3097493504
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 39  "KI270736.1" chrStart: 3097755648
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 40  "KI270733.1" chrStart: 3098017792
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 41  "GL000224.1" chrStart: 3098279936
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 42  "GL000219.1" chrStart: 3098542080
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 43  "KI270719.1" chrStart: 3098804224
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 44  "GL000216.2" chrStart: 3099066368
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 45  "KI270712.1" chrStart: 3099328512
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 46  "KI270706.1" chrStart: 3099590656
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 47  "KI270725.1" chrStart: 3099852800
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 48  "KI270744.1" chrStart: 3100114944
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 49  "KI270734.1" chrStart: 3100377088
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 50  "GL000213.1" chrStart: 3100639232
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 51  "GL000220.1" chrStart: 3100901376
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 52  "KI270715.1" chrStart: 3101163520
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 53  "GL000218.1" chrStart: 3101425664
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 54  "KI270749.1" chrStart: 3101687808
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 55  "KI270741.1" chrStart: 3101949952
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 56  "GL000221.1" chrStart: 3102212096
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 57  "KI270716.1" chrStart: 3102474240
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 58  "KI270731.1" chrStart: 3102736384
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 59  "KI270751.1" chrStart: 3102998528
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 60  "KI270750.1" chrStart: 3103260672
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 61  "KI270519.1" chrStart: 3103522816
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 62  "GL000214.1" chrStart: 3103784960
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 63  "KI270708.1" chrStart: 3104047104
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 64  "KI270730.1" chrStart: 3104309248
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 65  "KI270438.1" chrStart: 3104571392
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 66  "KI270737.1" chrStart: 3104833536
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 67  "KI270721.1" chrStart: 3105095680
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 68  "KI270738.1" chrStart: 3105357824
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 69  "KI270748.1" chrStart: 3105619968
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 70  "KI270435.1" chrStart: 3105882112
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 71  "GL000208.1" chrStart: 3106144256
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 72  "KI270538.1" chrStart: 3106406400
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 73  "KI270756.1" chrStart: 3106668544
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 74  "KI270739.1" chrStart: 3106930688
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 75  "KI270757.1" chrStart: 3107192832
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 76  "KI270709.1" chrStart: 3107454976
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 77  "KI270746.1" chrStart: 3107717120
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 78  "KI270753.1" chrStart: 3107979264
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 79  "KI270589.1" chrStart: 3108241408
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 80  "KI270726.1" chrStart: 3108503552
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 81  "KI270735.1" chrStart: 3108765696
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 82  "KI270711.1" chrStart: 3109027840
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 83  "KI270745.1" chrStart: 3109289984
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 84  "KI270714.1" chrStart: 3109552128
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 85  "KI270732.1" chrStart: 3109814272
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 86  "KI270713.1" chrStart: 3110076416
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 87  "KI270754.1" chrStart: 3110338560
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 88  "KI270710.1" chrStart: 3110600704
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 89  "KI270717.1" chrStart: 3110862848
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 90  "KI270724.1" chrStart: 3111124992
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 91  "KI270720.1" chrStart: 3111387136
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 92  "KI270723.1" chrStart: 3111649280
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 93  "KI270718.1" chrStart: 3111911424
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 94  "KI270317.1" chrStart: 3112173568
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 95  "KI270740.1" chrStart: 3112435712
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 96  "KI270755.1" chrStart: 3112697856
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 97  "KI270707.1" chrStart: 3112960000
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 98  "KI270579.1" chrStart: 3113222144
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 99  "KI270752.1" chrStart: 3113484288
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 100  "KI270512.1" chrStart: 3113746432
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 101  "KI270322.1" chrStart: 3114008576
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 102  "GL000226.1" chrStart: 3114270720
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 103  "KI270311.1" chrStart: 3114532864
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 104  "KI270366.1" chrStart: 3114795008
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 105  "KI270511.1" chrStart: 3115057152
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 106  "KI270448.1" chrStart: 3115319296
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 107  "KI270521.1" chrStart: 3115581440
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 108  "KI270581.1" chrStart: 3115843584
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 109  "KI270582.1" chrStart: 3116105728
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 110  "KI270515.1" chrStart: 3116367872
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 111  "KI270588.1" chrStart: 3116630016
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 112  "KI270591.1" chrStart: 3116892160
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 113  "KI270522.1" chrStart: 3117154304
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 114  "KI270507.1" chrStart: 3117416448
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 115  "KI270590.1" chrStart: 3117678592
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 116  "KI270584.1" chrStart: 3117940736
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 117  "KI270320.1" chrStart: 3118202880
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 118  "KI270382.1" chrStart: 3118465024
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 119  "KI270468.1" chrStart: 3118727168
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 120  "KI270467.1" chrStart: 3118989312
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 121  "KI270362.1" chrStart: 3119251456
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 122  "KI270517.1" chrStart: 3119513600
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 123  "KI270593.1" chrStart: 3119775744
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 124  "KI270528.1" chrStart: 3120037888
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 125  "KI270587.1" chrStart: 3120300032
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 126  "KI270364.1" chrStart: 3120562176
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 127  "KI270371.1" chrStart: 3120824320
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 128  "KI270333.1" chrStart: 3121086464
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 129  "KI270374.1" chrStart: 3121348608
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 130  "KI270411.1" chrStart: 3121610752
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 131  "KI270414.1" chrStart: 3121872896
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 132  "KI270510.1" chrStart: 3122135040
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 133  "KI270390.1" chrStart: 3122397184
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 134  "KI270375.1" chrStart: 3122659328
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 135  "KI270420.1" chrStart: 3122921472
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 136  "KI270509.1" chrStart: 3123183616
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 137  "KI270315.1" chrStart: 3123445760
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 138  "KI270302.1" chrStart: 3123707904
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 139  "KI270518.1" chrStart: 3123970048
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 140  "KI270530.1" chrStart: 3124232192
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 141  "KI270304.1" chrStart: 3124494336
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 142  "KI270418.1" chrStart: 3124756480
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 143  "KI270424.1" chrStart: 3125018624
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 144  "KI270417.1" chrStart: 3125280768
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 145  "KI270508.1" chrStart: 3125542912
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 146  "KI270303.1" chrStart: 3125805056
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 147  "KI270381.1" chrStart: 3126067200
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 148  "KI270529.1" chrStart: 3126329344
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 149  "KI270425.1" chrStart: 3126591488
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 150  "KI270396.1" chrStart: 3126853632
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 151  "KI270363.1" chrStart: 3127115776
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 152  "KI270386.1" chrStart: 3127377920
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 153  "KI270465.1" chrStart: 3127640064
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 154  "KI270383.1" chrStart: 3127902208
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 155  "KI270384.1" chrStart: 3128164352
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 156  "KI270330.1" chrStart: 3128426496
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 157  "KI270372.1" chrStart: 3128688640
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 158  "KI270548.1" chrStart: 3128950784
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 159  "KI270580.1" chrStart: 3129212928
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 160  "KI270387.1" chrStart: 3129475072
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 161  "KI270391.1" chrStart: 3129737216
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 162  "KI270305.1" chrStart: 3129999360
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 163  "KI270373.1" chrStart: 3130261504
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 164  "KI270422.1" chrStart: 3130523648
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 165  "KI270316.1" chrStart: 3130785792
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 166  "KI270340.1" chrStart: 3131047936
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 167  "KI270338.1" chrStart: 3131310080
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 168  "KI270583.1" chrStart: 3131572224
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 169  "KI270334.1" chrStart: 3131834368
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 170  "KI270429.1" chrStart: 3132096512
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 171  "KI270393.1" chrStart: 3132358656
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 172  "KI270516.1" chrStart: 3132620800
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 173  "KI270389.1" chrStart: 3132882944
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 174  "KI270466.1" chrStart: 3133145088
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 175  "KI270388.1" chrStart: 3133407232
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 176  "KI270544.1" chrStart: 3133669376
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 177  "KI270310.1" chrStart: 3133931520
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 178  "KI270412.1" chrStart: 3134193664
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 179  "KI270395.1" chrStart: 3134455808
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 180  "KI270376.1" chrStart: 3134717952
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 181  "KI270337.1" chrStart: 3134980096
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 182  "KI270335.1" chrStart: 3135242240
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 183  "KI270378.1" chrStart: 3135504384
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 184  "KI270379.1" chrStart: 3135766528
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 185  "KI270329.1" chrStart: 3136028672
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 186  "KI270419.1" chrStart: 3136290816
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 187  "KI270336.1" chrStart: 3136552960
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 188  "KI270312.1" chrStart: 3136815104
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 189  "KI270539.1" chrStart: 3137077248
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 190  "KI270385.1" chrStart: 3137339392
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 191  "KI270423.1" chrStart: 3137601536
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 192  "KI270392.1" chrStart: 3137863680
+/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa : chr # 193  "KI270394.1" chrStart: 3138125824
+Chromosome sequence lengths: 
+1	248956422
+10	133797422
+11	135086622
+12	133275309
+13	114364328
+14	107043718
+15	101991189
+16	90338345
+17	83257441
+18	80373285
+19	58617616
+2	242193529
+20	64444167
+21	46709983
+22	50818468
+3	198295559
+4	190214555
+5	181538259
+6	170805979
+7	159345973
+8	145138636
+9	138394717
+MT	16569
+X	156040895
+Y	57227415
+KI270728.1	1872759
+KI270727.1	448248
+KI270442.1	392061
+KI270729.1	280839
+GL000225.1	211173
+KI270743.1	210658
+GL000008.2	209709
+GL000009.2	201709
+KI270747.1	198735
+KI270722.1	194050
+GL000194.1	191469
+KI270742.1	186739
+GL000205.2	185591
+GL000195.1	182896
+KI270736.1	181920
+KI270733.1	179772
+GL000224.1	179693
+GL000219.1	179198
+KI270719.1	176845
+GL000216.2	176608
+KI270712.1	176043
+KI270706.1	175055
+KI270725.1	172810
+KI270744.1	168472
+KI270734.1	165050
+GL000213.1	164239
+GL000220.1	161802
+KI270715.1	161471
+GL000218.1	161147
+KI270749.1	158759
+KI270741.1	157432
+GL000221.1	155397
+KI270716.1	153799
+KI270731.1	150754
+KI270751.1	150742
+KI270750.1	148850
+KI270519.1	138126
+GL000214.1	137718
+KI270708.1	127682
+KI270730.1	112551
+KI270438.1	112505
+KI270737.1	103838
+KI270721.1	100316
+KI270738.1	99375
+KI270748.1	93321
+KI270435.1	92983
+GL000208.1	92689
+KI270538.1	91309
+KI270756.1	79590
+KI270739.1	73985
+KI270757.1	71251
+KI270709.1	66860
+KI270746.1	66486
+KI270753.1	62944
+KI270589.1	44474
+KI270726.1	43739
+KI270735.1	42811
+KI270711.1	42210
+KI270745.1	41891
+KI270714.1	41717
+KI270732.1	41543
+KI270713.1	40745
+KI270754.1	40191
+KI270710.1	40176
+KI270717.1	40062
+KI270724.1	39555
+KI270720.1	39050
+KI270723.1	38115
+KI270718.1	38054
+KI270317.1	37690
+KI270740.1	37240
+KI270755.1	36723
+KI270707.1	32032
+KI270579.1	31033
+KI270752.1	27745
+KI270512.1	22689
+KI270322.1	21476
+GL000226.1	15008
+KI270311.1	12399
+KI270366.1	8320
+KI270511.1	8127
+KI270448.1	7992
+KI270521.1	7642
+KI270581.1	7046
+KI270582.1	6504
+KI270515.1	6361
+KI270588.1	6158
+KI270591.1	5796
+KI270522.1	5674
+KI270507.1	5353
+KI270590.1	4685
+KI270584.1	4513
+KI270320.1	4416
+KI270382.1	4215
+KI270468.1	4055
+KI270467.1	3920
+KI270362.1	3530
+KI270517.1	3253
+KI270593.1	3041
+KI270528.1	2983
+KI270587.1	2969
+KI270364.1	2855
+KI270371.1	2805
+KI270333.1	2699
+KI270374.1	2656
+KI270411.1	2646
+KI270414.1	2489
+KI270510.1	2415
+KI270390.1	2387
+KI270375.1	2378
+KI270420.1	2321
+KI270509.1	2318
+KI270315.1	2276
+KI270302.1	2274
+KI270518.1	2186
+KI270530.1	2168
+KI270304.1	2165
+KI270418.1	2145
+KI270424.1	2140
+KI270417.1	2043
+KI270508.1	1951
+KI270303.1	1942
+KI270381.1	1930
+KI270529.1	1899
+KI270425.1	1884
+KI270396.1	1880
+KI270363.1	1803
+KI270386.1	1788
+KI270465.1	1774
+KI270383.1	1750
+KI270384.1	1658
+KI270330.1	1652
+KI270372.1	1650
+KI270548.1	1599
+KI270580.1	1553
+KI270387.1	1537
+KI270391.1	1484
+KI270305.1	1472
+KI270373.1	1451
+KI270422.1	1445
+KI270316.1	1444
+KI270340.1	1428
+KI270338.1	1428
+KI270583.1	1400
+KI270334.1	1368
+KI270429.1	1361
+KI270393.1	1308
+KI270516.1	1300
+KI270389.1	1298
+KI270466.1	1233
+KI270388.1	1216
+KI270544.1	1202
+KI270310.1	1201
+KI270412.1	1179
+KI270395.1	1143
+KI270376.1	1136
+KI270337.1	1121
+KI270335.1	1048
+KI270378.1	1048
+KI270379.1	1045
+KI270329.1	1040
+KI270419.1	1029
+KI270336.1	1026
+KI270312.1	998
+KI270539.1	993
+KI270385.1	990
+KI270423.1	981
+KI270392.1	971
+KI270394.1	970
+Genome sequence total length = 3099750718
+Genome size with padding = 3138387968
+Apr 16 16:15:26 ..... processing annotations GTF
+Processing pGe.sjdbGTFfile=/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.gtf, found:
+		252835 transcripts
+		1649476 exons (non-collapsed)
+		402454 collapsed junctions
+Total junctions: 402454
+Apr 16 16:15:47 ..... finished GTF processing
+
+Estimated genome size with padding and SJs: total=genome+SJ=3237387968 = 3138387968 + 99000000
+GstrandBit=32
+Number of SA indices: 5897255510
+Apr 16 16:16:00 ... starting to sort Suffix Array. This may take a long time...
+Number of chunks: 204;   chunks size limit: 296678680 bytes
+Apr 16 16:16:19 ... sorting Suffix Array chunks and saving them to disk...
+Writing 158870456 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_20 ; empty space on disk = 126220238848 bytes ... done
+Writing 140178904 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_38 ; empty space on disk = 126220238848 bytes ... done
+Writing 198164312 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_19 ; empty space on disk = 126220238848 bytes ... done
+Writing 157185704 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_42 ; empty space on disk = 126092312576 bytes ... done
+Writing 180628120 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_35 ; empty space on disk = 125735796736 bytes ... done
+Writing 160432672 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_49 ; empty space on disk = 125590044672 bytes ... done
+Writing 173520312 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_8 ; empty space on disk = 125449535488 bytes ... done
+Writing 207083328 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_24 ; empty space on disk = 125324754944 bytes ... done
+Writing 209110448 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_32 ; empty space on disk = 125324754944 bytes ... done
+Writing 176334552 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_37 ; empty space on disk = 125324754944 bytes ... done
+Writing 170049536 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_43 ; empty space on disk = 125274423296 bytes ... done
+Writing 185331736 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_36 ; empty space on disk = 124900081664 bytes ... done
+Writing 190672832 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_22 ; empty space on disk = 124591800320 bytes ... done
+Writing 218679200 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_45 ; empty space on disk = 124404105216 bytes ... done
+Writing 243875592 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_48 ; empty space on disk = 124404105216 bytes ... done
+Writing 194104816 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_12 ; empty space on disk = 124064366592 bytes ... done
+Writing 217719152 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_31 ; empty space on disk = 124064366592 bytes ... done
+Writing 205033944 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_34 ; empty space on disk = 124064366592 bytes ... done
+Writing 311715080 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_41 ; empty space on disk = 123906031616 bytes ...Writing 182765576 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_5 ; empty space on disk = 123590410240 bytes ... done
+ done
+Writing 219833648 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_39 ; empty space on disk = 123590410240 bytes ... done
+Writing 176746480 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_27 ; empty space on disk = 123590410240 bytes ... done
+Writing 190470320 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_16 ; empty space on disk = 123015790592 bytes ... done
+Writing 260632768 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_33 ; empty space on disk = 123015790592 bytes ... done
+Writing 180280440 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_46 ; empty space on disk = 122785103872 bytes ...Writing 166936696 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_23 ; empty space on disk = 122779860992 bytes ... done
+ done
+Writing 229330632 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_30 ; empty space on disk = 122587971584 bytes ... done
+Writing 233129704 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_10 ; empty space on disk = 122587971584 bytes ... done
+Writing 251879720 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_18 ; empty space on disk = 122587971584 bytes ... done
+Writing 349429120 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_14 ; empty space on disk = 122002866176 bytes ... done
+Writing 233130296 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_25 ; empty space on disk = 121611747328 bytes ... done
+Writing 263256848 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_15 ; empty space on disk = 121611747328 bytes ... done
+Writing 232652648 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_29 ; empty space on disk = 121611747328 bytes ... done
+Writing 218271520 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_9 ; empty space on disk = 121001476096 bytes ... done
+Writing 232652472 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_47 ; empty space on disk = 121001476096 bytes ... done
+Writing 288133648 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_4 ; empty space on disk = 120615600128 bytes ... done
+Writing 348954448 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_11 ; empty space on disk = 120615600128 bytes ... done
+Writing 279360800 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_13 ; empty space on disk = 120615600128 bytes ... done
+Writing 225456096 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_40 ; empty space on disk = 119904665600 bytes ... done
+Writing 271623808 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_21 ; empty space on disk = 119904665600 bytes ... done
+Writing 225454944 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_6 ; empty space on disk = 119595335680 bytes ... done
+Writing 249813248 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_17 ; empty space on disk = 119595335680 bytes ... done
+Writing 267890920 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_28 ; empty space on disk = 119168565248 bytes ... done
+Writing 320558568 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_7 ; empty space on disk = 118833020928 bytes ... done
+Writing 270731576 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_1 ; empty space on disk = 118833020928 bytes ... done
+Writing 346946360 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_2 ; empty space on disk = 118364307456 bytes ... done
+Writing 328482336 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_44 ; empty space on disk = 118364307456 bytes ... done
+Writing 473294528 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_3 ; empty space on disk = 117883011072 bytes ... done
+Writing 374927520 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_26 ; empty space on disk = 117313634304 bytes ... done
+Writing 726113688 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_0 ; empty space on disk = 116421296128 bytes ... done
+Writing 6960 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_56 ; empty space on disk = 115655835648 bytes ... done
+Writing 7792 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_99 ; empty space on disk = 115655835648 bytes ... done
+Writing 172228096 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_95 ; empty space on disk = 115278348288 bytes ... done
+Writing 221744480 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_70 ; empty space on disk = 115130499072 bytes ... done
+Writing 197925920 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_54 ; empty space on disk = 115130499072 bytes ... done
+Writing 197926168 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_60 ; empty space on disk = 114824314880 bytes ... done
+Writing 181455984 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_85 ; empty space on disk = 114824314880 bytes ... done
+Writing 257600160 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_66 ; empty space on disk = 114402787328 bytes ...Writing 206866560 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_75 ; empty space on disk = 114402787328 bytes ...Writing 206866336 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_50 ; empty space on disk = 114402787328 bytes ...Writing 188858392 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_77 ; empty space on disk = 114402787328 bytes ...Writing 164457856 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_79 ; empty space on disk = 114402787328 bytes ...Writing 274815336 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_52 ; empty space on disk = 114402787328 bytes ...Writing 242101688 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_76 ; empty space on disk = 114402787328 bytes ...Writing 191397016 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_68 ; empty space on disk = 114402787328 bytes ...Writing 170551752 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_69 ; empty space on disk = 114402787328 bytes ...Writing 170049696 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_87 ; empty space on disk = 114402787328 bytes ...Writing 149959032 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_58 ; empty space on disk = 114402787328 bytes ...Writing 207083552 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_67 ; empty space on disk = 114402787328 bytes ...Writing 222645088 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_62 ; empty space on disk = 114402787328 bytes ...Writing 217330648 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_65 ; empty space on disk = 114402787328 bytes ...Writing 257313984 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_74 ; empty space on disk = 114402787328 bytes ...Writing 222639984 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_80 ; empty space on disk = 114402787328 bytes ...Writing 257600160 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_81 ; empty space on disk = 114402787328 bytes ...Writing 257313984 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_93 ; empty space on disk = 114402787328 bytes ...Writing 209649680 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_72 ; empty space on disk = 114402787328 bytes ...Writing 190697920 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_73 ; empty space on disk = 114402787328 bytes ...Writing 202646624 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_97 ; empty space on disk = 114402787328 bytes ...Writing 202646624 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_59 ; empty space on disk = 114402787328 bytes ...Writing 238015720 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_91 ; empty space on disk = 114402787328 bytes ...Writing 279917416 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_78 ; empty space on disk = 114402787328 bytes ...Writing 251879688 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_51 ; empty space on disk = 114402787328 bytes ...Writing 267251120 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_89 ; empty space on disk = 114402787328 bytes ...Writing 208892112 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_92 ; empty space on disk = 114402787328 bytes ...Writing 219833880 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_63 ; empty space on disk = 114402787328 bytes ...Writing 279362168 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_71 ; empty space on disk = 114402787328 bytes ... done
+Writing 255547752 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_86 ; empty space on disk = 114402787328 bytes ...Writing 260094552 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_88 ; empty space on disk = 114402787328 bytes ...Writing 146093744 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_84 ; empty space on disk = 114402787328 bytes ... done
+ done
+Writing 225813256 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_53 ; empty space on disk = 114402787328 bytes ... done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+ done
+Writing 223658712 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_96 ; empty space on disk = 114402787328 bytes ... done
+Writing 262505056 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_82 ; empty space on disk = 109694681088 bytes ... done
+Writing 267891168 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_90 ; empty space on disk = 109212336128 bytes ... done
+Writing 249813432 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_94 ; empty space on disk = 109024641024 bytes ...Writing 282370120 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_83 ; empty space on disk = 109024641024 bytes ...Writing 268922584 bytes into Writing s/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_61 ; empty space on disk = Writing 108993183744 bytes ...Writing 268922584 bytes into Writing s/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_61 ; empty space on disk = Writing 108993183744 bytes ...473294528346946360 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_98 ; empty space on disk =  ; empty space on disk = 108993183744 bytes ...108993183744 bytes ...Writing 268922584 bytes into Writing s/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_61 ; empty space on disk = Writing 108993183744 bytes ...473294528346946360 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_98 ; empty space on disk =  ; empty space on disk = 108993183744 bytes ...108993183744 bytes ...Writing 272020888 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_64 ; empty space on disk = 108993183744 bytes ...Writing 348678240 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_57 ; empty space on disk = 108993183744 bytes ... done
+ done
+ done
+ done
+ done
+ done
+ done
+Writing 103856760 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_124 ; empty space on disk = 105323167744 bytes ... done
+Writing 136463456 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_147 ; empty space on disk = 105249767424 bytes ... done
+Writing 131145472 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_114 ; empty space on disk = 104864940032 bytes ... done
+Writing 139199192 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_101 ; empty space on disk = 104770568192 bytes ... done
+Writing 172228096 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_148 ; empty space on disk = 104473821184 bytes ...Writing 161753544 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_118 ; empty space on disk = 104473821184 bytes ... done
+ done
+Writing 184939144 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_127 ; empty space on disk = 104473821184 bytes ... done
+Writing 187286264 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_129 ; empty space on disk = 104004059136 bytes ... done
+Writing 186805328 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_117 ; empty space on disk = 104004059136 bytes ... done
+Writing 131145472 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_140 ; empty space on disk = 104004059136 bytes ... done
+Writing 274815496 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_149 ; empty space on disk = 103710457856 bytes ... done
+Writing 217330648 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_121 ; empty space on disk = 103447265280 bytes ... done
+Writing 173521824 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_122 ; empty space on disk = 103447265280 bytes ... done
+Writing 151297768 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_134 ; empty space on disk = 103447265280 bytes ... done
+Writing 155968400 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_126 ; empty space on disk = 103447265280 bytes ... done
+Writing 271737696 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_131 ; empty space on disk = 102804488192 bytes ... done
+Writing 165174224 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_105 ; empty space on disk = 102804488192 bytes ... done
+Writing 142406368 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_107 ; empty space on disk = 102804488192 bytes ... done
+Writing 245993000 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_132 ; empty space on disk = 102277054464 bytes ... done
+Writing 229338656 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_125 ; empty space on disk = 102277054464 bytes ... done
+Writing 160432896 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_116 ; empty space on disk = 101611208704 bytes ...Writing 181367552 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_128 ; empty space on disk = 101577654272 bytes ... done
+ done
+Writing 190697920 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_141 ; empty space on disk = 101052317696 bytes ...Writing 149959032 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_144 ; empty space on disk = 100865671168 bytes ... done
+ done
+Writing 170551752 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_111 ; empty space on disk = 100221845504 bytes ... done
+Writing 179152016 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_113 ; empty space on disk = 100153688064 bytes ... done
+Writing 194107224 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_112 ; empty space on disk = 98664710144 bytes ... done
+Writing 176746648 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_138 ; empty space on disk = 98664710144 bytes ... done
+Writing 222639984 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_108 ; empty space on disk = 105249767424 bytes ... done
+Writing 190470704 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_142 ; empty space on disk = 105249767424 bytes ... done
+Writing 204760768 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_130 ; empty space on disk = 105249767424 bytes ... done
+Writing 199087456 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_139 ; empty space on disk = 104712896512 bytes ... done
+Writing 266513392 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_137 ; empty space on disk = 104712896512 bytes ...Writing 166936984 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_109 ; empty space on disk = 104712896512 bytes ... done
+ done
+Writing 263253504 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_106 ; empty space on disk = 104712896512 bytes ... done
+Writing 223658712 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_102 ; empty space on disk = 104194899968 bytes ... done
+Writing 208892112 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_115 ; empty space on disk = 104103673856 bytes ... done
+Writing 280166344 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_133 ; empty space on disk = 104103673856 bytes ... done
+Writing 247559704 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_135 ; empty space on disk = 104103673856 bytes ... done
+Writing 283324584 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_136 ; empty space on disk = 103494451200 bytes ... done
+Writing 266954896 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_110 ; empty space on disk = 103188267008 bytes ... done
+Writing 383438264 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_146 ; empty space on disk = 103188267008 bytes ... done
+Writing 225813616 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_103 ; empty space on disk = 103188267008 bytes ... done
+Writing 278085816 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_104 ; empty space on disk = 102576947200 bytes ...Writing 275662648 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_143 ; empty space on disk = 102576947200 bytes ... done
+ done
+Writing 292289824 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_120 ; empty space on disk = 102576947200 bytes ...Writing 241663744 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_123 ; empty space on disk = 102576947200 bytes ... done
+ done
+Writing 291346288 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_119 ; empty space on disk = 101966675968 bytes ... done
+Writing 270736064 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_145 ; empty space on disk = 101335433216 bytes ... done
+Writing 358856000 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_100 ; empty space on disk = 100774445056 bytes ... done
+Writing 224 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_191 ; empty space on disk = 100422123520 bytes ... done
+Writing 4024 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_171 ; empty space on disk = 100422123520 bytes ... done
+Writing 186805328 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_180 ; empty space on disk = 100155785216 bytes ... done
+Writing 198164584 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_182 ; empty space on disk = 99968090112 bytes ... done
+Writing 131810720 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_151 ; empty space on disk = 99826532352 bytes ... done
+Writing 165455912 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_188 ; empty space on disk = 99732160512 bytes ... done
+Writing 146470168 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_173 ; empty space on disk = 99614720000 bytes ... done
+Writing 209649680 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_197 ; empty space on disk = 99614720000 bytes ... done
+Writing 179152016 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_196 ; empty space on disk = 99614720000 bytes ... done
+Writing 175623648 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_184 ; empty space on disk = 99614720000 bytes ... done
+Writing 242101688 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_181 ; empty space on disk = 99074703360 bytes ... done
+Writing 181455984 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_189 ; empty space on disk = 98956214272 bytes ... done
+Writing 154652680 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_155 ; empty space on disk = 98567192576 bytes ... done
+Writing 218679160 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_175 ; empty space on disk = 98567192576 bytes ... done
+Writing 176334688 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_152 ; empty space on disk = 98567192576 bytes ... done
+Writing 308318112 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_187 ; empty space on disk = 98215919616 bytes ... done
+Writing 212128744 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_177 ; empty space on disk = 98215919616 bytes ... done
+Writing 275687456 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_156 ; empty space on disk = 97705263104 bytes ... done
+Writing 222738880 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_183 ; empty space on disk = 97705263104 bytes ... done
+Writing 243875936 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_163 ; empty space on disk = 97705263104 bytes ... done
+Writing 311715080 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_190 ; empty space on disk = 97705263104 bytes ... done
+Writing 191397016 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_158 ; empty space on disk = 97093943296 bytes ... done
+Writing 196384160 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_153 ; empty space on disk = 97093943296 bytes ... done
+Writing 238162912 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_176 ; empty space on disk = 96436486144 bytes ... done
+Writing 232737928 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_165 ; empty space on disk = 96436486144 bytes ... done
+Writing 222738880 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_150 ; empty space on disk = 96098844672 bytes ... done
+Writing 383438264 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_199 ; empty space on disk = 96098844672 bytes ...Writing 256016592 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_154 ; empty space on disk = 96098844672 bytes ... done
+ done
+Writing 263255488 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_198 ; empty space on disk = 95487524864 bytes ... done
+Writing 151393808 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_157 ; empty space on disk = 95487524864 bytes ... done
+Writing 286624752 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_166 ; empty space on disk = 95188680704 bytes ...Writing 238015720 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_162 ; empty space on disk = 95188680704 bytes ... done
+ done
+Writing 7672 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_203 ; empty space on disk = 95188680704 bytes ... done
+Writing 263253504 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_168 ; empty space on disk = 95188680704 bytes ... done
+Writing 199087456 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_161 ; empty space on disk = 95188680704 bytes ... done
+Writing 229330840 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_178 ; empty space on disk = 94578409472 bytes ... done
+Writing 260094552 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_174 ; empty space on disk = 94343528448 bytes ... done
+Writing 348954448 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_159 ; empty space on disk = 94257545216 bytes ... done
+Writing 288134536 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_186 ; empty space on disk = 93631545344 bytes ... done
+Writing 237456544 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_179 ; empty space on disk = 93631545344 bytes ... done
+Writing 237456544 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_164 ; empty space on disk = 93254057984 bytes ... done
+Writing 276850072 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_167 ; empty space on disk = 93254057984 bytes ... done
+Writing 269709880 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_193 ; empty space on disk = 93254057984 bytes ... done
+Writing 247153904 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_160 ; empty space on disk = 92627009536 bytes ... done
+Writing 247154888 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_195 ; empty space on disk = 92176121856 bytes ... done
+Writing 320558568 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_170 ; empty space on disk = 92176121856 bytes ... done
+Writing 268922584 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_185 ; empty space on disk = 92176121856 bytes ... done
+Writing 302888112 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_172 ; empty space on disk = 91296366592 bytes ... done
+Writing 272020888 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_169 ; empty space on disk = 90908393472 bytes ... done
+Writing 302888112 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_192 ; empty space on disk = 90625277952 bytes ... done
+Writing 374927520 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_194 ; empty space on disk = 90060095488 bytes ... done
+Writing 348678240 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_201 ; empty space on disk = 90315948032 bytes ... done
+Writing 358856000 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_200 ; empty space on disk = 90028638208 bytes ... done
+Writing 726113688 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA_202 ; empty space on disk = 89330286592 bytes ... done
+Apr 16 16:34:56 ... loading chunks from disk, packing SA...
+Apr 16 16:36:30 ... finished generating suffix array
+Apr 16 16:36:30 ... generating Suffix Array index
+Apr 16 16:41:00 ... completed Suffix Array index
+Apr 16 16:41:01   Finished preparing junctions
+Apr 16 16:41:01 ..... inserting junctions into the genome indices
+Apr 16 16:41:11   Finished SA search: number of new junctions=402430, old junctions=0
+Apr 16 16:41:34   Finished sorting SA indicesL nInd=78876280
+Genome size with junctions=3178228538  3138387968   39840570
+GstrandBit1=32   GstrandBit=32
+Apr 16 16:42:41   Finished inserting junction indices
+Apr 16 16:42:57   Finished SAi
+Apr 16 16:42:57 ..... finished inserting junctions into genome
+Apr 16 16:42:57 ... writing Genome to disk ...
+Writing 3178228538 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//Genome ; empty space on disk = 122218872832 bytes ... done
+SA size in bytes: 24651543637
+Apr 16 16:43:04 ... writing Suffix Array to disk ...
+Writing 24651543637 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SA ; empty space on disk = 122534494208 bytes ... done
+Apr 16 16:43:56 ... writing SAindex to disk
+Writing 8 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SAindex ; empty space on disk = 122962313216 bytes ... done
+Writing 120 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SAindex ; empty space on disk = 122962313216 bytes ... done
+Writing 1565873491 bytes into /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/index//SAindex ; empty space on disk = 122962313216 bytes ... done
+Apr 16 16:44:00 ..... finished successfully
+DONE: Genome generation, EXITING

@@ -1,0 +1,83 @@
+uf_muellermcnicoll_2025_04_01_huvec_dnor_2.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_01_huvec_dnor_2.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_01_huvec_dnor_2.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+24296502 reads; of these:
+  24296502 (100.00%) were unpaired; of these:
+    3241408 (13.34%) aligned 0 times
+    7162812 (29.48%) aligned exactly 1 time
+    13892282 (57.18%) aligned >1 times
+86.66% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+alignments/bowtie2_align_k1_only_R1.sh: line 71: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/uf_muellermcnicoll_2025_04_01_huvec_dnor_2.cutadapt_umi_fastp.bowtie2_concat_transcriptome_k1_R1_sorted_filtered.bam: Permission denied
+uf_muellermcnicoll_2025_04_02_huvec_dnor_3.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_02_huvec_dnor_3.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_02_huvec_dnor_3.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+23068844 reads; of these:
+  23068844 (100.00%) were unpaired; of these:
+    2563970 (11.11%) aligned 0 times
+    8864248 (38.43%) aligned exactly 1 time
+    11640626 (50.46%) aligned >1 times
+88.89% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+alignments/bowtie2_align_k1_only_R1.sh: line 71: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/uf_muellermcnicoll_2025_04_02_huvec_dnor_3.cutadapt_umi_fastp.bowtie2_concat_transcriptome_k1_R1_sorted_filtered.bam: Permission denied
+uf_muellermcnicoll_2025_04_03_huvec_dnor_4.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_03_huvec_dnor_4.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_03_huvec_dnor_4.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+28822547 reads; of these:
+  28822547 (100.00%) were unpaired; of these:
+    4199240 (14.57%) aligned 0 times
+    10783916 (37.41%) aligned exactly 1 time
+    13839391 (48.02%) aligned >1 times
+85.43% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+alignments/bowtie2_align_k1_only_R1.sh: line 71: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/uf_muellermcnicoll_2025_04_03_huvec_dnor_4.cutadapt_umi_fastp.bowtie2_concat_transcriptome_k1_R1_sorted_filtered.bam: Permission denied
+uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+25778809 reads; of these:
+  25778809 (100.00%) were unpaired; of these:
+    3265656 (12.67%) aligned 0 times
+    5010248 (19.44%) aligned exactly 1 time
+    17502905 (67.90%) aligned >1 times
+87.33% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+alignments/bowtie2_align_k1_only_R1.sh: line 71: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.cutadapt_umi_fastp.bowtie2_concat_transcriptome_k1_R1_sorted_filtered.bam: Permission denied
+uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+28105628 reads; of these:
+  28105628 (100.00%) were unpaired; of these:
+    2131506 (7.58%) aligned 0 times
+    9006166 (32.04%) aligned exactly 1 time
+    16967956 (60.37%) aligned >1 times
+92.42% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+alignments/bowtie2_align_k1_only_R1.sh: line 71: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.cutadapt_umi_fastp.bowtie2_concat_transcriptome_k1_R1_sorted_filtered.bam: Permission denied
+uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+28250958 reads; of these:
+  28250958 (100.00%) were unpaired; of these:
+    3178068 (11.25%) aligned 0 times
+    7251670 (25.67%) aligned exactly 1 time
+    17821220 (63.08%) aligned >1 times
+88.75% overall alignment rate
+[bam_sort_core] merging from 0 files and 32 in-memory blocks...
+alignments/bowtie2_align_k1_only_R1.sh: line 71: /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/filtered/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.cutadapt_umi_fastp.bowtie2_concat_transcriptome_k1_R1_sorted_filtered.bam: Permission denied
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:38: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2 + bottom[i], round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:41: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2, round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:38: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2 + bottom[i], round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:41: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2, round(y[i], 2), ha='center')
+Summary written to /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/summarized_bowtie_mapping_precents.csv
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:38: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2 + bottom[i], round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:41: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2, round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:38: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2 + bottom[i], round(y[i], 2), ha='center')
+/home/ckalk/scripts/SplitORFs/Riboseq/Michi_Vlado_round_1/alignments/summarize_bowtie2_alns_by_source.py:41: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  plt.text(i, y[i] // 2, round(y[i], 2), ha='center')

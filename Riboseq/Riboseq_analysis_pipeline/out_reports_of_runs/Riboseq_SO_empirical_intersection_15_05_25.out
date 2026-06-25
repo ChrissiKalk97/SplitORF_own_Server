@@ -1,0 +1,259 @@
+Starting empirical Riboseq validation
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_01_huvec_dnor_2_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_01_huvec_dnor_2_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_RI_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome/uf_muellermcnicoll_2025_04_01_huvec_dnor_2_RI
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample/NMD_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome
+[bam_sort_core] merging from 1 files and 1 in-memory blocks...
+converting bam to bed
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_01_huvec_dnor_2 finished
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_02_huvec_dnor_3_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_02_huvec_dnor_3_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_RI_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome/uf_muellermcnicoll_2025_04_02_huvec_dnor_3_RI
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample/NMD_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome
+[bam_sort_core] merging from 2 files and 1 in-memory blocks...
+converting bam to bed
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_02_huvec_dnor_3 finished
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_03_huvec_dnor_4_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_03_huvec_dnor_4_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_RI_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome/uf_muellermcnicoll_2025_04_03_huvec_dnor_4_RI
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample/NMD_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome
+[bam_sort_core] merging from 2 files and 1 in-memory blocks...
+converting bam to bed
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_03_huvec_dnor_4 finished
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_RI_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_RI
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample/NMD_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome
+[bam_sort_core] merging from 1 files and 1 in-memory blocks...
+converting bam to bed
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_04_huvec_dhypo_2 finished
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_RI_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_RI
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample/NMD_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome
+[bam_sort_core] merging from 1 files and 1 in-memory blocks...
+converting bam to bed
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_05_huvec_dhypo_3 finished
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_dedup_filtered.bam
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/Unique_DNA_regions_genomic_RI_16_12_24.bed
+/projects/splitorfs/work/Riboseq/data/region_input/genomic/3_primes_genomic.bed
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_RI
+/projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample/NMD_genome
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/RI_genome
+[bam_sort_core] merging from 1 files and 1 in-memory blocks...
+converting bam to bed
+intersecting with unique regions
+===================       Sample uf_muellermcnicoll_2025_04_06_huvec_dhypo_4 finished
+
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(rmarkdown); rmarkdown::render(input = "RiboSeqReportGenomic_iteration.Rmd", output_file = "/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/Riboseq_empirical_validation_report_15_05_15.pdf", params=list(args = c("/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_genome/STAR/only_R1/deduplicated/empirical_Riboseq_validation/", "/projects/splitorfs/work/LLMs/TIS_transformer/Input/SO_pipeline_results")))
+
+
+processing file: RiboSeqReportGenomic_iteration.Rmd
+1/45                   
+2/45 [libraries]       
+
+Attaching package: 'types'
+
+The following object is masked from 'package:utils':
+
+    ?
+
+
+Attaching package: 'dplyr'
+
+The following object is masked from 'package:glue':
+
+    collapse
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: 'data.table'
+
+The following objects are masked from 'package:dplyr':
+
+    between, first, last
+
+3/45                   
+4/45 [unnamed-chunk-1] 
+5/45                   
+6/45 [unnamed-chunk-2] 
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'new_name'. You can override using the `.groups` argument.
+7/45                   
+8/45 [unnamed-chunk-3] 
+9/45                   
+10/45 [unnamed-chunk-4] 
+`summarise()` has grouped output by 'name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'name'. You can override using the `.groups` argument.
+`summarise()` has grouped output by 'name'. You can override using the `.groups` argument.
+11/45                   
+12/45 [unnamed-chunk-5] 
+13/45                   
+14/45 [unnamed-chunk-6] 
+15/45                   
+16/45 [unnamed-chunk-7] 

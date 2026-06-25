@@ -1,0 +1,63 @@
+uf_muellermcnicoll_2025_04_01_huvec_dnor_2.
+# reads processed: 24685876
+# reads with at least one alignment: 10475438 (42.43%)
+# reads that failed to align: 14210438 (57.57%)
+Reported 57554697 paired-end alignments
+uf_muellermcnicoll_2025_04_02_huvec_dnor_3.
+# reads processed: 23622343
+# reads with at least one alignment: 9076933 (38.43%)
+# reads that failed to align: 14545410 (61.57%)
+Reported 49324162 paired-end alignments
+uf_muellermcnicoll_2025_04_03_huvec_dnor_4.
+# reads processed: 29394084
+# reads with at least one alignment: 10070347 (34.26%)
+# reads that failed to align: 19323737 (65.74%)
+Reported 55439845 paired-end alignments
+uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.
+# reads processed: 26406511
+# reads with at least one alignment: 13642969 (51.67%)
+# reads that failed to align: 12763542 (48.33%)
+Reported 78664512 paired-end alignments
+uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.
+# reads processed: 28729014
+# reads with at least one alignment: 14069463 (48.97%)
+# reads that failed to align: 14659551 (51.03%)
+Reported 79683863 paired-end alignments
+uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.
+# reads processed: 28919918
+# reads with at least one alignment: 13701195 (47.38%)
+# reads that failed to align: 15218723 (52.62%)
+Reported 78434261 paired-end alignments
+uf_muellermcnicoll_2025_04_01_huvec_dnor_2.
+# reads processed: 14210438
+# reads with at least one alignment: 0 (0.00%)
+# reads that failed to align: 14210438 (100.00%)
+No alignments
+uf_muellermcnicoll_2025_04_02_huvec_dnor_3.
+# reads processed: 14545410
+# reads with at least one alignment: 0 (0.00%)
+# reads that failed to align: 14545410 (100.00%)
+No alignments
+uf_muellermcnicoll_2025_04_03_huvec_dnor_4.
+# reads processed: 19323737
+# reads with at least one alignment: 0 (0.00%)
+# reads that failed to align: 19323737 (100.00%)
+No alignments
+uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.
+# reads processed: 12763542
+# reads with at least one alignment: 0 (0.00%)
+# reads that failed to align: 12763542 (100.00%)
+No alignments
+uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.
+# reads processed: 14659551
+# reads with at least one alignment: 0 (0.00%)
+# reads that failed to align: 14659551 (100.00%)
+No alignments
+uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.
+# reads processed: 15218723
+# reads with at least one alignment: 0 (0.00%)
+# reads that failed to align: 15218723 (100.00%)
+No alignments
+preprocessing_cutadapt_steps.sh: line 184: --un: command not found
+preprocessing_cutadapt_steps.sh: line 188: syntax error near unexpected token `done'
+preprocessing_cutadapt_steps.sh: line 188: `done'

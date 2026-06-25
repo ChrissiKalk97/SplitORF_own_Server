@@ -1,0 +1,92 @@
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+
+        ==========     _____ _    _ ____  _____  ______          _____  
+        =====         / ____| |  | |  _ \|  __ \|  ____|   /\   |  __ \ 
+          =====      | (___ | |  | | |_) | |__) | |__     /  \  | |  | |
+            ====      \___ \| |  | |  _ <|  _  /|  __|   / /\ \ | |  | |
+              ====    ____) | |__| | |_) | | \ \| |____ / ____ \| |__| |
+        ==========   |_____/ \____/|____/|_|  \_\______/_/    \_\_____/
+       Rsubread 2.8.2
+
+//========================== featureCounts setting ===========================\\
+||                                                                            ||
+||             Input files : 6 BAM files                                      ||
+||                                                                            ||
+||                           uf_muellermcnicoll_2025_04_01_huvec_dnor_2_d ... ||
+||                           uf_muellermcnicoll_2025_04_02_huvec_dnor_3_d ... ||
+||                           uf_muellermcnicoll_2025_04_03_huvec_dnor_4_d ... ||
+||                           uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_ ... ||
+||                           uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_ ... ||
+||                           uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_ ... ||
+||                                                                            ||
+||              Paired-end : no                                               ||
+||        Count read pairs : no                                               ||
+||              Annotation : Homo_sapiens.GRCh38.110.chr.gtf (GTF)            ||
+||      Dir for temp files : .                                                ||
+||                 Threads : 16                                               ||
+||                   Level : meta-feature level                               ||
+||      Multimapping reads : counted                                          ||
+|| Multi-overlapping reads : counted                                          ||
+||   Min overlapping bases : 1                                                ||
+||   Min overlapping frac. : 30.0% to reads                                   ||
+||                                                                            ||
+\\============================================================================//
+
+//================================= Running ==================================\\
+||                                                                            ||
+|| Load annotation file Homo_sapiens.GRCh38.110.chr.gtf ...                   ||
+||    Features : 62700                                                        ||
+||    Meta-features : 39                                                      ||
+||    Chromosomes/contigs : 25                                                ||
+||                                                                            ||
+|| Process BAM file uf_muellermcnicoll_2025_04_01_huvec_dnor_2_dedup_filt ... ||
+||    Single-end reads are included.                                          ||
+||    Total alignments : 5155511                                              ||
+||    Successfully assigned alignments : 4172832 (80.9%)                      ||
+||    Running time : 0.02 minutes                                             ||
+||                                                                            ||
+|| Process BAM file uf_muellermcnicoll_2025_04_02_huvec_dnor_3_dedup_filt ... ||
+||    Single-end reads are included.                                          ||
+||    Total alignments : 6617515                                              ||
+||    Successfully assigned alignments : 5716496 (86.4%)                      ||
+||    Running time : 0.02 minutes                                             ||
+||                                                                            ||
+|| Process BAM file uf_muellermcnicoll_2025_04_03_huvec_dnor_4_dedup_filt ... ||
+||    Single-end reads are included.                                          ||
+||    Total alignments : 8618675                                              ||
+||    Successfully assigned alignments : 7503980 (87.1%)                      ||
+||    Running time : 0.02 minutes                                             ||
+||                                                                            ||
+|| Process BAM file uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_dedup_fil ... ||
+||    Single-end reads are included.                                          ||
+||    Total alignments : 4772462                                              ||
+||    Successfully assigned alignments : 3553206 (74.5%)                      ||
+||    Running time : 0.02 minutes                                             ||
+||                                                                            ||
+|| Process BAM file uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_dedup_fil ... ||
+||    Single-end reads are included.                                          ||
+||    Total alignments : 5353947                                              ||
+||    Successfully assigned alignments : 4348605 (81.2%)                      ||
+||    Running time : 0.02 minutes                                             ||
+||                                                                            ||
+|| Process BAM file uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_dedup_fil ... ||
+||    Single-end reads are included.                                          ||
+||    Total alignments : 5051350                                              ||
+||    Successfully assigned alignments : 3886913 (76.9%)                      ||
+||    Running time : 0.02 minutes                                             ||
+||                                                                            ||
+|| Write the final count table.                                               ||
+|| Write the read assignment summary.                                         ||
+||                                                                            ||
+\\============================================================================//
+

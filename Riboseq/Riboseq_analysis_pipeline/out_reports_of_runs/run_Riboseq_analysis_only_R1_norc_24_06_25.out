@@ -1,0 +1,238 @@
+uf_muellermcnicoll_2025_04_01_huvec_dnor_2.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_01_huvec_dnor_2.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_01_huvec_dnor_2.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+uf_muellermcnicoll_2025_04_02_huvec_dnor_3.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_02_huvec_dnor_3.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_02_huvec_dnor_3.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+uf_muellermcnicoll_2025_04_03_huvec_dnor_4.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_03_huvec_dnor_4.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_03_huvec_dnor_4.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_04_huvec_dhypo_2.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_05_huvec_dhypo_3.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.cutadapt_umi_fastp.
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/preprocess/cutadapt/fastp_filter_after_UMI_trim/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.cutadapt_umi_fastp.R1.fastp.fastq.gz
+/projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/uf_muellermcnicoll_2025_04_06_huvec_dhypo_4.cutadapt_umi_fastp.bowtie2_concat_transcriptome
+Summary written to /projects/splitorfs/work/Riboseq/Output/Michi_Vlado_round_1/alignment_concat_transcriptome_Ignolia/summarized_bowtie_mapping_precents.csv
+transcriptomic
+uf_muellermcnicoll_2025_04_01_huvec_dnor_2
+uf_muellermcnicoll_2025_04_02_huvec_dnor_3
+uf_muellermcnicoll_2025_04_03_huvec_dnor_4
+uf_muellermcnicoll_2025_04_04_huvec_dhypo_2
+uf_muellermcnicoll_2025_04_05_huvec_dhypo_3
+uf_muellermcnicoll_2025_04_06_huvec_dhypo_4
+null device 
+          1 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.6775  0.8115  0.8941  1.0736  1.2090  1.8778 
+named integer(0)
+[1] "correlation rid"
+                         2025_04_01_huvec_dnor_2. 2025_04_02_huvec_dnor_3.
+2025_04_01_huvec_dnor_2.                1.0000000                0.9989643
+2025_04_02_huvec_dnor_3.                0.9989643                1.0000000
+2025_04_03_huvec_dnor_4.                0.9979003                0.9982045
+2025_04_04_huvec_dhypo_2                0.9948028                0.9945136
+2025_04_05_huvec_dhypo_3                0.9941290                0.9949920
+2025_04_06_huvec_dhypo_4                0.9908851                0.9912539
+                         2025_04_03_huvec_dnor_4. 2025_04_04_huvec_dhypo_2
+2025_04_01_huvec_dnor_2.                0.9979003                0.9948028
+2025_04_02_huvec_dnor_3.                0.9982045                0.9945136
+2025_04_03_huvec_dnor_4.                1.0000000                0.9933270
+2025_04_04_huvec_dhypo_2                0.9933270                1.0000000
+2025_04_05_huvec_dhypo_3                0.9935292                0.9984628
+2025_04_06_huvec_dhypo_4                0.9927223                0.9958288
+                         2025_04_05_huvec_dhypo_3 2025_04_06_huvec_dhypo_4
+2025_04_01_huvec_dnor_2.                0.9941290                0.9908851
+2025_04_02_huvec_dnor_3.                0.9949920                0.9912539
+2025_04_03_huvec_dnor_4.                0.9935292                0.9927223
+2025_04_04_huvec_dhypo_2                0.9984628                0.9958288
+2025_04_05_huvec_dhypo_3                1.0000000                0.9967613
+2025_04_06_huvec_dhypo_4                0.9967613                1.0000000
+null device 
+          1 
+null device 
+          1 
+NULL
+null device 
+          1 
+[1] "DESeqDataSet object of length 19509 with 30 metadata columns"
+[1] "Intercept"              "batch_3_vs_2"           "batch_4_vs_2"          
+[4] "condition_norm_vs_hypo"
+NULL
+null device 
+          1 
+[1] "2025_04_01_huvec_dnor_2." "2025_04_02_huvec_dnor_3."
+[3] "2025_04_03_huvec_dnor_4."
+[1] "2025_04_04_huvec_dhypo_2" "2025_04_05_huvec_dhypo_3"
+[3] "2025_04_06_huvec_dhypo_4"
+null device 
+          1 
+null device 
+          1 
+[1] "correlation rid"
+                         2025_04_01_huvec_dnor_2. 2025_04_02_huvec_dnor_3.
+2025_04_01_huvec_dnor_2.                1.0000000                0.9982135
+2025_04_02_huvec_dnor_3.                0.9982135                1.0000000
+2025_04_03_huvec_dnor_4.                0.9960776                0.9967011
+2025_04_04_huvec_dhypo_2                0.9898093                0.9896293
+2025_04_05_huvec_dhypo_3                0.9885468                0.9901268
+2025_04_06_huvec_dhypo_4                0.9824785                0.9835231
+                         2025_04_03_huvec_dnor_4. 2025_04_04_huvec_dhypo_2
+2025_04_01_huvec_dnor_2.                0.9960776                0.9898093
+2025_04_02_huvec_dnor_3.                0.9967011                0.9896293
+2025_04_03_huvec_dnor_4.                1.0000000                0.9872338
+2025_04_04_huvec_dhypo_2                0.9872338                1.0000000
+2025_04_05_huvec_dhypo_3                0.9873609                0.9976031
+2025_04_06_huvec_dhypo_4                0.9860097                0.9927565
+                         2025_04_05_huvec_dhypo_3 2025_04_06_huvec_dhypo_4
+2025_04_01_huvec_dnor_2.                0.9885468                0.9824785
+2025_04_02_huvec_dnor_3.                0.9901268                0.9835231
+2025_04_03_huvec_dnor_4.                0.9873609                0.9860097
+2025_04_04_huvec_dhypo_2                0.9976031                0.9927565
+2025_04_05_huvec_dhypo_3                1.0000000                0.9941605
+2025_04_06_huvec_dhypo_4                0.9941605                1.0000000
+null device 
+          1 
+null device 
+          1 
+NULL
+null device 
+          1 
+[1] "DESeqDataSet object of length 13888 with 30 metadata columns"
+[1] "Intercept"              "batch_3_vs_2"           "batch_4_vs_2"          
+[4] "condition_norm_vs_hypo"
+NULL
+null device 
+          1 
+[1] "2025_04_01_huvec_dnor_2." "2025_04_02_huvec_dnor_3."
+[3] "2025_04_03_huvec_dnor_4."
+[1] "2025_04_04_huvec_dhypo_2" "2025_04_05_huvec_dhypo_3"
+[3] "2025_04_06_huvec_dhypo_4"
+null device 
+          1 
+Reading uf_muellermcnicoll_2025_04_01_huvec_dnor_2_dedup.bam
+Input reads: 3.332 M
+Good! Number of indel below indel_threshold for all reads. No reads removed.
+0.128 M  (3.840 %) reads removed: reference transcript IDs not found in annotation table.
+Cool! All reads mapping on positive strand. No reads removed.
+Output reads: 3.204 M
+Done! uf_muellermcnicoll_2025_04_01_huvec_dnor_2_dedup.bam has been loaded as uf_muellermcnicoll_2025_04_01_huvec_dnor_2_dedup 
+
+Reading uf_muellermcnicoll_2025_04_02_huvec_dnor_3_dedup.bam
+Input reads: 4.837 M
+Good! Number of indel below indel_threshold for all reads. No reads removed.
+0.134 M  (2.774 %) reads removed: reference transcript IDs not found in annotation table.
+Cool! All reads mapping on positive strand. No reads removed.
+Output reads: 4.703 M
+Done! uf_muellermcnicoll_2025_04_02_huvec_dnor_3_dedup.bam has been loaded as uf_muellermcnicoll_2025_04_02_huvec_dnor_3_dedup 
+
+Reading uf_muellermcnicoll_2025_04_03_huvec_dnor_4_dedup.bam
+Input reads: 6.369 M
+Good! Number of indel below indel_threshold for all reads. No reads removed.
+0.194 M  (3.052 %) reads removed: reference transcript IDs not found in annotation table.
+Cool! All reads mapping on positive strand. No reads removed.
+Output reads: 6.174 M
+Done! uf_muellermcnicoll_2025_04_03_huvec_dnor_4_dedup.bam has been loaded as uf_muellermcnicoll_2025_04_03_huvec_dnor_4_dedup 
+
+Reading uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_dedup.bam
+Input reads: 2.756 M
+Good! Number of indel below indel_threshold for all reads. No reads removed.
+0.115 M  (4.171 %) reads removed: reference transcript IDs not found in annotation table.
+Cool! All reads mapping on positive strand. No reads removed.
+Output reads: 2.641 M
+Done! uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_dedup.bam has been loaded as uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_dedup 
+
+Reading uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_dedup.bam
+Input reads: 3.553 M
+Good! Number of indel below indel_threshold for all reads. No reads removed.
+0.130 M  (3.647 %) reads removed: reference transcript IDs not found in annotation table.
+Cool! All reads mapping on positive strand. No reads removed.
+Output reads: 3.424 M
+Done! uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_dedup.bam has been loaded as uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_dedup 
+
+Reading uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_dedup.bam
+Input reads: 3.050 M
+Good! Number of indel below indel_threshold for all reads. No reads removed.
+0.171 M  (5.608 %) reads removed: reference transcript IDs not found in annotation table.
+Cool! All reads mapping on positive strand. No reads removed.
+Output reads: 2.879 M
+Done! uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_dedup.bam has been loaded as uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_dedup 
+
+processing uf_muellermcnicoll_2025_04_01_huvec_dnor_2_dedup
+best offset: 14 nts from the 5' end
+plotting                          <<-- 8% -->>                       plotting                         <<--- 12% --->>                      plotting                       <<----- 20% ----->>                    plotting                      <<------ 24% ------>>                   plotting                     <<------- 28% ------->>                  plotting                   <<--------- 36% --------->>                plotting                  <<---------- 40% ---------->>               plotting                <<------------ 48% ------------>>             plotting               <<------------- 52% ------------->>            plotting              <<-------------- 56% -------------->>           plotting            <<---------------- 64% ---------------->>         plotting           <<----------------- 68% ----------------->>        plotting         <<------------------- 76% ------------------->>      plotting        <<-------------------- 80% -------------------->>     plotting       <<--------------------- 84% --------------------->>    plotting     <<----------------------- 92% ----------------------->>  plotting    <<------------------------ 96% ------------------------>> plotting   <<------------------------- 100% ------------------------->>plotting   <<------------------------- 100% ------------------------->>
+processing uf_muellermcnicoll_2025_04_02_huvec_dnor_3_dedup
+best offset: 14 nts from the 5' end
+plotting                          <<-- 8% -->>                       plotting                         <<--- 12% --->>                      plotting                        <<---- 16% ---->>                     plotting                      <<------ 24% ------>>                   plotting                     <<------- 28% ------->>                  plotting                    <<-------- 32% -------->>                 plotting                  <<---------- 40% ---------->>               plotting                 <<----------- 44% ----------->>              plotting                <<------------ 48% ------------>>             plotting              <<-------------- 56% -------------->>           plotting             <<--------------- 60% --------------->>          plotting            <<---------------- 64% ---------------->>         plotting          <<------------------ 72% ------------------>>       plotting         <<------------------- 76% ------------------->>      plotting        <<-------------------- 80% -------------------->>     plotting      <<---------------------- 88% ---------------------->>   plotting     <<----------------------- 92% ----------------------->>  plotting    <<------------------------ 96% ------------------------>> plotting   <<------------------------- 100% ------------------------->>plotting   <<------------------------- 100% ------------------------->>
+processing uf_muellermcnicoll_2025_04_03_huvec_dnor_4_dedup
+best offset: 14 nts from the 5' end
+plotting                          <<-- 8% -->>                       plotting                         <<--- 12% --->>                      plotting                       <<----- 20% ----->>                    plotting                      <<------ 24% ------>>                   plotting                     <<------- 28% ------->>                  plotting                   <<--------- 36% --------->>                plotting                  <<---------- 40% ---------->>               plotting                <<------------ 48% ------------>>             plotting               <<------------- 52% ------------->>            plotting              <<-------------- 56% -------------->>           plotting            <<---------------- 64% ---------------->>         plotting           <<----------------- 68% ----------------->>        plotting         <<------------------- 76% ------------------->>      plotting        <<-------------------- 80% -------------------->>     plotting       <<--------------------- 84% --------------------->>    plotting     <<----------------------- 92% ----------------------->>  plotting    <<------------------------ 96% ------------------------>> plotting   <<------------------------- 100% ------------------------->>plotting   <<------------------------- 100% ------------------------->>
+processing uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_dedup
+best offset: 14 nts from the 5' end
+plotting                          <<-- 8% -->>                       plotting                         <<--- 12% --->>                      plotting                        <<---- 16% ---->>                     plotting                      <<------ 24% ------>>                   plotting                     <<------- 28% ------->>                  plotting                    <<-------- 32% -------->>                 plotting                  <<---------- 40% ---------->>               plotting                 <<----------- 44% ----------->>              plotting                <<------------ 48% ------------>>             plotting              <<-------------- 56% -------------->>           plotting             <<--------------- 60% --------------->>          plotting            <<---------------- 64% ---------------->>         plotting          <<------------------ 72% ------------------>>       plotting         <<------------------- 76% ------------------->>      plotting        <<-------------------- 80% -------------------->>     plotting      <<---------------------- 88% ---------------------->>   plotting     <<----------------------- 92% ----------------------->>  plotting    <<------------------------ 96% ------------------------>> plotting   <<------------------------- 100% ------------------------->>plotting   <<------------------------- 100% ------------------------->>
+processing uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_dedup
+best offset: 14 nts from the 5' end
+plotting                          <<-- 8% -->>                       plotting                         <<--- 12% --->>                      plotting                        <<---- 16% ---->>                     plotting                       <<----- 20% ----->>                    plotting                     <<------- 28% ------->>                  plotting                    <<-------- 32% -------->>                 plotting                   <<--------- 36% --------->>                plotting                  <<---------- 40% ---------->>               plotting                <<------------ 48% ------------>>             plotting               <<------------- 52% ------------->>            plotting              <<-------------- 56% -------------->>           plotting             <<--------------- 60% --------------->>          plotting           <<----------------- 68% ----------------->>        plotting          <<------------------ 72% ------------------>>       plotting         <<------------------- 76% ------------------->>      plotting        <<-------------------- 80% -------------------->>     plotting      <<---------------------- 88% ---------------------->>   plotting     <<----------------------- 92% ----------------------->>  plotting    <<------------------------ 96% ------------------------>> plotting   <<------------------------- 100% ------------------------->>plotting   <<------------------------- 100% ------------------------->>
+processing uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_dedup
+best offset: 14 nts from the 5' end
+plotting                          <<-- 8% -->>                       plotting                         <<--- 12% --->>                      plotting                        <<---- 16% ---->>                     plotting                       <<----- 20% ----->>                    plotting                     <<------- 28% ------->>                  plotting                    <<-------- 32% -------->>                 plotting                   <<--------- 36% --------->>                plotting                  <<---------- 40% ---------->>               plotting                <<------------ 48% ------------>>             plotting               <<------------- 52% ------------->>            plotting              <<-------------- 56% -------------->>           plotting             <<--------------- 60% --------------->>          plotting           <<----------------- 68% ----------------->>        plotting          <<------------------ 72% ------------------>>       plotting         <<------------------- 76% ------------------->>      plotting        <<-------------------- 80% -------------------->>     plotting      <<---------------------- 88% ---------------------->>   plotting     <<----------------------- 92% ----------------------->>  plotting    <<------------------------ 96% ------------------------>> plotting   <<------------------------- 100% ------------------------->>plotting   <<------------------------- 100% ------------------------->>
+processing uf_muellermcnicoll_2025_04_01_huvec_dnor_2_dedup
+1. adding p-site position
+2. adding transcript region
+processing uf_muellermcnicoll_2025_04_02_huvec_dnor_3_dedup
+1. adding p-site position
+2. adding transcript region
+processing uf_muellermcnicoll_2025_04_03_huvec_dnor_4_dedup
+1. adding p-site position
+2. adding transcript region
+processing uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_dedup
+1. adding p-site position
+2. adding transcript region
+processing uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_dedup
+1. adding p-site position
+2. adding transcript region
+processing uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_dedup
+1. adding p-site position
+2. adding transcript region
+1. creating codon table and computing distance from start/stop codon
+2. acquiring region information
+3. computing codon coverage based on read footprints
+sample : uf_muellermcnicoll_2025_04_01_huvec_dnor_2_dedup
+sample : uf_muellermcnicoll_2025_04_02_huvec_dnor_3_dedup
+sample : uf_muellermcnicoll_2025_04_03_huvec_dnor_4_dedup
+sample : uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_dedup
+sample : uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_dedup
+sample : uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_dedup
+processing uf_muellermcnicoll_2025_04_01_huvec_dnor_2_dedup
+reads: 3.20 M
+1.00 M  (31.37 %) reads removed
+reads (kept): 2.20 M
+
+processing uf_muellermcnicoll_2025_04_02_huvec_dnor_3_dedup
+reads: 4.70 M
+1.43 M  (30.34 %) reads removed
+reads (kept): 3.28 M
+
+processing uf_muellermcnicoll_2025_04_03_huvec_dnor_4_dedup
+reads: 6.17 M
+1.78 M  (28.80 %) reads removed
+reads (kept): 4.40 M
+
+processing uf_muellermcnicoll_2025_04_04_huvec_dhypo_2_dedup
+reads: 2.64 M
+1.10 M  (41.64 %) reads removed
+reads (kept): 1.54 M
+
+processing uf_muellermcnicoll_2025_04_05_huvec_dhypo_3_dedup
+reads: 3.42 M
+1.18 M  (34.45 %) reads removed
+reads (kept): 2.24 M
+
+processing uf_muellermcnicoll_2025_04_06_huvec_dhypo_4_dedup
+reads: 2.88 M
+0.95 M  (32.85 %) reads removed
+reads (kept): 1.93 M
+
