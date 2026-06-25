@@ -32,7 +32,7 @@ script_dir="/home/ckalk/scripts/SplitORFs/PacBio_analysis/compare_stringtie_mand
 outdir_tama="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026"
 
 
-bash tama_steps_with_isoquant_rescue.sh \
+bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/tama_steps_with_isoquant_rescue.sh \
  -c HUVEC \
  -d "$script_dir" \
  -f "$genome_fasta" \
@@ -44,7 +44,7 @@ bash tama_steps_with_isoquant_rescue.sh \
  -s "$stringtie_huvec_gtf" \
  -t "/home/ckalk/tools/tama"
 
-bash tama_steps_with_isoquant_rescue.sh \
+bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/tama_steps_with_isoquant_rescue.sh \
  -c CM \
  -d "$script_dir" \
  -f "$genome_fasta" \
