@@ -62,7 +62,7 @@ bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquan
 # use the conda package and the prediction module, need to create a json file for this!
 conda activate pygtftk # 
 for cell_type in "HUVEC" "CM"; do
-    if [[ ! -d ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_merged_tama_ExonCoordsOfTranscriptsForSO.txt ]]; then
+    if [[ ! -e "~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_merged_tama_ExonCoordsOfTranscriptsForSO.txt" ]]; then
         python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Input_scripts/change_fasta_header_custom_isoforms.py \
             "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id.gtf \
             "$outdir_tama"/kallisto/${cell_type}_tama_merged_assembly_transcriptome.fa \
