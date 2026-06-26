@@ -30,8 +30,8 @@ python ${script_path}/get_unique_ids_for_orfs_for_masspec_assembly_names.py \
 
 python ${script_path}/merge_reference_splitorf_prots_for_masspec.py \
  "/projects/splitorfs/work/reference_files/Homo_sapiens_sp_incl_isoforms_TaxID_9606_Release_408.fasta" \
- "${so_path}/${masspec_dir}/Unique_proteins_Masspec_NMD_RI_HUVEC_CM_tama_unique_SO_ID_16_09_25.fasta" \
- "${so_path}/${masspec_dir}/Unique_proteins_Masspec_NMD_RI_HUVEC_CM_tama_with_Uniprot_408_ref_unique_SO_ID_with_assembly_info.fasta"
+ "${so_path}/${masspec_dir}/Unique_proteins_Masspec_NMD_RI_HUVEC_CM_tama_unique_SO_ID_26_06_26.fasta" \
+ "${so_path}/${masspec_dir}/Unique_proteins_Masspec_NMD_RI_HUVEC_CM_tama_with_Uniprot_408_ref_unique_SO_ID_with_assembly_info_26_06_26.fasta"
 
 
  
