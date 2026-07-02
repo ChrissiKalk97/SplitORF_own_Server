@@ -8,8 +8,9 @@ import csv
 
 
 # path_to_tama_gtf = "/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026/HUVEC/HUVEC_merged_tama.gtf"
-# output_gtf = "/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026/HUVEC/HUVEC_merged_tama_gene_id.gtf"
+# output_gtf = "/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026/HUVEC/HUVEC_merged_tama_gene_id_02_07_26.gtf"
 # path_to_classif = "/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026/SQANTI3_QC/HUVEC/isoforms_classification.txt"
+# path_to_reference_gtf = "/projects/splitorfs/work/reference_files/filtered_Ens_reference_correct_29_09_25/Ensembl_110_filtered_equality_and_tsl1_2_correct_29_09_25.gtf"
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -26,10 +27,13 @@ def parse_args():
     parser.add_argument("output_gtf",
                         help="Path to output GTF")
 
+    # parser.add_argument("path_to_reference_gtf",
+    #                     help="Path to output GTF")
+
     return parser.parse_args()
 
 
-def main(path_to_tama_gtf, path_to_classif, output_gtf):
+def main(path_to_tama_gtf, path_to_classif, output_gtf):  # , path_to_reference_gtf
     def change_gene_id(row):
         gene_info_string = row[8]
         gene_info_list = gene_info_string.split('"')
@@ -50,8 +54,8 @@ def main(path_to_tama_gtf, path_to_classif, output_gtf):
         lambda x: x.split('.')[0])
 
     def bucket(s):
-        """check the number of multiple gene associations: if there is not a clear one, 
-        then note as smbiguous and want to keep TAMA ID also if only novelGene is
+        """check the number of multiple gene associations: if there is not a clear one,
+        then note as ambiguous and want to keep TAMA ID also if only novelGene is
         associated keep the TAMA ID"""
         vc = s.value_counts()
         if vc.index.str.startswith('novelGene').all():
@@ -63,17 +67,11 @@ def main(path_to_tama_gtf, path_to_classif, output_gtf):
     buckets = classif_df.groupby('gene_id')['associated_gene'].agg(bucket)
     print(buckets.value_counts())
 
-    # A single TAMA gene can hold isoforms with different associated_gene values
-    # (fusions, multi-mapping). dict(zip(...)) silently kept whichever isoform
-    # appeared last; instead choose the most frequent association per TAMA gene,
-    # ties broken alphabetically so the result is reproducible.
-
     def pick_associated(s):
         counts = s.value_counts()
         return counts[counts == counts.max()].index[0]
 
     keep = set(buckets[buckets.isin(["clean", "dominant"])].index)
-
     assert len(keep) == sum(buckets.isin(["clean", "dominant"]))
 
     gene_id_dict = (classif_df[classif_df['gene_id'].isin(keep)]
@@ -84,9 +82,6 @@ def main(path_to_tama_gtf, path_to_classif, output_gtf):
                               .map(gene_id_dict)
                               .fillna(tama_gtf_df['native_gene']))
 
-    # Genes in the GTF but absent from the classification map to NaN; keep their
-    # native TAMA id rather than writing a literal 'nan' (which would itself
-    # collapse many genes into one duplicated id).
     unmapped = tama_gtf_df['gene_id'].isna()
     if unmapped.any():
         print(f"Warning: {int(unmapped.sum())} feature line(s) had no SQANTI "
@@ -94,15 +89,8 @@ def main(path_to_tama_gtf, path_to_classif, output_gtf):
         tama_gtf_df.loc[unmapped, 'gene_id'] = \
             tama_gtf_df.loc[unmapped, 'native_gene']
 
-    # SQANTI labels an antisense transcript with the gene it is antisense TO, so
-    # a sense locus and its antisense neighbour can receive the same
-    # associated_gene. Collapsing them fuses two strands under one id, which is
-    # biologically wrong and breaks union-exon length / TPM with a duplicate
-    # label. Detect any gene_id landing on more than one (chrom, strand) locus
-    # and suffix only those: by strand, or by chrom+strand if it also spans
-    # chromosomes. (chrom = column 0, strand = column 6.)
+    # split gene_ids that landed on more than one (chrom, strand) locus
     loci = tama_gtf_df[['gene_id', 0, 6]].drop_duplicates()
-    # how many different combinations of strand and chromosome does each gene_id have?
     n_loci = loci.groupby('gene_id').size()
     collisions = set(n_loci[n_loci > 1].index)
     multichrom = set(
@@ -131,23 +119,36 @@ def main(path_to_tama_gtf, path_to_classif, output_gtf):
         print(f"Disambiguated {len(collisions)} colliding gene id(s):")
         print(changed.to_string(index=False))
 
+    # --- collapse duplicate 'gene' records that share a gene_id on one locus ---
+    # After disambiguate, a shared gene_id means one locus (multi-strand/chrom
+    # were already suffixed). Give every gene line the full min..max span of its
+    # gene_id, then keep only one gene line per id. transcript/exon lines are
+    # untouched, so counts are unaffected. MUST run after disambiguate.
+    is_gene = tama_gtf_df[2] == 'gene'
+    span = tama_gtf_df[is_gene].groupby('gene_id').agg(start=(3, 'min'),
+                                                       end=(4, 'max'))
+    tama_gtf_df.loc[is_gene, 3] = \
+        tama_gtf_df.loc[is_gene, 'gene_id'].map(span['start']).values
+    tama_gtf_df.loc[is_gene, 4] = \
+        tama_gtf_df.loc[is_gene, 'gene_id'].map(span['end']).values
+    dup_gene = is_gene & tama_gtf_df.duplicated(subset=[2, 'gene_id'],
+                                                keep='first')
+    n_dup = int(dup_gene.sum())
+    if n_dup:
+        print(
+            f"Collapsed {n_dup} duplicate gene record(s) into spanning lines.")
+    tama_gtf_df = tama_gtf_df[~dup_gene]
+
     tama_gtf_df.iloc[:, 8] = tama_gtf_df.apply(
         lambda row: change_gene_id(row), axis=1)
 
     # QUOTE_NONE only: the attribute field legitimately contains double quotes
-    # and must be written verbatim. The previous escapechar='\\' turned them
-    # into malformed \" on newer pandas. GTF fields never contain tabs, so no
-    # escaping is needed.
+    # and must be written verbatim (escapechar='\\' would mangle them).
     tama_gtf_df.iloc[:, 0:9].to_csv(output_gtf, sep='\t', index=False,
                                     header=False, quoting=csv.QUOTE_NONE)
 
 
 if __name__ == "__main__":
-    # ------------------ CONSTANTS ------------------ #
     args = parse_args()
-
-    path_to_tama_gtf = args.path_to_tama_gtf
-    output_gtf = args.output_gtf
-    path_to_classif = args.path_to_classif
-
-    main(path_to_tama_gtf, path_to_classif, output_gtf)
+    main(args.path_to_tama_gtf, args.path_to_classif,
+         args.output_gtf)  # , args.path_to_reference_gtf
