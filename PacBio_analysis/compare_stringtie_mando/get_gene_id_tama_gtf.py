@@ -10,6 +10,12 @@ import csv
 # path_to_tama_gtf = "/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026/HUVEC/HUVEC_merged_tama.gtf"
 # output_gtf = "/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026/HUVEC/HUVEC_merged_tama_gene_id_02_07_26.gtf"
 # path_to_classif = "/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026/SQANTI3_QC/HUVEC/isoforms_classification.txt"
+
+# path_to_tama_gtf = "/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026/CM/CM_merged_tama.gtf"
+# output_gtf = "/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026/CM/CM_merged_tama_gene_id_02_07_26.gtf"
+# path_to_classif = "/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026/SQANTI3_QC/CM/isoforms_classification.txt"
+
+
 # path_to_reference_gtf = "/projects/splitorfs/work/reference_files/filtered_Ens_reference_correct_29_09_25/Ensembl_110_filtered_equality_and_tsl1_2_correct_29_09_25.gtf"
 
 def parse_args():
@@ -131,6 +137,7 @@ def main(path_to_tama_gtf, path_to_classif, output_gtf):  # , path_to_reference_
         tama_gtf_df.loc[is_gene, 'gene_id'].map(span['start']).values
     tama_gtf_df.loc[is_gene, 4] = \
         tama_gtf_df.loc[is_gene, 'gene_id'].map(span['end']).values
+    # keep first: first occurrence gets False, all later get True
     dup_gene = is_gene & tama_gtf_df.duplicated(subset=[2, 'gene_id'],
                                                 keep='first')
     n_dup = int(dup_gene.sum())

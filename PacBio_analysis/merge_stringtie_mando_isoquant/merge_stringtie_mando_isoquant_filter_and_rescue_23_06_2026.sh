@@ -105,7 +105,7 @@ fi
 # ------------------ COMPARE TO ENSEMBL FULL  ASSEMBLY       ------------------ #
 #################################################################################
 
-
+conda activate pacbio
 if [[ ! -d "$outdir_tama/HUVEC/compare_Ens_full_ref" ]]; then
     mkdir $outdir_tama/HUVEC/compare_Ens_full_ref
     gffcompare -o $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_compare_full_GTF\
@@ -136,12 +136,12 @@ fi
 # which isoforms are novel nmd transcripts?
  python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/count_nr_novel_nmd_transcripts.py \
  /home/ckalk/tools/NMD_fetaure_composition/Output/CM_merged_tama_iso_mando_stringtie_50nt/CM_merged_tama_iso_mando_stringtie_50nt.csv \
- $outdir_tama/CM/compare_Ens_full_ref/CM_merged_tama_iso_mando_stringtie_gene_id_novel_isoforms.txt \
+ $outdir_tama/CM/compare_Ens_full_ref/CM_merged_tama_gene_id_novel_isoforms.txt \
  --assembly_type full
 
  python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/count_nr_novel_nmd_transcripts.py \
  /home/ckalk/tools/NMD_fetaure_composition/Output/HUVEC_merged_tama_iso_mando_stringtie_50nt/HUVEC_merged_tama_iso_mando_stringtie_50nt.csv \
- $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_merged_tama_iso_mando_stringtie_gene_id_novel_isoforms.txt \
+ $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_merged_tama_gene_id_novel_isoforms.txt \
  --assembly_type full
 
 #################################################################################

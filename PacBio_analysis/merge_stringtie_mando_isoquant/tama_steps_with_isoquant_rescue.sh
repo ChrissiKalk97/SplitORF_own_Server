@@ -206,17 +206,31 @@ if [ ! -d "${outdir_tama}"/SQANTI3_QC/${cell_type} ]; then
     "${outdir_tama}"/SQANTI3_QC/${cell_type} \
     /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/sqanti3/${cell_type}_short_reads.txt \
     "$outdir_tama/kallisto/${cell_type}_quant"
-    
+fi
+
+# if [[ ! -e ""$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id.gtf" ]]; then
+#     conda activate pacbio
+
+#     python "${script_dir}"/get_gene_id_tama_gtf.py \
+#     "$outdir_tama"/${cell_type}/${cell_type}_merged_tama.gtf \
+#     "$outdir_tama"/SQANTI3_QC/${cell_type}/isoforms_classification.txt  \
+#     "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id.gtf
+
+#     python "${script_dir}"/add_source_to_tama_gtf.py \
+#     "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id.gtf \
+#     "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_trans_report.txt
+# fi
+
+
+if [[ ! -e ""$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_02_07_26_source.gtf" ]]; then
     conda activate pacbio
 
     python "${script_dir}"/get_gene_id_tama_gtf.py \
     "$outdir_tama"/${cell_type}/${cell_type}_merged_tama.gtf \
     "$outdir_tama"/SQANTI3_QC/${cell_type}/isoforms_classification.txt  \
-    "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id.gtf
+    "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_02_07_26.gtf
 
     python "${script_dir}"/add_source_to_tama_gtf.py \
-    "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id.gtf \
+    "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_02_07_26.gtf \
     "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_trans_report.txt
-
 fi
-
