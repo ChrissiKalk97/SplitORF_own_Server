@@ -32,9 +32,9 @@ def parse_arguments():
 ################################################################################
 # PATH DEFINITIONS
 ################################################################################
-unique_peptide_information_csv = '/projects/splitorfs/work/Masspec/New_MS_run_19_09_25_tama_assembly_SOs/analysis_results_with_ref_19_09_25/huvec_validated_SO_protein_original_Ids_with_assembly.csv'
-favorite_assembly = 'TAMA_HUVEC'
-cell_type = 'HUVEC'
+# unique_peptide_information_csv = '/projects/splitorfs/work/Masspec/New_MS_run_19_09_25_tama_assembly_SOs/analysis_results_with_ref_19_09_25/huvec_validated_SO_protein_original_Ids_with_assembly.csv'
+# favorite_assembly = 'TAMA_HUVEC'
+# cell_type = 'HUVEC'
 
 
 def main(unique_peptide_information_csv, favorite_assembly, cell_type):

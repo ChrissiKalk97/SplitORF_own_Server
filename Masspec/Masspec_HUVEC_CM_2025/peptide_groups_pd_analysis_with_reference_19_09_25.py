@@ -44,12 +44,12 @@ def parse_arguments():
 ################################################################################
 # PATH DEFINITIONS
 ################################################################################
-peptides_file = '/projects/splitorfs/work/Masspec/New_MS_run_19_09_25_tama_assembly_SOs/20250430_AS_LC4_MAA_20049_01_VLD_HUVEC_F_PeptideGroups.txt'
-so_id_mapping_file = '/home/ckalk/tools/SplitORF_pipeline/Output/tama_NMD_RI_masspec_files/Unique_proteins_Masspec_NMD_RI_HUVEC_CM_tama_unique_SO_ID_16_09_25_so_id_mapping_with_assembly_info.tsv'
-ref_id_mapping = '/home/ckalk/tools/SplitORF_pipeline/Output/tama_NMD_RI_masspec_files/Unique_proteins_Masspec_NMD_RI_HUVEC_CM_tama_with_Uniprot_408_ref_unique_SO_ID_with_assembly_info_ref_id_mapping.tsv'
-cell_type = 'huvec'
-outdir = os.path.dirname(peptides_file)
-outdir = os.path.join(outdir, 'analysis_results_with_ref_19_09_25')
+# peptides_file = '/projects/splitorfs/work/Masspec/New_MS_run_19_09_25_tama_assembly_SOs/20250430_AS_LC4_MAA_20049_01_VLD_HUVEC_F_PeptideGroups.txt'
+# so_id_mapping_file = '/home/ckalk/tools/SplitORF_pipeline/Output/tama_NMD_RI_masspec_files/Unique_proteins_Masspec_NMD_RI_HUVEC_CM_tama_unique_SO_ID_16_09_25_so_id_mapping_with_assembly_info.tsv'
+# ref_id_mapping = '/home/ckalk/tools/SplitORF_pipeline/Output/tama_NMD_RI_masspec_files/Unique_proteins_Masspec_NMD_RI_HUVEC_CM_tama_with_Uniprot_408_ref_unique_SO_ID_with_assembly_info_ref_id_mapping.tsv'
+# cell_type = 'huvec'
+# outdir = os.path.dirname(peptides_file)
+# outdir = os.path.join(outdir, 'analysis_results_with_ref_19_09_25')
 
 
 def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping):
@@ -265,11 +265,30 @@ def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping):
 
         return split_orf_peptides_with_quan_info_df, proteins_validated_df, proteins_validated_list, proteins_validated_quan_list
 
+    def repair_positions(pos_string):
+        entries = pos_string.split("; ")
+        repaired = []
+        prefix = None
+        for entry in entries:
+            if entry.startswith("Split"):
+                prefix = entry.split("[")[0]
+                repaired.append(entry)
+            else:
+                if prefix is None:
+                    raise ValueError(
+                        f"Position entry with no preceding protein ID: {pos_string!r}")
+                repaired.append(prefix + entry)
+        return repaired
+
     def get_protein_positions_and_names(split_orf_peptides_with_quan_info_df):
         # in case that there is one peptide that maps to different positions in the same protein we have SplitOrfProtein-33902 [1-7]; [85-91]
         # solution: add the previous SO protein if there just comes a number
-        split_orf_peptides_with_quan_info_df['Positions in Proteins'] = split_orf_peptides_with_quan_info_df['Positions in Proteins'].apply(
-            lambda x: x.split("; ")).apply(lambda x: [x[i] if x[i].startswith('Split') else x[i-1].split('[')[0]+x[i] for i in range(len(x))])
+        # the old code would fail if there were 3 or more positions of a peptide within a protein...
+        # split_orf_peptides_with_quan_info_df['Positions in Proteins'] = split_orf_peptides_with_quan_info_df['Positions in Proteins'].apply(
+        #     lambda x: x.split("; ")).apply(lambda x: [x[i] if x[i].startswith('Split') else x[i-1].split('[')[0]+x[i] for i in range(len(x))])
+        split_orf_peptides_with_quan_info_df['Positions in Proteins'] = \
+            split_orf_peptides_with_quan_info_df['Positions in Proteins'].apply(
+                repair_positions)
 
         # get just the positions as a new colum
         split_orf_peptides_with_quan_info_df['Positions'] = split_orf_peptides_with_quan_info_df['Positions in Proteins'].apply(
@@ -288,8 +307,6 @@ def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping):
         def get_split_orf_gene_ids(peptides_df_exploded, so_id_mapping_df):
             peptides_df_exploded_split_orfs = peptides_df_exploded[peptides_df_exploded['Protein Accessions List'].apply(
                 lambda x: x.startswith('Split'))].copy()
-            so_id_mapping_df['Gene_ID'] = so_id_mapping_df['Unnamed: 0'].apply(
-                lambda x: x.split('|')[0])
             so_gene_id_dict = dict(
                 zip(so_id_mapping_df['SO_unique_ID'], so_id_mapping_df['Gene_ID']))
             peptides_df_exploded_split_orfs['Gene_ID'] = peptides_df_exploded_split_orfs['Protein Accessions List'].map(
@@ -298,8 +315,9 @@ def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping):
                 peptides_df_exploded_split_orfs['Gene_ID'].unique())
             split_orf_unique_gene_ids_series.to_csv(os.path.join(
                 outdir, 'background', f'{cell_type}_splitorf_gene_ids_detected_for_background.txt'), index=False, header=False)
+            return set(split_orf_unique_gene_ids_series)
 
-        def get_reference_uniprot_ids(peptides_df_exploded, ref_id_mapping):
+        def get_reference_gene_ids(peptides_df_exploded, ref_id_mapping):
             peptides_df_exploded_reference = peptides_df_exploded[peptides_df_exploded['Protein Accessions List'].apply(
                 lambda x: x.startswith('Ref'))].copy()
             ref_id_mapping_df = pd.read_csv(ref_id_mapping, sep='\t')
@@ -309,8 +327,11 @@ def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping):
                 ref_id_mapping_dict)
             ref_unique_uniprot_ids_series = pd.Series(
                 peptides_df_exploded_reference['Uniprot_ID'].unique())
+            ref_unique_gene_ids_series = pd.Series(
+                peptides_df_exploded_reference['Gene_ID'].dropna().unique())
             ref_unique_uniprot_ids_series.to_csv(os.path.join(
                 outdir, 'background', f'{cell_type}_reference_uniprot_ids_detected_for_background.txt'), index=False, header=False)
+            return set(ref_unique_gene_ids_series)
 
         # remove the unquantified values
         peptides_df = peptides_df[~peptides_df['Quan Info'].isin(
@@ -318,17 +339,43 @@ def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping):
         peptides_df_exploded = peptides_df.explode(
             'Protein Accessions List').copy()
 
-        get_split_orf_gene_ids(peptides_df_exploded, so_id_mapping_df)
+        so_id_mapping_df['Gene_ID'] = so_id_mapping_df['Unnamed: 0'].apply(
+            lambda x: x.split('|')[0])
 
-        get_reference_uniprot_ids(peptides_df_exploded, ref_id_mapping)
+        split_orf_gene_ids = get_split_orf_gene_ids(
+            peptides_df_exploded, so_id_mapping_df)
 
-    def assign_unique_peptide_positions_to_mapping_df(so_id_mapping_df, proteins_validated_list, proteins_validated_df):
+        reference_gene_ids = get_reference_gene_ids(
+            peptides_df_exploded, ref_id_mapping)
+
+        # background: all detected genes that could have yielded SO evidence,
+        # i.e. genes with at least one SO protein in the searched database
+        so_genes = set(so_id_mapping_df['Gene_ID'])
+        # protein evidence for sos and ref genes, intersect with all SO genes
+        background_gene_ids = (
+            split_orf_gene_ids | reference_gene_ids) & so_genes
+
+        print('Background genes (detected, with SO predictions):',
+              len(background_gene_ids))
+        print('  of which detected via SO peptides:', len(split_orf_gene_ids))
+        print('  added via reference peptides only:',
+              len(background_gene_ids - split_orf_gene_ids))
+
+        pd.Series(sorted(background_gene_ids)).to_csv(os.path.join(
+            outdir, 'background', f'{cell_type}_all_background_gene_ids.txt'), index=False, header=False)
+
+        return background_gene_ids
+
+    def assign_unique_peptide_positions_to_mapping_df(so_id_mapping_df, proteins_validated_list, proteins_validated_df, split_orf_peptides_with_quan_info_df):
         # filter the Split-ORF ID information file for only the validated proteins
         so_id_mapping_val_splitorfs_df = so_id_mapping_df[so_id_mapping_df['SO_unique_ID'].isin(
             proteins_validated_list)].copy()
 
-        assert len(so_id_mapping_val_splitorfs_df['SO_unique_ID'].unique()) == len(
-            proteins_validated_list) == len(proteins_validated_df.index)
+        # Claude tests:
+        mapped_ids = so_id_mapping_val_splitorfs_df['SO_unique_ID']
+        missing = set(proteins_validated_list) - set(mapped_ids)
+        assert not missing, \
+            f"{len(missing)} validated proteins absent from mapping file, e.g. {sorted(missing)[:5]}"
 
         # get start and end positions of the unique peptides in the respective protein
         so_valid_peptides_exploded_df = split_orf_peptides_with_quan_info_df.explode(
@@ -337,7 +384,7 @@ def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping):
         so_valid_peptides_exploded_df['Prot_start_position'] = so_valid_peptides_exploded_df['Positions'].apply(
             lambda x: int(x.split('-')[0]) - 1)
         so_valid_peptides_exploded_df['Prot_end_position'] = so_valid_peptides_exploded_df['Positions'].apply(
-            lambda x: int(x.split('-')[1]) - 1)
+            lambda x: int(x.split('-')[1]))
 
         # map start and end positions to the respective dataframe with the original ID
         prot_start_dict = so_valid_peptides_exploded_df.groupby(
@@ -345,13 +392,21 @@ def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping):
         prot_end_dict = so_valid_peptides_exploded_df.groupby(
             'Protein Accessions List')['Prot_end_position'].apply(list).to_dict()
 
-        assert len(so_valid_peptides_exploded_df['Protein Accessions List'].unique(
-        )) == len(prot_start_dict) == len(prot_end_dict)
-
         so_id_mapping_val_splitorfs_df['Prot_start_position'] = so_id_mapping_val_splitorfs_df['SO_unique_ID'].map(
             prot_start_dict)
         so_id_mapping_val_splitorfs_df['Prot_end_position'] = so_id_mapping_val_splitorfs_df['SO_unique_ID'].map(
             prot_end_dict)
+
+        # Integrity check of protein positions
+        unmapped = so_id_mapping_val_splitorfs_df.loc[
+            so_id_mapping_val_splitorfs_df['Prot_start_position'].isna(), 'SO_unique_ID'].tolist()
+        assert not unmapped, \
+            f"{len(unmapped)} validated proteins received no positions, e.g. {unmapped[:5]}"
+
+        bad = so_id_mapping_val_splitorfs_df.apply(
+            lambda r: len(r['Prot_start_position']) != len(r['Prot_end_position']), axis=1)
+        assert not bad.any(), \
+            f"start/end position lists differ in length for {bad.sum()} proteins"
 
         return so_id_mapping_val_splitorfs_df
 
@@ -400,7 +455,7 @@ def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping):
         split_orf_peptides_with_quan_info_df)
 
     so_id_mapping_val_splitorfs_df = assign_unique_peptide_positions_to_mapping_df(
-        so_id_mapping_df, proteins_validated_list, proteins_validated_df)
+        so_id_mapping_df, proteins_validated_list, proteins_validated_df, split_orf_peptides_with_quan_info_df)
     # add information to which set the SO proteins belong to
     so_id_mapping_val_splitorfs_df['Confidence_set'] = so_id_mapping_val_splitorfs_df['SO_unique_ID'].apply(
         lambda x: 'High' if x in proteins_validated_quan_list else 'Low')
