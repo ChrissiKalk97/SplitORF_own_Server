@@ -38,6 +38,11 @@ def parse_arguments():
         help="path to Reference ID to Uniprot mapping."
     )
 
+    parser.add_argument(
+        "--uniprot_ensembl_mapping",
+        required=True,
+        help="path to Uniprot ID - Ensembl gene ID mapping."
+    )
     return parser.parse_args()
 
 
@@ -52,7 +57,7 @@ def parse_arguments():
 # outdir = os.path.join(outdir, 'analysis_results_with_ref_19_09_25')
 
 
-def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping):
+def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping, uniprot_ensembl_mapping):
     ################################################################################
     # HELPER FUNCTION DEFINITIONS
     ################################################################################
@@ -173,7 +178,12 @@ def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping):
         print(f'Number of peptides belonging to {cell_type} assembly', sum(
             split_orf_peptides_with_quan_info_df[f'assembly contains {cell_type}']))
 
-        return split_orf_peptides_with_quan_info_df, so_id_mapping_df
+        so_peptides_val_proteins_of_right_assembly = split_orf_peptides_with_quan_info_df[
+            split_orf_peptides_with_quan_info_df[f'assembly contains {cell_type}'] == True].copy()
+        so_peptides_val_proteins_of_right_assembly.to_csv(
+            os.path.join(outdir, f'{cell_type}_PD_split_orf_only_peptides_quan_filtered_part_of_{cell_type}_assembly.csv'))
+
+        return split_orf_peptides_with_quan_info_df, so_id_mapping_df, so_peptides_val_proteins_of_right_assembly
 
     def get_validated_splitorf_proteins(split_orf_peptides_with_quan_info_df, peptides_df):
         """ 
@@ -312,28 +322,68 @@ def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping):
             peptides_df_exploded_split_orfs['Gene_ID'] = peptides_df_exploded_split_orfs['Protein Accessions List'].map(
                 so_gene_id_dict)
             split_orf_unique_gene_ids_series = pd.Series(
-                peptides_df_exploded_split_orfs['Gene_ID'].unique())
+                peptides_df_exploded_split_orfs['Gene_ID'].dropna().unique())
             split_orf_unique_gene_ids_series.to_csv(os.path.join(
                 outdir, 'background', f'{cell_type}_splitorf_gene_ids_detected_for_background.txt'), index=False, header=False)
             return set(split_orf_unique_gene_ids_series)
 
-        def get_reference_gene_ids(peptides_df_exploded, ref_id_mapping):
-            peptides_df_exploded_reference = peptides_df_exploded[peptides_df_exploded['Protein Accessions List'].apply(
+        # def get_reference_uniprot_ids(peptides_df_exploded, ref_id_mapping):
+        #     peptides_df_exploded_reference = peptides_df_exploded[peptides_df_exploded['Protein Accessions List'].apply(
+        #         lambda x: x.startswith('Ref'))].copy()
+        #     ref_id_mapping_df = pd.read_csv(ref_id_mapping, sep='\t')
+        #     ref_id_mapping_dict = dict(
+        #         zip(ref_id_mapping_df['Reference_unique_ID'], ref_id_mapping_df['Unnamed: 0']))
+        #     peptides_df_exploded_reference['Uniprot_ID'] = peptides_df_exploded_reference['Protein Accessions List'].map(
+        #         ref_id_mapping_dict)
+        #     ref_unique_uniprot_ids_series = pd.Series(
+        #         peptides_df_exploded_reference['Uniprot_ID'].dropna().unique())
+        #     ref_unique_uniprot_ids_series.to_csv(os.path.join(
+        #         outdir, 'background', f'{cell_type}_reference_uniprot_ids_detected_for_background.txt'), index=False, header=False)
+        #     return set(ref_unique_uniprot_ids_series)
+
+        # # remove the unquantified values
+        # peptides_df = peptides_df[~peptides_df['Quan Info'].isin(
+        #     ['NoQuanValues', 'ExcludedByMethod'])].copy()
+        # peptides_df_exploded = peptides_df.explode(
+        #     'Protein Accessions List').copy()
+
+        # so_id_mapping_df['Gene_ID'] = so_id_mapping_df['Unnamed: 0'].apply(
+        #     lambda x: x.split('|')[0])
+
+        # split_orf_gene_ids = get_split_orf_gene_ids(
+        #     peptides_df_exploded, so_id_mapping_df)
+
+        # reference_uniprot_ids = get_reference_uniprot_ids(
+        #     peptides_df_exploded, ref_id_mapping)
+
+        # print('Background genes (SO genes detected via SO peptides):',
+        #       len(split_orf_gene_ids))
+        # print('Reference proteins detected (UniProt, separate namespace):',
+        #       len(reference_uniprot_ids))
+        def get_reference_gene_ids(peptides_df_exploded, ref_id_mapping, uniprot_ensembl_mapping):
+            ref_peptides = peptides_df_exploded[peptides_df_exploded['Protein Accessions List'].apply(
                 lambda x: x.startswith('Ref'))].copy()
             ref_id_mapping_df = pd.read_csv(ref_id_mapping, sep='\t')
-            ref_id_mapping_dict = dict(
-                zip(ref_id_mapping_df['Reference_unique_ID'], ref_id_mapping_df['Unnamed: 0']))
-            peptides_df_exploded_reference['Uniprot_ID'] = peptides_df_exploded_reference['Protein Accessions List'].map(
-                ref_id_mapping_dict)
-            ref_unique_uniprot_ids_series = pd.Series(
-                peptides_df_exploded_reference['Uniprot_ID'].unique())
-            ref_unique_gene_ids_series = pd.Series(
-                peptides_df_exploded_reference['Gene_ID'].dropna().unique())
-            ref_unique_uniprot_ids_series.to_csv(os.path.join(
+            ref_dict = dict(zip(ref_id_mapping_df['Reference_unique_ID'],
+                                ref_id_mapping_df['Unnamed: 0']))
+            uniprot_ids = pd.Series(ref_peptides['Protein Accessions List'].map(
+                ref_dict).dropna().unique())
+            uniprot_ids.to_csv(os.path.join(
                 outdir, 'background', f'{cell_type}_reference_uniprot_ids_detected_for_background.txt'), index=False, header=False)
-            return set(ref_unique_gene_ids_series)
 
-        # remove the unquantified values
+            # UniProt -> Ensembl gene IDs (strip isoform suffix and version)
+            u2e = pd.read_csv(uniprot_ensembl_mapping, sep='\t')
+            u2e['From'] = u2e['From'].apply(lambda x: x.split('-')[0])
+            u2e['To'] = u2e['To'].apply(lambda x: x.split('.')[0])
+            u2e_dict = u2e.groupby('From')['To'].apply(set).to_dict()
+
+            detected = {acc.split('-')[0] for acc in uniprot_ids}
+            gene_ids = set().union(*[u2e_dict.get(acc, set())
+                                     for acc in detected]) if detected else set()
+            print('Reference UniProt accessions detected:', len(detected),
+                  '| without Ensembl mapping:', len([a for a in detected if a not in u2e_dict]))
+            return gene_ids
+
         peptides_df = peptides_df[~peptides_df['Quan Info'].isin(
             ['NoQuanValues', 'ExcludedByMethod'])].copy()
         peptides_df_exploded = peptides_df.explode(
@@ -344,25 +394,20 @@ def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping):
 
         split_orf_gene_ids = get_split_orf_gene_ids(
             peptides_df_exploded, so_id_mapping_df)
-
         reference_gene_ids = get_reference_gene_ids(
-            peptides_df_exploded, ref_id_mapping)
+            peptides_df_exploded, ref_id_mapping, uniprot_ensembl_mapping)
 
-        # background: all detected genes that could have yielded SO evidence,
-        # i.e. genes with at least one SO protein in the searched database
-        so_genes = set(so_id_mapping_df['Gene_ID'])
-        # protein evidence for sos and ref genes, intersect with all SO genes
+        # detected genes that had SO predictions available, i.e. could have yielded SO evidence
+        so_gene_universe = set(so_id_mapping_df['Gene_ID'])
         background_gene_ids = (
-            split_orf_gene_ids | reference_gene_ids) & so_genes
+            split_orf_gene_ids | reference_gene_ids) & so_gene_universe
 
-        print('Background genes (detected, with SO predictions):',
-              len(background_gene_ids))
-        print('  of which detected via SO peptides:', len(split_orf_gene_ids))
-        print('  added via reference peptides only:',
-              len(background_gene_ids - split_orf_gene_ids))
+        print('Background genes:', len(background_gene_ids),
+              '| via SO peptides:', len(split_orf_gene_ids),
+              '| added via reference only:', len(background_gene_ids - split_orf_gene_ids))
 
         pd.Series(sorted(background_gene_ids)).to_csv(os.path.join(
-            outdir, 'background', f'{cell_type}_all_background_gene_ids.txt'), index=False, header=False)
+            outdir, 'background', f'{cell_type}_background_gene_ids.txt'), index=False, header=False)
 
         return background_gene_ids
 
@@ -437,7 +482,7 @@ def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping):
     ################################################################################
     # CHECK WHICH ASSEMBLY THE PEPTIDES STEM FROM
     ################################################################################
-    split_orf_peptides_with_quan_info_df, so_id_mapping_df = get_assembly_of_so_proteins(
+    split_orf_peptides_with_quan_info_df, so_id_mapping_df, so_peptides_val_proteins_of_right_assembly = get_assembly_of_so_proteins(
         so_id_mapping_file, split_orf_peptides_with_quan_info_df)
 
     ################################################################################
@@ -466,6 +511,22 @@ def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping):
     get_background_set_ids(peptides_df, ref_id_mapping,
                            so_id_mapping_df, outdir, cell_type)
 
+    # proteins that are BOTH predicted in the cell type's assembly AND validated
+    huvec_proteins = set(so_id_mapping_df.loc[
+        so_id_mapping_df['assembly'] == f'TAMA_{cell_type.upper()}', 'SO_unique_ID'])
+    val_huvec_proteins = huvec_proteins & set(proteins_validated_quan_list)
+    print(f'Validated (High confidence) SO proteins predicted in {cell_type} assembly:',
+          len(val_huvec_proteins))
+    pd.Series(sorted(val_huvec_proteins)).to_csv(os.path.join(
+        outdir, f'{cell_type}_validated_SO_proteins_of_{cell_type}_assembly.txt'), index=False, header=False)
+    peptides_exploded = split_orf_peptides_with_quan_info_df.explode(
+        'Protein Accessions List').copy()
+    peptides_exploded['Protein Accessions List'] = peptides_exploded['Protein Accessions List'].str.strip()
+    peptides_val_huvec = peptides_exploded[
+        peptides_exploded['Protein Accessions List'].isin(val_huvec_proteins)].copy()
+    peptides_val_huvec.to_csv(os.path.join(
+        outdir, f'{cell_type}_PD_split_orf_peptides_of_validated_{cell_type}_assembly_proteins.csv'))
+
 
 if __name__ == "__main__":
     args = parse_arguments()
@@ -475,5 +536,7 @@ if __name__ == "__main__":
     cell_type = args.cell_type
     outdir = args.outdir
     ref_id_mapping = args.ref_id_mapping
+    uniprot_ensembl_mapping = args.uniprot_ensembl_mapping
 
-    main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping)
+    main(peptides_file, so_id_mapping_file, cell_type,
+         outdir, ref_id_mapping, uniprot_ensembl_mapping)

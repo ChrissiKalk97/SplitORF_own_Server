@@ -30,7 +30,8 @@ python peptide_groups_pd_analysis_with_reference_19_09_25.py \
  --so_id_mapping_file "${MAPDIR}/Unique_proteins_Masspec_NMD_RI_HUVEC_CM_tama_unique_SO_ID_20_07_26_so_id_mapping_with_assembly_info.tsv" \
  --ref_id_mapping "${MAPDIR}/Unique_proteins_Masspec_NMD_RI_HUVEC_CM_tama_with_Uniprot_408_ref_unique_SO_ID_with_assembly_info_20_07_26_ref_id_mapping.tsv" \
  --cell_type "huvec" \
- --outdir "$OUTDIR"
+ --outdir "$OUTDIR" \
+ --uniprot_ensembl_mapping "${MAPDIR}/uniprot_ensembl_mapping.tsv"
 
 
 python peptide_groups_pd_analysis_with_reference_19_09_25.py \
@@ -38,7 +39,8 @@ python peptide_groups_pd_analysis_with_reference_19_09_25.py \
  --so_id_mapping_file "${MAPDIR}/Unique_proteins_Masspec_NMD_RI_HUVEC_CM_tama_unique_SO_ID_20_07_26_so_id_mapping_with_assembly_info.tsv" \
  --ref_id_mapping "${MAPDIR}/Unique_proteins_Masspec_NMD_RI_HUVEC_CM_tama_with_Uniprot_408_ref_unique_SO_ID_with_assembly_info_20_07_26_ref_id_mapping.tsv" \
  --cell_type "cm" \
- --outdir "$OUTDIR"
+ --outdir "$OUTDIR" \
+ --uniprot_ensembl_mapping "${MAPDIR}/uniprot_ensembl_mapping.tsv"
 
 
 # # Only need the genomic positions for HUVEC right now as for CM there is no Riboseq data
