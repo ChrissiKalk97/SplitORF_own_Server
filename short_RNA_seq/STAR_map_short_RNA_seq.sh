@@ -32,9 +32,10 @@ for FQ in "${fq_files[@]}";
 do
         SAMPLE=$(basename "$FQ")
         SAMPLE=${SAMPLE%%R1*}   
-        FQ2=${file/R1/R2}
+        FQ2=${FQ/R1/R2}
         STAR \
-        --runThreadN 16 \
+        --runThreadN 32 \
+        --outSAMtype BAM SortedByCoordinate \
         --genomeDir $STAR_index\
         --readFilesIn $FQ $FQ2\
         --readFilesCommand gunzip -c \
@@ -73,3 +74,14 @@ done
 # `--alignSJDBoverhangMin` default 1: minimum overahng of annotated junctions
 #--alignSJoverhangMin default 8, min overahng of unannotated junctions
 # --outSJfilterOverhangMin default 30 12 12 12, for unannotated jcts, minimum overhang length for splice junctions on both sides for: (1) non-canonical motifs, (2) GT/AG and CT/AC motif, (3) GC/AG and CT/GC motif, (4) AT/AC and GT/AT motif.
+
+
+
+for bam in ${STAR_out_dir}/*.bam; do
+    samtools sort -o $(dirname $bam)/$(basename $bam .bam)_sorted.bam $bam
+    samtools index $(dirname $bam)/$(basename $bam .bam)_sorted.bam
+    samtools idxstats $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
+     $(dirname $bam)/$(basename $bam .bam)_idxstats.out
+     samtools flagstat $(dirname $bam)/$(basename $bam .bam)_sorted.bam > \
+     $(dirname $bam)/$(basename $bam .bam)_flagstat.out
+done 

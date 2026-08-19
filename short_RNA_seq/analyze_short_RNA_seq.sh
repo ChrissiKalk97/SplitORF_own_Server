@@ -14,7 +14,7 @@ raw_data_fastqc_dir_huvec="/projects/splitorfs/work/own_data/Novogene/Michi_Vlad
 multiQC_outname="multiqc"
 # 40 FASTQ files are indicated in the MD5 checksums
 
-outidr_fastp="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/fastp"
+outidr_fastp="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/HUVEC_fastp"
 STAR_out_dir_huvec="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Ens_110_filtered/STAR"
 STAR_index="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Ens_110_filtered/STAR/index/Ens110"
 Genome_Fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
@@ -77,7 +77,7 @@ raw_data_fastqc_dir_cm="/projects/splitorfs/work/own_data/Novogene/Michi_Vlado_r
 multiQC_outname="multiqc"
 # 40 FASTQ files are indicated in the MD5 checksums
 
-outidr_fastp="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/CM_fastp"
+outidr_fastp_cm="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/CM_fastp"
 STAR_out_dir_cm="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Ens_110_filtered/CM_STAR"
 STAR_index="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Ens_110_filtered/STAR/index/Ens110"
 Genome_Fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
@@ -90,16 +90,20 @@ Decoys="/projects/splitorfs/work/reference_files/decoys.txt"
 # cm_tama_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/compare_mando_stringtie/tama/CM/CM_merged_tama_gene_id.gtf"
 
 
+if [ ! -d "${outidr_fastp_cm}" ]; then
+    mkdir "${outidr_fastp_cm}"
+fi
 
-bash fastqc_multiqc_RNA_seq.sh ${raw_data_dir_cm} ${raw_data_fastqc_dir_cm} ${multiQC_outname} raw
 
-bash merge_fastq_files.sh ${raw_data_dir_cm} ${merged_data_dir_cm}
+# bash fastqc_multiqc_RNA_seq.sh ${raw_data_dir_cm} ${raw_data_fastqc_dir_cm} ${multiQC_outname} raw
 
-bash fastqc_multiqc_RNA_seq.sh ${merged_data_dir_cm} ${merged_data_dir_cm}/fastqc ${multiQC_outname} raw
+# bash merge_fastq_files.sh ${raw_data_dir_cm} ${merged_data_dir_cm}
 
-bash trim_adapters_RNA_seq.sh ${merged_data_dir_cm} ${outidr_fastp} _fastp
+# bash fastqc_multiqc_RNA_seq.sh ${merged_data_dir_cm} ${merged_data_dir_cm}/fastqc ${multiQC_outname} raw
 
-bash fastqc_multiqc_RNA_seq.sh ${outidr_fastp} ${outidr_fastp}/fastqc ${multiQC_outname} fastp
+bash trim_adapters_RNA_seq.sh ${merged_data_dir_cm} ${outidr_fastp_cm} _fastp
+
+bash fastqc_multiqc_RNA_seq.sh ${outidr_fastp} ${outidr_fastp_cm}/fastqc ${multiQC_outname} fastp
 
 # bash Salmon_quantification.sh \
 #   ${Genome_Fasta} \

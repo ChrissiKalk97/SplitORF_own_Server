@@ -4,6 +4,8 @@
 # ----- taking the TSL and Gencode equlaity filtered Ensembl gtf as a reference     ----- #
 # ----- These results can be taken to perform DEG analysis with DeSeq2 or DTE with sleuth ----- #
 
+eval "$(conda shell.bash hook)"
+conda activate pacbio
 
 GenomeFasta=$1
 TranscriptomeAssembly=$2
@@ -38,26 +40,31 @@ if [ ! -d "$SalmonRefDir"/index_k31 ]; then
 fi
 
 
-if [ ! -d $SalmonOutDir/bootstraps ]; then
-    mkdir $SalmonOutDir/bootstraps
+if [ ! -d $SalmonOutDir/Gibbs ]; then
+    mkdir $SalmonOutDir/Gibbs
 fi
 
 shopt -s nullglob
-fq_files=("${fastq_dir}"/*R1.fastp.fastq.gz)
+fq_files=("${ShortReadDir}"/*R1.fastp.fastq.gz)
 
 
 for FQ in "${fq_files[@]}"; 
 do
-    SAMPLE=$(basename "$FQ")
-    SAMPLE=${SAMPLE%%.*}   
-    FQ2=${file/R1/R2}
+    echo ${FQ}
+    
+    Sample=$(basename "$FQ")
+    Sample=${Sample%%.*}   
+    FQ2=${FQ/R1/R2}
+    echo ${FQ2}
+
+
     salmon quant -i ${SalmonRefDir}/index_k31 \
     -l A \
     -1 ${FQ} \
     -2 ${FQ2} \
     --validateMappings \
-    -q 32 \
-    -o $SalmonOutDir/bootstraps/${SAMPLE}_bootstrap \
-    --seqBias --gcBias --posBias --reduceGCMemory --numBootstraps 100
+    --threads 32 \
+    -o $SalmonOutDir/Gibbs/${Sample}_Gibbs \
+    --seqBias --gcBias --posBias --reduceGCMemory --numGibbsSamples 100
 done
 
