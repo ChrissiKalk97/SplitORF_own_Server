@@ -8,18 +8,18 @@ conda activate pacbio
 reference_gtf="/projects/splitorfs/work/reference_files/filtered_Ens_reference_correct_29_09_25/Ensembl_110_filtered_equality_and_tsl1_2_correct_29_09_25.gtf"
 ensembl_full_gtf="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.gtf"
 
-mando_rescued_cm_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_50_upstream_17_06_2026/SQANTI3/SQANTI3_Rescue/CM/CM_rescue_rules_filter_rescued.gtf"
-stringtie_cm_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/stringtie3_June_2026_minimap2/SQANTI3/SQANTI3_Rescue/CM/CM_rescue_rules_filter_rescued.gtf"
-isoquant_cm_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/IsoQuant/SQANTI3/SQANTI3_Rescue/CM/CM_rescue_rules_filter_rescued.gtf"
+mando_rescued_cm_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_50_upstream_17_06_2026/SQANTI3/SQANTI3_Rescue_automatic/CM/CM_rescue_rules_filter_rescued.gtf"
+stringtie_cm_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/stringtie3_June_2026_minimap2/SQANTI3/SQANTI3_Rescue_automatic/CM/CM_rescue_rules_filter_rescued.gtf"
+isoquant_cm_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/IsoQuant/SQANTI3/SQANTI3_Rescue_automatic/CM/CM_rescue_rules_filter_rescued.gtf"
 # outdir_cm="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026/CM"
-outdir_cm="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_up_1000_down_500_25_august_2026/CM"
+outdir_cm="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_automatic_25_august_2026/CM"
 prefix_cm="CM_mando_stringtie_combined"
 
-mando_rescued_huvec_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_50_upstream_17_06_2026/SQANTI3/SQANTI3_Rescue/HUVEC/HUVEC_rescue_rules_filter_rescued.gtf"
-stringtie_huvec_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/stringtie3_June_2026_minimap2/SQANTI3/SQANTI3_Rescue/HUVEC/HUVEC_rescue_rules_filter_rescued.gtf"
-isoquant_huvec_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/IsoQuant/SQANTI3/SQANTI3_Rescue/HUVEC/HUVEC_rescue_rules_filter_rescued.gtf"
+mando_rescued_huvec_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_50_upstream_17_06_2026/SQANTI3/SQANTI3_Rescue_automatic/HUVEC/HUVEC_rescue_rules_filter_rescued.gtf"
+stringtie_huvec_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/stringtie3_June_2026_minimap2/SQANTI3/SQANTI3_Rescue_automatic/HUVEC/HUVEC_rescue_rules_filter_rescued.gtf"
+isoquant_huvec_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/IsoQuant/SQANTI3/SQANTI3_Rescue_automatic/HUVEC/HUVEC_rescue_rules_filter_rescued.gtf"
 # outdir_huvec="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026/HUVEC"
-outdir_huvec="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_up_1000_down_500_25_august_2026/HUVEC"
+outdir_huvec="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_automatic_25_august_2026/HUVEC"
 prefix_huvec="HUVEC_mando_stringtie_combined"
 
 outdir_fastp="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025"
@@ -34,10 +34,10 @@ mapping_dir="/projects/splitorfs/work/PacBio/merged_bam_files/genome_alignment/"
 #################################################################################
 
 # outdir_tama="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026"
-outdir_tama="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_up_1000_down_500_25_august_2026"
+outdir_tama="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_automatic_25_august_2026"
 
 
-bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/tama_steps_with_isoquant_rescue_20_08_26.sh \
+bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/tama_steps_with_isoquant_rescue_automatic_25_08_26.sh \
  -c HUVEC \
  -d "$script_dir" \
  -f "$genome_fasta" \
@@ -49,7 +49,7 @@ bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquan
  -s "$stringtie_huvec_gtf" \
  -t "/home/ckalk/tools/tama"
 
-bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/tama_steps_with_isoquant_rescue_20_08_26.sh \
+bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/tama_steps_with_isoquant_rescue_automatic_25_08_26.sh \
  -c CM \
  -d "$script_dir" \
  -f "$genome_fasta" \
@@ -67,16 +67,16 @@ bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquan
 # use the conda package and the prediction module, need to create a json file for this!
 conda activate pygtftk # 
 for cell_type in "HUVEC" "CM"; do
-    if [[ ! -e "~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_merged_tama_ExonCoordsOfTranscriptsForSO.txt" ]]; then
-        python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Input_scripts/change_fasta_header_custom_isoforms.py \
-            "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_20_08_26.gtf \
-            "$outdir_tama"/kallisto/${cell_type}_tama_merged_assembly_transcriptome.fa \
-            ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_tama_merged_assembly_transcriptome_gID_tID.fa
+    # if [[ ! -e "~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_merged_tama_ExonCoordsOfTranscriptsForSO.txt" ]]; then
+    #     python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Input_scripts/change_fasta_header_custom_isoforms.py \
+    #         "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_20_08_26.gtf \
+    #         "$outdir_tama"/kallisto/${cell_type}_tama_merged_assembly_transcriptome.fa \
+    #         ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_tama_merged_assembly_transcriptome_gID_tID.fa
 
-        python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Genomic_scripts_18_10_24/get_exon_coords_from_gtf.py \
-            "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_20_08_26.gtf \
-            ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_merged_tama_ExonCoordsOfTranscriptsForSO.txt
-    fi
+    #     python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Genomic_scripts_18_10_24/get_exon_coords_from_gtf.py \
+    #         "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_20_08_26.gtf \
+    #         ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_merged_tama_ExonCoordsOfTranscriptsForSO.txt
+    # fi
 
     if [[ ! -d "$outdir_tama"/${cell_type}/${cell_type}_quant ]]; then
         mkdir "$outdir_tama"/${cell_type}/${cell_type}_quant
@@ -219,7 +219,7 @@ fi
 # minimap2 -x map-hifi -d $outdir_tama/HUVEC/minimap2/HUVEC_index/HUVEC_index.mmi $outdir_tama/HUVEC/HUVEC_merged_tama_gene_id.fasta
 # minimap2 -x map-hifi -d $outdir_tama/CM/minimap2/CM_index/CM_index.mmi $outdir_tama/CM/CM_merged_tama_gene_id.fasta
 
-isoseq_reads_dir="/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq"
+# isoseq_reads_dir="/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq"
 
 # minimap2 align HUVEC LRs
 # for fastq in "${isoseq_reads_dir}"/HUVEC*.fastq; do

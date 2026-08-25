@@ -3,34 +3,93 @@
 eval "$(conda shell.bash hook)"
 conda activate pacbio
 
-# ensembl_filtered_gtf=$1
-# genome_fasta=$2
-# consensus_reads_fofn=$3
 
-cell_type=$1
+# reference_gtf="/projects/splitorfs/work/reference_files/filtered_Ens_reference_correct_29_09_25/Ensembl_110_filtered_equality_and_tsl1_2_correct_29_09_25.gtf"
+# ensembl_full_gtf="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.gtf"
+# genome_fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
+# consensus_reads_fofn="pacbio_consensus_${cell_type}.fofn"
+# out_path="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_updated_parameters"
+# bam_dir="/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine"
 
 
-ensembl_filtered_gtf="/projects/splitorfs/work/reference_files/filtered_Ens_reference_correct_29_09_25/Ensembl_110_filtered_equality_and_tsl1_2_correct_29_09_25.gtf"
-ensembl_full_gtf="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.113.chr.gtf"
-genome_fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
-consensus_reads_fofn="pacbio_consensus_${cell_type}.fofn"
-out_path="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_updated_parameters"
-# with the default filter settings
-out_path_filter="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion"
-bam_dir="/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine"
+# kallisto_dir="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Mandalorion_raw_updated_parameters"
+# short_read_dir="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/${cell_type}_fastp"
+# sqanti_script_dir="/home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3"
+
+
+
+# Define the usage function
+usage() {
+  echo "Usage: $0 -b <bam_dir> -c <cell_type> -f <consensus_reads_fofn> -g <genome_fasta> -o <outdir_tama>  [-h for help]"
+}
+
+# Process options with silent error mode
+while getopts "b:c:e:f:g:k:l:m:o:p:q:r:s:h" opt; do
+  case $opt in
+    b)
+      bam_dir="$OPTARG"
+      ;;
+    c)
+      cell_type="$OPTARG"
+      ;;
+    e)
+      ensembl_full_gtf="$OPTARG"
+      ;;
+    f)
+      consensus_reads_fofn="$OPTARG"
+      ;;
+    g)
+      genome_fasta="$OPTARG"
+      ;;
+    k)
+      kallisto_dir="$OPTARG"
+      ;;
+    l)
+      long_read_string="$OPTARG"
+      ;;
+    m)
+      mapping_dir="$OPTARG"
+      ;;
+    o)
+      out_path="$OPTARG"
+      ;;
+    p)
+      mando_params="$OPTARG"
+      ;;
+    q)
+      sqanti_script_dir="$OPTARG"
+      ;;
+    r) 
+      reference_gtf="$OPTARG"
+      ;;
+    s)
+      short_read_dir="$OPTARG"
+      ;;
+    h)
+      usage
+      exit 0
+      ;;
+    :)
+      echo "Error: Option -$OPTARG requires an argument."
+      usage
+      exit 1
+      ;;
+    \?)
+      echo "Error: Invalid option -$OPTARG"
+      usage
+      exit 1
+      ;;
+  esac
+done
 
 
 if [[ ! -d "$out_path" ]]; then
     mkdir $out_path
 fi
 
-
 if [[ ! -d "$bam_dir/fastq" ]]; then
     mkdir $bam_dir/fastq
 fi
-
-
-
 
 shopt -s nullglob
 bam_files=("${bam_dir}"/*bam)
@@ -54,29 +113,33 @@ done
 if [[ ! -d "$out_path/${cell_type}" ]]; then
     mkdir $out_path/${cell_type}
 
-    if [[ ${cell_type} == "HUVEC" ]]; then
-        python3 /home/ckalk/scripts/SplitORFs/PacBio_analysis/tools/Mandalorion/Mando.py \
-        -p $out_path/HUVEC \
-        -t 32 \
-        -g $ensembl_filtered_gtf \
-        -G $genome_fasta \
-        --minimum_ratio 0 \
-        --minimum_reads 2 \
-        --minimum_feature_count 2 \
-        --Acutoff 1 \
-        -f /projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_50NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_5NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DHYPO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DMSO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/HUVEC_DNOR_merged_lima_refined.fastq
+    if [[ -n "$mando_params" ]]; then
+        IFS=';' read -r min_ratio min_reads min_feat_count upstream_buffer downstream_buffer <<< $mando_params
 
-    elif [[ ${cell_type} == "CM" ]]; then
-        python3 /home/ckalk/scripts/SplitORFs/PacBio_analysis/tools/Mandalorion/Mando.py \
-            -p $out_path/CM \
+            python3 /home/ckalk/scripts/SplitORFs/PacBio_analysis/tools/Mandalorion/Mando.py \
+            -p $out_path/${cell_type} \
             -t 32 \
-            -g $ensembl_filtered_gtf \
+            -g $reference_gtf \
+            -G $genome_fasta \
+            --minimum_ratio $min_ratio \
+            --minimum_reads $min_reads \
+            --minimum_feature_count $min_feat_count \
+            -u $upstream_buffer \
+            -d $downstream_buffer \
+            --Acutoff 1 \
+            -f ${long_read_string}
+    else
+    
+        python3 /home/ckalk/scripts/SplitORFs/PacBio_analysis/tools/Mandalorion/Mando.py \
+            -p $out_path/${cell_type} \
+            -t 32 \
+            -g $reference_gtf \
             -G $genome_fasta \
             --minimum_ratio 0 \
             --minimum_reads 2 \
             --minimum_feature_count 2 \
             --Acutoff 1 \
-            -f /projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_5NMD_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_DHYPO_merged_lima_refined.fastq,/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq/CM_DNOR_merged_lima_refined.fastq
+            -f ${long_read_string}
     fi
 
 fi
@@ -105,18 +168,15 @@ if [ ! -e "$out_path/${cell_type}/${cell_type}_mando_gene_id.gtf" ]; then
         -g $genome_fasta -w $out_path/${cell_type}/${cell_type}_mando_gene_id.fasta
 fi
 
-
-
-
 ################################################################################
 # ------------------ LR support/expression of isoforms       ------------------ #
 ################################################################################
 if [[ ${cell_type} == "HUVEC" ]]; then
     python mandalorion/plot_isoform_quantification_mando.py $out_path/${cell_type} 5 50
-    # python mandalorion/plot_isoform_quantification_mando.py $out_path_filter/${cell_type} 5 50
+    
 elif [[ ${cell_type} == "CM" ]]; then
     python mandalorion/plot_isoform_quantification_mando.py $out_path/${cell_type} 3 50
-    # python mandalorion/plot_isoform_quantification_mando.py $out_path_filter/${cell_type} 3 50
+    
 fi
 
 #################################################################################
@@ -124,59 +184,44 @@ fi
 #################################################################################
 if [[ ! -e "${out_path}/${cell_type}/${cell_type}_fl_counts.tsv" ]];then
     conda activate Riboseq
-    python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/sqanti3/get_fl_count_from_mando_quant_output.py \
+    python ${sqanti_script_dir}/sqanti3/get_fl_count_from_mando_quant_output.py \
     $out_path/${cell_type}
 fi
+
+#################################################################################
+# ------------------ fl counts for SQANTI3  Isoquant         ------------------ #
+#################################################################################
+if [[ ! -d "${out_path}"/"${cell_type}"/"${cell_type}"_mando_quant ]]; then
+  mkdir "${out_path}"/"${cell_type}"/"${cell_type}"_mando_quant
+  shopt -s nullglob
+  bams=("${mapping_dir}"/${cell_type}/minimap2_align/*filtered.bam)
+  conda activate isoquant
+  isoquant \
+      --reference "$genome_fasta" \
+      --genedb "$out_path/${cell_type}/${cell_type}_mando_gene_id.gtf" \
+      --no_model_construction \
+      --data_type pacbio_ccs \
+      --polya_trimmed stranded \
+      --bam  "${bams[@]}" \
+      --output "${out_path}"/"${cell_type}"/"${cell_type}"_mando_quant/ \
+      --prefix "${cell_type}"
+fi
+
 
 #################################################################################
 # ------------------ Run SQANTI                              ------------------ #
 #################################################################################
 conda activate pacbio
-bash mandalorion/assess_mando_sqanti3/run_sqanti3_on_mando_one_cell_type_20_10_25.sh \
+# "${out_path}"/"${cell_type}"/"${cell_type}"_mando_quant/"${cell_type}"/"${cell_type}".transcript_grouped_file_name_counts.tsv
+bash mandalorion/assess_mando_sqanti3/run_sqanti3_on_mando_one_cell_type_rescue_automatic.sh \
  ${cell_type} \
- $genome_fasta \
- $ensembl_filtered_gtf \
- $out_path \
- "/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Mandalorion_raw_updated_parameters" \
- "/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/${cell_type}_fastp" \
- "/home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3" \
- "/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine"
-
-
-
-#################################################################################
-# ------------------ RUN SPLIT-ORFs PIPELINE                 ------------------ #
-#################################################################################
-# bash SplitORF_scripts/run_splitorf_pipeline_on_assembly.sh \
-# $out_path/SQANTI3/SQANTI3_Rescue/CM/CM_rescue_rules_filter_rescued.gtf \
-# /home/ckalk/tools/SplitORF_pipeline \
-# $genome_fasta
-
-
-# bash SplitORF_scripts/run_splitorf_pipeline_on_assembly.sh \
-# $out_path/SQANTI3/SQANTI3_Rescue/HUVEC/HUVEC_rescue_rules_filter_rescued.gtf \
-# /home/ckalk/tools/SplitORF_pipeline \
-# $genome_fasta
-
-#################################################################################
-# ------------------ RUN FIFTYNT PIPELINE                    ------------------ #
-#################################################################################
-# bash SplitORF_scripts/run_fiftynt_on_assembly.sh \
-#     $out_path/SQANTI3/SQANTI3_Rescue/CM/CM_rescue_rules_filter_rescued.gtf \
-#     /home/ckalk/tools/NMD_fetaure_composition \
-#     $genome_fasta \
-#     $ensembl_full_gtf \
-#     CM_mando_rescued_50nt.csv
-
-
-# bash SplitORF_scripts/run_fiftynt_on_assembly.sh \
-#     $out_path/SQANTI3/SQANTI3_Rescue/HUVEC/HUVEC_rescue_rules_filter_rescued.gtf \
-#     /home/ckalk/tools/NMD_fetaure_composition \
-#     $genome_fasta \
-#     $ensembl_full_gtf \
-#     HUVEC_mando_rescued_50nt.csv
-
-
+ "$genome_fasta" \
+ "$reference_gtf" \
+ "$out_path" \
+ "${kallisto_dir}" \
+ "$short_read_dir" \
+ "${sqanti_script_dir}" \
+ "$bam_dir"
 
 
 

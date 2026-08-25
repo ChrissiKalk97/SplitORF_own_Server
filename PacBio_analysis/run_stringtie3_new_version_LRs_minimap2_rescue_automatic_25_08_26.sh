@@ -11,22 +11,22 @@ conda activate pacbio
 
 
 reference_gtf="/projects/splitorfs/work/reference_files/filtered_Ens_reference_correct_29_09_25/Ensembl_110_filtered_equality_and_tsl1_2_correct_29_09_25.gtf"
-ensembl_full_gtf="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.113.chr.gtf"
+ensembl_full_gtf="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.gtf"
 genome_fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
-long_read_dir="/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine"
+long_read_dir="/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine/fastq"
 script_dir="/home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3"
-out_path="/projects/splitorfs/work/PacBio/merged_bam_files/stringtie3_June_2026"
+out_path="/projects/splitorfs/work/PacBio/merged_bam_files/stringtie3_June_2026_minimap2"
 
 mkdir -p "$out_path"
 
 
 cell_type=HUVEC
 consensus_reads_fofn="pacbio_consensus_${cell_type}.fofn"
-bam_dir="/projects/splitorfs/work/PacBio/merged_bam_files/genome_alignment/${cell_type}/pbmm2_align"
+bam_dir="/projects/splitorfs/work/PacBio/merged_bam_files/genome_alignment"
 short_read_dir="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/${cell_type}_fastp"
 
 
-bash stringtie3_new_version_LRs_05_06_26.sh \
+bash stringtie3_new_version_LRs_minimap2_rescue_automatic_25_08_26.sh \
     -b "${bam_dir}" \
     -c "${cell_type}" \
     -e "${ensembl_full_gtf}" \
@@ -42,10 +42,10 @@ bash stringtie3_new_version_LRs_05_06_26.sh \
 
 cell_type=CM
 consensus_reads_fofn="pacbio_consensus_${cell_type}.fofn"
-bam_dir="/projects/splitorfs/work/PacBio/merged_bam_files/genome_alignment/${cell_type}/pbmm2_align"
+bam_dir="/projects/splitorfs/work/PacBio/merged_bam_files/genome_alignment"
 short_read_dir="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/${cell_type}_fastp"
 
-bash stringtie3_new_version_LRs_05_06_26.sh \
+bash stringtie3_new_version_LRs_minimap2_rescue_automatic_25_08_26.sh \
     -b "${bam_dir}" \
     -c "$cell_type" \
     -e "${ensembl_full_gtf}" \

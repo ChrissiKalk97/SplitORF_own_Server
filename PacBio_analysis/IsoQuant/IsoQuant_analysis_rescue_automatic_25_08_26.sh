@@ -1,0 +1,116 @@
+#!/bin/bash
+
+eval "$(conda shell.bash hook)"
+conda activate isoquant
+
+genome_fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
+ensembl_gtf_filtered="/projects/splitorfs/work/reference_files/filtered_Ens_reference_correct_29_09_25/Ensembl_110_filtered_equality_and_tsl1_2_correct_29_09_25.gtf"
+ensembl_full_gtf="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.gtf"
+
+output_dir="/projects/splitorfs/work/PacBio/merged_bam_files/IsoQuant"
+
+bam_dir="/projects/splitorfs/work/PacBio/merged_bam_files/isoseq/refine"
+script_dir="/home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3"
+mapping_dir="/projects/splitorfs/work/PacBio/merged_bam_files/genome_alignment"
+
+stringtie3_dir_raw="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/IsoQuant_raw_June_2026"
+sqanti_dir="$output_dir"/SQANTI3
+sqanti_script_dir="/home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3"
+
+
+mkdir -p "$output_dir"
+
+
+# assumpton: Preprocessing steps from 
+# /home/ckalk/scripts/SplitORFs/PacBio_analysis/PacBio_analysis_29_05_26.sh
+# are alaready run!
+
+# might want to add this script as a subsript to the PacBio analysis
+
+
+
+#################################################################################
+# ------------------ Run IsoQuant                            ------------------ #
+#################################################################################
+for cell_type in CM HUVEC; do
+    if [[ ! -d "$output_dir/$cell_type" ]]; then
+        shopt -s nullglob
+        bams=("${mapping_dir}"/${cell_type}/minimap2_align/*filtered.bam)
+
+        isoquant -d pacbio_ccs \
+        --polya_trimmed stranded \
+        --sqanti_output \
+        --bam "${bams[@]}" \
+        --complete_genedb --genedb "${ensembl_gtf_filtered}" \
+        --reference "$genome_fasta" \
+        --output "$output_dir" \
+        --prefix "${cell_type}"
+
+    fi
+done
+
+
+
+ # --fl_data \
+ # this option means that both ends of the reads are reliable, which is not the case
+
+
+#################################################################################
+# ------------------ Run SQANTIQC                            ------------------ #
+#################################################################################
+if [ ! -d "${stringtie3_dir_raw}" ]; then
+    mkdir "${stringtie3_dir_raw}"
+fi
+
+if [ ! -d "${stringtie3_dir_raw}"/kallisto ]; then
+    mkdir "${stringtie3_dir_raw}"/kallisto
+fi
+
+if [ ! -d "${stringtie3_dir_raw}"/kallisto/index ]; then
+    mkdir "${stringtie3_dir_raw}"/kallisto/index
+fi
+
+for cell_type in CM HUVEC; do
+
+    echo $cell_type
+    short_read_dir="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/${cell_type}_fastp"
+
+    if [[ ! -d "${output_dir}"/"${cell_type}"/"${cell_type}"_isoquant_quant ]]; then
+        mkdir "${output_dir}"/"${cell_type}"/"${cell_type}"_isoquant_quant
+        shopt -s nullglob
+        bams=("${mapping_dir}"/${cell_type}/minimap2_align/*filtered.bam)
+        conda activate isoquant
+        isoquant \
+            --reference "$genome_fasta" \
+            --genedb "$output_dir/${cell_type}/${cell_type}.transcript_models.gtf" \
+            --no_model_construction \
+            --data_type pacbio_ccs \
+            --polya_trimmed stranded \
+            --bam  "${bams[@]}" \
+            --output "${output_dir}"/"${cell_type}"/"${cell_type}"_isoquant_quant/ \
+            --prefix "${cell_type}"
+    fi
+
+
+    if [ ! -d "${sqanti_dir}" ]; then
+        mkdir "${sqanti_dir}"
+    fi
+
+
+    if [ ! -d "${sqanti_dir}"/SQANTI3_QC ]; then
+        mkdir "${sqanti_dir}"/SQANTI3_QC
+    fi
+
+
+    bash "${script_dir}"/run_sqanti3_on_mando_one_cell_type_rescue_automatic.sh \
+    ${cell_type} \
+    "$genome_fasta" \
+    "$ensembl_gtf_filtered" \
+    "$output_dir" \
+    "${stringtie3_dir_raw}" \
+    "$short_read_dir" \
+    "${sqanti_script_dir}" \
+    ""${mapping_dir}"/${cell_type}/minimap2_align" \
+    "isoquant"
+
+done

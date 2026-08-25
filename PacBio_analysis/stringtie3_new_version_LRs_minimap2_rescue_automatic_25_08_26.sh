@@ -70,11 +70,11 @@ if [[ ! -d "$out_path/"${cell_type}"" ]]; then
     mkdir "${out_path}"/"${cell_type}"
 fi
 
+mkdir -p "$bam_dir"
 
 
-if [[ ! -d "$bam_dir/merged" ]]; then
-    mkdir "${bam_dir}"/merged
-fi
+mkdir -p "${bam_dir}"/"${cell_type}"/minimap2_align/merged
+
 
 
 
@@ -82,11 +82,12 @@ fi
 #################################################################################
 # ------------------ ALIGN LRs IF NECESSARY                      -------------- #
 #################################################################################
-  bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/map_conditions/genome_mapping_cell_type.sh \
-  -o "/projects/splitorfs/work/PacBio/merged_bam_files/genome_alignment" \
+  bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/map_conditions/genome_mapping_cell_type_minimap2.sh \
+  -o "$bam_dir" \
   -f "${genome_fasta}" \
   -i "${long_read_dir}" \
-  -c "$cell_type"
+  -c "$cell_type" \
+  -g "$reference_gtf"
 
 
 
@@ -95,23 +96,23 @@ fi
 #################################################################################
 
 
-if [ ! -e "$bam_dir/merged/"${cell_type}"_merged.bam" ]; then
-    samtools merge -@ 32 -o "${bam_dir}"/merged/"${cell_type}"_merged.bam \
-    "${bam_dir}"/*filtered.bam
+if [ ! -e "$bam_dir"/${cell_type}"/minimap2_align/merged/"${cell_type}"_merged.bam" ]; then
+    samtools merge -@ 32 -o "${bam_dir}"/"${cell_type}"/minimap2_align/merged/"${cell_type}"_merged.bam \
+    "${bam_dir}"/"${cell_type}"/minimap2_align/*filtered.bam
 
-    samtools sort -o "${bam_dir}"/merged/"${cell_type}"_merged_sorted.bam "${bam_dir}"/merged/"${cell_type}"_merged.bam
+    samtools sort -o "${bam_dir}"/"${cell_type}"/minimap2_align/merged/"${cell_type}"_merged_sorted.bam "${bam_dir}"/"${cell_type}"/minimap2_align/merged/"${cell_type}"_merged.bam
 
-    samtools index "${bam_dir}"/merged/"${cell_type}"_merged_sorted.bam
+    samtools index "${bam_dir}"/"${cell_type}"/minimap2_align/merged/"${cell_type}"_merged_sorted.bam
 fi
 
 #################################################################################
 # ------------------ RUN Stringtie   TO CREATE ASSEMBLY      ------------------ #
 #################################################################################
 if [ ! -e "$out_path/"${cell_type}"/"${cell_type}"_strigntie3_assembly.gtf" ]; then
-    /home/ckalk/tools/stringtie-3.0.1.Linux_x86_64/stringtie\
+    stringtie\
     -o "${out_path}"/"${cell_type}"/"${cell_type}"_strigntie3_assembly.gtf \
-    -L -G $reference_gtf \
-    "${bam_dir}"/merged/"${cell_type}"_merged_sorted.bam
+    -L -G "$reference_gtf" \
+    "${bam_dir}"/"${cell_type}"/minimap2_align/merged/"${cell_type}"_merged_sorted.bam
 fi
 
 
@@ -133,64 +134,115 @@ if [[ ! -d "$out_path/"${cell_type}"/gffcompare" ]]; then
     "${out_path}"/"${cell_type}"/"${cell_type}"_strigntie3_assembly_renamed_filtered.gtf
 fi
 
+#################################################################################
+# ------------------ Quantify LRs with Isoseq for SQANTI     ------------------ #
+#################################################################################
+shopt -s nullglob
+bams=("${bam_dir}"/"${cell_type}"/minimap2_align/*filtered.bam)
+echo "${bams[@]}"
+mkdir -p "${out_path}"/"${cell_type}"/"${cell_type}"_stringtie_quant
+
+
+
+
+if [[ ! -e "${out_path}"/"${cell_type}"/"${cell_type}"_stringtie_quant/"${cell_type}"/"${cell_type}".transcript_grouped_file_name_counts.tsv ]]; then
+  for bam in "${bams[@]}"; do
+    samtools index -@ 30 $bam
+  done
+  conda activate isoquant
+  isoquant \
+      --reference "$genome_fasta" \
+      --genedb "${out_path}"/"${cell_type}"/"${cell_type}"_strigntie3_assembly_filtered.gtf \
+      --no_model_construction \
+      --data_type pacbio_ccs \
+      --polya_trimmed stranded \
+      --bam  "${bams[@]}" \
+      --output "${out_path}"/"${cell_type}"/"${cell_type}"_stringtie_quant/ \
+      --prefix "${cell_type}"
+fi
+
 
 
 #################################################################################
 # ------------------ RUN SQANTI3 for QC assessment           ------------------ #
 #################################################################################
-stringtie3_dir_raw="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Stringtie3_raw"
+stringtie3_dir_raw="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025/Stringtie3_raw_June_2026_minimap"
 sqanti_dir="${out_path}"/SQANTI3
-if [ ! -d "${stringtie3_dir_raw}" ]; then
-    mkdir "${stringtie3_dir_raw}"
-fi
 
-if [ ! -d "${stringtie3_dir_raw}"/kallisto ]; then
-    mkdir "${stringtie3_dir_raw}"/kallisto
-fi
+mkdir -p "$stringtie3_dir_raw"
 
-if [ ! -d "${stringtie3_dir_raw}"/kallisto/index ]; then
-    mkdir "${stringtie3_dir_raw}"/kallisto/index
-fi
+mkdir -p "${sqanti_dir}"
+
+mkdir -p "${sqanti_dir}"/SQANTI3_QC
 
 
-if [ ! -d "${stringtie3_dir_raw}"/kallisto/"${cell_type}"_quant ]; then
-    mkdir "${stringtie3_dir_raw}"/kallisto/"${cell_type}"_quant
 
-    bash ${script_dir}/kallisto/kallisto_index.sh \
-    "${out_path}"/"${cell_type}"/"${cell_type}"_strigntie3_assembly_filtered.gtf \
-    ${genome_fasta} \
-    "${stringtie3_dir_raw}"/kallisto/"${cell_type}"_strigntie3_assembly_transcriptome.fa \
-    "${stringtie3_dir_raw}"/kallisto/index/"${cell_type}"
-
-    bash ${script_dir}/kallisto/kallisto_quantification.sh \
-    "${stringtie3_dir_raw}"/kallisto/index/"${cell_type}".idx \
-    "${short_read_dir}" \
-    "${stringtie3_dir_raw}"/kallisto/"${cell_type}"_quant
-fi
+bash "${script_dir}"/run_sqanti3_on_mando_one_cell_type_rescue_automatic.sh \
+${cell_type} \
+"$genome_fasta" \
+"$reference_gtf" \
+"$out_path" \
+"${stringtie3_dir_raw}" \
+"$short_read_dir" \
+"${script_dir}" \
+"$bam_dir"/"${cell_type}"/minimap2_align \
+"stringtie"
 
 
-if [ ! -d "${sqanti_dir}" ]; then
-    mkdir "${sqanti_dir}"
-fi
 
 
-if [ ! -d "${sqanti_dir}"/SQANTI3_QC ]; then
-    mkdir "${sqanti_dir}"/SQANTI3_QC
-fi
+
+# if [ ! -d "${stringtie3_dir_raw}" ]; then
+#     mkdir "${stringtie3_dir_raw}"
+# fi
+
+# if [ ! -d "${stringtie3_dir_raw}"/kallisto ]; then
+#     mkdir "${stringtie3_dir_raw}"/kallisto
+# fi
+
+# if [ ! -d "${stringtie3_dir_raw}"/kallisto/index ]; then
+#     mkdir "${stringtie3_dir_raw}"/kallisto/index
+# fi
 
 
-if [ ! -d "${sqanti_dir}"/SQANTI3_QC/"${cell_type}" ]; then
-    mkdir "${sqanti_dir}"/SQANTI3_QC/"${cell_type}"
+# if [ ! -d "${stringtie3_dir_raw}"/kallisto/"${cell_type}"_quant ]; then
+#     mkdir "${stringtie3_dir_raw}"/kallisto/"${cell_type}"_quant
 
-    bash ${script_dir}/sqanti3/sqanti3_qc_mando_huvec.sh \
-    /home/ckalk/tools/sqanti3 \
-    "${out_path}"/"${cell_type}"/"${cell_type}"_strigntie3_assembly_filtered.gtf \
-    ${reference_gtf} \
-    ${genome_fasta} \
-    "${sqanti_dir}"/SQANTI3_QC/"${cell_type}" \
-    ${script_dir}/sqanti3/"${cell_type}"_short_reads.txt \
-    "${stringtie3_dir_raw}"/kallisto/"${cell_type}"_quant
-fi
+#     bash ${script_dir}/kallisto/kallisto_index.sh \
+#     "${out_path}"/"${cell_type}"/"${cell_type}"_strigntie3_assembly_filtered.gtf \
+#     ${genome_fasta} \
+#     "${stringtie3_dir_raw}"/kallisto/"${cell_type}"_strigntie3_assembly_transcriptome.fa \
+#     "${stringtie3_dir_raw}"/kallisto/index/"${cell_type}"
+
+#     bash ${script_dir}/kallisto/kallisto_quantification.sh \
+#     "${stringtie3_dir_raw}"/kallisto/index/"${cell_type}".idx \
+#     "${short_read_dir}" \
+#     "${stringtie3_dir_raw}"/kallisto/"${cell_type}"_quant
+# fi
+
+
+# if [ ! -d "${sqanti_dir}" ]; then
+#     mkdir "${sqanti_dir}"
+# fi
+
+
+# if [ ! -d "${sqanti_dir}"/SQANTI3_QC ]; then
+#     mkdir "${sqanti_dir}"/SQANTI3_QC
+# fi
+
+
+# if [ ! -d "${sqanti_dir}"/SQANTI3_QC/"${cell_type}" ]; then
+#     mkdir "${sqanti_dir}"/SQANTI3_QC/"${cell_type}"
+
+#     bash ${script_dir}/sqanti3/sqanti3_qc_mando_huvec.sh \
+#     /home/ckalk/tools/sqanti3.6 \
+#     "${out_path}"/"${cell_type}"/"${cell_type}"_strigntie3_assembly_filtered.gtf \
+#     ${reference_gtf} \
+#     ${genome_fasta} \
+#     "${sqanti_dir}"/SQANTI3_QC/"${cell_type}" \
+#     ${script_dir}/sqanti3/"${cell_type}"_short_reads.txt \
+#     "${stringtie3_dir_raw}"/kallisto/"${cell_type}"_quant
+# fi
 
 
 #################################################################################
