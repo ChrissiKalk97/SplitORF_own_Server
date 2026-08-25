@@ -139,9 +139,9 @@ if [[ ! -d "$outdir_tama/${cell_type}" ]]; then
     -f file_list_${cell_type_small}.txt \
     -p "$outdir_tama"/${cell_type}/${cell_type}_merged_tama \
     -s mandalorion \
-    -a 500 \
+    -a 1000 \
     -m 2 \
-    -z 100
+    -z 500
 
 
 
@@ -207,6 +207,31 @@ if [ ! -d "${outdir_tama}"/SQANTI3_QC/${cell_type} ]; then
     "${outdir_tama}"/SQANTI3_QC/${cell_type} \
     /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/sqanti3/${cell_type}_short_reads.txt \
     "$outdir_tama/kallisto/${cell_type}_quant"
+
+
+      #   mkdir "$outdir_tama"/${cell_type}/${cell_type}_quant
+      #   shopt -s nullglob
+      #   bams=("${mapping_dir}"/${cell_type}/minimap2_align/*filtered.bam)
+      #   conda activate isoquant
+      #   isoquant \
+      #       --reference "$genome_fasta" \
+      #       --genedb "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_20_08_26.gtf \
+      #       --no_model_construction \
+      #       --data_type pacbio_ccs \
+      #       --polya_trimmed stranded \
+      #       --bam  "${bams[@]}" \
+      #       --output "$outdir_tama"/${cell_type}/${cell_type}_quant/ \
+      #       --prefix "${cell_type}"
+
+      # bash ${script_dir}/sqanti3/sqanti3_qc_mando_huvec.sh \
+      # /home/ckalk/tools/sqanti3.6 \
+      # "$outdir_tama"/${cell_type}/${cell_type}_merged_tama.gtf \
+      # ${reference_gtf} \
+      # ${genome_fasta} \
+      # "${ref_qc_out_path}"\
+      # /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/sqanti3/${cell_type}_short_reads.txt \
+      # "$outdir_tama/kallisto/${cell_type}_quant" \
+      # "${ref_qc_out_path}"/quant_"${cell_type}"/"${cell_type}"/"${cell_type}".transcript_grouped_file_name_counts.tsv
 fi
 
 # if [[ ! -e ""$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id.gtf" ]]; then
