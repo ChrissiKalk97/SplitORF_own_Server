@@ -5,7 +5,7 @@ conda activate pacbio
 
 
 # reference_gtf="/projects/splitorfs/work/reference_files/filtered_Ens_reference_correct_29_09_25/Ensembl_110_filtered_equality_and_tsl1_2_correct_29_09_25.gtf"
-# ensembl_full_gtf="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.113.chr.gtf"
+# ensembl_full_gtf="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.110.chr.gtf"
 # genome_fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
 # consensus_reads_fofn="pacbio_consensus_${cell_type}.fofn"
 # out_path="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_updated_parameters"
@@ -24,7 +24,7 @@ usage() {
 }
 
 # Process options with silent error mode
-while getopts "b:c:e:f:g:k:l:o:p:q:r:s:h" opt; do
+while getopts "b:c:e:f:g:k:l:m:o:p:q:r:s:h" opt; do
   case $opt in
     b)
       bam_dir="$OPTARG"
@@ -46,6 +46,9 @@ while getopts "b:c:e:f:g:k:l:o:p:q:r:s:h" opt; do
       ;;
     l)
       long_read_string="$OPTARG"
+      ;;
+    m)
+      mapping_dir="$OPTARG"
       ;;
     o)
       out_path="$OPTARG"
@@ -186,9 +189,30 @@ if [[ ! -e "${out_path}/${cell_type}/${cell_type}_fl_counts.tsv" ]];then
 fi
 
 #################################################################################
+# ------------------ fl counts for SQANTI3  Isoquant         ------------------ #
+#################################################################################
+if [[ ! -d "${out_path}"/"${cell_type}"/"${cell_type}"_mando_quant ]]; then
+  mkdir "${out_path}"/"${cell_type}"/"${cell_type}"_mando_quant
+  shopt -s nullglob
+  bams=("${mapping_dir}"/${cell_type}/minimap2_align/*filtered.bam)
+  conda activate isoquant
+  isoquant \
+      --reference "$genome_fasta" \
+      --genedb "$out_path/${cell_type}/${cell_type}_mando_gene_id.gtf" \
+      --no_model_construction \
+      --data_type pacbio_ccs \
+      --polya_trimmed stranded \
+      --bam  "${bams[@]}" \
+      --output "${out_path}"/"${cell_type}"/"${cell_type}"_mando_quant/ \
+      --prefix "${cell_type}"
+fi
+
+
+#################################################################################
 # ------------------ Run SQANTI                              ------------------ #
 #################################################################################
 conda activate pacbio
+# "${out_path}"/"${cell_type}"/"${cell_type}"_mando_quant/"${cell_type}"/"${cell_type}".transcript_grouped_file_name_counts.tsv
 bash mandalorion/assess_mando_sqanti3/run_sqanti3_on_mando_one_cell_type_20_10_25.sh \
  ${cell_type} \
  "$genome_fasta" \

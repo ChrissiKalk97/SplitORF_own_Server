@@ -72,9 +72,9 @@ fi
 
 mkdir -p "$bam_dir"
 
-if [[ ! -d "$bam_dir/merged" ]]; then
-    mkdir "${bam_dir}"/merged
-fi
+
+mkdir -p "${bam_dir}"/"${cell_type}"/minimap2_align/merged
+
 
 
 
@@ -83,7 +83,7 @@ fi
 # ------------------ ALIGN LRs IF NECESSARY                      -------------- #
 #################################################################################
   bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/map_conditions/genome_mapping_cell_type_minimap2.sh \
-  -o "/projects/splitorfs/work/PacBio/merged_bam_files/genome_alignment" \
+  -o "$bam_dir" \
   -f "${genome_fasta}" \
   -i "${long_read_dir}" \
   -c "$cell_type" \
@@ -96,13 +96,13 @@ fi
 #################################################################################
 
 
-if [ ! -e "$bam_dir/merged/"${cell_type}"_merged.bam" ]; then
-    samtools merge -@ 32 -o "${bam_dir}"/merged/"${cell_type}"_merged.bam \
-    "${bam_dir}"/*filtered.bam
+if [ ! -e "$bam_dir"/${cell_type}"/minimap2_align/merged/"${cell_type}"_merged.bam" ]; then
+    samtools merge -@ 32 -o "${bam_dir}"/"${cell_type}"/minimap2_align/merged/"${cell_type}"_merged.bam \
+    "${bam_dir}"/"${cell_type}"/minimap2_align/*filtered.bam
 
-    samtools sort -o "${bam_dir}"/merged/"${cell_type}"_merged_sorted.bam "${bam_dir}"/merged/"${cell_type}"_merged.bam
+    samtools sort -o "${bam_dir}"/"${cell_type}"/minimap2_align/merged/"${cell_type}"_merged_sorted.bam "${bam_dir}"/"${cell_type}"/minimap2_align/merged/"${cell_type}"_merged.bam
 
-    samtools index "${bam_dir}"/merged/"${cell_type}"_merged_sorted.bam
+    samtools index "${bam_dir}"/"${cell_type}"/minimap2_align/merged/"${cell_type}"_merged_sorted.bam
 fi
 
 #################################################################################
@@ -112,7 +112,7 @@ if [ ! -e "$out_path/"${cell_type}"/"${cell_type}"_strigntie3_assembly.gtf" ]; t
     stringtie\
     -o "${out_path}"/"${cell_type}"/"${cell_type}"_strigntie3_assembly.gtf \
     -L -G "$reference_gtf" \
-    "${bam_dir}"/merged/"${cell_type}"_merged_sorted.bam
+    "${bam_dir}"/"${cell_type}"/minimap2_align/merged/"${cell_type}"_merged_sorted.bam
 fi
 
 
@@ -138,9 +138,14 @@ fi
 # ------------------ Quantify LRs with Isoseq for SQANTI     ------------------ #
 #################################################################################
 shopt -s nullglob
-bams=("${bam_dir}"/*sorted.bam)
+bams=("${bam_dir}"/"${cell_type}"/minimap2_align/*filtered.bam)
 echo "${bams[@]}"
 mkdir -p "${out_path}"/"${cell_type}"/"${cell_type}"_stringtie_quant
+
+
+for bam in "${bams[@]}"; do
+    samtools index -@ 30 $bam
+done
 
 if [[ ! -e "${out_path}"/"${cell_type}"/"${cell_type}"_stringtie_quant/"${cell_type}"/"${cell_type}".transcript_grouped_file_name_counts.tsv ]]; then
   conda activate isoquant
@@ -179,7 +184,7 @@ ${cell_type} \
 "${stringtie3_dir_raw}" \
 "$short_read_dir" \
 "${script_dir}" \
-"$bam_dir" \
+"$bam_dir"/"${cell_type}"/minimap2_align \
 "stringtie"
 
 

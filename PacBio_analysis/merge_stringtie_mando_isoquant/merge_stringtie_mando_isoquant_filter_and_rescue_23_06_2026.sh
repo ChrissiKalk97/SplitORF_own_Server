@@ -138,44 +138,44 @@ done
 # # ------------------ COMPARE TO ENSEMBL FULL  ASSEMBLY       ------------------ #
 # #################################################################################
 
-conda activate pacbio
-if [[ ! -d "$outdir_tama/HUVEC/compare_Ens_full_ref" ]]; then
-    mkdir $outdir_tama/HUVEC/compare_Ens_full_ref
-    gffcompare -o $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_compare_full_GTF\
-    -r $ensembl_full_gtf\
-    $outdir_tama/HUVEC/HUVEC_merged_tama_gene_id_20_08_26.gtf
+# conda activate pacbio
+# if [[ ! -d "$outdir_tama/HUVEC/compare_Ens_full_ref" ]]; then
+#     mkdir $outdir_tama/HUVEC/compare_Ens_full_ref
+#     gffcompare -o $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_compare_full_GTF\
+#     -r $ensembl_full_gtf\
+#     $outdir_tama/HUVEC/HUVEC_merged_tama_gene_id_20_08_26.gtf
 
-    mv $outdir_tama/HUVEC/HUVEC_compare_full_GTF* $outdir_tama/HUVEC/compare_Ens_full_ref
+#     mv $outdir_tama/HUVEC/HUVEC_compare_full_GTF* $outdir_tama/HUVEC/compare_Ens_full_ref
 
-    # which isoforms have non ejcs?
-    python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/get_equal_ejc_isoforms.py \
-    $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_compare_full_GTF.HUVEC_merged_tama_gene_id_20_08_26.gtf.tmap
+#     # which isoforms have non ejcs?
+#     python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/get_equal_ejc_isoforms.py \
+#     $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_compare_full_GTF.HUVEC_merged_tama_gene_id_20_08_26.gtf.tmap
 
-     python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/count_nr_novel_nmd_transcripts.py \
-    /home/ckalk/tools/NMD_fetaure_composition/Output/HUVEC_merged_tama_iso_mando_stringtie_50nt/HUVEC_merged_tama_iso_mando_stringtie_50nt.csv \
-    $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_merged_tama_gene_id_20_08_26_novel_isoforms.txt \
-    --assembly_type full
-fi
+#      python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/count_nr_novel_nmd_transcripts.py \
+#     /home/ckalk/tools/NMD_fetaure_composition/Output/HUVEC_merged_tama_iso_mando_stringtie_50nt/HUVEC_merged_tama_iso_mando_stringtie_50nt.csv \
+#     $outdir_tama/HUVEC/compare_Ens_full_ref/HUVEC_merged_tama_gene_id_20_08_26_novel_isoforms.txt \
+#     --assembly_type full
+# fi
 
-if [[ ! -d "$outdir_tama/CM/compare_Ens_full_ref" ]]; then
-    mkdir $outdir_tama/CM/compare_Ens_full_ref
-    gffcompare -o $outdir_tama/CM/compare_Ens_full_ref/CM_compare_full_GTF\
-    -r $ensembl_full_gtf\
-    $outdir_tama/CM/CM_merged_tama_gene_id_20_08_26.gtf
+# if [[ ! -d "$outdir_tama/CM/compare_Ens_full_ref" ]]; then
+#     mkdir $outdir_tama/CM/compare_Ens_full_ref
+#     gffcompare -o $outdir_tama/CM/compare_Ens_full_ref/CM_compare_full_GTF\
+#     -r $ensembl_full_gtf\
+#     $outdir_tama/CM/CM_merged_tama_gene_id_20_08_26.gtf
 
-    mv $outdir_tama/CM/CM_compare_full_GTF* $outdir_tama/CM/compare_Ens_full_ref
+#     mv $outdir_tama/CM/CM_compare_full_GTF* $outdir_tama/CM/compare_Ens_full_ref
 
-    # which isoforms have non ejcs?
-    python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/get_equal_ejc_isoforms.py \
-    $outdir_tama/CM/compare_Ens_full_ref/CM_compare_full_GTF.CM_merged_tama_gene_id_20_08_26.gtf.tmap
+#     # which isoforms have non ejcs?
+#     python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/get_equal_ejc_isoforms.py \
+#     $outdir_tama/CM/compare_Ens_full_ref/CM_compare_full_GTF.CM_merged_tama_gene_id_20_08_26.gtf.tmap
 
 
-    # which isoforms are novel nmd transcripts?
-    python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/count_nr_novel_nmd_transcripts.py \
-    /home/ckalk/tools/NMD_fetaure_composition/Output/CM_merged_tama_iso_mando_stringtie_50nt/CM_merged_tama_iso_mando_stringtie_50nt.csv \
-    $outdir_tama/CM/compare_Ens_full_ref/CM_merged_tama_gene_id_20_08_26_novel_isoforms.txt \
-    --assembly_type full
-fi
+#     # which isoforms are novel nmd transcripts?
+#     python /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/count_nr_novel_nmd_transcripts.py \
+#     /home/ckalk/tools/NMD_fetaure_composition/Output/CM_merged_tama_iso_mando_stringtie_50nt/CM_merged_tama_iso_mando_stringtie_50nt.csv \
+#     $outdir_tama/CM/compare_Ens_full_ref/CM_merged_tama_gene_id_20_08_26_novel_isoforms.txt \
+#     --assembly_type full
+# fi
 
 
 

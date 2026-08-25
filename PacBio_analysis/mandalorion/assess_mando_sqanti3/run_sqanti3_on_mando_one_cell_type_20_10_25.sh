@@ -30,7 +30,8 @@ if [ -n "${9}" ]; then
     if [[ $assembly == "isoquant" ]]; then
         gtf_file="${mando_out_dir}/${cell_type}/${cell_type}.transcript_models.gtf"
         transcript_fasta="${mando_dir_raw}/kallisto/${cell_type}_isoquant_assembly_transcriptome.fa"
-        lr_count_tsv="${mando_out_dir}/${cell_type}/${cell_type}.discovered_transcript_grouped_file_name_counts.tsv"
+        lr_count_tsv="${mando_out_dir}/${cell_type}/${cell_type}_isoquant_quant/${cell_type}/${cell_type}.transcript_grouped_file_name_counts.tsv"
+        # lr_count_tsv="${mando_out_dir}/${cell_type}/${cell_type}.discovered_transcript_grouped_file_name_counts.tsv"
 
     elif [[ $assembly == "stringtie" ]]; then
         gtf_file="${mando_out_dir}"/"${cell_type}"/"${cell_type}"_strigntie3_assembly_filtered.gtf
@@ -41,7 +42,8 @@ if [ -n "${9}" ]; then
 else
         gtf_file=${mando_out_dir}"/${cell_type}/${cell_type}_mando_gene_id.gtf"
         transcript_fasta=${mando_out_dir}"/${cell_type}/${cell_type}_mando_gene_id_correct.fasta"
-        lr_count_tsv=${mando_out_dir}/${cell_type}/${cell_type}_fl_counts.tsv
+        # lr_count_tsv=${mando_out_dir}/${cell_type}/${cell_type}_fl_counts.tsv
+        lr_count_tsv="${mando_out_dir}"/"${cell_type}"/"${cell_type}"_mando_quant/"${cell_type}"/"${cell_type}".transcript_grouped_file_name_counts.tsv
 fi
 
 
@@ -149,7 +151,7 @@ if [ ! -d "${sqanti_dir}"/SQANTI3_Filter/${cell_type} ]; then
     /home/ckalk/tools/sqanti3.6 \
     ${sqanti_qc_outdir}/${cell_type}/isoforms \
     ${sqanti_dir}/SQANTI3_Filter/${cell_type} \
-    ${script_dir}/sqanti3/sqanti_rules/logic_filter_v6.1_23_06_26.json 
+    ${script_dir}/sqanti3/sqanti_rules/logic_filter_v6.2_12_08_26.json 
 fi
 
 
@@ -202,7 +204,7 @@ fi
 shopt -s nullglob
 isoseq_reads_dir="/projects/splitorfs/work/PacBio/merged_bam_files/genome_alignment/${cell_type}/minimap2_align"
 ref_qc_out_path="/projects/splitorfs/work/PacBio/merged_bam_files/stringtie3_June_2026_minimap2/SQANTI3/SQANTI3_QC/Ens_110_filtered_QC/${cell_type}"
-bams=("${isoseq_reads_dir}"/*sorted.bam)
+bams=("${isoseq_reads_dir}"/*filtered.bam)
 echo "${bams[@]}"
 
 # order important for the Stringtie run!
@@ -257,7 +259,7 @@ if [ ! -d "${sqanti_dir}"/SQANTI3_Rescue/${cell_type} ]; then
         ${ref_qc_out_path}/isoforms_corrected.gtf \
         ${genome_fasta} \
         ${sqanti_dir}/SQANTI3_Filter/${cell_type}/isoforms_RulesFilter_classification.txt \
-        ${script_dir}/sqanti3/sqanti_rules/logic_filter_v6.1_23_06_26.json \
+        ${script_dir}/sqanti3/sqanti_rules/logic_filter_v6.2_12_08_26.json \
         ${cell_type}_rescue_rules_filter \
         ${ref_qc_out_path}/isoforms_classification.txt \
         ${sqanti_qc_outdir}/${cell_type}/isoforms_corrected.fasta \

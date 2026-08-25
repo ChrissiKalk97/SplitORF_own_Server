@@ -77,9 +77,8 @@ mkdir -p "$out_path/"${cell_type}"/minimap2_align/genome_index"
 # might not want to index, as the parameters need to be adjusted for the datatype
 # and I simply could not find the informaiton about how to do this 
 # for my parameters
-
+name_gtf=$(basename "$gtf" .gtf)
 if [[ ! -e "$out_path/"${cell_type}/minimap2_align/genome_index/"$name_gtf"_junctions.bed ]]; then
-    name_gtf=$(basename "$gtf" .gtf)
     paftools.js gff2bed "$gtf" > "$out_path/"${cell_type}/minimap2_align/genome_index/"$name_gtf"_junctions.bed
 fi
 
@@ -114,6 +113,7 @@ if (( ${#bam_files[@]} > 0 )); then
         samtools view -@ 30 -q 20 -F 0x904 -b $(dirname "$bam")/$(basename "$bam" .bam)_sorted.bam | \
         samtools sort -@ 30 \
         -o $(dirname "$bam")/$(basename "$bam" .bam)_filtered.bam
+        samtools index -@ 30 $(dirname "$bam")/$(basename "$bam" .bam)_filtered.bam
       fi
   done
 fi

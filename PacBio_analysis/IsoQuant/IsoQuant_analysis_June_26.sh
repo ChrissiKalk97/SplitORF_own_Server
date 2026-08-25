@@ -32,17 +32,22 @@ mkdir -p "$output_dir"
 #################################################################################
 # ------------------ Run IsoQuant                            ------------------ #
 #################################################################################
+for cell_type in CM HUVEC; do
+    if [[ ! -d "$output_dir/$cell_type" ]]; then
+        shopt -s nullglob
+        bams=("${mapping_dir}"/${cell_type}/minimap2_align/*filtered.bam)
 
-if [[ ! -e "$output_dir/combined_transcript_counts.tsv" ]]; then
-    shopt -s nullglob
-    bams=("${mapping_dir}"/${cell_type}/minimap2_align/*filtered.bam)
-    isoquant -d pacbio_ccs \
-    --polya_trimmed stranded \
-    --sqanti_output \
-    --bam  "${bams[@]}" \
-    --complete_genedb --genedb "${ensembl_gtf_filtered}" \
-    --reference "$genome_fasta" --output "$output_dir"
-fi
+        isoquant -d pacbio_ccs \
+        --polya_trimmed stranded \
+        --sqanti_output \
+        --bam "${bams[@]}" \
+        --complete_genedb --genedb "${ensembl_gtf_filtered}" \
+        --reference "$genome_fasta" \
+        --output "$output_dir" \
+        --prefix "${cell_type}"
+
+    fi
+done
 
 
 
