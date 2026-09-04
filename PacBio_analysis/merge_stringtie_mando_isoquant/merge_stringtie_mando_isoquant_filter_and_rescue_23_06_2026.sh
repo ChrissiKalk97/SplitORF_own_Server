@@ -29,6 +29,7 @@ script_dir="/home/ckalk/scripts/SplitORFs/PacBio_analysis/compare_stringtie_mand
 mapping_dir="/projects/splitorfs/work/PacBio/merged_bam_files/genome_alignment/"
 
 
+
 #################################################################################
 # ------------------ MERGE WITH TAMA                          ----------------- #
 #################################################################################
@@ -106,6 +107,41 @@ for cell_type in "HUVEC" "CM"; do
             --prefix "${cell_type}"
     fi
 done
+
+#################################################################################
+# ---------- FILTER TRANSCRIPT MODELS FOR LR OR SR JUNCTION SUPPORT ----------- #
+#################################################################################
+conda activate isoquant
+cd /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant
+# unit tests
+python -m pytest filter_junction_chain_sr_or_lr_support_26_08_26_unit_test.py -q
+for cell_type in "HUVEC" "CM"; do
+    if [[ ! -e ""$outdir_tama"/${cell_type}/${cell_type}_LR_SR_support_filtered.gtf" ]]; then
+        python filter_junction_chain_sr_or_lr_support_26_08_26.py \
+            --classification_txt "${outdir_tama}"/SQANTI3_QC/${cell_type}/isoforms_classification.txt \
+            --custom_gtf "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_20_08_26.gtf \
+            --bam_file "${mapping_dir}"/${cell_type}/minimap2_align/merged/${cell_type}_merged_sorted.bam \
+            --isoquant_transcript_counts "$outdir_tama"/${cell_type}/${cell_type}_quant/${cell_type}/${cell_type}.transcript_counts.tsv \
+            --cell_type ${cell_type} \
+            --outdir "$outdir_tama"/${cell_type}
+    fi
+
+    if [ ! -d "$outdir_tama"/${cell_type}/LR_SR_jct_filtered_QC ]; then
+            # reuse short read quant and LR quant because transcript names remained the same
+            mkdir "$outdir_tama"/${cell_type}/LR_SR_jct_filtered_QC
+            bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/sqanti3/sqanti3_qc_mando_huvec.sh \
+            /home/ckalk/tools/sqanti3.6 \
+            "$outdir_tama"/${cell_type}/${cell_type}_LR_SR_support_filtered.gtf \
+            ${reference_gtf} \
+            ${genome_fasta} \
+            "$outdir_tama"/${cell_type}/LR_SR_jct_filtered_QC \
+            /home/ckalk/scripts/SplitORFs/PacBio_analysis/mandalorion/assess_mando_sqanti3/sqanti3/${cell_type}_short_reads.txt \
+            "$outdir_tama/kallisto/${cell_type}_quant" \
+            "$outdir_tama/${cell_type}/${cell_type}_quant/${cell_type}/${cell_type}".transcript_grouped_file_name_counts.tsv
+    fi
+done
+cd -
+
 
 
 

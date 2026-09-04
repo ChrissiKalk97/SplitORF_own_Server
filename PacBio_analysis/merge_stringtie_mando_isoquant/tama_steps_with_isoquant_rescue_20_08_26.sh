@@ -234,21 +234,8 @@ if [ ! -d "${outdir_tama}"/SQANTI3_QC/${cell_type} ]; then
       # "${ref_qc_out_path}"/quant_"${cell_type}"/"${cell_type}"/"${cell_type}".transcript_grouped_file_name_counts.tsv
 fi
 
-# if [[ ! -e ""$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id.gtf" ]]; then
-#     conda activate pacbio
 
-#     python "${script_dir}"/get_gene_id_tama_gtf.py \
-#     "$outdir_tama"/${cell_type}/${cell_type}_merged_tama.gtf \
-#     "$outdir_tama"/SQANTI3_QC/${cell_type}/isoforms_classification.txt  \
-#     "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id.gtf
-
-#     python "${script_dir}"/add_source_to_tama_gtf.py \
-#     "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id.gtf \
-#     "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_trans_report.txt
-# fi
-
-
-if [[ ! -e ""$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_20_08_26_source.gtf" ]]; then
+if [[ ! -e ""$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_20_08_26.gtf" ]]; then
     conda activate pacbio
 
     python "${script_dir}"/get_gene_id_tama_gtf.py \
