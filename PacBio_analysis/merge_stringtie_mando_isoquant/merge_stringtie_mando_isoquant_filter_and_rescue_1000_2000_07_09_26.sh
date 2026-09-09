@@ -107,7 +107,7 @@ for cell_type in "HUVEC" "CM"; do
     if [[ ! -e ""$outdir_tama"/${cell_type}/${cell_type}_LR_SR_support_filtered.gtf" ]]; then
         python filter_junction_chain_sr_or_lr_support_26_08_26.py \
             --classification_txt "${outdir_tama}"/SQANTI3_QC/${cell_type}/isoforms_classification.txt \
-            --custom_gtf "$outdir_tama"/${cell_type}/${cell_type}_merged_tama.gtf \
+            --custom_gtf "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_07_09_26.gtf \
             --bam_file "${mapping_dir}"/${cell_type}/minimap2_align/merged/${cell_type}_merged_sorted.bam \
             --isoquant_transcript_counts "$outdir_tama"/${cell_type}/${cell_type}_quant/${cell_type}/${cell_type}.transcript_counts.tsv \
             --cell_type ${cell_type} \

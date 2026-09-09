@@ -35,35 +35,32 @@ mapping_dir="/projects/splitorfs/work/PacBio/merged_bam_files/genome_alignment/"
 #################################################################################
 
 # outdir_tama="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026"
-outdir_tama="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_up_1000_down_500_25_august_2026"
+outdir_tama="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_up_10000_down_10000_longest_ends_05_09_2026"
 
-if [[ ! -d "$outdir_tama"/HUVEC ]]; then
-    bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/tama_steps_with_isoquant_rescue_20_08_26.sh \
-    -c HUVEC \
-    -d "$script_dir" \
-    -f "$genome_fasta" \
-    -i "$isoquant_huvec_gtf" \
-    -m "$mando_rescued_huvec_gtf" \
-    -o "$outdir_tama" \
-    -p "$outdir_fastp" \
-    -r "$reference_gtf" \
-    -s "$stringtie_huvec_gtf" \
-    -t "/home/ckalk/tools/tama"
-fi
 
-if [[ ! -d "$outdir_tama"/CM ]]; then
-    bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/tama_steps_with_isoquant_rescue_20_08_26.sh \
-    -c CM \
-    -d "$script_dir" \
-    -f "$genome_fasta" \
-    -i "$isoquant_cm_gtf" \
-    -o "$outdir_tama" \
-    -p "$outdir_fastp" \
-    -r "$reference_gtf" \
-    -s "$stringtie_cm_gtf" \
-    -m "$mando_rescued_cm_gtf" \
-    -t "/home/ckalk/tools/tama"
-fi
+bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/tama_steps_with_isoquant_rescue_10000_10000_07_09_26.sh \
+ -c HUVEC \
+ -d "$script_dir" \
+ -f "$genome_fasta" \
+ -i "$isoquant_huvec_gtf" \
+ -m "$mando_rescued_huvec_gtf" \
+ -o "$outdir_tama" \
+ -p "$outdir_fastp" \
+ -r "$reference_gtf" \
+ -s "$stringtie_huvec_gtf" \
+ -t "/home/ckalk/tools/tama"
+
+bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/tama_steps_with_isoquant_rescue_10000_10000_07_09_26.sh \
+ -c CM \
+ -d "$script_dir" \
+ -f "$genome_fasta" \
+ -i "$isoquant_cm_gtf" \
+ -o "$outdir_tama" \
+ -p "$outdir_fastp" \
+ -r "$reference_gtf" \
+ -s "$stringtie_cm_gtf" \
+ -m "$mando_rescued_cm_gtf" \
+ -t "/home/ckalk/tools/tama"
 
 #################################################################################
 # ------------------ RUN SPLIT-ORFs PIPELINE                 ------------------ #
@@ -73,12 +70,12 @@ conda activate pygtftk #
 for cell_type in "HUVEC" "CM"; do
     if [[ ! -e "~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_merged_tama_ExonCoordsOfTranscriptsForSO.txt" ]]; then
         python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Input_scripts/change_fasta_header_custom_isoforms.py \
-            "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_20_08_26.gtf \
+            "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_07_09_26.gtf \
             "$outdir_tama"/kallisto/${cell_type}_tama_merged_assembly_transcriptome.fa \
             ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_tama_merged_assembly_transcriptome_gID_tID.fa
 
         python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Genomic_scripts_18_10_24/get_exon_coords_from_gtf.py \
-            "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_20_08_26.gtf \
+            "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_07_09_26.gtf \
             ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_merged_tama_ExonCoordsOfTranscriptsForSO.txt
     fi
 
@@ -89,24 +86,12 @@ for cell_type in "HUVEC" "CM"; do
         conda activate isoquant
         isoquant \
             --reference "$genome_fasta" \
-            --genedb "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_20_08_26.gtf \
+            --genedb "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_07_09_26.gtf \
             --no_model_construction \
             --data_type pacbio_ccs \
             --polya_trimmed stranded \
             --bam  "${bams[@]}" \
             --output "$outdir_tama"/${cell_type}/${cell_type}_quant/ \
-            --prefix "${cell_type}"
-
-        mkdir "$outdir_tama"/${cell_type}/${cell_type}_quant_ambiguous
-                isoquant \
-            --reference "$genome_fasta" \
-            --genedb "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_20_08_26.gtf \
-            --no_model_construction \
-            --data_type pacbio_ccs \
-            --polya_trimmed stranded \
-            --bam  "${bams[@]}" \
-            --transcript_quantification with_ambiguous \
-            --output "$outdir_tama"/${cell_type}/${cell_type}_quant_ambiguous/ \
             --prefix "${cell_type}"
     fi
 done
@@ -122,7 +107,7 @@ for cell_type in "HUVEC" "CM"; do
     if [[ ! -e ""$outdir_tama"/${cell_type}/${cell_type}_LR_SR_support_filtered.gtf" ]]; then
         python filter_junction_chain_sr_or_lr_support_26_08_26.py \
             --classification_txt "${outdir_tama}"/SQANTI3_QC/${cell_type}/isoforms_classification.txt \
-            --custom_gtf "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_20_08_26.gtf \
+            --custom_gtf "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_07_09_26.gtf \
             --bam_file "${mapping_dir}"/${cell_type}/minimap2_align/merged/${cell_type}_merged_sorted.bam \
             --isoquant_transcript_counts "$outdir_tama"/${cell_type}/${cell_type}_quant/${cell_type}/${cell_type}.transcript_counts.tsv \
             --cell_type ${cell_type} \
@@ -144,22 +129,6 @@ for cell_type in "HUVEC" "CM"; do
     fi
 done
 cd -
-
-for cell_type in "HUVEC" "CM"; do
-    conda activate pacbio
-
-    python "${script_dir}"/get_gene_id_tama_gtf.py \
-        "$outdir_tama"/${cell_type}/${cell_type}_LR_SR_support_filtered.gtf \
-        "$outdir_tama"/SQANTI3_QC/${cell_type}/isoforms_classification.txt  \
-        "$outdir_tama"/${cell_type}/${cell_type}_LR_SR_support_filtered_gene_id_07_09_26.gtf
-
-    python "${script_dir}"/add_source_to_tama_gtf.py \
-        "$outdir_tama"/${cell_type}/${cell_type}_LR_SR_support_filtered_gene_id_07_09_26.gtf \
-        "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_trans_report.txt
-done
-
-
-
 
 
 # conda activate test-splitorf 
