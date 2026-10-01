@@ -168,4 +168,17 @@ bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/IsoQuant/IsoQuant_analysis_Ju
 # ------------------ TAMA merge final annotations            ------------------ #
 #################################################################################
 
-bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/merge_stringtie_mando_isoquant_filter_and_rescue_23_06_2026.sh
+bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/merge_stringtie_mando_isoquant_filter_and_rescue_10000_10000_07_09_26.sh
+
+#################################################################################
+# ------------------ Run ORFanage                            ------------------ #
+#################################################################################
+bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_ORFanage_on_10000_10000_TAMA_merged_09_09_26.sh
+
+
+#################################################################################
+# ------------------ Run SplitORF prediction                 ------------------ #
+#################################################################################
+# this can only be run when the JSON files with the input data already exist
+# these need to be prepared in advance
+# bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_SplitORFs_on_10000_10000_TAMA_merged_01_10_26.sh

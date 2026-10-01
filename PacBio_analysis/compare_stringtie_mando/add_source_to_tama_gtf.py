@@ -6,6 +6,8 @@ import os
 import pandas as pd
 import argparse
 import csv
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="pkg_resources")
 
 
 def parse_args():
@@ -25,7 +27,7 @@ def parse_args():
 
 def main(tama_gtf, tama_trans_info_file):
 
-    gtf_df = pd.read_csv(tama_gtf, header=None, sep='\t')
+    gtf_df = pd.read_csv(tama_gtf, header=None, sep='\t', dtype={0: str})
     tama_trans_df = pd.read_csv(tama_trans_info_file, header=0, sep='\t')
 
     outdir = os.path.dirname(tama_gtf)

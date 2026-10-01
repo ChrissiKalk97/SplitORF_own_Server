@@ -38,34 +38,42 @@ for mode in "FIRST" "BEST"; do
         fi
         if [[ ! -d "$OUT_DIR/Orfanage_${mode}_09_09_26" ]]; then
             mkdir $OUT_DIR/Orfanage_${mode}_09_09_26
-        fi
-
-        # CDSs of genes that are present within the custom assembly
-        python ${SCRIPT_DIR}/get_gtf_reference_prot_coding_trans.py \
-        ${ENSEMBL_FILTERED_GTF} \
-        ${GTF} \
-        ${OUT_DIR}/Ens_110_prot_coding_filtered_CDS_for_${cell_type}_TAMA_09_09_26.gtf
-
-        cd ${WORK_DIR}
-        # the reference are all protein transcripts in Ensembl, not filtered
-        ./orfanage --mode ${mode}  --reference ${GENOME_FASTA} \
-        --query ${GTF}  \
-        --output $OUT_DIR/Orfanage_${mode}_09_09_26/${cell_type}_TAMA_ORFanage_${mode}.gtf  ${OUT_DIR}/Ens_110_prot_coding_filtered_CDS_for_${cell_type}_TAMA_09_09_26.gtf
-
-
-        python ${SCRIPT_DIR}/filter_CDS_entries.py \
-        $OUT_DIR/Orfanage_${mode}_09_09_26/${cell_type}_TAMA_ORFanage_${mode}.gtf \
-        $OUT_DIR/Orfanage_${mode}_09_09_26/${cell_type}_TAMA_ORFanage_${mode}_CDS.gtf
-
-        python ${SCRIPT_DIR}/number_exons.py $OUT_DIR/Orfanage_${mode}_09_09_26/${cell_type}_TAMA_ORFanage_${mode}_CDS.gtf \
-        $OUT_DIR/Orfanage_${mode}_09_09_26/${cell_type}_TAMA_ORFanage_${mode}_CDS_numbered.gtf
         
 
-        bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_fiftynt_on_assembly.sh \
-            $OUT_DIR/Orfanage_${mode}_09_09_26/${cell_type}_TAMA_ORFanage_${mode}_CDS_numbered.gtf \
-            /home/ckalk/tools/NMD_fetaure_composition \
-            $GENOME_FASTA \
-            $ENSEMBL_FILTERED_GTF \
-            ${cell_type}_TAMA_ORFanage_${mode}_09_09_26.csv
+            # CDSs of genes that are present within the custom assembly
+            python ${SCRIPT_DIR}/get_gtf_reference_prot_coding_trans.py \
+            ${ENSEMBL_FILTERED_GTF} \
+            ${GTF} \
+            ${OUT_DIR}/Ens_110_prot_coding_filtered_CDS_for_${cell_type}_TAMA_09_09_26.gtf
+
+            cd ${WORK_DIR}
+            # the reference are all protein transcripts in Ensembl, not filtered
+            ./orfanage --mode ${mode}  --reference ${GENOME_FASTA} \
+            --query ${GTF}  \
+            --output $OUT_DIR/Orfanage_${mode}_09_09_26/${cell_type}_TAMA_ORFanage_${mode}.gtf  ${OUT_DIR}/Ens_110_prot_coding_filtered_CDS_for_${cell_type}_TAMA_09_09_26.gtf
+
+
+            python ${SCRIPT_DIR}/filter_CDS_entries.py \
+            $OUT_DIR/Orfanage_${mode}_09_09_26/${cell_type}_TAMA_ORFanage_${mode}.gtf \
+            $OUT_DIR/Orfanage_${mode}_09_09_26/${cell_type}_TAMA_ORFanage_${mode}_CDS.gtf
+
+            python ${SCRIPT_DIR}/number_exons.py $OUT_DIR/Orfanage_${mode}_09_09_26/${cell_type}_TAMA_ORFanage_${mode}_CDS.gtf \
+            $OUT_DIR/Orfanage_${mode}_09_09_26/${cell_type}_TAMA_ORFanage_${mode}_CDS_numbered.gtf
+            
+
+            bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_fiftynt_on_assembly.sh \
+                $OUT_DIR/Orfanage_${mode}_09_09_26/${cell_type}_TAMA_ORFanage_${mode}_CDS_numbered.gtf \
+                /home/ckalk/tools/NMD_fetaure_composition \
+                $GENOME_FASTA \
+                $ENSEMBL_FILTERED_GTF \
+                ${cell_type}_TAMA_ORFanage_${mode}_09_09_26.csv
+
+            # compare ORFanage and 50nt
+            python /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/analyze_gtf_vs_csv_ORF_predictions.py\
+            ~/tools/NMD_fetaure_composition/Output/${cell_type}_TAMA_ORFanage_${mode}_09_09_26/${cell_type}_TAMA_ORFanage_${mode}_09_09_26.csv \
+            ~/tools/NMD_fetaure_composition/Output/${cell_type}_merged_tama_10000_10000_iso_mando_stringtie_50nt/${cell_type}_merged_tama_10000_10000_iso_mando_stringtie_50nt.csv
+        fi
+
     done
 done
+

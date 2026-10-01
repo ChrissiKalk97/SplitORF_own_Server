@@ -171,13 +171,11 @@ fi
 ################################################################################
 # ------------------ LR support/expression of isoforms       ------------------ #
 ################################################################################
-if [[ ${cell_type} == "HUVEC" ]]; then
-    python mandalorion/plot_isoform_quantification_mando.py $out_path/${cell_type} 5 50
-    
-elif [[ ${cell_type} == "CM" ]]; then
+
+if [[ ! -e "$out_path"/${cell_type}/${cell_type}_LR_expression_quant_mando_50.png ]]; then
     python mandalorion/plot_isoform_quantification_mando.py $out_path/${cell_type} 3 50
-    
 fi
+
 
 #################################################################################
 # ------------------ fl counts for SQANTI3                   ------------------ #

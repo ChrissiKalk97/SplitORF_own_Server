@@ -11,15 +11,11 @@ ensembl_full_gtf="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.1
 mando_rescued_cm_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_50_upstream_17_06_2026/SQANTI3/SQANTI3_Rescue/CM/CM_rescue_rules_filter_rescued.gtf"
 stringtie_cm_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/stringtie3_June_2026_minimap2/SQANTI3/SQANTI3_Rescue/CM/CM_rescue_rules_filter_rescued.gtf"
 isoquant_cm_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/IsoQuant/SQANTI3/SQANTI3_Rescue/CM/CM_rescue_rules_filter_rescued.gtf"
-# outdir_cm="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026/CM"
-outdir_cm="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_up_1000_down_500_25_august_2026/CM"
 prefix_cm="CM_mando_stringtie_combined"
 
 mando_rescued_huvec_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/mandalorion_50_upstream_17_06_2026/SQANTI3/SQANTI3_Rescue/HUVEC/HUVEC_rescue_rules_filter_rescued.gtf"
 stringtie_huvec_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/stringtie3_June_2026_minimap2/SQANTI3/SQANTI3_Rescue/HUVEC/HUVEC_rescue_rules_filter_rescued.gtf"
 isoquant_huvec_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/IsoQuant/SQANTI3/SQANTI3_Rescue/HUVEC/HUVEC_rescue_rules_filter_rescued.gtf"
-# outdir_huvec="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026/HUVEC"
-outdir_huvec="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_up_1000_down_500_25_august_2026/HUVEC"
 prefix_huvec="HUVEC_mando_stringtie_combined"
 
 outdir_fastp="/projects/splitorfs/work/short_RNA_seq_analysis/short_RNA_April_2025"
@@ -63,22 +59,11 @@ bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquan
  -t "/home/ckalk/tools/tama"
 
 #################################################################################
-# ------------------ RUN SPLIT-ORFs PIPELINE                 ------------------ #
+# ------------------ QUANTIFY MERGED ASSEMBLIES              ------------------ #
 #################################################################################
 # use the conda package and the prediction module, need to create a json file for this!
 conda activate pygtftk # 
 for cell_type in "HUVEC" "CM"; do
-    if [[ ! -e "~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_merged_tama_ExonCoordsOfTranscriptsForSO.txt" ]]; then
-        python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Input_scripts/change_fasta_header_custom_isoforms.py \
-            "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_07_09_26.gtf \
-            "$outdir_tama"/kallisto/${cell_type}_tama_merged_assembly_transcriptome.fa \
-            ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_tama_merged_assembly_transcriptome_gID_tID.fa
-
-        python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Genomic_scripts_18_10_24/get_exon_coords_from_gtf.py \
-            "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_07_09_26.gtf \
-            ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_merged_tama_ExonCoordsOfTranscriptsForSO.txt
-    fi
-
     if [[ ! -d "$outdir_tama"/${cell_type}/${cell_type}_quant ]]; then
         mkdir "$outdir_tama"/${cell_type}/${cell_type}_quant
         shopt -s nullglob
@@ -129,13 +114,20 @@ for cell_type in "HUVEC" "CM"; do
             "$outdir_tama/kallisto/${cell_type}_quant" \
             "$outdir_tama/${cell_type}/${cell_type}_quant/${cell_type}/${cell_type}".transcript_grouped_file_name_counts.tsv
     fi
+
+    if [[ ! -e "~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_10000_10000_merged_tama_ExonCoordsOfTranscriptsForSO.txt" ]]; then
+        python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Input_scripts/change_fasta_header_custom_isoforms.py \
+            "$outdir_tama"/${cell_type}/${cell_type}_LR_SR_support_filtered.gtf \
+            "$outdir_tama"/kallisto/${cell_type}_tama_merged_assembly_transcriptome.fa \
+            ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_10000_10000_tama_merged_assembly_transcriptome_gID_tID.fa
+
+        python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Genomic_scripts_18_10_24/get_exon_coords_from_gtf.py \
+            "$outdir_tama"/${cell_type}/${cell_type}_LR_SR_support_filtered.gtf \
+            ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_10000_10000_merged_tama_ExonCoordsOfTranscriptsForSO.txt
+    fi
 done
 cd -
 
-
-# conda activate test-splitorf 
-# split-orf-prediction /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/split_orf_pipeline_input_CM.json
-# split-orf-prediction /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/split_orf_pipeline_input_HUVEC.json
 
 #################################################################################
 # ------------------ RUN FIFTYNT PIPELINE                    ------------------ #
