@@ -101,10 +101,12 @@ done
 #################################################################################
 conda activate isoquant
 cd /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant
-# unit tests
-python -m pytest filter_junction_chain_sr_or_lr_support_26_08_26_unit_test.py -q
+
 for cell_type in "HUVEC" "CM"; do
     if [[ ! -e ""$outdir_tama"/${cell_type}/${cell_type}_LR_SR_support_filtered.gtf" ]]; then
+        # unit tests
+        python -m pytest filter_junction_chain_sr_or_lr_support_26_08_26_unit_test.py -q
+
         python filter_junction_chain_sr_or_lr_support_26_08_26.py \
             --classification_txt "${outdir_tama}"/SQANTI3_QC/${cell_type}/isoforms_classification.txt \
             --custom_gtf "$outdir_tama"/${cell_type}/${cell_type}_merged_tama_gene_id_07_09_26.gtf \
@@ -135,26 +137,19 @@ cd -
 # split-orf-prediction /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/split_orf_pipeline_input_CM.json
 # split-orf-prediction /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/split_orf_pipeline_input_HUVEC.json
 
-# #################################################################################
-# # ------------------ RUN FIFTYNT PIPELINE                    ------------------ #
-# #################################################################################
-# if [[ ! -d /home/ckalk/tools/NMD_fetaure_composition/Output/CM_merged_tama_iso_mando_stringtie_50nt ]]; then
-#     bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_fiftynt_on_assembly.sh \
-#         $outdir_tama/CM/CM_merged_tama_gene_id.gtf \
-#         /home/ckalk/tools/NMD_fetaure_composition \
-#         $genome_fasta \
-#         $ensembl_full_gtf \
-#         CM_merged_tama_iso_mando_stringtie_50nt.csv
-# fi
-
-# if [[ ! -d /home/ckalk/tools/NMD_fetaure_composition/Output/HUVEC_merged_tama_iso_mando_stringtie_50nt ]]; then
-#     bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_fiftynt_on_assembly.sh \
-#         $outdir_tama/HUVEC/HUVEC_merged_tama_gene_id.gtf \
-#         /home/ckalk/tools/NMD_fetaure_composition \
-#         $genome_fasta \
-#         $ensembl_full_gtf \
-#         HUVEC_merged_tama_iso_mando_stringtie_50nt.csv
-# fi
+#################################################################################
+# ------------------ RUN FIFTYNT PIPELINE                    ------------------ #
+#################################################################################
+for cell_type in "HUVEC" "CM"; do
+    if [[ ! -d /home/ckalk/tools/NMD_fetaure_composition/Output/${cell_type}_merged_tama_10000_10000_iso_mando_stringtie_50nt ]]; then
+        bash /home/ckalk/scripts/SplitORFs/PacBio_analysis/SplitORF_scripts/run_fiftynt_on_assembly.sh \
+            "$outdir_tama"/${cell_type}/${cell_type}_LR_SR_support_filtered.gtf \
+            /home/ckalk/tools/NMD_fetaure_composition \
+            $genome_fasta \
+            "$reference_gtf" \
+            ${cell_type}_merged_tama_10000_10000_iso_mando_stringtie_50nt.csv
+    fi
+done
 
 # #################################################################################
 # # ------------------ COMPARE TO ENSEMBL FULL  ASSEMBLY       ------------------ #
