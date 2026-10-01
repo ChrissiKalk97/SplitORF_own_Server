@@ -20,8 +20,8 @@ def parse_args():
     return parser.parse_args()
 
 
-unique_protein_pairs_txt = '/home/ckalk/tools/SplitORF_pipeline/Output/run_12.09.2025-17.51.04_HUVEC_tama_merged/UniqueProteinORFPairs.txt'
-novel_isoforms_txt = '/projects/splitorfs/work/PacBio/merged_bam_files/compare_mando_stringtie/tama/HUVEC/compare_Ens_full_ref/HUVEC_merged_tama_gene_id_novel_isoforms.txt'
+# unique_protein_pairs_txt = '/home/ckalk/tools/SplitORF_pipeline/Output/run_12.09.2025-17.51.04_HUVEC_tama_merged/UniqueProteinORFPairs.txt'
+# novel_isoforms_txt = '/projects/splitorfs/work/PacBio/merged_bam_files/compare_mando_stringtie/tama/HUVEC/compare_Ens_full_ref/HUVEC_merged_tama_gene_id_novel_isoforms.txt'
 
 
 def main(unique_protein_pairs_txt, novel_isoforms_txt, assembly_type):
