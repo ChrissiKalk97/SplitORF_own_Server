@@ -50,7 +50,7 @@ def main(path_to_custom_gtf, outfile):
                                  on='transcript_id', suffixes=('_cds', '_transcript'), how='outer')
 
     transcript_cds_df['start_cds'] = transcript_cds_df['start_cds'].astype(
-        int)
+        int) - 1
     transcript_cds_df['start_transcript'] = transcript_cds_df['start_transcript'].astype(
         int)
 

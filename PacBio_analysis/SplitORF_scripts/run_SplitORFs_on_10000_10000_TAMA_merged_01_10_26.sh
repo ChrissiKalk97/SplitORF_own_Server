@@ -107,13 +107,20 @@ for cell_type in "HUVEC" "CM"; do
     gffread /projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_up_10000_down_10000_longest_ends_05_09_2026/${cell_type}/Orfanage/Orfanage_FIRST_09_09_26/${cell_type}_TAMA_ORFanage_FIRST_CDS_numbered.gtf\
      -g $GENOME_FASTA -y ~/tools/SplitORF_pipeline/Input2023/${cell_type}_assembly/${cell_type}_protein_coding_ORFanage_FIRST_peptide_sequences.fa
 
+
+    # change FASTA header of protein coding peptide sequences
+    python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Input_scripts/change_fasta_header_custom_isoforms.py \
+    /projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_up_10000_down_10000_longest_ends_05_09_2026/${cell_type}/${cell_type}_LR_SR_support_filtered.gtf \
+    ~/tools/SplitORF_pipeline/Input2023/${cell_type}_assembly/${cell_type}_protein_coding_ORFanage_FIRST_peptide_sequences.fa \
+    ~/tools/SplitORF_pipeline/Input2023/${cell_type}_assembly/${cell_type}_protein_coding_ORFanage_FIRST_peptide_sequences_gID_tID.fa
+
      # concat the protein coding sequences Ens110 and custom assembly
-     cat ~/tools/SplitORF_pipeline/Input2023/${cell_type}_assembly/${cell_type}_protein_coding_ORFanage_FIRST_peptide_sequences.fa \
+     cat ~/tools/SplitORF_pipeline/Input2023/${cell_type}_assembly/${cell_type}_protein_coding_ORFanage_FIRST_peptide_sequences_gID_tID.fa \
      ~/tools/SplitORF_pipeline/Input2023/TSL_eq_filtered_29_09_25/protein_coding_peptide_sequences_tsl_eq_filtered_29_09_25.fa \
      > ~/tools/SplitORF_pipeline/Input2023/${cell_type}_assembly/${cell_type}_protein_coding_ORFanage_FIRST_and_Ens110_merged_peptide_sequences.fa
 done
 
-
+conda activate test-splitorf
 split-orf-prediction /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/split_orf_pipeline_input_CM_10000_10000.json
 split-orf-prediction /home/ckalk/scripts/SplitORFs/PacBio_analysis/merge_stringtie_mando_isoquant/split_orf_pipeline_input_HUVEC_10000_10000.json
 
