@@ -115,16 +115,16 @@ for cell_type in "HUVEC" "CM"; do
             "$outdir_tama/${cell_type}/${cell_type}_quant/${cell_type}/${cell_type}".transcript_grouped_file_name_counts.tsv
     fi
 
-    if [[ ! -e "~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_10000_10000_merged_tama_ExonCoordsOfTranscriptsForSO.txt" ]]; then
-        python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Input_scripts/change_fasta_header_custom_isoforms.py \
-            "$outdir_tama"/${cell_type}/${cell_type}_LR_SR_support_filtered.gtf \
-            "$outdir_tama"/kallisto/${cell_type}_tama_merged_assembly_transcriptome.fa \
-            ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_10000_10000_tama_merged_assembly_transcriptome_gID_tID.fa
+    # if [[ ! -e "~/tools/SplitORF_pipeline/Input2023/${cell_type}/${cell_type}_10000_10000_merged_tama_ExonCoordsOfTranscriptsForSO.txt" ]]; then
+    #     python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Input_scripts/change_fasta_header_custom_isoforms.py \
+    #         "$outdir_tama"/${cell_type}/${cell_type}_LR_SR_support_filtered.gtf \
+    #         "$outdir_tama"/kallisto/${cell_type}_tama_merged_assembly_transcriptome.fa \
+    #         ~/tools/SplitORF_pipeline/Input2023/${cell_type}/${cell_type}_10000_10000_tama_merged_assembly_transcriptome_gID_tID.fa
 
-        python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Genomic_scripts_18_10_24/get_exon_coords_from_gtf.py \
-            "$outdir_tama"/${cell_type}/${cell_type}_LR_SR_support_filtered.gtf \
-            ~/tools/SplitORF_pipeline/Input2023/HUVEC_CM_assemblies/${cell_type}_10000_10000_merged_tama_ExonCoordsOfTranscriptsForSO.txt
-    fi
+    #     python /home/ckalk/scripts/SplitOrfs/split-orf-prediction/Genomic_scripts_18_10_24/get_exon_coords_from_gtf.py \
+    #         "$outdir_tama"/${cell_type}/${cell_type}_LR_SR_support_filtered.gtf \
+    #         ~/tools/SplitORF_pipeline/Input2023/${cell_type}/${cell_type}_10000_10000_merged_tama_ExonCoordsOfTranscriptsForSO.txt
+    # fi
 done
 cd -
 

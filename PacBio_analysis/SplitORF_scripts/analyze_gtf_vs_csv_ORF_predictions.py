@@ -41,12 +41,21 @@ print('The nr of 50nt positive transcripts for the unique custom transcripts is:
 print('\n')
 
 
-# How many of the custom unique transcripts are 50nt positive?
-orfanage_only_50 = ORFanage_CDS[ORFanage_CDS['50_nt'] == 1].index
+# How many of the custom ORFs are 50nt positive and 0 or absent from ORFanage?
+orfanage_50 = ORFanage_CDS[ORFanage_CDS['50_nt'] == 1].index
 custom_CDS_50_no_orfanage = custom_CDS[(custom_CDS['50_nt'] == 1) & (
-    ~custom_CDS.index.isin(orfanage_only_50))]
+    ~custom_CDS.index.isin(orfanage_50))]
 print('The nr of 50nt positive transcripts for the custom transcripts which are not present or 0 in ORFanage:',
       custom_CDS_50_no_orfanage.shape[0])
+print('\n')
+
+
+# How many of the ORfanage ORFs are 50nt positive but negative or absent from custom?
+custom_50 = custom_CDS[custom_CDS['50_nt'] == 1].index
+orfanage_CDS_50_no_custom = ORFanage_CDS[(ORFanage_CDS['50_nt'] == 1) & (
+    ~ORFanage_CDS.index.isin(custom_50))]
+print('The nr of 50nt positive transcripts for the ORfanage transcripts which are not present or 0 in custom:',
+      orfanage_CDS_50_no_custom.shape[0])
 print('\n')
 
 # Step 1: Merge the two dataframes on their indices

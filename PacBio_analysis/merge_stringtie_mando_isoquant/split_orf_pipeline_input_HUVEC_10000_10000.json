@@ -1,0 +1,11 @@
+{
+    "file_path": "/home/ckalk/tools/SplitORF_pipeline/Input2023",
+    "proteins": "HUVEC_assembly/HUVEC_protein_coding_ORFanage_FIRST_and_Ens110_merged_peptide_sequences.fa",
+    "transcripts": "HUVEC_assembly/HUVEC_NMD_transcripts_ORFanage_FIRST_and_fiftyntrule_pipeline_gID_tID.fa",
+    "annotation": "ENSEMBLhuman110PFAMformat.bed",
+    "reference_transcripts": "HUVEC_assembly/HUVEC_protein_coding_ORFanage_FIRST_and_Ens110_merged_gID_tID.fa",
+    "exon_positions": "HUVEC_assembly/HUVECCoordsOfTranscriptsForSOConcatEns110.txt",
+    "align_method": "blast",
+    "cds_coordinate_bed": "HUVEC_assembly/CDS_genomic_coords_HUVEC_assembly_Ens110_merged.bed",
+    "output_dir": "/projects/splitorfs/work/split-orf-prediction/Output"
+}
