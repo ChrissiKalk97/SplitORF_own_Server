@@ -29,7 +29,7 @@ conda activate Riboseq
 module_dir="/home/ckalk/scripts/Ribo_seq_analysis/Riboseq_analysis_pipeline"
 
 genome_fasta="/projects/splitorfs/work/reference_files/Homo_sapiens.GRCh38.dna.primary_assembly_110.fa"
-huvec_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_23_June_2026/HUVEC/HUVEC_merged_tama_gene_id.gtf"
+huvec_gtf="/projects/splitorfs/work/PacBio/merged_bam_files/merge_mando_stringtie_isoquant_rescue_up_10000_down_10000_longest_ends_05_09_2026/HUVEC/HUVEC_LR_SR_support_filtered.gtf"
 star_index_huvec="/projects/splitorfs/work/Riboseq/Output/HUVEC_CM_round_2_PacBio_assembly/HUVEC/alignment_genome/STAR/index"
 
 indir="/projects/splitorfs/work/own_data/Riboseq/Michi_Vlado_round_1"
@@ -57,7 +57,7 @@ mkdir -p "$report_dir_huvec"
 # /home/ckalk/scripts/Ribo_seq_analysis/Riboseq_analysis_pipeline/run_Riboseq_analysis.sh
  
 
-bash "${module_dir}"/Riboseq_pipeline_2.sh \
+bash "${module_dir}"/Riboseq_pipeline.sh \
  -a "${star_index_huvec}" -i "$FASTP_OUT" -o "$out_dir_huvec" -g $huvec_gtf -m "${module_dir}" -d -s -p -q \
-  > "$report_dir_huvec"/Riboseq_pipeline_mapping_deduplication_only_first_round_HUVEC_Mando_Iso_Stringtie_rescue_Assembly_26_06_2026.out 2>&1
+  > "$report_dir_huvec"/Riboseq_pipeline_mapping_deduplication_only_first_round_HUVEC_Mando_Iso_Stringtie_rescue_Assembly_TAMA_10000_10000_07_10_2026.out 2>&1
 

@@ -31,8 +31,10 @@ fq_files=("${fastq_dir}"/*R1.fastp.fastq.gz)
 for FQ in "${fq_files[@]}"; 
 do
         SAMPLE=$(basename "$FQ")
-        SAMPLE=${SAMPLE%%R1*}   
-        FQ2=${FQ/R1/R2}
+        SAMPLE="${SAMPLE%%.R1*}."
+        FQ2=${FQ/.R1/.R2}
+        [[ -f "$FQ2" ]] || { echo "No mate for $FQ" >&2; exit 1; }
+        
         STAR \
         --runThreadN 32 \
         --outSAMtype BAM SortedByCoordinate \

@@ -54,8 +54,9 @@ do
     
     Sample=$(basename "$FQ")
     Sample=${Sample%%.*}   
-    FQ2=${FQ/R1/R2}
+    FQ2=${FQ/.R1/.R2}
     echo ${FQ2}
+    [[ -f "$FQ2" ]] || { echo "No mate for $FQ" >&2; exit 1; }
 
 
     salmon quant -i ${SalmonRefDir}/index_k31 \
