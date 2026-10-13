@@ -31,14 +31,14 @@ calculate_tpm_from_feature_counts <- function(gene_counts_sample, gene_lengths){
 
 
 gene_counts <- featureCounts(files=bam_files_combined,
-annot.ext=ensembl_gtf,
-isGTFAnnotationFile=TRUE,
-GTF.featureType="exon", # default 
-GTF.attrType="gene_id", # default
-countMultiMappingReads=TRUE,
-allowMultiOverlap=TRUE,
-fracOverlap=0.3,
-nthreads=16)
+            annot.ext=ensembl_gtf,
+            isGTFAnnotationFile=TRUE,
+            GTF.featureType="exon", # default 
+            GTF.attrType="gene_id", # default
+            countMultiMappingReads=TRUE,
+            allowMultiOverlap=TRUE,
+            fracOverlap=0.3,
+            nthreads=16)
 
 
 # make a df

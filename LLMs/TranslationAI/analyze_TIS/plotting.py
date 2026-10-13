@@ -23,7 +23,7 @@ def plot_so_background(df_merged, background_transcripts_df, nr_start, datatype,
     plt.close()
 
     # DENSITY PLOT #############################################################
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(4, 3))
     sbn.kdeplot(df_merged[f'{nr_start}_start_SO'], color="blue",
                 label=f"{so} {nr_start} start", cut=0, fill=True)
     sbn.kdeplot(background_transcripts_df[f'{nr_start}_start'],
@@ -38,6 +38,29 @@ def plot_so_background(df_merged, background_transcripts_df, nr_start, datatype,
 
     # Save plot
     plt.savefig(f"{outdir}/{datatype}_{nr_start}_start_{so}_non_{so}_density.svg",
+                dpi=300, bbox_inches="tight")
+    plt.close()
+
+    # DENSITY PLOT #############################################################
+    background_transcripts_df[f'{nr_start}_start_SO'] = background_transcripts_df[f'{nr_start}_start']
+    background_transcripts_df['Group'] = f"Non-{so} {nr_start} start"
+    df_merged['Group'] = f"{so} {nr_start} start"
+    combined_df = pd.concat([background_transcripts_df[[
+                            f'{nr_start}_start_SO', 'Group']], df_merged[[f'{nr_start}_start_SO', 'Group']]])
+
+    plt.figure(figsize=(8, 6))
+    sbn.boxplot(combined_df, y=f'{nr_start}_start_SO',
+                x='Group', hue='Group', palette=('#FF6161', '#5D5DFF'), saturation=1.0)
+
+    # Labels and legend
+    plt.xlabel(f"Group")
+    plt.ylabel(f"Probability of the {nr_start} start site")
+    plt.title(
+        f"Boxplot of {nr_start} Start Probabilities for {so} and non-{so} {datatype} transcripts")
+    plt.legend()
+
+    # Save plot
+    plt.savefig(f"{outdir}/{datatype}_{nr_start}_start_{so}_non_{so}_boxplot.svg",
                 dpi=300, bbox_inches="tight")
     plt.close()
 

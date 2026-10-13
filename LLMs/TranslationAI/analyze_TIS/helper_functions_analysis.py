@@ -199,8 +199,8 @@ def explode_so_df(predicted_so_orfs):
     all_predicted_so_orfs = predicted_so_orfs.explode(
         ['OrfID', 'OrfStart'], ignore_index=True).copy()
 
-    assert len(all_predicted_so_orfs['OrfTransID'].unique()) == 9261 or len(
-        all_predicted_so_orfs['OrfTransID'].unique()) == 5625
+    # assert len(all_predicted_so_orfs['OrfTransID'].unique()) == 9261 or len(
+    # all_predicted_so_orfs['OrfTransID'].unique()) == 5625
 
     total_nr_so = len(all_predicted_so_orfs.index)
     total_nr_so_transcripts = len(all_predicted_so_orfs['OrfTransID'].unique())

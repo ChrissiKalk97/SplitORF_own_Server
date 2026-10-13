@@ -14,7 +14,7 @@ from plotting import plot_so_background, plot_validated_so_probs_TransAI, plot_R
     plot_RiboTISH_inframecount_vs_probs
 
 
-def perform_so_background_analysis(TIS_results_df, so_transcripts, df_merged, datatype, outdir, so='so'):
+def perform_so_background_analysis(TIS_results_df, so_transcripts, df_merged, datatype, outdir, so='SO'):
     '''
     compares the best and second best start TransAI probabilities between 2 sets
     of transcripts
@@ -66,7 +66,7 @@ def validated_so_per_sample_analysis(df_merged, Ribo_coverage_path, outdir, data
             Ensembl_canonical_df = load_Ensembl_canonical(
                 Ensembl_canonical_path)
             check_start_probs_Ensembl_canonical(
-                Ribo_df_merged, Ensembl_canonical_df, verbose=True)
+                Ribo_df_merged, Ensembl_canonical_df, verbose=False)
     return all_predicted_so_orfs, Ensembl_canonical_df
 
 

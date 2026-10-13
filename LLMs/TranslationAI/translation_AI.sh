@@ -16,6 +16,7 @@ source activate translationAI
 #  /projects/splitorfs/work/LLMs/TranslationAI/Input/k4neo_val_transcripts/NMD_transcripts_found_with_k4neo.txt
 
 
+# this only needs to be run once for NMD and RI as all genes to keep/filter are determined at once
 # Rscript /home/ckalk/scripts/SplitORFs/LLMs/TranslationAI/analyze_TIS/filter_genes_by_tpm.R
 
 python /home/ckalk/scripts/SplitORFs/LLMs/TranslationAI/analyze_TIS/analyze_TIS_pipeline.py \
@@ -24,7 +25,7 @@ python /home/ckalk/scripts/SplitORFs/LLMs/TranslationAI/analyze_TIS/analyze_TIS_
   /projects/splitorfs/work/Riboseq/Output/Riboseq_genomic_single_samples/resample_q10/NMD_genome \
   /projects/splitorfs/work/Riboseq/Output/RiboTISH_NMD_custom \
   --genes_to_keep_file /projects/splitorfs/work/LLMs/TranslationAI/Output/analyze_TIS/genes_to_keep/genes_to_keep.txt \
-  --k4neo_path /projects/splitorfs/work/LLMs/TranslationAI/Input/NMD_transcripts_cDNA_coordinates.txt \
-  --Ensembl_canonical_path /projects/splitorfs/work/LLMs/TranslationAI/Input/k4neo_val_transcripts/NMD_transcripts_found_with_k4neo.txt
+  --Ensembl_canonical_path /projects/splitorfs/work/LLMs/TranslationAI/Input/NMD_transcripts_cDNA_coordinates.txt \
+  --k4neo_path /projects/splitorfs/work/LLMs/TranslationAI/Input/k4neo_val_transcripts/NMD_transcripts_found_with_k4neo.txt
 
 
