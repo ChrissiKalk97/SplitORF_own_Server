@@ -40,9 +40,9 @@ bash /home/ckalk/scripts/SplitORFs/short_RNA_seq/analyze_short_RNA_seq_cell_type
 #  "${huvec_tama_gtf}"
 
 
-python /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random/analyze_mappings/analyze_STAR_alignments.py \
-    "$star_out_dir_huvec" \
-    STAR_align_genome.csv
+# python /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random/analyze_mappings/analyze_STAR_alignments.py \
+#     "$star_out_dir_huvec" \
+#     STAR_align_genome.csv
 
 
 # bash Salmon_quantification.sh \
@@ -90,18 +90,18 @@ bash /home/ckalk/scripts/SplitORFs/short_RNA_seq/analyze_short_RNA_seq_cell_type
 #  "${cm_tama_gtf}"
 
 
-python /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random/analyze_mappings/analyze_STAR_alignments.py \
-   "$star_out_dir_cm" \
-    STAR_align_genome.csv
+# python /home/ckalk/scripts/SplitORFs/Riboseq/Riboseq_validation/genomic/resample_random/analyze_mappings/analyze_STAR_alignments.py \
+#    "$star_out_dir_cm" \
+#     STAR_align_genome.csv
 
 
-bash Salmon_quantification.sh \
-  "${genome_fasta}" \
-  "${cm_tama_gtf}" \
-  "${salmon_out_dir_cm_tama}" \
-  "${outidr_fastp_cm}" \
-  "${salmon_out_dir_cm_tama}" \
-  "${decoys}"
+# bash Salmon_quantification.sh \
+#   "${genome_fasta}" \
+#   "${cm_tama_gtf}" \
+#   "${salmon_out_dir_cm_tama}" \
+#   "${outidr_fastp_cm}" \
+#   "${salmon_out_dir_cm_tama}" \
+#   "${decoys}"
 
 
 #################################################################################
@@ -113,11 +113,41 @@ Rscript /home/ckalk/scripts/SplitORFs/short_RNA_seq/DeSeq2_Salmon_Giibs_HUVEC_CM
 "${cm_tama_gtf}" \
 "${salmon_out_dir_cm_tama}" \
 "5NMD,DHYPO,DNOR" \
-"1,2,3"
+"1,2,3" \
+"DHYPO" \
+"DNOR"
+
+Rscript /home/ckalk/scripts/SplitORFs/short_RNA_seq/DeSeq2_Salmon_Giibs_HUVEC_CM_12_10_26.R \
+"${cm_tama_gtf}" \
+"${salmon_out_dir_cm_tama}" \
+"5NMD,DHYPO,DNOR" \
+"1,2,3" \
+"5NMD" \
+"DNOR"
 
 
 Rscript /home/ckalk/scripts/SplitORFs/short_RNA_seq/DeSeq2_Salmon_Giibs_HUVEC_CM_12_10_26.R \
 "${huvec_tama_gtf}" \
 "${salmon_out_dir_huvec_tama}" \
 "50NMD,5NMD,DHYPO,DMSO,DNOR" \
-"2,3,4"
+"2,3,4" \
+"DHYPO" \
+"DNOR"
+
+Rscript /home/ckalk/scripts/SplitORFs/short_RNA_seq/DeSeq2_Salmon_Giibs_HUVEC_CM_12_10_26.R \
+"${huvec_tama_gtf}" \
+"${salmon_out_dir_huvec_tama}" \
+"50NMD,5NMD,DHYPO,DMSO,DNOR" \
+"2,3,4" \
+"5NMD" \
+"DMSO"
+
+Rscript /home/ckalk/scripts/SplitORFs/short_RNA_seq/DeSeq2_Salmon_Giibs_HUVEC_CM_12_10_26.R \
+"${huvec_tama_gtf}" \
+"${salmon_out_dir_huvec_tama}" \
+"50NMD,5NMD,DHYPO,DMSO,DNOR" \
+"2,3,4" \
+"50NMD" \
+"DMSO"
+
+
