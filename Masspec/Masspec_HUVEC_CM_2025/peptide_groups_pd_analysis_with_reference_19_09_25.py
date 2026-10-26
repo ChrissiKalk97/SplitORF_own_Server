@@ -183,6 +183,9 @@ def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping, u
         so_peptides_val_proteins_of_right_assembly.to_csv(
             os.path.join(outdir, f'{cell_type}_PD_split_orf_only_peptides_quan_filtered_part_of_{cell_type}_assembly.csv'))
 
+        print(f"Number of distinct quan filtered unique peptide seuqences, part of {cell_type} assembly:", len(
+            so_peptides_val_proteins_of_right_assembly['Sequence'].unique()))
+
         return split_orf_peptides_with_quan_info_df, so_id_mapping_df, so_peptides_val_proteins_of_right_assembly
 
     def get_validated_splitorf_proteins(split_orf_peptides_with_quan_info_df, peptides_df):
@@ -310,6 +313,9 @@ def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping, u
 
         split_orf_peptides_with_quan_info_df.to_csv(
             os.path.join(outdir, f'{cell_type}_PD_split_orf_only_peptides_quan_filtered.csv'))
+
+        print("Number of distinct quan filtered unique peptide seuqences:", len(
+            split_orf_peptides_with_quan_info_df['Sequence'].unique()))
 
         return split_orf_peptides_with_quan_info_df
 
@@ -472,6 +478,12 @@ def main(peptides_file, so_id_mapping_file, cell_type, outdir, ref_id_mapping, u
 
     so_id_mapping_val_splitorfs_df.to_csv(
         os.path.join(outdir, f'{cell_type}_validated_SO_protein_original_Ids_with_assembly.csv'))
+
+    so_id_mapping_val_splitorfs_df[so_id_mapping_val_splitorfs_df['Confidence_set'] == 'High'].to_csv(
+        os.path.join(outdir, f'{cell_type}_validated_SO_protein_original_Ids_with_assembly_high_confidence.csv'))
+
+    print("Number of distinct SO proteins that fullfill criteria: 2 peptides one of which is unique. Note may be more than unique peptides as these may belong to several SOs", len(
+        so_id_mapping_val_splitorfs_df['SO_unique_ID'].unique()))
 
     background_gene_ids = get_background_set_ids(peptides_df, ref_id_mapping,
                                                  so_id_mapping_df, outdir, cell_type)
